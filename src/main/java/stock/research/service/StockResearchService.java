@@ -261,7 +261,8 @@ public class StockResearchService {
             for (int i = 0; i <= cnt; i++) {
                 String url = uri + i;
                 LOGGER.info("StockResearchService::url: -> " + url);
-                infoResponse = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+                infoResponse = makeRestCall(url);
+                //restTemplate.exchange(url, HttpMethod.GET, null, String.class);
 
                 Document doc = Jsoup.parse(infoResponse.getBody());
                 Elements yahooElements = doc.getElementsMatchingOwnText("Yahoo @ ");
