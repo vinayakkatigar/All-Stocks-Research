@@ -17,9 +17,9 @@ import java.time.Instant;
 import java.util.List;
 
 @RestController
-public class StocksController {
+public class AllStocksController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StocksController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AllStocksController.class);
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     @Autowired
     private JavaMailSender javaMailSender;
@@ -143,7 +143,7 @@ public class StocksController {
 
     private String generateHtml(List<StockInfo> stockInfoList) {
         try {
-            LOGGER.info("StocksController::top200");
+            LOGGER.info("AllStocksController::top200");
             StringBuilder dataBuffer = new StringBuilder("");
             stockInfoList.stream().forEach(x-> {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
