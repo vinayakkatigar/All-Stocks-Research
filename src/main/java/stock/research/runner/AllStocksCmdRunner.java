@@ -29,7 +29,6 @@ public class AllStocksCmdRunner implements CommandLineRunner {
         long start = System.currentTimeMillis();
         LOGGER.info("##AllStocksCmdRunner.run::started##" );
         allStocksEmailAlertMechanismService.kickOffWorld1000EmailAlerts();
-
         allStocksEmailAlertMechanismService.kickOffAustriaEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffSwissEmailAlerts();
 
