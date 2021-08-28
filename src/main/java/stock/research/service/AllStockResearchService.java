@@ -35,9 +35,9 @@ import static stock.research.utility.StockResearchUtility.*;
 
 
 @Service
-public class StockResearchService {
+public class AllStockResearchService {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
-    private static final Logger LOGGER = LoggerFactory.getLogger(StockResearchService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AllStockResearchService.class);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -87,7 +87,7 @@ public class StockResearchService {
         urlMap.put("World1000", "World1000detailedInfo.json");
     }
     public List<StockInfo> populateStockDetailedInfo(String component,String uri,Integer cnt) {
-        LOGGER.info("<- Started StockResearchService.populateStockDetailedInfo");
+        LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");
         List<StockInfo> stockInfoList = getStockUrlInfos(component,uri, cnt);
 
         try {
@@ -96,7 +96,7 @@ public class StockResearchService {
                 ResponseEntity<String> response = null;
                 try {
                     Thread.sleep(100 * 5);
-                    LOGGER.info("StockResearchService::populateStockDetailedInfo::StockURL ->  " +   x.getStockURL());
+                    LOGGER.info("AllStockResearchService::populateStockDetailedInfo::StockURL ->  " +   x.getStockURL());
 //                    response = restTemplate.exchange("https://finance.yahoo.com/quote/AAL.L", HttpMethod.GET, null, String.class);
                     response = makeRestCall(x.getStockURL());
 
@@ -245,7 +245,7 @@ public class StockResearchService {
         try {
             for (int i = 0; i <= cnt; i++) {
                 String url = uri + i;
-                LOGGER.info("StockResearchService::url: -> " + url);
+                LOGGER.info("AllStockResearchService::url: -> " + url);
                 infoResponse = makeRestCall(url);
                 //restTemplate.exchange(url, HttpMethod.GET, null, String.class);
 

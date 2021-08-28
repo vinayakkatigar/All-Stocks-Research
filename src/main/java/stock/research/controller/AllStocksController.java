@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.StockInfo;
-import stock.research.service.StockResearchService;
+import stock.research.service.AllStockResearchService;
 import stock.research.utility.StockResearchUtility;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class AllStocksController {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private StockResearchService stockResearchService;
+    private AllStockResearchService allStockResearchService;
 
     @Autowired
     RestTemplate restTemplate;
@@ -102,40 +102,40 @@ public class AllStocksController {
 
     private List<StockInfo>  getStockInfoListFor(String mkt){
         if (mkt != null && "Sweden".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheSwedenStockInfoList();
+            return allStockResearchService.getCacheSwedenStockInfoList();
         }
         if (mkt != null && "World1000".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheWorld1000StockInfoList();
+            return allStockResearchService.getCacheWorld1000StockInfoList();
         }
         if (mkt != null && "Norway".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheNorwayStockInfoList();
+            return allStockResearchService.getCacheNorwayStockInfoList();
         }
         if (mkt != null && "Netherlands".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheNetherlandsStockInfoList();
+            return allStockResearchService.getCacheNetherlandsStockInfoList();
         }
         if (mkt != null && "Germany".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheGermanyStockInfoList();
+            return allStockResearchService.getCacheGermanyStockInfoList();
         }
         if (mkt != null && "Finland".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheFinlandStockInfoList();
+            return allStockResearchService.getCacheFinlandStockInfoList();
         }
         if (mkt != null && "Denmark".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheDenmarkStockInfoList();
+            return allStockResearchService.getCacheDenmarkStockInfoList();
         }
         if (mkt != null && "Canada".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheCanadaStockInfoList();
+            return allStockResearchService.getCacheCanadaStockInfoList();
         }
         if (mkt != null && "australia".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheAustraliaStockInfoList();
+            return allStockResearchService.getCacheAustraliaStockInfoList();
         }
         if (mkt != null && "austria".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheAustriaStockInfoList();
+            return allStockResearchService.getCacheAustriaStockInfoList();
         }
         if (mkt != null && "swiss".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheSwissStockInfoList();
+            return allStockResearchService.getCacheSwissStockInfoList();
         }
         if (mkt != null && "euro".equalsIgnoreCase(mkt)){
-            return stockResearchService.getCacheEuroStockInfoList();
+            return allStockResearchService.getCacheEuroStockInfoList();
         }
         return null;
     }

@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.StockInfo;
-import stock.research.service.StockResearchService;
+import stock.research.service.AllStockResearchService;
 import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +50,7 @@ public class AllStocksEmailAlertMechanismService {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private StockResearchService stockResearchService;
+    private AllStockResearchService allStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class AllStocksEmailAlertMechanismService {
     public void kickOffSwissEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Swiss",SWZLD_200_URL,SWZLD_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Swiss",SWZLD_200_URL,SWZLD_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Swiss",stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Swiss",stockInfoList,x, MID_CAP);
@@ -74,7 +74,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffAustriaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustriaEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Austria", AUSTRIA_URL, AUSTRIA_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Austria", AUSTRIA_URL, AUSTRIA_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Austria", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Austria", stockInfoList,x, MID_CAP);
@@ -84,7 +84,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffAustraliaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustraliaEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Australia", AUSTRALIA_URL, AUSTRALIA_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Australia", AUSTRALIA_URL, AUSTRALIA_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Australia", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Australia", stockInfoList,x, MID_CAP);
@@ -94,7 +94,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffEUROEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffEUROEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Euro", EURO_URL, EURO_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Euro", EURO_URL, EURO_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Euro", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Euro", stockInfoList,x, MID_CAP);
@@ -104,7 +104,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffCanadaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffCanadaEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Canada", CANADA_URL, CANADA_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Canada", CANADA_URL, CANADA_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Canada", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Canada", stockInfoList,x, MID_CAP);
@@ -114,7 +114,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffDenmarkEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffDenmarkEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Denmark", DENMARK_URL, DENMARK_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Denmark", DENMARK_URL, DENMARK_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Denmark", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Denmark", stockInfoList,x, MID_CAP);
@@ -124,7 +124,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffFinlandEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffFinlandEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Finland", FINLAND_URL, FINLAND_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Finland", FINLAND_URL, FINLAND_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Finland", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Finland", stockInfoList,x, MID_CAP);
@@ -134,7 +134,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffGermanyEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffGermanyEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Germany", GERMANY_URL, GERMANY_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Germany", GERMANY_URL, GERMANY_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Germany", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Germany", stockInfoList,x, MID_CAP);
@@ -144,7 +144,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffNetherlandsEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNetherlandsEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Netherlands", NETHERLANDS_URL, NETHERLANDS_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Netherlands", NETHERLANDS_URL, NETHERLANDS_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Netherlands", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Netherlands", stockInfoList,x, MID_CAP);
@@ -154,7 +154,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffNorwayEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNorwayEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Norway", NORWAY_URL, NORWAY_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Norway", NORWAY_URL, NORWAY_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Norway", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Norway", stockInfoList,x, MID_CAP);
@@ -164,7 +164,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffWorld1000EmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("World1000", WORLD_1000_URL, WORLD_1000_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("World1000", WORLD_1000_URL, WORLD_1000_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("World1000", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("World1000", stockInfoList,x, MID_CAP);
@@ -174,7 +174,7 @@ public class AllStocksEmailAlertMechanismService {
 
     public void kickOffSwedenEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSwedenEmailAlerts" );
-        final List<StockInfo> stockInfoList = stockResearchService.populateStockDetailedInfo("Sweden", SWEDEN_URL, SWEDEN_CNT);
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Sweden", SWEDEN_URL, SWEDEN_CNT);
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails("Sweden", stockInfoList,x, LARGE_CAP);
             generateAlertEmails("Sweden", stockInfoList,x, MID_CAP);

@@ -282,7 +282,7 @@ public class FTSEStockResearchService {
 
 
     private WebDriver launchBrowser() {
-        System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
+        System.out.println("AllStockResearchService.launchBrowser" + System.getProperty("user.dir"));
         try{
 //            ChromeOptions options = new ChromeOptions();
 //            options.addArguments("--headless");
