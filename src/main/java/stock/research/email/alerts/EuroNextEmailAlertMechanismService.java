@@ -90,7 +90,6 @@ public class EuroNextEmailAlertMechanismService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void generateAlertEmails(List<EuroNextStockInfo> EuroNextStockInfoList, SIDE side) {
