@@ -1,0 +1,25 @@
+https://www.value.today/stocks/sp-europe-350
+
+mvn clean spring-boot:run -Dcnt=11 -Dlogfile.name=indonesia-test-stock-research -Dserver.port=9090 -Dcurrency=IDR -Dcomponent=INDONESIA -Durl=https://www.value.today/headquarters/indonesia?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=
+
+java -jar -Dcnt=8 -Dlogfile.name=indonesia-test-stock-research -Dserver.port=9090 -Dcurrency=IDR -Dcomponent=INDONESIA -Durl=https://www.value.today/headquarters/indonesia?page= indonesia-stock-research-1.0-SNAPSHOT.jar
+
+
+java -jar -Dcnt=15 -Dlogfile.name=hong-kong-stock-research -Dserver.port=9095 -Dcurrency=HKD -Dcomponent=HONGKONG -Durl=https://www.value.today/headquarters/hong-kong?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+
+java -jar -Dcnt=8 -Dlogfile.name=italy-stock-research -Dserver.port=9100 -Dcurrency=EUR -Dcomponent=ITALY -Durl=https://www.value.today/headquarters/italy?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=6 -Dlogfile.name=spain-stock-research -Dserver.port=9105 -Dcurrency=EUR -Dcomponent=SPAIN -Durl=https://www.value.today/headquarters/spain?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=3 -Dlogfile.name=new-zealand-stock-research -Dserver.port=9110 -Dcurrency=NZD -Dcomponent=NEWZEALAND -Durl=https://www.value.today/headquarters/new-zealand?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=12 -Dlogfile.name=brazil-stock-research -Dserver.port=9120 -Dcurrency=BRL -Dcomponent=BRAZIL -Durl=https://www.value.today/headquarters/brazil?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=2 -Dlogfile.name=luxembourg-stock-research -Dserver.port=9130 -Dcurrency=EUR -Dcomponent=LUXEMBOURG -Durl=https://www.value.today/headquarters/luxembourg?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=50 -Dlogfile.name=china-stock-research -Dserver.port=9140 -Dcurrency=CNY -Dcomponent=CHINA -Durl=https://www.value.today/headquarters/china?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=15 -Dlogfile.name=france-stock-research -Dserver.port=9150 -Dcurrency=EUR -Dcomponent=FRANCE -Durl=https://www.value.today/headquarters/france?page= generic-stock-research-1.0-SNAPSHOT.jar
+
+java -jar -Dcnt=5 -Dlogfile.name=netherlands-stock-research -Dserver.port=9160 -Dcurrency=EUR -Dcomponent=NETHERLANDS -Durl=https://www.value.today/headquarters/netherlands?page= generic-stock-research-1.0-SNAPSHOT.jar

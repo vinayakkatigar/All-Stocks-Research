@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<property resource="application.properties" />
+<!--<include resource="org/springframework/boot/logging/logback/defaults.xml" />-->
+<!--<property name="LOG_FILE" isSuccess="logs/complex-lending-ms-loan-service"/>-->
+<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+<!--<appender name="SAVE-TO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/complex-lending-ms-loan-service</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>logs/archived/log_%d{dd-MM-yyyy}.log</fileNamePattern>
+        <maxHistory>10</maxHistory>
+        <totalSizeCap>100MB</totalSizeCap>
+    </rollingPolicy>
+</appender>-->
+<appender name="ERRORS-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" level="ERROR">
+    <file>${ERROR_LOG_FILE}</file>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <level>ERROR</level>
+        <onMismatch>DENY</onMismatch>
+    </filter>
+    <append>true</append>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${ARCHIVED_ERROR_LOG_FILE}_%d{dd-MM-yyyy}.log</fileNamePattern>
+        <maxHistory>10</maxHistory>
+        <totalSizeCap>100MB</totalSizeCap>
+    </rollingPolicy>
+</appender>
+<!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>-->
+
+<!--
+    <logger name="com.rbs.lending.api.gateway" level="info" additivity="false">
+        <appender-ref ref="SAVE-TO-FILE" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+-->
+
+
+    <logger name="org.springframework" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+<logger name="AppErrors" level="ERROR" additivity="false">
+    <appender-ref ref="ERRORS-FILE" />
+</logger>
+
+<root level="INFO">
+    <appender-ref ref="FILE" />
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="ERRORS-FILE" />
+</root>
+<!--    <root level="error">
+        <appender-ref ref="ERRORS-FILE" />
+    </root>-->
+</configuration>
