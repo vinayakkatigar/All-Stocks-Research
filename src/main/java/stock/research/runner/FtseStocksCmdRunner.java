@@ -20,8 +20,10 @@ public class FtseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+/*
         LOGGER.info("FtseStocksCmdRunner.run" );
         ftseEmailAlertMechanismService.kickOffEmailAlerts();
+*/
     }
 
 }

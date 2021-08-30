@@ -34,8 +34,10 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+/*
         LOGGER.info("NyseStocksCmdRunner.run" );
         List<NyseStockInfo> stocksUrlMap = nyseStockResearchService.populateNYSEStockDetailedInfo();
+*/
     }
 
 }
