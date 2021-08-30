@@ -51,27 +51,11 @@ public class NyseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 5 18 ? * MON-FRI")
+    @Scheduled(cron = "0 5 19 ? * MON-FRI")
     public void kickOffEmailAlerts_1() {
         kickOffEmailAlerts();
     }
-    /*
-    @Scheduled(cron = "0 5 15 ? * MON-FRI")
-    public void kickOffEmailAlerts_2() {
-        kickOffEmailAlerts();
-    }
 
-    @Scheduled(cron = "0 25 9 ? * MON-FRI")
-    public void kickOffEmailAlerts_3() {
-        kickOffEmailAlerts();
-    }
-    @Scheduled(cron = "0 25 10 ? * MON-FRI")
-    public void kickOffEmailAlerts_4() {
-        kickOffEmailAlerts();
-    }
-
-    @Scheduled(cron = "0 35 9 ? * MON-FRI")
-*/
     public void kickOffEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );

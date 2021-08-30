@@ -48,24 +48,8 @@ public class EuroNextEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    //@Scheduled(cron = "0 5 4 ? * MON-FRI")
-    public void kickOffEmailAlerts_1() {
-        kickOffEmailAlerts();
-    }
-    //@Scheduled(cron = "0 5 5 ? * MON-FRI")
-    public void kickOffEmailAlerts_2() {
-        kickOffEmailAlerts();
-    }
-    //@Scheduled(cron = "0 25 9 ? * MON-FRI")
-    public void kickOffEmailAlerts_3() {
-        kickOffEmailAlerts();
-    }
-    @Scheduled(cron = "0 35 9 ? * MON-FRI")
-    public void kickOffEmailAlerts_4() {
-        kickOffEmailAlerts();
-    }
 
-    //@Scheduled(cron = "0 35 4,5,9,10 ? * MON-FRI")
+    @Scheduled(cron = "0 35 9 ? * MON-FRI")
     public void kickOffEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
         final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();

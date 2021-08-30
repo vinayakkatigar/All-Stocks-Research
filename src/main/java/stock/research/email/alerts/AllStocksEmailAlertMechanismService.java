@@ -59,7 +59,7 @@ public class AllStocksEmailAlertMechanismService {
         kickOffSwissEmailAlerts();
     }
 
-//    @Scheduled(cron = "0 35 4,5,9,10 ? * MON-FRI")
+    @Scheduled(cron = "0 0 9 ? * MON-FRI")
     public void kickOffSwissEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
@@ -72,6 +72,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
+    @Scheduled(cron = "0 15 9 ? * MON-FRI")
     public void kickOffAustriaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustriaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Austria", AUSTRIA_URL, AUSTRIA_CNT);
@@ -82,6 +83,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 0 2 ? * MON-FRI")
     public void kickOffAustraliaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustraliaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Australia", AUSTRALIA_URL, AUSTRALIA_CNT);
@@ -92,6 +94,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 30 9 ? * MON-FRI")
     public void kickOffEUROEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffEUROEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Euro", EURO_URL, EURO_CNT);
@@ -102,6 +105,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 30 19 ? * MON-FRI")
     public void kickOffCanadaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffCanadaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Canada", CANADA_URL, CANADA_CNT);
@@ -112,6 +116,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 30 10 ? * MON-FRI")
     public void kickOffDenmarkEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffDenmarkEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Denmark", DENMARK_URL, DENMARK_CNT);
@@ -122,6 +127,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 0 11 ? * MON-FRI")
     public void kickOffFinlandEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffFinlandEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Finland", FINLAND_URL, FINLAND_CNT);
@@ -132,6 +138,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 30 11 ? * MON-FRI")
     public void kickOffGermanyEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffGermanyEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Germany", GERMANY_URL, GERMANY_CNT);
@@ -142,6 +149,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 0 12 ? * MON-FRI")
     public void kickOffNetherlandsEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNetherlandsEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Netherlands", NETHERLANDS_URL, NETHERLANDS_CNT);
@@ -152,6 +160,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwissEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 30 12 ? * MON-FRI")
     public void kickOffNorwayEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNorwayEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Norway", NORWAY_URL, NORWAY_CNT);
@@ -162,6 +171,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffNorwayEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 0 18 ? * MON-FRI")
     public void kickOffWorld1000EmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("World1000", WORLD_1000_URL, WORLD_1000_CNT);
@@ -171,7 +181,7 @@ public class AllStocksEmailAlertMechanismService {
         });
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffNorwayEmailAlerts" );
     }
-
+    @Scheduled(cron = "0 0 13 ? * MON-FRI")
     public void kickOffSwedenEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSwedenEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Sweden", SWEDEN_URL, SWEDEN_CNT);

@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
@@ -60,23 +61,9 @@ public class SensexStockResearchAlertMechanismService {
         kickOffEmailAlerts();
     }
 
-/*
-    @Scheduled(cron = "0 5 4 ? * MON-FRI")
-    public void kickOffEmailAlerts_1() {
-        kickOffEmailAlerts();
-    }
-    @Scheduled(cron = "0 25 9 ? * MON-FRI")
-    public void kickOffEmailAlerts_3() {
-        kickOffEmailAlerts();
-    }
-    @Scheduled(cron = "0 25 10 ? * MON-FRI")
-    public void kickOffEmailAlerts_4() {
-        kickOffEmailAlerts();
-    }
-
-    @Scheduled(cron = "0 35 4,5,9,10 ? * MON-FRI")
-*/
+    @Scheduled(cron = "0 35 5 ? * MON-FRI")
     public void kickOffEmailAlerts() {
+        long start = System.currentTimeMillis();
         LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
         List<SensexStockInfo> populatedSensexList = get500StocksAttributes();
         Arrays.stream(StockCategory.values()).forEach(x -> {
@@ -84,7 +71,7 @@ public class SensexStockResearchAlertMechanismService {
             generateAlertEmails(populatedSensexList, x, SIDE.BUY);
         });
         generateStockPriceAlerts(populatedSensexList);
-        LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" );
+        LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
     }
 
     private List<SensexStockInfo>  get500StocksAttributes() {
