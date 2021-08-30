@@ -15,7 +15,7 @@ public class StockResearchUtility {
     private static String component;
 
     public static final String SWZLD_200_URL = "https://www.value.today/stock-exchange-companies/switzerland?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=";
-    public static final Integer SWZLD_CNT = 15;
+    public static final Integer SWZLD_CNT = 10;
 
     public static final String AUSTRIA_URL = "https://www.value.today/headquarters/austria?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=";
     public static final Integer AUSTRIA_CNT = 3;
