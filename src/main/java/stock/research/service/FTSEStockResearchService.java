@@ -157,6 +157,8 @@ public class FTSEStockResearchService {
 //            ftse250StockInfoList = objectMapper.readValue(ftse250StockInfosFile, new TypeReference<List<Ftse250StockInfo>>(){});
 
             ftseStockDetailedInfoList = getFtseStockInfo(urlInfo, cnt);
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
 
             ftseStockDetailedInfoList.stream().forEach(x -> {
 //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
@@ -209,6 +211,9 @@ public class FTSEStockResearchService {
                     }
 
                 }catch (Exception e) {
+                    if (webDriver != null) webDriver.close();
+                    webDriver = launchBrowser();
+
                     ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                     e.printStackTrace();
                 }
@@ -256,6 +261,8 @@ public class FTSEStockResearchService {
             if (webDriver != null) webDriver.close();
             return (ftseStockDetailedInfoList);
         }catch (Exception e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }

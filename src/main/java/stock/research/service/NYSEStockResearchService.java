@@ -184,6 +184,8 @@ public class NYSEStockResearchService {
         final  List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
             nyseStockDetailedInfoMap = getNyseStockInfo();
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
 
              nyseStockDetailedInfoMap.entrySet().stream().limit(1000).forEach(x -> {
 //            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {
@@ -315,6 +317,8 @@ public class NYSEStockResearchService {
                     LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
 
                 }catch (Exception e) {
+                    if (webDriver != null) webDriver.close();
+                    webDriver = launchBrowser();
                     ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                     e.printStackTrace();
                 }
@@ -340,6 +344,8 @@ public class NYSEStockResearchService {
             if (webDriver != null) webDriver.close();
             return (populateNYSEStockDetailedInfoList);
         }catch (Exception e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }

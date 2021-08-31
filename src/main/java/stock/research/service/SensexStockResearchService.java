@@ -123,6 +123,8 @@ public class SensexStockResearchService {
 
 //            sensexStockInfosList = objectMapper.readValue(new ClassPathResource("top500.json").getInputStream(), new TypeReference<List<SensexStockInfo>>(){});
             LinkedHashMap<String,String> stockUrlsMap = objectMapper.readValue(new ClassPathResource("mktCap1K/top5KMktCapUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String,String>>(){});
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
 
 //            sensexStockInfosList = getSensex500StockInfo();
 
@@ -284,6 +286,9 @@ public class SensexStockResearchService {
                                 }
                             }
                         }catch (Exception e){
+                            if (webDriver != null) webDriver.close();
+                            webDriver = launchBrowser();
+
                             isException = true;
                             e.printStackTrace();
                         }
@@ -295,6 +300,9 @@ public class SensexStockResearchService {
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
                     }
                 }catch (Exception e) {
+                    if (webDriver != null) webDriver.close();
+                    webDriver = launchBrowser();
+
                     ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                     e.printStackTrace();
                 }
@@ -324,6 +332,8 @@ public class SensexStockResearchService {
             cacheSensexStockInfosList = resultSensexStockInfosList;
             return removeExcludedIsins(resultSensexStockInfosList);
         }catch (Exception e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }

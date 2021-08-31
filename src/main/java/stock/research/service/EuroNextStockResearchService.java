@@ -79,6 +79,8 @@ public class EuroNextStockResearchService {
         final  List<EuroNextStockInfo> populateEuroNextStockDetailedInfoList  = getEuroNextStockInfo();
 
         try {
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
 //            populateEuroNextStockDetailedInfoList.stream().forEach(euroNextStockInfo -> {
             populateEuroNextStockDetailedInfoList.stream().limit(200).forEach(euroNextStockInfo -> {
 //                killZombie();
@@ -96,9 +98,13 @@ public class EuroNextStockResearchService {
                         }catch (StaleElementReferenceException e){
                             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
                             e.printStackTrace();
+                            if (webDriver != null) webDriver.close();
+                            webDriver = launchBrowser();
                             webDriver.navigate().refresh();
                         }
                         catch (Exception e) {
+                            if (webDriver != null) webDriver.close();
+                            webDriver = launchBrowser();
                             webDriver.navigate().refresh();
                             ERROR_LOGGER.error(now() + ", launchAndExtract Error ->", e);
                             e.printStackTrace();
@@ -134,10 +140,14 @@ public class EuroNextStockResearchService {
             if (webDriver != null) webDriver.close();
             return (populateEuroNextStockDetailedInfoList);
         }catch (StaleElementReferenceException e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
             e.printStackTrace();
             webDriver.navigate().refresh();
         }
         catch (Exception e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
             webDriver.navigate().refresh();
             ERROR_LOGGER.error(now() + ", Error ->", e);
             e.printStackTrace();
@@ -335,11 +345,16 @@ public class EuroNextStockResearchService {
             euroNextStockInfo.setTimestamp(now());
             LOGGER.info(String.valueOf(euroNextStockInfo));
         }catch(StaleElementReferenceException e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
             webDriver.navigate().refresh();
             return false;
         }catch (Exception e){
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
+
             webDriver.navigate().refresh();
             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
