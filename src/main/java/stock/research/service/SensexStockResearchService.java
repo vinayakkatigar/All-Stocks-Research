@@ -55,6 +55,12 @@ public class SensexStockResearchService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    public static List<SensexStockInfo> getCacheSensexStockInfosList() {
+        return cacheSensexStockInfosList;
+    }
+
+    private static List<SensexStockInfo> cacheSensexStockInfosList = new ArrayList<>();
+
     @Autowired
     RestTemplate restTemplate;
 
@@ -111,7 +117,6 @@ public class SensexStockResearchService {
     }
 
     public List<SensexStockInfo> populateStocksAttributes() {
-        List<SensexStockInfo> sensexStockInfosList = new ArrayList<>();
         List<SensexStockInfo> populatedSensexStockInfosList = new ArrayList<>();
         List<SensexStockInfo> resultSensexStockInfosList = new ArrayList<>();
         try {
@@ -316,12 +321,14 @@ public class SensexStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
             if (webDriver == null) webDriver.close();
+            cacheSensexStockInfosList = resultSensexStockInfosList;
             return removeExcludedIsins(resultSensexStockInfosList);
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
         if (webDriver == null) webDriver.close();
+        cacheSensexStockInfosList = resultSensexStockInfosList;
         return removeExcludedIsins(resultSensexStockInfosList);
     }
 
