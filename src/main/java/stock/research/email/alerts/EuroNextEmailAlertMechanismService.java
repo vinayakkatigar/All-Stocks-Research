@@ -164,7 +164,6 @@ public class EuroNextEmailAlertMechanismService {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
-        LOGGER.info("EuroNextEmailAlertMechanismService::portfolioInfoList" + portfolioInfoList);
     }
 
 }

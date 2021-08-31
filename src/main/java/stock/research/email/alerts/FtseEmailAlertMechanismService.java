@@ -191,7 +191,6 @@ public class FtseEmailAlertMechanismService {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
-        LOGGER.info("FtseEmailAlertMechanismService::portfolioInfoList" + portfolioInfoList);
     }
 
 }

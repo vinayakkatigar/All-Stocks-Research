@@ -310,7 +310,6 @@ public class AllStocksEmailAlertMechanismService {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
-        LOGGER.info("AllStocksEmailAlertMechanismService::portfolioInfoList" + portfolioInfoList);
     }
 
 }

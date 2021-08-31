@@ -189,7 +189,6 @@ public class NyseEmailAlertMechanismService {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
-        LOGGER.info("NyseEmailAlertMechanismService::portfolioInfoList" + portfolioInfoList);
     }
 
 }
