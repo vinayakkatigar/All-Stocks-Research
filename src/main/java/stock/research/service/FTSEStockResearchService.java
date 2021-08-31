@@ -150,6 +150,10 @@ public class FTSEStockResearchService {
     public List<FtseStockInfo> populateFtseStockDetailedInfo(String urlInfo, Integer cnt) {
         LOGGER.info("<- Started FTSEStockResearchService.populateFtseStockDetailedInfo");
         List<FtseStockInfo> ftseStockDetailedInfoList = new ArrayList<>();
+        try {
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
+        }catch (Exception e){}
 
         try {
 
@@ -157,8 +161,6 @@ public class FTSEStockResearchService {
 //            ftse250StockInfoList = objectMapper.readValue(ftse250StockInfosFile, new TypeReference<List<Ftse250StockInfo>>(){});
 
             ftseStockDetailedInfoList = getFtseStockInfo(urlInfo, cnt);
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
 
             ftseStockDetailedInfoList.stream().forEach(x -> {
 //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
@@ -218,6 +220,11 @@ public class FTSEStockResearchService {
                     e.printStackTrace();
                 }
             });
+            try {
+                if (webDriver != null) webDriver.close();
+                webDriver = launchBrowser();
+            }catch (Exception e){}
+
             ftseStockDetailedInfoList.stream().forEach(x -> {
 //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
                 if (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||

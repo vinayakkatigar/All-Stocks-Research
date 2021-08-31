@@ -120,11 +120,14 @@ public class SensexStockResearchService {
         List<SensexStockInfo> populatedSensexStockInfosList = new ArrayList<>();
         List<SensexStockInfo> resultSensexStockInfosList = new ArrayList<>();
         try {
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
+        }catch (Exception e){}
+
+        try {
 
 //            sensexStockInfosList = objectMapper.readValue(new ClassPathResource("top500.json").getInputStream(), new TypeReference<List<SensexStockInfo>>(){});
             LinkedHashMap<String,String> stockUrlsMap = objectMapper.readValue(new ClassPathResource("mktCap1K/top5KMktCapUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String,String>>(){});
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
 
 //            sensexStockInfosList = getSensex500StockInfo();
 

@@ -183,9 +183,12 @@ public class NYSEStockResearchService {
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
         final  List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
-            nyseStockDetailedInfoMap = getNyseStockInfo();
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
+        }catch (Exception e){}
+
+        try {
+            nyseStockDetailedInfoMap = getNyseStockInfo();
 
              nyseStockDetailedInfoMap.entrySet().stream().limit(1000).forEach(x -> {
 //            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {

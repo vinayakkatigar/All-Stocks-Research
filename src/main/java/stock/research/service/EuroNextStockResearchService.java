@@ -81,6 +81,10 @@ public class EuroNextStockResearchService {
         try {
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
+        }catch (Exception e){}
+
+        try {
+
 //            populateEuroNextStockDetailedInfoList.stream().forEach(euroNextStockInfo -> {
             populateEuroNextStockDetailedInfoList.stream().limit(200).forEach(euroNextStockInfo -> {
 //                killZombie();
