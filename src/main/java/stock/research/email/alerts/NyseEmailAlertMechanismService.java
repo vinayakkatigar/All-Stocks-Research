@@ -51,7 +51,7 @@ public class NyseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 5 19 ? * MON-FRI")
+    @Scheduled(cron = "0 30 17 ? * MON-FRI")
     public void kickOffEmailAlerts_1() {
         kickOffEmailAlerts();
     }
