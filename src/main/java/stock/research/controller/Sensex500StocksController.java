@@ -149,7 +149,7 @@ public class Sensex500StocksController {
     public String sensexAllStocks(){
         try {
             LOGGER.info("Sensex500StocksController::sensexAllStocks");
-            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.populateStocksAttributes();
+            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList();
             StringBuilder dataBuffer = new StringBuilder("");
             populatedSensexList.stream().forEach( x-> {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
