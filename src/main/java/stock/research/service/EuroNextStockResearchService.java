@@ -57,7 +57,7 @@ public class EuroNextStockResearchService {
 
     @PostConstruct
     public void setUp(){
-        this.webDriver = launchBrowser();
+//        this.webDriver = launchBrowser();
     }
 
     public List<EuroNextStockInfo> getEuroNextStockInfo() {

@@ -68,7 +68,7 @@ public class SensexStockResearchService {
 
     @PostConstruct
     public void setUp(){
-        this.webDriver = launchBrowser();
+//        this.webDriver = launchBrowser();
     }
 
     public List<SensexStockInfo> getSensex500StockInfo() {

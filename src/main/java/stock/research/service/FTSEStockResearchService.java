@@ -63,7 +63,7 @@ public class FTSEStockResearchService {
 
     @PostConstruct
     public void setUp(){
-        this.webDriver = launchBrowser();
+//        this.webDriver = launchBrowser();
     }
 
     public List<FtseStockInfo> getFtseStockInfo(String urlInfo, int cnt) {

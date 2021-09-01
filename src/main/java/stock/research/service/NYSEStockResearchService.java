@@ -58,7 +58,7 @@ public class NYSEStockResearchService {
 
     @PostConstruct
     public void setUp(){
-        this.webDriver = launchBrowser();
+//        this.webDriver = launchBrowser();
     }
 
     public Map<String , String> getNyseStockInfo() {
