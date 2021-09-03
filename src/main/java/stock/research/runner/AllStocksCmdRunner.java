@@ -25,13 +25,15 @@ public class AllStocksCmdRunner implements CommandLineRunner {
     private ObjectMapper objectMapper;
 
     @Override
-    public void run(String... args) throws Exception {/*
+    public void run(String... args) throws Exception {
+
+        /*
         long start = System.currentTimeMillis();
         LOGGER.info("##AllStocksCmdRunner.run::started##" );
         allStocksEmailAlertMechanismService.kickOffWorld1000EmailAlerts();
         allStocksEmailAlertMechanismService.kickOffAustriaEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffSwissEmailAlerts();
-
+        allStocksEmailAlertMechanismService.kickOffSwedenEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffEUROEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffCanadaEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffDenmarkEmailAlerts();
@@ -40,7 +42,6 @@ public class AllStocksCmdRunner implements CommandLineRunner {
         allStocksEmailAlertMechanismService.kickOffNetherlandsEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffNorwayEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffWorld1000EmailAlerts();
-        allStocksEmailAlertMechanismService.kickOffSwedenEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffAustraliaEmailAlerts();
         LOGGER.info("##AllStocksCmdRunner.run::end##" + (System.currentTimeMillis() - start));
 
@@ -48,6 +49,7 @@ public class AllStocksCmdRunner implements CommandLineRunner {
         System.out.println(stockInfoList.stream().collect(Collectors.groupingBy(StockInfo::getCurrency)).keySet());
 
 */
+
     }
 
 }

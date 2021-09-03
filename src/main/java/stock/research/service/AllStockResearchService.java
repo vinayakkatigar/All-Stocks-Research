@@ -85,6 +85,7 @@ public class AllStockResearchService {
         urlMap.put("Netherlands", "NetherlandsdetailedInfo.json");
         urlMap.put("Norway", "NorwaydetailedInfo.json");
         urlMap.put("World1000", "World1000detailedInfo.json");
+        urlMap.put("Sweden", "SwedendetailedInfo.json");
     }
     public List<StockInfo> populateStockDetailedInfo(String component,String uri,Integer cnt) {
         LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");

@@ -33,9 +33,9 @@ public class AppConfig {
                         CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
                         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
                         requestFactory.setHttpClient(httpClient);
-                        requestFactory.setConnectionRequestTimeout(1000 * 5);
-                        requestFactory.setConnectTimeout(1000 * 5);
-                        requestFactory.setReadTimeout(1000 * 5);
+                        requestFactory.setConnectionRequestTimeout(1000 * 20);
+                        requestFactory.setConnectTimeout(1000 * 20);
+                        requestFactory.setReadTimeout(1000 * 20);
                         RestTemplate restTemplate = new RestTemplate(requestFactory);
                         return restTemplate;
 
