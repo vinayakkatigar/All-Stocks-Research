@@ -80,6 +80,10 @@ public class EuroNextStockResearchService {
     public List<EuroNextStockInfo> populateEuroNextStockDetailedInfo() {
         LOGGER.info("<- Started EuroNextStockResearchService.populateEuroNextStockDetailedInfo");
 //        final  List<EuroNextStockInfo> populateEuroNextStockDetailedInfoList  = getFileJson();
+
+        try {
+            killZombie();
+        }catch (Exception e11){}
         final  List<EuroNextStockInfo> populateEuroNextStockDetailedInfoList  = getEuroNextStockInfo();
 
         try {
