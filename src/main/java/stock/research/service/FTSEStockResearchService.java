@@ -167,23 +167,30 @@ public class FTSEStockResearchService {
             ftseStockDetailedInfoList = getFtseStockInfo(urlInfo, cnt);
 
             ftseStockDetailedInfoList.forEach(x -> {
-                int retry =5;
-                boolean sucess = false;
-                sucess = extractAttributes(x);
-                while (!sucess && --retry > 0){
+                try {
+                    int retry =5;
+                    boolean sucess = false;
                     sucess = extractAttributes(x);
-                }
+                    while (!sucess && --retry > 0){
+                        sucess = extractAttributes(x);
+                    }
+                }catch (Exception e){ webDriver = launchBrowser(); }
+
             });
             try {
                 if (webDriver == null) webDriver = launchBrowser();
             }catch (Exception e){}
 
             ftseStockDetailedInfoList.stream().forEach(x -> {
-                int retry =5;
-                boolean sucess = false;
-                sucess = extractedAttr(x);
-                while (!sucess && --retry > 0){
+                try {
+                    int retry =5;
+                    boolean sucess = false;
                     sucess = extractedAttr(x);
+                    while (!sucess && --retry > 0){
+                        sucess = extractedAttr(x);
+                    }
+                }catch (Exception e){
+                    webDriver = launchBrowser();
                 }
             });
 
@@ -203,8 +210,6 @@ public class FTSEStockResearchService {
             if (webDriver != null) webDriver.close();
             return (ftseStockDetailedInfoList);
         }catch (Exception e){
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
@@ -223,11 +228,10 @@ public class FTSEStockResearchService {
         //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
         if (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||
                 x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0 ||
-                x.get_52WeekHighLowPriceDiff() == null || x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) == 0
-        ) {
+                x.get_52WeekHighLowPriceDiff() == null || x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) == 0) {
             if (webDriver != null){
-                webDriver.get(x.getStockURL());
-                try { Thread.sleep(1000 * 10);} catch (Exception e) { }
+
+                try { webDriver.get(x.getStockURL()); Thread.sleep(1000 * 3);} catch (Exception e) {webDriver = launchBrowser(); }
 
                 try{
                     if((x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
