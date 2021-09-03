@@ -56,11 +56,6 @@ public class SensexStockResearchAlertMechanismService {
     private Set<String> isinCodeSet = new HashSet<>();
     private Map<String, Double> stockAlertPrice = new HashMap<>();
 
-//    @Scheduled(cron = "0 35 8 ? * MON-FRI")
-    public void kickOffEmailAlerts_2() {
-        kickOffEmailAlerts();
-    }
-
     @Scheduled(cron = "0 35 5 ? * MON-FRI")
     public void kickOffEmailAlerts() {
         long start = System.currentTimeMillis();
@@ -283,26 +278,6 @@ public class SensexStockResearchAlertMechanismService {
     @PostConstruct
     public void setUpPortfolioData(){
         try {
-//            isinCodeSet = isinCodeList.stream().collect(Collectors.toSet());
-
-
-/*
-            CsvSchema csv = CsvSchema.emptySchema().withHeader();
-            CsvMapper csvMapper = new CsvMapper();
-            MappingIterator<Map<?, ?>> mappingIterator =  csvMapper.reader().forType(Map.class).with(csv).readValues(input);
-            List<Map<?, ?>> portfolioList = mappingIterator.readAll();
-
-            portfolioList.parallelStream().forEach( pf ->{
-                pf.entrySet().parallelStream().forEach( (entry)  -> {
-                    if (entry.getKey().equals("Stock Symbol")){
-                        pfStockCode.add((String) entry.getValue());
-                    }if (entry.getKey().equals("ISIN Code")){
-                        isinCodeSet.add((String) entry.getValue());
-                    }
-                });
-            });
-*/
-
             CsvMapper csvMapper = new CsvMapper();
             CsvSchema schema = CsvSchema.emptySchema().withHeader();
             ObjectReader oReader = csvMapper.reader(PortfolioInfo.class).with(schema);
@@ -318,8 +293,6 @@ public class SensexStockResearchAlertMechanismService {
                 });
             }
 
-
-//            File sensex500StockInfosFile = new File(System.getProperty("user.dir") + "" + "\\stockPriceWatchListData.json");
             Map<String, Double> stockAlertPriceData  = objectMapper.readValue(new ClassPathResource("stockPriceWatchListData.json").getInputStream(), new TypeReference<Map<String, Double>>(){});
 
             stockAlertPrice.put("INE939A01011", 350.0);
