@@ -191,141 +191,14 @@ public class NYSEStockResearchService {
             nyseStockDetailedInfoMap = getNyseStockInfo();
 
              nyseStockDetailedInfoMap.entrySet().stream().limit(1000).forEach(x -> {
-//            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {
-                try {
-                    LOGGER.info("NYSEStockResearchService::populateNYSEStockDetailedInfo::StockURL ->  " + x.getValue());
-//                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
-                    if (webDriver == null){
-                        webDriver = launchBrowser();
-                    }
-                    webDriver.get(x.getValue());
-                    sleep(1000 * 3);
-                    //webDriver.navigate().refresh();
-                    //sleep(1000 * 5);
-//                    webDriver.navigate().refresh();
-//                    sleep(1000 * 2);
-                } catch (Exception e) {
-                    ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-                    e.printStackTrace();
-                }
-                try {
-//                    webDriver.navigate().refresh();
-//                    sleep(1000 * 15);
-                    NyseStockInfo nyseStockInfo = new NyseStockInfo(x.getKey(), x.getValue());
+                 int retry =5;
+                 boolean sucess = false;
+                 sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
+                 while (!sucess && --retry > 0){
+                     sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
+                 }
 
-                    try{
-                        String crtPrice = webDriver.findElement(By.className("symbol-page-header__pricing-last-price")).findElement(By.className("symbol-page-header__pricing-price")).getText();
-                        crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
-                        nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
-                    }catch (Exception e){}
-
-                    List<WebElement> webElementTdBodyList = null;
-                    int wait =0;
-					int retry =10;
-                    while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
-//                        webDriver.navigate().refresh();
-                        if (retry < 9)sleep(1000 * (2 + (++wait)));
-                        --retry;
-
-                        try{
-                            //to perform Scroll on application using Selenium
-                            JavascriptExecutor js = (JavascriptExecutor) webDriver;
-                            js.executeScript("window.scrollBy(0,1200)", "");
-                            Thread.sleep(500 * 1);
-                            js.executeScript("window.scrollBy(0,250)", "");
-                            Thread.sleep(500 * 1);
-							js.executeScript("window.scrollBy(0,250)", "");
-                            Thread.sleep(250 * 1);
-                            //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-
-                            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
-                            webElementTdBodyList =webDriver.findElement(By.xpath("//div[contains(@class, 'summary-data')]")).findElement(By.xpath("//div[contains(@class, 'summary-data--loaded')]")).findElements(By.tagName("td"));
-                        }catch (Exception e){}
-                    }
-                    wait=0;
-
-//                    List<WebElement> webElementTdBodyList = webDriver.findElement(By.cssSelector(".summary-data.summary-data--loaded")).findElement(By.className("summary-data__table")).findElements(By.tagName("td"));
-                    if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
-                        for (int i = 0; i < webElementTdBodyList.size(); i++) {
-                            String key = webElementTdBodyList.get(i).getText();
-                            if (key != null && key.contains("Market Cap")){
-                                int mktIndex = i;
-                                nyseStockInfo.setMktCapRealValue(getDoubleFromString(webElementTdBodyList.get(++mktIndex).getText()));
-                            }
-                            if (key != null && key.contains("Sector")){
-                                int mktIndex = i;
-                                nyseStockInfo.setSectorIndustry((webElementTdBodyList.get(++mktIndex).getText()));
-                            }
-                            if (key != null && key.contains("Industry")){
-                                int mktIndex = i;
-                                nyseStockInfo.setSectorIndustry(nyseStockInfo.getSectorIndustry() + "-" + (webElementTdBodyList.get(++mktIndex).getText()));
-                            }
-                            if (key != null && key.contains("Earnings Per Share")){
-                                int mktIndex = i;
-                                String data = webElementTdBodyList.get(++mktIndex).getText();
-                                data = data.replace('$', ' ').replaceAll(" ", "");
-
-                                nyseStockInfo.setEps(getDoubleFromString(data));
-                            }
-                            if (key != null && key.contains("P/E Ratio")){
-                                int mktIndex = i;
-                                nyseStockInfo.setP2e(getDoubleFromString(webElementTdBodyList.get(++mktIndex).getText()));
-                            }
-                            if (nyseStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0){
-
-                                if (key != null && key.contains("Today's High/Low")){
-                                    int mktIndex = i;
-                                    String data = (webElementTdBodyList.get(++mktIndex).getText());
-                                    data = data.replace('$', ' ').replaceAll(" ", "");
-                                    String [] highlow = data.split("/");
-                                    nyseStockInfo.setCurrentMarketPriceStr(highlow[0]);
-                                    nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(highlow[0]));
-                                }
-                            }
-
-                            if (key != null && key.contains("52 Week High/Low")){
-                                int mktIndex = i;
-                                String data = (webElementTdBodyList.get(++mktIndex).getText());
-                                data = data.replace('$', ' ').replaceAll(" ", "");
-                                String [] highlow = data.split("/");
-                                nyseStockInfo.set_52WeekHighPrice(getBigDecimalFromString(highlow[0]));
-                                nyseStockInfo.set_52WeekLowPrice(getBigDecimalFromString(highlow[1]));
-                            }
-                        }
-                    }
-
-                    nyseStockInfo.set_52WeekHighLowPriceDiff(BigDecimal.ZERO);
-                    if (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                            nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                            ((nyseStockInfo.get_52WeekLowPrice())).compareTo(BigDecimal.ZERO) > 0){
-                        nyseStockInfo.set_52WeekHighLowPriceDiff(((nyseStockInfo.get_52WeekHighPrice().subtract(nyseStockInfo.get_52WeekLowPrice()).abs())
-                                .divide(nyseStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
-                    }
-                    nyseStockInfo.set_52WeekHighPriceDiff(BigDecimal.ZERO);
-                    if (nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                            ((nyseStockInfo.getCurrentMarketPrice())).compareTo(BigDecimal.ZERO) > 0 ){
-                        nyseStockInfo.set_52WeekHighPriceDiff(((nyseStockInfo.get_52WeekHighPrice().subtract(nyseStockInfo.getCurrentMarketPrice()).abs())
-                                .divide(nyseStockInfo.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
-                    }
-                    nyseStockInfo.set_52WeekLowPriceDiff(BigDecimal.ZERO);
-                    if (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                            ((nyseStockInfo.get_52WeekLowPrice())).compareTo(BigDecimal.ZERO) > 0){
-                        nyseStockInfo.set_52WeekLowPriceDiff(((nyseStockInfo.getCurrentMarketPrice().subtract(nyseStockInfo.get_52WeekLowPrice()).abs())
-                                .divide(nyseStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
-                    }
-                    nyseStockInfo.setTimestamp(Instant.now());
-
-                    populateNYSEStockDetailedInfoList.add(nyseStockInfo);
-                    System.out.println("b4 -> nyseStockInfo -> " + nyseStockInfo);
-                    LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
-
-                }catch (Exception e) {
-                    if (webDriver != null) webDriver.close();
-                    webDriver = launchBrowser();
-                    ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-                    e.printStackTrace();
-                }
-            });
+             });
 
             populateNYSEStockDetailedInfoList.sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
@@ -355,6 +228,145 @@ public class NYSEStockResearchService {
         cacheNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList;
         if (webDriver != null) webDriver.close();
         return (populateNYSEStockDetailedInfoList);
+    }
+
+    private boolean extractAttributes(List<NyseStockInfo> populateNYSEStockDetailedInfoList, Map.Entry<String, String> x) {
+        //            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {
+        try {
+            LOGGER.info("NYSEStockResearchService::populateNYSEStockDetailedInfo::StockURL ->  " + x.getValue());
+//                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
+            if (webDriver == null){
+                webDriver = launchBrowser();
+            }
+            webDriver.get(x.getValue());
+            sleep(1000 * 3);
+            //webDriver.navigate().refresh();
+            //sleep(1000 * 5);
+//                    webDriver.navigate().refresh();
+//                    sleep(1000 * 2);
+        } catch (Exception e) {
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+
+        }
+        try {
+//                    webDriver.navigate().refresh();
+//                    sleep(1000 * 15);
+            NyseStockInfo nyseStockInfo = new NyseStockInfo(x.getKey(), x.getValue());
+
+            try{
+                String crtPrice = webDriver.findElement(By.className("symbol-page-header__pricing-last-price")).findElement(By.className("symbol-page-header__pricing-price")).getText();
+                crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
+                nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
+            }catch (Exception e){}
+
+            List<WebElement> webElementTdBodyList = null;
+            int wait =0;
+            int retry =10;
+            while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
+//                        webDriver.navigate().refresh();
+                if (retry < 9)sleep(1000 * (2 + (++wait)));
+                --retry;
+
+                try{
+                    //to perform Scroll on application using Selenium
+                    JavascriptExecutor js = (JavascriptExecutor) webDriver;
+                    js.executeScript("window.scrollBy(0,1200)", "");
+                    Thread.sleep(500 * 1);
+                    js.executeScript("window.scrollBy(0,250)", "");
+                    Thread.sleep(500 * 1);
+                    js.executeScript("window.scrollBy(0,250)", "");
+                    Thread.sleep(250 * 1);
+                    //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+                    webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
+                    webElementTdBodyList =webDriver.findElement(By.xpath("//div[contains(@class, 'summary-data')]")).findElement(By.xpath("//div[contains(@class, 'summary-data--loaded')]")).findElements(By.tagName("td"));
+                }catch (Exception e){}
+            }
+            wait=0;
+
+//                    List<WebElement> webElementTdBodyList = webDriver.findElement(By.cssSelector(".summary-data.summary-data--loaded")).findElement(By.className("summary-data__table")).findElements(By.tagName("td"));
+            if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
+                for (int i = 0; i < webElementTdBodyList.size(); i++) {
+                    String key = webElementTdBodyList.get(i).getText();
+                    if (key != null && key.contains("Market Cap")){
+                        int mktIndex = i;
+                        nyseStockInfo.setMktCapRealValue(getDoubleFromString(webElementTdBodyList.get(++mktIndex).getText()));
+                    }
+                    if (key != null && key.contains("Sector")){
+                        int mktIndex = i;
+                        nyseStockInfo.setSectorIndustry((webElementTdBodyList.get(++mktIndex).getText()));
+                    }
+                    if (key != null && key.contains("Industry")){
+                        int mktIndex = i;
+                        nyseStockInfo.setSectorIndustry(nyseStockInfo.getSectorIndustry() + "-" + (webElementTdBodyList.get(++mktIndex).getText()));
+                    }
+                    if (key != null && key.contains("Earnings Per Share")){
+                        int mktIndex = i;
+                        String data = webElementTdBodyList.get(++mktIndex).getText();
+                        data = data.replace('$', ' ').replaceAll(" ", "");
+
+                        nyseStockInfo.setEps(getDoubleFromString(data));
+                    }
+                    if (key != null && key.contains("P/E Ratio")){
+                        int mktIndex = i;
+                        nyseStockInfo.setP2e(getDoubleFromString(webElementTdBodyList.get(++mktIndex).getText()));
+                    }
+                    if (nyseStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0){
+
+                        if (key != null && key.contains("Today's High/Low")){
+                            int mktIndex = i;
+                            String data = (webElementTdBodyList.get(++mktIndex).getText());
+                            data = data.replace('$', ' ').replaceAll(" ", "");
+                            String [] highlow = data.split("/");
+                            nyseStockInfo.setCurrentMarketPriceStr(highlow[0]);
+                            nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(highlow[0]));
+                        }
+                    }
+
+                    if (key != null && key.contains("52 Week High/Low")){
+                        int mktIndex = i;
+                        String data = (webElementTdBodyList.get(++mktIndex).getText());
+                        data = data.replace('$', ' ').replaceAll(" ", "");
+                        String [] highlow = data.split("/");
+                        nyseStockInfo.set_52WeekHighPrice(getBigDecimalFromString(highlow[0]));
+                        nyseStockInfo.set_52WeekLowPrice(getBigDecimalFromString(highlow[1]));
+                    }
+                }
+            }
+
+            nyseStockInfo.set_52WeekHighLowPriceDiff(BigDecimal.ZERO);
+            if (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                    nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                    ((nyseStockInfo.get_52WeekLowPrice())).compareTo(BigDecimal.ZERO) > 0){
+                nyseStockInfo.set_52WeekHighLowPriceDiff(((nyseStockInfo.get_52WeekHighPrice().subtract(nyseStockInfo.get_52WeekLowPrice()).abs())
+                        .divide(nyseStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
+            }
+            nyseStockInfo.set_52WeekHighPriceDiff(BigDecimal.ZERO);
+            if (nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                    ((nyseStockInfo.getCurrentMarketPrice())).compareTo(BigDecimal.ZERO) > 0 ){
+                nyseStockInfo.set_52WeekHighPriceDiff(((nyseStockInfo.get_52WeekHighPrice().subtract(nyseStockInfo.getCurrentMarketPrice()).abs())
+                        .divide(nyseStockInfo.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
+            }
+            nyseStockInfo.set_52WeekLowPriceDiff(BigDecimal.ZERO);
+            if (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                    ((nyseStockInfo.get_52WeekLowPrice())).compareTo(BigDecimal.ZERO) > 0){
+                nyseStockInfo.set_52WeekLowPriceDiff(((nyseStockInfo.getCurrentMarketPrice().subtract(nyseStockInfo.get_52WeekLowPrice()).abs())
+                        .divide(nyseStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
+            }
+            nyseStockInfo.setTimestamp(Instant.now());
+
+            populateNYSEStockDetailedInfoList.add(nyseStockInfo);
+            System.out.println("b4 -> nyseStockInfo -> " + nyseStockInfo);
+            LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
+
+        }catch (Exception e) {
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+        }
+        return true;
     }
 
     private  Map<String , String> getNyseStockInfosFile(String fileName) {

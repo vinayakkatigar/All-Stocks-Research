@@ -166,93 +166,24 @@ public class FTSEStockResearchService {
 
             ftseStockDetailedInfoList = getFtseStockInfo(urlInfo, cnt);
 
-            ftseStockDetailedInfoList.stream().forEach(x -> {
-//            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
-                ResponseEntity<String> response = null;
-                try {
-                    LOGGER.info("FTSEStockResearchService::populateFtseStockDetailedInfo::StockURL ->  " + x.getStockURL());
-//                    response = restTemplate.exchange("https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc", HttpMethod.GET, null, String.class);
-                    response = restTemplate.exchange(x.getStockURL(), HttpMethod.GET, null, String.class);
-//                    sleep(1000 * 1);
-                } catch (Exception e) {
-                    ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-                    e.printStackTrace();
-                }
-                try {
-                    String hlYearRange=null, eps=null;
-                    if (response != null && response.getBody() != null){
-                        Document doc = Jsoup.parse(response.getBody());
-                        Elements hlItems =  doc.getElementsByClass("index-item");
-                        for (Element item: hlItems){
-                            Elements spanItems =  item.getElementsByTag("span");
-                            if (spanItems != null && spanItems.size() > 0){
-                                String spanText = spanItems.get(0).text();
-                                if (spanText.contains("52") && spanText.contains("week")
-                                        && spanText.contains("range")){
-                                    Elements hlDiv = item.getElementsByTag("div");
-                                    if (hlDiv != null && hlDiv.size() > 0){
-                                        hlYearRange = hlDiv.get(0).text().trim();
-                                    }
-                                }
-                                if (spanText.contains("Earnings") && spanText.contains("per")
-                                        && spanText.contains("share")){
-                                    Elements hlDiv = item.getElementsByTag("div");
-                                    if (hlDiv != null && hlDiv.size() > 0){
-                                        eps = hlDiv.get(0).text();
-                                    }
-                                }
-                            }
-                            x.setEps(getDoubleFromString(eps));
-                        }
-                        if (hlYearRange != null){
-                            hlYearRange = hlYearRange.replace(",","");
-                            String[] hlvalues = hlYearRange.split("/");
-                            if (hlvalues != null && hlvalues.length > 1){
-                                x.set_52WeekLowPrice(BigDecimal.valueOf(getDoubleFromString(hlvalues[0])));
-                                x.set_52WeekHighPrice(BigDecimal.valueOf(getDoubleFromString(hlvalues[1]))  );
-                            }
-                        }
-                        set52HighLowDifference(x);
-                        x.setTimestamp(Instant.now());
-                    }
-
-                }catch (Exception e) {
-                    if (webDriver != null) webDriver.close();
-                    webDriver = launchBrowser();
-
-                    ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-                    e.printStackTrace();
+            ftseStockDetailedInfoList.forEach(x -> {
+                int retry =5;
+                boolean sucess = false;
+                sucess = extractAttributes(x);
+                while (!sucess && --retry > 0){
+                    sucess = extractAttributes(x);
                 }
             });
             try {
-                if (webDriver != null) webDriver.close();
-                webDriver = launchBrowser();
+                if (webDriver == null) webDriver = launchBrowser();
             }catch (Exception e){}
 
             ftseStockDetailedInfoList.stream().forEach(x -> {
-//            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
-                if (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||
-                        x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0 ||
-                        x.get_52WeekHighLowPriceDiff() == null || x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) == 0
-                ) {
-                    if (webDriver != null){
-                        webDriver.get(x.getStockURL());
-                        try { Thread.sleep(1000 * 10);} catch (Exception e) { }
-
-                        try{
-                            if((x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
-                                x.set_52WeekLowPrice(getBigDecimalFromString(webDriver.findElements(By.className("widget-results")).get(0).getText()));
-                            }
-                        }catch(Exception e1){}
-                        try{
-                            if((x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
-                                x.set_52WeekHighPrice(getBigDecimalFromString(webDriver.findElements(By.className("widget-results")).get(1).getText()));
-                            }
-                        }catch(Exception e1){}
-
-                        set52HighLowDifference(x);
-                        LOGGER.info("ftseStockDetails ->" + x);
-                    }
+                int retry =5;
+                boolean sucess = false;
+                sucess = extractedAttr(x);
+                while (!sucess && --retry > 0){
+                    sucess = extractedAttr(x);
                 }
             });
 
@@ -286,6 +217,96 @@ public class FTSEStockResearchService {
         }
         if (webDriver != null) webDriver.close();
         return (ftseStockDetailedInfoList);
+    }
+
+    private boolean extractedAttr(FtseStockInfo x) {
+        //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
+        if (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||
+                x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0 ||
+                x.get_52WeekHighLowPriceDiff() == null || x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) == 0
+        ) {
+            if (webDriver != null){
+                webDriver.get(x.getStockURL());
+                try { Thread.sleep(1000 * 10);} catch (Exception e) { }
+
+                try{
+                    if((x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
+                        x.set_52WeekLowPrice(getBigDecimalFromString(webDriver.findElements(By.className("widget-results")).get(0).getText()));
+                    }
+                }catch(Exception e1){}
+                try{
+                    if((x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
+                        x.set_52WeekHighPrice(getBigDecimalFromString(webDriver.findElements(By.className("widget-results")).get(1).getText()));
+                    }
+                }catch(Exception e1){}
+
+                set52HighLowDifference(x);
+                LOGGER.info("ftseStockDetails ->" + x);
+            }
+        }
+        return true;
+    }
+
+    private boolean extractAttributes(FtseStockInfo x) {
+        //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
+        ResponseEntity<String> response = null;
+        try {
+            LOGGER.info("FTSEStockResearchService::populateFtseStockDetailedInfo::StockURL ->  " + x.getStockURL());
+//                    response = restTemplate.exchange("https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc", HttpMethod.GET, null, String.class);
+            response = restTemplate.exchange(x.getStockURL(), HttpMethod.GET, null, String.class);
+//                    sleep(1000 * 1);
+        } catch (Exception e) {
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            String hlYearRange=null, eps=null;
+            if (response != null && response.getBody() != null){
+                Document doc = Jsoup.parse(response.getBody());
+                Elements hlItems =  doc.getElementsByClass("index-item");
+                for (Element item: hlItems){
+                    Elements spanItems =  item.getElementsByTag("span");
+                    if (spanItems != null && spanItems.size() > 0){
+                        String spanText = spanItems.get(0).text();
+                        if (spanText.contains("52") && spanText.contains("week")
+                                && spanText.contains("range")){
+                            Elements hlDiv = item.getElementsByTag("div");
+                            if (hlDiv != null && hlDiv.size() > 0){
+                                hlYearRange = hlDiv.get(0).text().trim();
+                            }
+                        }
+                        if (spanText.contains("Earnings") && spanText.contains("per")
+                                && spanText.contains("share")){
+                            Elements hlDiv = item.getElementsByTag("div");
+                            if (hlDiv != null && hlDiv.size() > 0){
+                                eps = hlDiv.get(0).text();
+                            }
+                        }
+                    }
+                    x.setEps(getDoubleFromString(eps));
+                }
+                if (hlYearRange != null){
+                    hlYearRange = hlYearRange.replace(",","");
+                    String[] hlvalues = hlYearRange.split("/");
+                    if (hlvalues != null && hlvalues.length > 1){
+                        x.set_52WeekLowPrice(BigDecimal.valueOf(getDoubleFromString(hlvalues[0])));
+                        x.set_52WeekHighPrice(BigDecimal.valueOf(getDoubleFromString(hlvalues[1]))  );
+                    }
+                }
+                set52HighLowDifference(x);
+                x.setTimestamp(Instant.now());
+            }
+
+        }catch (Exception e) {
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
+
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private List<FtseStockInfo> getFtseStockInfosFile(String fileName) {

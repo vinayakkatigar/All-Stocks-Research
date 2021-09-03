@@ -93,7 +93,8 @@ public class EuroNextStockResearchService {
             populateEuroNextStockDetailedInfoList.stream().limit(200).forEach(euroNextStockInfo -> {
 
                 boolean success = false;
-                for (int i = 0; i < 3; i++) {
+                int retry =5;
+                while (!success && --retry >0 ){
                     if (euroNextStockInfo.getStockMktCap() == null ||
                             euroNextStockInfo.get_52WeekHighPrice() == null ||
                             euroNextStockInfo.get_52WeekLowPrice() == null ||
@@ -103,25 +104,12 @@ public class EuroNextStockResearchService {
                                     || euroNextStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0)){
                         try {
                             success = launchAndExtract(euroNextStockInfo);
-                        }catch (StaleElementReferenceException e){
+                        }catch (Exception e) {
                             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
                             e.printStackTrace();
                             if (webDriver != null) webDriver.close();
                             webDriver = launchBrowser();
                             webDriver.navigate().refresh();
-                        }
-                        catch (Exception e) {
-                            if (webDriver != null) webDriver.close();
-                            webDriver = launchBrowser();
-                            webDriver.navigate().refresh();
-                            ERROR_LOGGER.error(now() + ", launchAndExtract Error ->", e);
-                            e.printStackTrace();
-                        }
-                        if (!success){
-                            LOGGER.info("Attempting Retry!");
-                            success = launchAndExtract(euroNextStockInfo);
-                        }else {
-                            break;
                         }
                     }
                 }
@@ -358,7 +346,6 @@ public class EuroNextStockResearchService {
             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
             webDriver.navigate().refresh();
-            return false;
         }catch (Exception e){
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
@@ -366,7 +353,6 @@ public class EuroNextStockResearchService {
             webDriver.navigate().refresh();
             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
-            return false;
         }
         return true;
     }
