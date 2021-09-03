@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.FtseStockInfo;
@@ -46,6 +47,9 @@ public class FTSEStockResearchService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private RetryTemplate retryTemplate;
 
     private WebDriver webDriver;
 
@@ -315,6 +319,7 @@ public class FTSEStockResearchService {
 //            Thread.sleep(200 * 5);
             webDriver.get("https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc");
             try { webDriver.findElement(By.id("ccc-notify-accept")).click(); } catch (Exception e) { }
+            Thread.sleep(200 );
 
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);

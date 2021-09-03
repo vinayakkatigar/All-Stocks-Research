@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.EuroNextStockInfo;
@@ -41,6 +42,9 @@ public class EuroNextStockResearchService {
     
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private RetryTemplate retryTemplate;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -87,7 +91,7 @@ public class EuroNextStockResearchService {
 
 //            populateEuroNextStockDetailedInfoList.stream().forEach(euroNextStockInfo -> {
             populateEuroNextStockDetailedInfoList.stream().limit(200).forEach(euroNextStockInfo -> {
-//                killZombie();
+
                 boolean success = false;
                 for (int i = 0; i < 3; i++) {
                     if (euroNextStockInfo.getStockMktCap() == null ||
