@@ -183,8 +183,7 @@ public class NYSEStockResearchService {
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
         final  List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
+            restartWebDriver();
         }catch (Exception e){}
 
         try {
@@ -220,8 +219,7 @@ public class NYSEStockResearchService {
             if (webDriver != null) webDriver.close();
             return (populateNYSEStockDetailedInfoList);
         }catch (Exception e){
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
+            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
@@ -230,15 +228,30 @@ public class NYSEStockResearchService {
         return (populateNYSEStockDetailedInfoList);
     }
 
+    private void restartWebDriver() {
+        try {
+            if (webDriver != null) webDriver.close();
+            webDriver = launchBrowser();
+        }catch (Exception e){
+            webDriver = launchBrowser();
+        }
+    }
+
     private boolean extractAttributes(List<NyseStockInfo> populateNYSEStockDetailedInfoList, Map.Entry<String, String> x) {
         //            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {
         try {
             LOGGER.info("NYSEStockResearchService::populateNYSEStockDetailedInfo::StockURL ->  " + x.getValue());
 //                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
-            if (webDriver == null){
+            try {
+                if (webDriver == null){
+                    webDriver = launchBrowser();
+                }
+                webDriver.get(x.getValue());
+            }catch (Exception e){
                 webDriver = launchBrowser();
+                webDriver.get(x.getValue());
             }
-            webDriver.get(x.getValue());
+
             sleep(1000 * 3);
             //webDriver.navigate().refresh();
             //sleep(1000 * 5);
@@ -361,8 +374,7 @@ public class NYSEStockResearchService {
             LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
 
         }catch (Exception e) {
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
+            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
