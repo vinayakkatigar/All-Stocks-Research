@@ -263,4 +263,21 @@ public class StockResearchUtility {
         dataBuffer.append("</tr>");
     }
 
+
+    public static void killZombie() {
+        try {
+            Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
+        }catch (Exception e){
+        }
+        try {
+            Runtime.getRuntime().exec("RD %temp%");
+        }catch (Exception e){
+        }
+        try {
+            Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
+        }catch (Exception e){
+        }
+    }
+
+
 }

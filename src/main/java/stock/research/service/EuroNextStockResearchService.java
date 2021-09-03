@@ -80,10 +80,6 @@ public class EuroNextStockResearchService {
     public List<EuroNextStockInfo> populateEuroNextStockDetailedInfo() {
         LOGGER.info("<- Started EuroNextStockResearchService.populateEuroNextStockDetailedInfo");
 //        final  List<EuroNextStockInfo> populateEuroNextStockDetailedInfoList  = getFileJson();
-
-        try {
-            killZombie();
-        }catch (Exception e11){}
         final  List<EuroNextStockInfo> populateEuroNextStockDetailedInfoList  = getEuroNextStockInfo();
 
         try {
@@ -168,21 +164,6 @@ public class EuroNextStockResearchService {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private void killZombie() {
-        try {
-            Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
-        }catch (Exception e){
-        }
-        try {
-           Runtime.getRuntime().exec("RD %temp%");
-       }catch (Exception e){
-       }
-        try {
-            Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
-        }catch (Exception e){
-        }
     }
 
     private boolean launchAndExtract(EuroNextStockInfo euroNextStockInfo) {
