@@ -133,7 +133,9 @@ public class EuroNextStockResearchService {
                             + "EuroNext" + HYPHEN  + "ALLDetailedInfo.json"),
                     objectMapper.writeValueAsString(populateEuroNextStockDetailedInfoList).getBytes());
             cacheEuroNextStockDetailedInfoList = populateEuroNextStockDetailedInfoList;
-            if (webDriver != null) webDriver.close();
+            try {
+                if (webDriver != null) webDriver.close();
+            }catch (Exception e){ webDriver = null;}
             return (populateEuroNextStockDetailedInfoList);
         }catch (StaleElementReferenceException e){
             if (webDriver != null) webDriver.close();
@@ -149,7 +151,9 @@ public class EuroNextStockResearchService {
             e.printStackTrace();
         }
         cacheEuroNextStockDetailedInfoList = populateEuroNextStockDetailedInfoList;
-        if (webDriver != null) webDriver.close();
+        try {
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){ webDriver = null;}
         return (populateEuroNextStockDetailedInfoList);
     }
 

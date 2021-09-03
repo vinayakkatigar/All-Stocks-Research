@@ -207,7 +207,9 @@ public class FTSEStockResearchService {
             fileName = fileName + "top"+  HYPHEN + ftseStockDetailedInfoList.get(0).getStockRankIndex()+  HYPHEN + ftseStockDetailedInfoList.get(ftseStockDetailedInfoList.size() - 1).getStockRankIndex() +  HYPHEN;
             Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "detailedInfo.json"),
                     objectMapper.writeValueAsString(ftseStockDetailedInfoList).getBytes());
-            if (webDriver != null) webDriver.close();
+            try {
+                if (webDriver != null) webDriver.close();
+            }catch (Exception e){ webDriver = null;}
             return (ftseStockDetailedInfoList);
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -220,7 +222,9 @@ public class FTSEStockResearchService {
         if (cnt == FTSE_250_CNT){
             midCapCapCacheftseStockDetailedInfoList = ftseStockDetailedInfoList;
         }
-        if (webDriver != null) webDriver.close();
+        try {
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){ webDriver = null;}
         return (ftseStockDetailedInfoList);
     }
 
