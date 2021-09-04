@@ -60,124 +60,6 @@ public class NYSEStockResearchService {
     public void setUp(){
 //        this.webDriver = launchBrowser();
     }
-
-    public Map<String , String> getNyseStockInfo() {
-        Map<String , String> stocksUrlMap = new LinkedHashMap<>();
-        try {
-            LinkedHashMap<String , String> stocksUrlInfo =  objectMapper.readValue(new ClassPathResource("nyseAllStockUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String , String>>(){});
-            return stocksUrlInfo;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            System.out.println("NYSEStockResearchService.getNyseStockInfo");
-            if (webDriver == null) {
-                launchBrowser();
-            }
-            for (int i = 40; i < 320; i++) {
-
-                System.out.println(stocksUrlMap.entrySet());
-                int retry = 10;
-                Map<String, String> newStocksUrlMap = null;
-                System.out.println(i + " <-  stocksUrlMap::size -> " + stocksUrlMap.size());
-                sleep(1000 * 3);
-
-                int prev = i;
-                for (int j = 1; j < 40; j++) {
-
-                    if (j >= 8) {
-                        try {
-                            webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(4).click();
-                            sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else if (j < 7) {
-                        try {
-                            webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(j).click();
-                            sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                for (int x = 40; x < 320; x++) {
-
-                    selectPageIndex(x);
-
-
-                    sleep(1000 * 3);
-
-                    newStocksUrlMap = collectStockUrl();
-
-                    System.out.println(x +" <- collectStockUrl returned ->" + newStocksUrlMap);
-                    if (newStocksUrlMap != null && newStocksUrlMap.size() > 0) {
-                        stocksUrlMap.putAll(newStocksUrlMap);
-                    } else {
-                        while (retry > 0 && (newStocksUrlMap == null || newStocksUrlMap.size() == 0)) {
-                            webDriver.close();
-                            webDriver = launchBrowser();
-                            sleep(1000 * 3);
-                            System.out.println(retry + " <- $$ Retrying $$ NYSEStockResearchService.getNyseStockInfo");
-                            selectPageIndex(i);
-                            sleep(1000 * 3);
-                            newStocksUrlMap = collectStockUrl();
-                            if (newStocksUrlMap != null && newStocksUrlMap.size() > 0) {
-                                stocksUrlMap.putAll(newStocksUrlMap);
-                            }
-                            retry--;
-                        }
-                    }
-
-                    Files.write(Paths.get(System.getProperty("user.dir") + "\\logs" + "\\NYSEALLstocksUrlMap_22.json"),
-                            objectMapper.writeValueAsString(stocksUrlMap).getBytes());
-
-                }
-            }
-            System.out.println("stocksUrlMap -> " + stocksUrlMap.entrySet());
-
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs" + "\\NYSEALLstocksUrlMap.json"),
-                    objectMapper.writeValueAsString(stocksUrlMap).getBytes());
-            return stocksUrlMap;
-            }catch (Exception e){
-                ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-                e.printStackTrace();
-                return getNyseStockInfosFile("nyseTop250StockUrlInfo.json");
-            }
-    }
-
-    private void selectPageIndex(int i) {
-        if (i >= 7){
-            try{webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(4).click();
-                sleep(1000);}catch (Exception e){e.printStackTrace();}
-        }else if (i < 7) {
-            try { webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(i).click(); sleep(1000);}catch (Exception e){e.printStackTrace();}
-        }
-    }
-
-    private Map<String , String> collectStockUrl() {
-        Map<String , String> stocksUrlMap = new LinkedHashMap<>();
-
-        try {
-            for (int i = 0; i <webDriver.findElement(By.className("nasdaq-screener__table")).findElements(By.tagName("a")).size(); i++) {
-                if (i%2 ==0){
-                    continue;
-                }else {
-                    stocksUrlMap.put(webDriver.findElement(By.className("nasdaq-screener__table")).findElements(By.tagName("a")).get(i).getText(), webDriver.findElement(By.className("nasdaq-screener__table")).findElements(By.tagName("a")).get(i).getAttribute("href"));
-                }
-
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            LOGGER.error(e.getMessage());
-            System.out.println(e.getMessage());
-            return null;
-        }
-        return stocksUrlMap;
-    }
-
     public List<NyseStockInfo> populateNYSEStockDetailedInfo() {
         LOGGER.info("<- Started NYSEStockResearchService.populateNYSEStockDetailedInfo");
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
@@ -455,5 +337,124 @@ public class NYSEStockResearchService {
         }
         return webDriver;
     }
+
+
+    public Map<String , String> getNyseStockInfo() {
+        Map<String , String> stocksUrlMap = new LinkedHashMap<>();
+        try {
+            LinkedHashMap<String , String> stocksUrlInfo =  objectMapper.readValue(new ClassPathResource("nyseAllStockUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String , String>>(){});
+            return stocksUrlInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println("NYSEStockResearchService.getNyseStockInfo");
+            if (webDriver == null) {
+                launchBrowser();
+            }
+            for (int i = 40; i < 320; i++) {
+
+                System.out.println(stocksUrlMap.entrySet());
+                int retry = 10;
+                Map<String, String> newStocksUrlMap = null;
+                System.out.println(i + " <-  stocksUrlMap::size -> " + stocksUrlMap.size());
+                sleep(1000 * 3);
+
+                int prev = i;
+                for (int j = 1; j < 40; j++) {
+
+                    if (j >= 8) {
+                        try {
+                            webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(4).click();
+                            sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (j < 7) {
+                        try {
+                            webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(j).click();
+                            sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                for (int x = 40; x < 320; x++) {
+
+                    selectPageIndex(x);
+
+
+                    sleep(1000 * 3);
+
+                    newStocksUrlMap = collectStockUrl();
+
+                    System.out.println(x +" <- collectStockUrl returned ->" + newStocksUrlMap);
+                    if (newStocksUrlMap != null && newStocksUrlMap.size() > 0) {
+                        stocksUrlMap.putAll(newStocksUrlMap);
+                    } else {
+                        while (retry > 0 && (newStocksUrlMap == null || newStocksUrlMap.size() == 0)) {
+                            webDriver.close();
+                            webDriver = launchBrowser();
+                            sleep(1000 * 3);
+                            System.out.println(retry + " <- $$ Retrying $$ NYSEStockResearchService.getNyseStockInfo");
+                            selectPageIndex(i);
+                            sleep(1000 * 3);
+                            newStocksUrlMap = collectStockUrl();
+                            if (newStocksUrlMap != null && newStocksUrlMap.size() > 0) {
+                                stocksUrlMap.putAll(newStocksUrlMap);
+                            }
+                            retry--;
+                        }
+                    }
+
+                    Files.write(Paths.get(System.getProperty("user.dir") + "\\logs" + "\\NYSEALLstocksUrlMap_22.json"),
+                            objectMapper.writeValueAsString(stocksUrlMap).getBytes());
+
+                }
+            }
+            System.out.println("stocksUrlMap -> " + stocksUrlMap.entrySet());
+
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs" + "\\NYSEALLstocksUrlMap.json"),
+                    objectMapper.writeValueAsString(stocksUrlMap).getBytes());
+            return stocksUrlMap;
+        }catch (Exception e){
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+            return getNyseStockInfosFile("nyseTop250StockUrlInfo.json");
+        }
+    }
+
+    private void selectPageIndex(int i) {
+        if (i >= 7){
+            try{webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(4).click();
+                sleep(1000);}catch (Exception e){e.printStackTrace();}
+        }else if (i < 7) {
+            try { webDriver.findElement(By.className("pagination__pages")).findElements(By.tagName("button")).get(i).click(); sleep(1000);}catch (Exception e){e.printStackTrace();}
+        }
+    }
+
+    private Map<String , String> collectStockUrl() {
+        Map<String , String> stocksUrlMap = new LinkedHashMap<>();
+
+        try {
+            for (int i = 0; i <webDriver.findElement(By.className("nasdaq-screener__table")).findElements(By.tagName("a")).size(); i++) {
+                if (i%2 ==0){
+                    continue;
+                }else {
+                    stocksUrlMap.put(webDriver.findElement(By.className("nasdaq-screener__table")).findElements(By.tagName("a")).get(i).getText(), webDriver.findElement(By.className("nasdaq-screener__table")).findElements(By.tagName("a")).get(i).getAttribute("href"));
+                }
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return stocksUrlMap;
+    }
+
 
 }
