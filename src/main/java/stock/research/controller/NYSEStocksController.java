@@ -39,8 +39,12 @@ public class NYSEStocksController {
 
             List<NyseStockInfo> nyseStockInfoList = stockResearchService.getCacheNYSEStockDetailedInfoList();
             StringBuilder dataBuffer = new StringBuilder("");
-            nyseStockInfoList.stream().forEach( x-> {
-                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+            nyseStockInfoList.stream()
+                    .filter(x -> x.getStockRankIndex() > 300 && x.getStockRankIndex() < 500 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(100)) > 0)
+                    .filter(x -> x.getStockRankIndex() > 500 && x.getStockRankIndex() < 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(125)) > 0)
+                    .filter(x -> x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(150)) > 0)
+                    .forEach( x-> {
+                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
 //                    LOGGER.info(x.toString());
