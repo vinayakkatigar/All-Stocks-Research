@@ -85,7 +85,9 @@ public class EuroNextStockResearchService {
         try {
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
-        }catch (Exception e){}
+        }catch (Exception e){
+            webDriver = launchBrowser();
+        }
 
         try {
 
