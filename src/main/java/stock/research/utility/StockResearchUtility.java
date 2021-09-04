@@ -3,12 +3,15 @@ package stock.research.utility;
 import org.springframework.beans.factory.annotation.Value;
 import stock.research.domain.StockInfo;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class StockResearchUtility {
     @Value("${component}")
@@ -268,14 +271,33 @@ public class StockResearchUtility {
         try {
             Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
         }catch (Exception e){
+            e.printStackTrace();
         }
         try {
+            Files.walk(Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp"))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);        }catch (Exception e){ e.printStackTrace();
+        }
+        try {
+            Path path = Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp");
+            try (Stream<Path> walk = Files.walk(path)) {
+                walk.sorted(Comparator.reverseOrder())
+                        .forEach(x -> {
+                            try {
+                                Files.deleteIfExists(x);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+            }
+
             Runtime.getRuntime().exec("RD %temp%");
-        }catch (Exception e){
+        }catch (Exception e){ e.printStackTrace();
         }
         try {
             Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
-        }catch (Exception e){
+        }catch (Exception e){e.printStackTrace();
         }
     }
 
