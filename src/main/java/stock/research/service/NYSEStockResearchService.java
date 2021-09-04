@@ -205,7 +205,7 @@ public class NYSEStockResearchService {
             int i =1;
             for (NyseStockInfo x : populateNYSEStockDetailedInfoList){
                 x.setStockRankIndex(i++);
-                x.setStockMktCap(truncateNumber(x.getMktCapRealValue()));
+                if(x.getMktCapRealValue() != null)x.setStockMktCap(truncateNumber(x.getMktCapRealValue()));
                 System.out.println("after -> nyseStockInfo -> " + x);
                 LOGGER.info("after -> nyseStockInfo -> " + x);
             }
