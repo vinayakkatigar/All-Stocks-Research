@@ -1,9 +1,11 @@
 package stock.research.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import stock.research.service.NYSEStockResearchService;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static stock.research.utility.NyseStockResearchUtility.*;
@@ -39,17 +42,41 @@ public class NYSEStocksController {
 
             List<NyseStockInfo> nyseStockInfoList = stockResearchService.getCacheNYSEStockDetailedInfoList();
             StringBuilder dataBuffer = new StringBuilder("");
+
+            nyseStockInfoList.stream()
+                    .filter(x -> x.getStockRankIndex() <= 300 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(80)) > 0)
+                    .forEach( x-> {
+                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                                x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                                x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
+                            createTableContents(dataBuffer, x);
+                        }
+                    });
             nyseStockInfoList.stream()
                     .filter(x -> x.getStockRankIndex() > 300 && x.getStockRankIndex() < 500 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(100)) > 0)
+                    .forEach( x-> {
+                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
+                    createTableContents(dataBuffer, x);
+                }
+            });
+            nyseStockInfoList.stream()
                     .filter(x -> x.getStockRankIndex() > 500 && x.getStockRankIndex() < 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(125)) > 0)
+                    .forEach( x-> {
+                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
+                    createTableContents(dataBuffer, x);
+                }
+            });
+            nyseStockInfoList.stream()
                     .filter(x -> x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(150)) > 0)
                     .forEach( x-> {
                         if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-//                    LOGGER.info(x.toString());
                     createTableContents(dataBuffer, x);
-//                    LOGGER.info("$After$" + x);
                 }
             });
             String data = HTML_START;
