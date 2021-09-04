@@ -274,13 +274,13 @@ public class StockResearchUtility {
             e.printStackTrace();
         }
         try {
-            Files.walk(Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp"))
+            Files.walk(Paths.get("C:\\Users\\vinka\\AppData\\Local"))
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);        }catch (Exception e){ e.printStackTrace();
         }
         try {
-            Path path = Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp");
+            Path path = Paths.get("C:\\Users\\vinka\\AppData\\Local");
             try (Stream<Path> walk = Files.walk(path)) {
                 walk.sorted(Comparator.reverseOrder())
                         .forEach(x -> {
