@@ -62,6 +62,11 @@ public class NyseEmailAlertMechanismService {
         StockResearchUtility.killZombie();
     }
 
+    @Scheduled(cron = "0 30 0 ? * MON-FRI")
+    public void kickOffKillZombs() {
+        StockResearchUtility.killZombie();
+    }
+
     public void kickOffEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
@@ -96,11 +101,11 @@ public class NyseEmailAlertMechanismService {
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighLowPriceDiff() != null) {
-                    if (x.getStockRankIndex() <= 150  && stockCategory == StockCategory.LARGE_CAP
+                    if (x.getStockRankIndex() <= 250  && stockCategory == StockCategory.LARGE_CAP
                             && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(75)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0
-                                    || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(3.5)) <= 0)){
+                                    || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
                             if (!(checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                                 if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                     subjectBuffer.append("** NYSE Buy Large Cap Alert**");
@@ -109,11 +114,11 @@ public class NyseEmailAlertMechanismService {
                             }
                     }
 
-                    if ( x.getStockRankIndex() > 150 && stockCategory == StockCategory.MID_CAP
+                    if ( x.getStockRankIndex() > 250 && stockCategory == StockCategory.MID_CAP
                             && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(100)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null &&
                                 ((x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0 ||
-                                        x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(2.0)) <= 0))){
+                                        x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5.0)) <= 0))){
                                 if (!(checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                                     if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                         subjectBuffer.append("** NYSE Buy Mid Cap Alert**");
@@ -122,10 +127,10 @@ public class NyseEmailAlertMechanismService {
                                 }
                     }
 
-                    if (x.getStockRankIndex() <= 150 && stockCategory == StockCategory.LARGE_CAP
+                    if (x.getStockRankIndex() <= 250 && stockCategory == StockCategory.LARGE_CAP
                             && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
-                            || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(2.0)) <= 0)){
+                            || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5.0)) <= 0)){
                         if ((checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** NYSE Sell Large Cap Alert**");
@@ -134,10 +139,10 @@ public class NyseEmailAlertMechanismService {
                         }
                     }
 
-                    if (x.getStockRankIndex() > 150 && stockCategory == StockCategory.MID_CAP
+                    if (x.getStockRankIndex() > 250 && stockCategory == StockCategory.MID_CAP
                             && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null &&
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
-                                    || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(3.5)) <= 0))){
+                                    || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0))){
                         if ((checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** NYSE Sell Mid Cap Alert**");
