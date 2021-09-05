@@ -32,8 +32,10 @@ public class EuroNextStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+/*
         LOGGER.info("EuroNextStocksCmdRunner.run");
         euroNextEmailAlertMechanismService.kickOffEmailAlerts();
+*/
 
     }
 }

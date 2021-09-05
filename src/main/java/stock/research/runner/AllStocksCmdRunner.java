@@ -26,7 +26,7 @@ public class AllStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+/*
         
         long start = System.currentTimeMillis();
         LOGGER.info("##AllStocksCmdRunner.run::started##" );
@@ -48,7 +48,7 @@ public class AllStocksCmdRunner implements CommandLineRunner {
         List<StockInfo> stockInfoList = objectMapper.readValue(new ClassPathResource("World1000detailedInfo.json").getInputStream(), new TypeReference<List<StockInfo>>(){});
         System.out.println(stockInfoList.stream().collect(Collectors.groupingBy(StockInfo::getCurrency)).keySet());
 
-
+*/
 
     }
 
