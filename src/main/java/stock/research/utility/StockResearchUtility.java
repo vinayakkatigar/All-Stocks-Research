@@ -269,36 +269,37 @@ public class StockResearchUtility {
 
     public static void killZombie() {
         try {
-            Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            Files.walk(Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp"))
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);        }catch (Exception e){ e.printStackTrace();
-        }
-        try {
-            Path path = Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp");
-            try (Stream<Path> walk = Files.walk(path)) {
-                walk.sorted(Comparator.reverseOrder())
-                        .forEach(x -> {
-                            try {
-                                Files.deleteIfExists(x);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
+            try {
+                Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
+            }catch (Exception e){
+                e.printStackTrace();
             }
+            try {
+                Files.walk(Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp"))
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);        }catch (Exception e){ }
+            try {
+                Path path = Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp");
+                try (Stream<Path> walk = Files.walk(path)) {
+                    walk.sorted(Comparator.reverseOrder())
+                            .forEach(x -> {
+                                try {
+                                    Files.deleteIfExists(x);
+                                } catch (IOException e) {
+                                }
+                            });
+                }
 
-            Runtime.getRuntime().exec("RD %temp%");
-        }catch (Exception e){ e.printStackTrace();
-        }
-        try {
-            Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
-        }catch (Exception e){e.printStackTrace();
-        }
+                Runtime.getRuntime().exec("RD %temp%");
+            }catch (Exception e){
+            }
+            try {
+                Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
+            }catch (Exception e){
+            }
+        }catch (Exception e){ }
+
     }
 
 
