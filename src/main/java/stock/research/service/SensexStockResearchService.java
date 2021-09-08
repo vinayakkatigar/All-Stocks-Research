@@ -122,7 +122,10 @@ public class SensexStockResearchService {
         try {
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
-        }catch (Exception e){}
+        }catch (Exception e){
+            webDriver = null;
+            webDriver = launchBrowser();
+        }
 
         try {
 
@@ -332,6 +335,7 @@ public class SensexStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
             if (webDriver == null) webDriver.close();
+            if (webDriver != null) webDriver.close();
             cacheSensexStockInfosList = resultSensexStockInfosList;
             return removeExcludedIsins(resultSensexStockInfosList);
         }catch (Exception e){
@@ -341,6 +345,7 @@ public class SensexStockResearchService {
             e.printStackTrace();
         }
         if (webDriver == null) webDriver.close();
+        if (webDriver != null) webDriver.close();
         cacheSensexStockInfosList = resultSensexStockInfosList;
         return removeExcludedIsins(resultSensexStockInfosList);
     }
