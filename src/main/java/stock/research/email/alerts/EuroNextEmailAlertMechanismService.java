@@ -129,7 +129,8 @@ public class EuroNextEmailAlertMechanismService {
         if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
                 "".equalsIgnoreCase(subjectBuffer.toString()) == false){
             helper.setFrom("stockalert@stockalert.com");
-            helper.setTo(new String[]{"raghukati1950@gmail.com","raghu.kat@outlook.com"});
+//            helper.setTo(new String[]{"raghukati1950@gmail.com","raghu.kat@outlook.com"});
+            helper.setTo(new String[]{"raghukati1950@gmail.com"});
             helper.setText(data, true);
             helper.setSubject(subjectBuffer.toString());
             String fileName = subjectBuffer.toString();
