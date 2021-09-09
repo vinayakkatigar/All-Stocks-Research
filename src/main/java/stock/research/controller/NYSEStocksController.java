@@ -42,6 +42,7 @@ public class NYSEStocksController {
 
             List<NyseStockInfo> nyseStockInfoList = stockResearchService.getCacheNYSEStockDetailedInfoList();
             StringBuilder dataBuffer = new StringBuilder("");
+/*
 
             nyseStockInfoList.stream()
                     .filter(x -> x.getStockRankIndex() <= 300 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(80)) > 0)
@@ -52,6 +53,7 @@ public class NYSEStocksController {
                             createTableContents(dataBuffer, x);
                         }
                     });
+
             nyseStockInfoList.stream()
                     .filter(x -> x.getStockRankIndex() > 300 && x.getStockRankIndex() < 500 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(100)) > 0)
                     .forEach( x-> {
@@ -70,8 +72,9 @@ public class NYSEStocksController {
                     createTableContents(dataBuffer, x);
                 }
             });
+*/
             nyseStockInfoList.stream()
-                    .filter(x -> x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(150)) > 0)
+//                    .filter(x -> x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(150)) > 0)
                     .forEach( x-> {
                         if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
