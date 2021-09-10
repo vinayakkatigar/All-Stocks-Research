@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.math.BigDecimal.valueOf;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.LARGE_CAP;
 import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
@@ -155,7 +156,9 @@ public class Sensex500StocksController {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                    generateTableContents(dataBuffer, x);
+                    if (x.getStockRankIndex() > 500 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(100)) > 0){
+                        generateTableContents(dataBuffer, x);
+                    }
                 }
             });
             String data = SensexStockResearchUtility.HTML_START;

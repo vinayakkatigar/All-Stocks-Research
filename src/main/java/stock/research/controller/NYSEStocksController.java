@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 @RestController
@@ -42,44 +44,15 @@ public class NYSEStocksController {
 
             List<NyseStockInfo> nyseStockInfoList = stockResearchService.getCacheNYSEStockDetailedInfoList();
             StringBuilder dataBuffer = new StringBuilder("");
-/*
-
             nyseStockInfoList.stream()
-                    .filter(x -> x.getStockRankIndex() <= 300 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(80)) > 0)
                     .forEach( x-> {
-                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                                x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                                x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                            createTableContents(dataBuffer, x);
-                        }
-                    });
-
-            nyseStockInfoList.stream()
-                    .filter(x -> x.getStockRankIndex() > 300 && x.getStockRankIndex() < 500 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(100)) > 0)
-                    .forEach( x-> {
-                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                    createTableContents(dataBuffer, x);
-                }
-            });
-            nyseStockInfoList.stream()
-                    .filter(x -> x.getStockRankIndex() > 500 && x.getStockRankIndex() < 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(125)) > 0)
-                    .forEach( x-> {
-                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                    createTableContents(dataBuffer, x);
-                }
-            });
-*/
-            nyseStockInfoList.stream()
-//                    .filter(x -> x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(150)) > 0)
-                    .forEach( x-> {
-                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                    createTableContents(dataBuffer, x);
+                        if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO) > 0 ){
+                            if ((x.getStockRankIndex() > 500 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(100)) > 0)
+                                    || x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(150)) > 0){
+                                createTableContents(dataBuffer, x);
+                            }
                 }
             });
             String data = HTML_START;
@@ -103,9 +76,9 @@ public class NYSEStocksController {
             List<NyseStockInfo> nyseStockInfoList = stockResearchService.getCacheNYSEStockDetailedInfoList();
             StringBuilder dataBuffer = new StringBuilder("");
             nyseStockInfoList.stream().filter(i -> i.getStockRankIndex() <= 125).forEach( x-> {
-                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
+                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO) > 0 ){
 //                    LOGGER.info(x.toString());
                     createTableContents(dataBuffer, x);
 //                    LOGGER.info("$After$" + x);
@@ -129,9 +102,9 @@ public class NYSEStocksController {
             List<NyseStockInfo> nyseStockInfoList = stockResearchService.getCacheNYSEStockDetailedInfoList();
             StringBuilder dataBuffer = new StringBuilder("");
             nyseStockInfoList.stream().filter(i -> i.getStockRankIndex() > 125).forEach( x-> {
-                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
+                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO) > 0 ){
 //                    LOGGER.info(x.toString());
                     createTableContents(dataBuffer, x);
 //                    LOGGER.info("$After$" + x);
