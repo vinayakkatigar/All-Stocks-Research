@@ -330,9 +330,9 @@ public class SensexStockResearchService {
             String fileName =  LocalDateTime.now() + SensexStockResearchUtility.HYPHEN;
             fileName = fileName.replace(":","-");
             fileName = fileName + "top"+  SensexStockResearchUtility.HYPHEN + resultSensexStockInfosList.get(0).getStockRankIndex()+  SensexStockResearchUtility.HYPHEN + resultSensexStockInfosList.get(resultSensexStockInfosList.size() - 1).getStockRankIndex() +  SensexStockResearchUtility.HYPHEN;
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "detailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\SensexStockDetailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList).getBytes());
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "-1000-MktCap-detailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\SensexStock-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
             if (webDriver == null) webDriver.close();
             if (webDriver != null) webDriver.close();
