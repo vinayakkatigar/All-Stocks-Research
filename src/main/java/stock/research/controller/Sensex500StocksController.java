@@ -41,6 +41,37 @@ public class Sensex500StocksController {
     @Autowired
     RestTemplate restTemplate;
 
+
+    @RequestMapping("/sensexAllStocks")
+    public String sensexAllStocks(){
+        try {
+            LOGGER.info("Sensex500StocksController::sensexAllStocks");
+            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList();
+            StringBuilder dataBuffer = new StringBuilder("");
+            populatedSensexList.stream().forEach( x-> {
+                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
+                    if (((x.getStockRankIndex() <= 200  && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(80)) > 0))
+                            || ((x.getStockRankIndex() > 200 && x.getStockRankIndex() <= 350 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(100)) > 0))
+                            || (x.getStockRankIndex() > 350 && x.getStockRankIndex() <= 550 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(125)) > 0)
+                            || ((x.getStockRankIndex() > 550 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(150)) > 0))){
+                        generateTableContents(dataBuffer, x);
+                    }
+                }
+            });
+            String data = SensexStockResearchUtility.HTML_START;
+            data += dataBuffer.toString();
+            data += SensexStockResearchUtility.HTML_END;
+            data = data + "<title>AllStocks Sensex </title>";
+            return data;
+        } catch (Exception e) {
+            ERROR_LOGGER.error(Instant.now() + ", sensexAllCap - , Error ->", e);
+            e.printStackTrace();
+            return e.toString();
+        }
+    }
+
     @RequestMapping("/sensexLargeCap")
     public String sensexLargeCap(){
         try {
@@ -145,33 +176,5 @@ public class Sensex500StocksController {
         }
         return "Failed!!";
     }
-
-    @RequestMapping("/sensexAllStocks")
-    public String sensexAllStocks(){
-        try {
-            LOGGER.info("Sensex500StocksController::sensexAllStocks");
-            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList();
-            StringBuilder dataBuffer = new StringBuilder("");
-            populatedSensexList.stream().forEach( x-> {
-                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                    if (x.getStockRankIndex() > 500 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(125)) > 0){
-                        generateTableContents(dataBuffer, x);
-                    }
-                }
-            });
-            String data = SensexStockResearchUtility.HTML_START;
-            data += dataBuffer.toString();
-            data += SensexStockResearchUtility.HTML_END;
-            data = data + "<title>AllStocks Sensex </title>";
-            return data;
-        } catch (Exception e) {
-            ERROR_LOGGER.error(Instant.now() + ", sensexAllCap - , Error ->", e);
-            e.printStackTrace();
-            return e.toString();
-        }
-    }
-
 
 }
