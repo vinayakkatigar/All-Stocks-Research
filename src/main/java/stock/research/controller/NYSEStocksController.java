@@ -49,8 +49,10 @@ public class NYSEStocksController {
                         if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO) > 0 ){
-                            if ((x.getStockRankIndex() > 500 && x.getStockRankIndex() <= 700 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(100)) > 0)
-                                    || x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(150)) > 0){
+                            if ((x.getStockRankIndex() <= 300 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(80)) > 0) ||
+                                    (x.getStockRankIndex() > 300 && x.getStockRankIndex() <= 500 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(100)) > 0) ||
+                                    (x.getStockRankIndex() > 500 && x.getStockRankIndex() <= 700 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(125)) > 0)
+                                    || (x.getStockRankIndex() > 700 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(150)) > 0)){
                                 createTableContents(dataBuffer, x);
                             }
                 }
