@@ -4,15 +4,10 @@ import stock.research.domain.SensexStockInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class SensexStockResearchUtility {
-
-
-    private static Set<String> excludedIsinCodeSet = new HashSet<>();
 
     public static final String HYPHEN = "-";
     public static final String COMMA = ",";

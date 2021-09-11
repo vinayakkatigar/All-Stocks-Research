@@ -8,11 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.client.RestTemplate;
-import stock.research.domain.NyseStockInfo;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
-
-import java.util.List;
 
 @Order(1)
 @SpringBootApplication

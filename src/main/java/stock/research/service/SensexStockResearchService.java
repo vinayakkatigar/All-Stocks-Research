@@ -30,7 +30,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -42,16 +45,6 @@ import static stock.research.utility.SensexStockResearchUtility.getDoubleFromStr
 public class SensexStockResearchService {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     private static final Logger LOGGER = LoggerFactory.getLogger(SensexStockResearchService.class);
-    List<String> excludedIsinCodeList = Arrays.asList(new String[]{"INE501A01019", "INE220G01021", "INE785M01013", "INE355A01028","INE107A01015","INE049A01027",
-            "INE883N01014","INE508G01029","INE421C01016","INE725A01022","INE852F01015","INE199G01027",
-            "INE836F01026","INE224A01026","INE999A01015","INE974H01013","INE839M01018",
-            "INE164A01016","INE310A01015","INE493A01027","INE979B01015","INE399C01030","INE739E01017",
-            "INE040H01021", "INE665A01038","INE659A01023","INE348B01021",
-            "INE786A01032","INE150G01020", "INE896L01010", "INE490G01020","INE269B01029",
-            "INE482A01020","INE383A01012","INE634I01029","INE180C01026","INE672A01018","INE260B01028",
-            "INE710A01016","INE668F01031","INE258B01022","INE873D01024",
-            "INE342J01019","INE016A01026", "INE002L01015","INE752E01010" , "INE320J01015",
-            "INE768C01010","INE733E01010","INE325A01013","INE589A01014",});
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -337,7 +330,7 @@ public class SensexStockResearchService {
             if (webDriver == null) webDriver.close();
             if (webDriver != null) webDriver.close();
             cacheSensexStockInfosList = resultSensexStockInfosList;
-            return removeExcludedIsins(resultSensexStockInfosList);
+            return (resultSensexStockInfosList);
         }catch (Exception e){
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
@@ -347,7 +340,7 @@ public class SensexStockResearchService {
         if (webDriver == null) webDriver.close();
         if (webDriver != null) webDriver.close();
         cacheSensexStockInfosList = resultSensexStockInfosList;
-        return removeExcludedIsins(resultSensexStockInfosList);
+        return (resultSensexStockInfosList);
     }
 
     private void set52HighLowPriceDiff(SensexStockInfo sensexStockInfo) {
@@ -399,15 +392,6 @@ public class SensexStockResearchService {
             return null;
         }
         return webDriver;
-    }
-
-
-    private List<SensexStockInfo> removeExcludedIsins(List<SensexStockInfo> sensexStockInfosList) {
-        return sensexStockInfosList
-                .stream()
-                .filter(c ->
-                        ((excludedIsinCodeList.stream().map(x -> x).collect(Collectors.toList())).contains(c.getIsin())) == false)
-                .collect(Collectors.toList());
     }
 
 

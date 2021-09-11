@@ -1,6 +1,5 @@
 package stock.research.email.alerts;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -30,8 +29,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -52,9 +52,6 @@ public class SensexStockResearchAlertMechanismService {
     private SensexStockResearchService sensexStockResearchService;
 
     private List<String> pfStockCode = new ArrayList<>();
-//    private List<String> isinCodeList = Arrays.asList(new String[]{"INE117A01022","INE423A01024","INE438A01022","INE406A01037","INE238A01034","INE296A01024","INE545U01014","INE028A01039","INE258A01016","INE257A01026","INE118H01025","INE476A01014","INE752H01013","INE371A01025","INE121A01024","INE522F01014","INE335K01011","INE298A01020","INE499A01024","INE202B01012","INE917M01012","INE532F01054","INE510A01028","INE452O01016","INE752P01024","INE935A01035","INE047A01021","INE040A01034","INE001A01036","INE795G01014","INE545A01016","INE066F01012","INE267A01025","INE274G01010","INE090A01021","INE726G01019","INE763G01038","INE092T01019","INE095A01012","INE148I01020","INE562A01011","INE919H01018","INE242A01010","INE335Y01012","INE069I01010","INE646L01027","INE858B01029","INE749A01030","INE019A01038","INE237A01028","INE018A01030","INE115A01026","INE774D01024","INE101A01026","INE122R01018","INE775A01035","INE868B01028","INE093I01010","INE274J01014","INE213A01029","INE140A01024","INE572E01012","INE811K01011","INE615P01015","INE976G01028","INE013A01015","INE542F01012","INE217K01011","INE036A01016","INE020B01018","INE123W01016","INE498B01024","INE722A01011","INE721A01013","INE671H01015","INE062A01020","INE155A01022","INE081A01012","INE691A01018","INE692A01016","INE628A01036","INE694A01020","INE956G01038","INE205A01025","INE398A01010","INE528G01035"});
-    private Set<String> isinCodeSet = new HashSet<>();
-    private Map<String, Double> stockAlertPrice = new HashMap<>();
 
     @Scheduled(cron = "0 35 5 ? * MON-FRI")
     public void kickOffEmailAlerts() {
@@ -65,7 +62,6 @@ public class SensexStockResearchAlertMechanismService {
             generateAlertEmails(populatedSensexList,x, SIDE.SELL);
             generateAlertEmails(populatedSensexList, x, SIDE.BUY);
         });
-        generateStockPriceAlerts(populatedSensexList);
         LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
     }
 
@@ -174,7 +170,7 @@ public class SensexStockResearchAlertMechanismService {
                     if (stockCategory == StockCategory.LARGE_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice())  >= 0 )
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(3.0)) <= 0)){
-                        if ((isinCodeSet.contains(x.getIsin()) || pfStockCode.contains(x.getStockCode()))){
+                        if ((pfStockCode.contains(x.getStockCode()))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Large Cap Alert**");
                             }
@@ -186,7 +182,7 @@ public class SensexStockResearchAlertMechanismService {
                     if (stockCategory == StockCategory.MID_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice())  >= 0 )
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(2.0)) <= 0)){
-                        if ((isinCodeSet.contains(x.getIsin()) || pfStockCode.contains(x.getStockCode()))){
+                        if ((pfStockCode.contains(x.getStockCode()))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Mid Cap Alert**");
                             }
@@ -198,7 +194,7 @@ public class SensexStockResearchAlertMechanismService {
                     if (stockCategory == StockCategory.SMALL_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice())  >= 0 )
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(1.0)) <= 0)){
-                        if ((isinCodeSet.contains(x.getIsin()) || pfStockCode.contains(x.getStockCode()))){
+                        if (pfStockCode.contains(x.getStockCode())){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Small Cap Alert**");
                             }
@@ -218,34 +214,6 @@ public class SensexStockResearchAlertMechanismService {
                         && (y.getQty() != null && Double.parseDouble(y.getQty()) > 10.0)));
     }
 
-
-    private void generateStockPriceAlerts(List<SensexStockInfo> populatedSensexList) {
-        try {
-            LOGGER.info("<- Started SensexStockResearchAlertMechanismService::generateStockPriceAlerts");
-
-            StringBuilder dataBuffer = new StringBuilder("");
-            final StringBuilder subjectBuffer = new StringBuilder("");
-            if (populatedSensexList != null && populatedSensexList.size() >0){
-                populatedSensexList.stream().forEach(x -> {
-                    if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                            x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                            x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ) {
-                                if (stockAlertPrice.containsKey(x.getIsin()) && stockAlertPrice.get(x.getIsin()) != null
-                                        && stockAlertPrice.get(x.getIsin()) > x.getCurrentMarketPrice().doubleValue() ){
-                                    if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                                        subjectBuffer.append("** Sensex Buy Price Stock Alert**");
-                                    }
-                                    generateTableContents(dataBuffer, x);
-                                }
-                    }
-                });
-            }
-            sendEmail(dataBuffer, subjectBuffer);
-            LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::generateStockPriceAlerts");
-        } catch (Exception e) {
-            ERROR_LOGGER.error(Instant.now() + "<- , Error ->", e);
-        }
-    }
 
     private void sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) throws MessagingException, IOException {
         LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
@@ -285,31 +253,14 @@ public class SensexStockResearchAlertMechanismService {
                 MappingIterator<PortfolioInfo> mi = oReader.readValues(inputStream);
                 portfolioInfoList = mi.readAll();
             }
-
             if (portfolioInfoList != null && portfolioInfoList.size() > 0){
                 portfolioInfoList.parallelStream().forEach(x -> {
                     pfStockCode.add(x.getSymbol());
-                    isinCodeSet.add(x.getiSIN());
                 });
             }
-
-            Map<String, Double> stockAlertPriceData  = objectMapper.readValue(new ClassPathResource("stockPriceWatchListData.json").getInputStream(), new TypeReference<Map<String, Double>>(){});
-
-            stockAlertPrice.put("INE939A01011", 350.0);
-            stockAlertPrice.putAll(stockAlertPriceData);
-            LOGGER.info("stockAlertPrice -> ");
-//            LOGGER.info(stockAlertPrice.toString());
-            LOGGER.info("portfolioList -> ");
-//            LOGGER.info(portfolioInfoList.toString());
-            LOGGER.info("pfStockCode -> ");
-//            LOGGER.info(pfStockCode.toString());
-            LOGGER.info("isinCode -> ");
-//            LOGGER.info(isinCodeSet.toString());
         } catch(Exception e) {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
-
     }
-
 }

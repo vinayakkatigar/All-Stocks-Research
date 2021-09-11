@@ -1,18 +1,12 @@
 package stock.research.runner;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
-import stock.research.domain.StockInfo;
 import stock.research.email.alerts.AllStocksEmailAlertMechanismService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class AllStocksCmdRunner implements CommandLineRunner {
