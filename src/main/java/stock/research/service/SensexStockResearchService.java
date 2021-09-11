@@ -127,8 +127,8 @@ public class SensexStockResearchService {
 
 //            sensexStockInfosList = getSensex500StockInfo();
 
-//            sensexStockInfosList.stream().map(SensexStockInfo::getStockURL).limit(125).forEach(x -> {
-            stockUrlsMap.entrySet().stream().map(x -> x.getValue()).limit(750).forEach(x -> {
+            stockUrlsMap.entrySet().stream().map(x -> x.getValue()).forEach(x -> {
+//            stockUrlsMap.entrySet().stream().map(x -> x.getValue()).limit(750).forEach(x -> {
                 ResponseEntity<String> response = null;
 
                 LOGGER.info("SensexStockResearchService::StockURL ->  " + x);
@@ -203,8 +203,6 @@ public class SensexStockResearchService {
                                         .get(0).getElementsByTag("td").get(8).text()));
                         }
 
-                        System.out.println("SensexStockResearchService.populateStocksAttributes" + sensexStockInfo);
-
                         set52HighLowPriceDiff(sensexStockInfo);
                         if (sensexStockInfo.getFiiPct() == null){
                             sensexStockInfo.setFiiPct(0.0);
@@ -214,7 +212,6 @@ public class SensexStockResearchService {
                             if (sensexStockInfo.getCurrentMarketPrice() == null ||
                                     sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0
                                     || sensexStockInfo.getStockMktCap() == null || sensexStockInfo.getStockMktCap() == 0){
-
 
                                 for (int i = 0; i < 2; i++) {
                                     if (webDriver == null){
@@ -280,8 +277,7 @@ public class SensexStockResearchService {
                                         set52HighLowPriceDiff(sensexStockInfo);
                                         System.out.println("SensexStockResearchService.populateStocksAttributes" + sensexStockInfo);
                                     }
-//                                    webDriver.findElement(By.cssSelector(".nsemktcap.bsemktcap")).getText()
-//                                    webDriver.findElement(By.id("sp_high")).getText()
+
                                 }
                             }
                         }catch (Exception e){
@@ -290,9 +286,6 @@ public class SensexStockResearchService {
 
                             isException = true;
                             e.printStackTrace();
-                        }
-                        finally {
-//                            if (webDriver != null) webDriver.close();
                         }
 
                         LOGGER.info(sensexStockInfo.toString());
@@ -368,23 +361,12 @@ public class SensexStockResearchService {
     }
 
     private WebDriver launchBrowser() {
-        System.out.println("SensexStockResearchService.launchBrowser" + System.getProperty("user.dir"));
         try{
-//            ChromeOptions options = new ChromeOptions();
-//            options.addArguments("--headless");
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
-
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
-//            System.setProperty("webdriver.chrome.webDriver","D:\\Software\\chromedriver_win32\\chromedriver.exe");
             webDriver = new ChromeDriver();
-//            webDriver = new ChromeDriver(options);
             webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-//            webDriver.manage().window().
-//            webDriver.get(url);
-//            webDriver.navigate().refresh();
             Thread.sleep(200 );
-//            webDriver.navigate().refresh();
-//            Thread.sleep(200 * 5);
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
@@ -393,7 +375,6 @@ public class SensexStockResearchService {
         }
         return webDriver;
     }
-
 
     @Retryable(maxAttempts=10, value = RuntimeException.class,
             backoff = @Backoff(delay = 5000, multiplier = 2))
@@ -411,5 +392,4 @@ public class SensexStockResearchService {
         }
         return response;
     }
-
 }
