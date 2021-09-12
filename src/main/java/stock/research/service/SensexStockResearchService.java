@@ -149,6 +149,17 @@ public class SensexStockResearchService {
                         SensexStockInfo sensexStockInfo = new SensexStockInfo();
                         sensexStockInfo.setStockURL(x);
                         Document doc = Jsoup.parse(response.getBody());
+                        try {
+                            Element companyInfoElement = doc.getElementById("company_info");
+                            Element ulElement = companyInfoElement.getElementsByClass("comp_inf company_slider").get(0);
+                            Element liElement = ulElement.getElementsByTag("li").get(34);
+                            if (liElement.getElementsByTag("span").get(0).text().equalsIgnoreCase("ISIN")){
+                                sensexStockInfo.setIsin(liElement.getElementsByTag("p").get(0).text());
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         if (doc.getElementById("nsecp") != null){
                             sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(doc.getElementById("nsecp").text()));
                         }
