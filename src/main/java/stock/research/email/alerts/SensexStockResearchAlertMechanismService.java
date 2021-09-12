@@ -173,10 +173,8 @@ public class SensexStockResearchAlertMechanismService {
                     if (stockCategory == StockCategory.LARGE_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice())  >= 0 )
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5.0)) <= 0)){
-                        if (pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().contains(s.toLowerCase()))
-                                || s.toLowerCase().contains(x.getStockName().split(" ")[0].toLowerCase())))){
-                            if (x.getStockName().startsWith("Tech"))
-                                System.out.println("SensexStockResearchAlertMechanismService.generateHTMLContent");
+                        if (pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0]))
+                                || s.toLowerCase().split(" ")[0].equalsIgnoreCase(x.getStockName().split(" ")[0].toLowerCase())))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Large Cap Alert**");
                             }
@@ -188,8 +186,8 @@ public class SensexStockResearchAlertMechanismService {
                     if (stockCategory == StockCategory.MID_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice())  >= 0 )
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(4)) <= 0)){
-                        if (pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().contains(s.toLowerCase()))
-                                || s.toLowerCase().contains(x.getStockName().split(" ")[0].toLowerCase())))){
+                        if (pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0]))
+                                || s.toLowerCase().split(" ")[0].equalsIgnoreCase(x.getStockName().split(" ")[0].toLowerCase())))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Mid Cap Alert**");
                             }
@@ -201,8 +199,8 @@ public class SensexStockResearchAlertMechanismService {
                     if (stockCategory == StockCategory.SMALL_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice())  >= 0 )
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(3)) <= 0)){
-                        if (pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().contains(s.toLowerCase()))
-                                || s.toLowerCase().contains(x.getStockName().split(" ")[0].toLowerCase())))){
+                        if (pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0]))
+                                || s.toLowerCase().split(" ")[0].equalsIgnoreCase(x.getStockName().split(" ")[0].toLowerCase())))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Small Cap Alert**");
                             }
@@ -217,9 +215,9 @@ public class SensexStockResearchAlertMechanismService {
     }
 
     private boolean checkPortfolioSizeAndQty(String stockName) {
-        boolean exists = (portfolioInfoList.stream().map(PortfolioInfo::getCompany).anyMatch(s -> ((stockName.split(" ")[0].toLowerCase().contains(s.toLowerCase())) || s.toLowerCase().contains(stockName.split(" ")[0].toLowerCase()))));
+        boolean exists = (portfolioInfoList.stream().map(PortfolioInfo::getCompany).anyMatch(s -> ((stockName.split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0])) || s.toLowerCase().split(" ")[0].equalsIgnoreCase(stockName.split(" ")[0].toLowerCase()))));
         if (exists){
-           Optional<PortfolioInfo> portfolioInfo = (portfolioInfoList.stream().filter(s -> ((stockName.split(" ")[0].toLowerCase().contains(s.getCompany().toLowerCase())) || s.getCompany().toLowerCase().contains(stockName.split(" ")[0].toLowerCase()))).findAny());
+           Optional<PortfolioInfo> portfolioInfo = (portfolioInfoList.stream().filter(s -> ((stockName.split(" ")[0].toLowerCase().equalsIgnoreCase(s.getCompany().toLowerCase().split(" ")[0])) || s.getCompany().toLowerCase().split(" ")[0].equalsIgnoreCase(stockName.split(" ")[0].toLowerCase()))).findAny());
            if (portfolioInfo != null && portfolioInfo.isPresent()){
               if (portfolioInfo.get().getValueAtMarketPrice() != null && getDoubleFromString(portfolioInfo.get().getValueAtMarketPrice()) > 45000.0){
                    return true;
