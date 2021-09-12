@@ -1,6 +1,5 @@
 package stock.research.email.alerts;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
 import stock.research.service.SensexStockResearchService;
-import stock.research.utility.StockResearchUtility;
+import stock.research.utility.SensexStockResearchUtility;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -30,7 +29,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -231,9 +233,9 @@ public class SensexStockResearchAlertMechanismService {
         LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        String data = StockResearchUtility.HTML_START;
+        String data = SensexStockResearchUtility.HTML_START;
         data += dataBuffer.toString();
-        data += StockResearchUtility.HTML_END;
+        data += SensexStockResearchUtility.HTML_END;
 
         if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
                 "".equalsIgnoreCase(subjectBuffer.toString()) == false){
