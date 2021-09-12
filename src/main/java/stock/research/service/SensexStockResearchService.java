@@ -158,7 +158,6 @@ public class SensexStockResearchService {
                             }
 
                         }catch (Exception e){
-                            e.printStackTrace();
                         }
                         if (doc.getElementById("nsecp") != null){
                             sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(doc.getElementById("nsecp").text()));
