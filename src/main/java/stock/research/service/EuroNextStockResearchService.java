@@ -360,9 +360,9 @@ public class EuroNextStockResearchService {
             driver.findElement(By.id("edit-search-input-quote--3")).clear();
             Thread.sleep(10);
         }catch (Exception e){
-            driver.navigate().refresh();
-            e.printStackTrace();
-            LOGGER.error("Exception -> ",e);
+            try{
+                driver.navigate().refresh();
+            }catch (Exception ex){}
             return false;
         }
         return true;
