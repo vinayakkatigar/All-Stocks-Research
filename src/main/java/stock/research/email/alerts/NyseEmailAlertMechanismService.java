@@ -57,10 +57,12 @@ public class NyseEmailAlertMechanismService {
         kickOffEmailAlerts();
     }
 
+/*
     @Scheduled(cron = "0 30 17 ? * MON-FRI")
     public void kickOffKillZombie() {
         StockResearchUtility.killZombie();
     }
+*/
 
     @Scheduled(cron = "0 30 0 ? * MON-FRI")
     public void kickOffKillZombs() {
