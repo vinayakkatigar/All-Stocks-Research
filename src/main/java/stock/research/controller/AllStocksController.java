@@ -31,11 +31,30 @@ public class AllStocksController {
     @Autowired
     RestTemplate restTemplate;
 
+    @RequestMapping("/SouthKorea")
+    public String SouthKorea(){
+        List<StockInfo> stockInfoList = getStockInfoListFor("SouthKorea");
+        return generateHtml(stockInfoList);
+    }
+
+    @RequestMapping("/HongKong")
+    public String HongKong(){
+        List<StockInfo> stockInfoList = getStockInfoListFor("HongKong");
+        return generateHtml(stockInfoList);
+    }
+
+    @RequestMapping("/Singapore")
+    public String Singapore(){
+        List<StockInfo> stockInfoList = getStockInfoListFor("Singapore");
+        return generateHtml(stockInfoList);
+    }
+
     @RequestMapping("/Sweden")
     public String Sweden(){
         List<StockInfo> stockInfoList = getStockInfoListFor("Sweden");
         return generateHtml(stockInfoList);
     }
+
     @RequestMapping("/World1000")
     public String World1000(){
         List<StockInfo> stockInfoList = getStockInfoListFor("World1000");
@@ -101,6 +120,15 @@ public class AllStocksController {
         return generateHtml(stockInfoList);    }
 
     private List<StockInfo>  getStockInfoListFor(String mkt){
+        if (mkt != null && "SouthKorea".equalsIgnoreCase(mkt)){
+            return allStockResearchService.getCacheSouthKoreaStockInfoList();
+        }
+        if (mkt != null && "HongKong".equalsIgnoreCase(mkt)){
+            return allStockResearchService.getCacheHongKongStockInfoList();
+        }
+        if (mkt != null && "Singapore".equalsIgnoreCase(mkt)){
+            return allStockResearchService.getCacheSingaporeStockInfoList();
+        }
         if (mkt != null && "Sweden".equalsIgnoreCase(mkt)){
             return allStockResearchService.getCacheSwedenStockInfoList();
         }

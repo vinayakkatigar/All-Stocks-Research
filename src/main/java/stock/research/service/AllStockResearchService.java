@@ -50,27 +50,20 @@ public class AllStockResearchService {
     @Autowired
     RestTemplate restTemplate;
     private static List<StockInfo> cacheSwissStockInfoList = new ArrayList<>();
-
     private static List<StockInfo> cacheCanadaStockInfoList = new ArrayList<>();
-
-    public static List<StockInfo> getCacheAustriaStockInfoList() {
-        return cacheAustriaStockInfoList;
-    }
-
     private static List<StockInfo> cacheAustriaStockInfoList = new ArrayList<>();
-
     private static List<StockInfo> cacheAustraliaStockInfoList = new ArrayList<>();
-
     private static List<StockInfo> cacheEuroStockInfoList = new ArrayList<>();
-
     private static List<StockInfo> cacheDenmarkStockInfoList = new ArrayList<>();
-
     private static List<StockInfo> cacheFinlandStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheGermanyStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheNetherlandsStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheNorwayStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheWorld1000StockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheSwedenStockInfoList = new ArrayList<>();
+    private static List<StockInfo> cacheSingaporeStockInfoList = new ArrayList<>();
+    private static List<StockInfo> cacheHongKongStockInfoList = new ArrayList<>();
+    private static List<StockInfo> cacheSouthKoreaStockInfoList = new ArrayList<>();
 
     @PostConstruct
     public void setUp(){
@@ -86,6 +79,9 @@ public class AllStockResearchService {
         urlMap.put("Norway", "NorwaydetailedInfo.json");
         urlMap.put("World1000", "World1000detailedInfo.json");
         urlMap.put("Sweden", "SwedendetailedInfo.json");
+        urlMap.put("Singapore", "SingaporedetailedInfo.json");
+        urlMap.put("HongKong", "HongKongdetailedInfo.json");
+        urlMap.put("SouthKorea", "SouthKoreadetailedInfo.json");
     }
     public List<StockInfo> populateStockDetailedInfo(String component,String uri,Integer cnt) {
         LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");
@@ -317,6 +313,10 @@ public class AllStockResearchService {
             if (stockInfo.getCurrency().equalsIgnoreCase("IDR")){
                 stockInfo.setStockMktCapRealValue(stockInfo.getStockMktCapRealValue() * 0.000070 );return;
             }
+            if (stockInfo.getCurrency().equalsIgnoreCase("ILA")
+                    || stockInfo.getCurrency().equalsIgnoreCase("ILS")){
+                stockInfo.setStockMktCapRealValue(stockInfo.getStockMktCapRealValue() * 0.3 );return;
+            }
             if (stockInfo.getCurrency().equalsIgnoreCase("SGD")){
                 stockInfo.setStockMktCapRealValue(stockInfo.getStockMktCapRealValue() * 0.74 );return;
             }
@@ -346,6 +346,9 @@ public class AllStockResearchService {
     }
 
     private void setCacheForComponent(String component, List<StockInfo> stockInfoList) {
+        if ("SouthKorea".equalsIgnoreCase(component)){
+            cacheSouthKoreaStockInfoList = stockInfoList; return;
+        }
         if ("Sweden".equalsIgnoreCase(component)){
             cacheSwedenStockInfoList = stockInfoList; return;
         }
@@ -384,6 +387,12 @@ public class AllStockResearchService {
         }
         if ("Norway".equalsIgnoreCase(component)){
             cacheNorwayStockInfoList = stockInfoList; return;
+        }
+        if ("Singapore".equalsIgnoreCase(component)){
+            cacheSingaporeStockInfoList = stockInfoList; return;
+        }
+        if ("HongKong".equalsIgnoreCase(component)){
+            cacheHongKongStockInfoList = stockInfoList; return;
         }
     }
 
@@ -451,6 +460,22 @@ public class AllStockResearchService {
 
     public static List<StockInfo> getCacheSwedenStockInfoList() {
         return cacheSwedenStockInfoList;
+    }
+
+    public static List<StockInfo> getCacheSingaporeStockInfoList() {
+        return cacheSingaporeStockInfoList;
+    }
+
+    public static List<StockInfo> getCacheAustriaStockInfoList() {
+        return cacheAustriaStockInfoList;
+    }
+
+    public static List<StockInfo> getCacheHongKongStockInfoList() {
+        return cacheHongKongStockInfoList;
+    }
+
+    public static List<StockInfo> getCacheSouthKoreaStockInfoList() {
+        return cacheSouthKoreaStockInfoList;
     }
 
 }

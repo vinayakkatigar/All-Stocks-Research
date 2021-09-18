@@ -54,9 +54,42 @@ public class AllStocksEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 15 1 ? * MON-FRI")
+    @Scheduled(cron = "0 05 00 ? * MON-FRI")
     public void kickKillZombie_4() {
         killZombie();
+    }
+
+    @Scheduled(cron = "0 10 00 ? * MON-FRI")
+    public void kickOffSingaporeEmailAlerts() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSingaporeEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Singapore", SNGR_URL, SNGR_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("Singapore", stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("Singapore", stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSingaporeEmailAlerts" );
+    }
+
+    @Scheduled(cron = "0 45 00 ? * MON-FRI")
+    public void kickOffHongKongEmailAlerts() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffHongKongEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("HongKong", HK_URL, HK_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("HongKong", stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("HongKong", stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffHongKongEmailAlerts" );
+    }
+
+    @Scheduled(cron = "0 15 01 ? * MON-FRI")
+    public void kickOffSouthKoreaEmailAlerts() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSouthKoreaEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("SouthKorea", SWTHKRW_URL, SWTHKRW_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("SouthKorea", stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("SouthKorea", stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSouthKoreaEmailAlerts" );
     }
 
     @Scheduled(cron = "0 0 2 ? * MON-FRI")
@@ -194,12 +227,12 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffCanadaEmailAlerts" );
     }
 
-    private void generateAlertEmails(String component, List<StockInfo> populatedFtseList, SIDE side, StockCategory stockCategory) {
+    private void generateAlertEmails(String component, List<StockInfo> stockInfoList, SIDE side, StockCategory stockCategory) {
         try {
             StringBuilder dataBuffer = new StringBuilder("");
             final StringBuilder subjectBuffer = new StringBuilder("");
 
-            generateHTMLContent(component, populatedFtseList, side, dataBuffer, subjectBuffer, stockCategory);
+            generateHTMLContent(component, stockInfoList, side, dataBuffer, subjectBuffer, stockCategory);
             sendEmail(dataBuffer, subjectBuffer);
         } catch (Exception e) {
             ERROR_LOGGER.error(Instant.now() + "<- , Error ->", e);

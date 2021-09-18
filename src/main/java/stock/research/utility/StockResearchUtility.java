@@ -17,8 +17,17 @@ public class StockResearchUtility {
     @Value("${component}")
     private static String component;
 
+    public static final String SWTHKRW_URL = "https://www.value.today/headquarters/south-korea?title=&field_headquarters_of_company_target_id&field_company_category_primary_target_id&field_company_website_uri=&field_market_cap_aug_01_2021__value=&page=";
+    public static final Integer SWTHKRW_CNT = 15;
+
+    public static final String HK_URL = "https://www.value.today/headquarters/hong-kong?title=&field_headquarters_of_company_target_id&field_company_category_primary_target_id&field_company_website_uri=&field_market_cap_aug_01_2021__value=&page=";
+    public static final Integer HK_CNT = 12;
+
     public static final String SWZLD_200_URL = "https://www.value.today/stock-exchange-companies/switzerland?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=";
     public static final Integer SWZLD_CNT = 10;
+
+    public static final String SNGR_URL = "https://www.value.today/headquarters/singapore?title=&field_headquarters_of_company_target_id&field_company_category_primary_target_id&field_company_website_uri=&field_market_cap_aug_01_2021__value=&page=";
+    public static final Integer SNGR_CNT = 8;
 
     public static final String AUSTRIA_URL = "https://www.value.today/headquarters/austria?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=";
     public static final Integer AUSTRIA_CNT = 3;
