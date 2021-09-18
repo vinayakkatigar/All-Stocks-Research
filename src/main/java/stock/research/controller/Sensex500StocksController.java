@@ -41,7 +41,6 @@ public class Sensex500StocksController {
     @Autowired
     RestTemplate restTemplate;
 
-
     @RequestMapping("/sensexAllStocks")
     public String sensexAllStocks(){
         try {
@@ -76,11 +75,6 @@ public class Sensex500StocksController {
     public String sensexLargeCap(){
         try {
             LOGGER.info("Sensex500StocksController::sensexLargeCap");
-/*+
-
-            List<Sensex500StockInfo> sensexLargeCapList = sensex500StockInfos.parallelStream()
-                    .filter(x -> x.getStockRankIndex() <= LARGE_CAP).collect(toList());
-*/
 
             List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList()
                     .parallelStream()
@@ -94,9 +88,7 @@ public class Sensex500StocksController {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-//                    LOGGER.info(x.toString());
                     generateTableContents(dataBuffer, x);
-//                    LOGGER.info("$After$" + x);
                 }
             });
             String data = SensexStockResearchUtility.HTML_START;
