@@ -82,7 +82,7 @@ public class Sensex500StocksController {
                     .filter(x -> x.getStockRankIndex() <= LARGE_CAP).collect(toList());
 */
 
-            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.populateStocksAttributes()
+            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList()
                     .parallelStream()
                     .filter(x -> x.getStockRankIndex() <= LARGE_CAP).collect(toList());
             //Filter large Cap with Y/L diff of 75 or more
@@ -116,7 +116,7 @@ public class Sensex500StocksController {
         try {
             LOGGER.info("Sensex500StocksController::sensexMidCap");
 
-            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.populateStocksAttributes()
+            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList()
                     .parallelStream()
                     .filter(x -> x.getStockRankIndex() > 150 && x.getStockRankIndex() <= 300).collect(toList());
 
@@ -148,9 +148,9 @@ public class Sensex500StocksController {
     public String sensexSmallCap(){
         try {
             LOGGER.info("Sensex500StocksController::sensexSmallCap");
-            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.populateStocksAttributes()
+            List<SensexStockInfo> populatedSensexList = sensexStockResearchService.getCacheSensexStockInfosList()
                     .parallelStream()
-                    .filter(x -> x.getStockRankIndex() > 300 && x.getStockRankIndex() <= 500).collect(toList());
+                    .filter(x -> x.getStockRankIndex() > 300 && x.getStockRankIndex() <= 950).collect(toList());
 
             //Filter Small Cap with Y/L diff of 125 or more
             populatedSensexList = populatedSensexList.stream()
