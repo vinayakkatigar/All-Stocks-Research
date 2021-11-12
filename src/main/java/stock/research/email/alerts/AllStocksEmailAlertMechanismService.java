@@ -233,7 +233,8 @@ public class AllStocksEmailAlertMechanismService {
             final StringBuilder subjectBuffer = new StringBuilder("");
 
             generateHTMLContent(component, stockInfoList, side, dataBuffer, subjectBuffer, stockCategory);
-            sendEmail(dataBuffer, subjectBuffer);
+            int retry = 3;
+            while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
         } catch (Exception e) {
             ERROR_LOGGER.error(Instant.now() + "<- , Error ->", e);
         }
@@ -304,30 +305,35 @@ public class AllStocksEmailAlertMechanismService {
                 .anyMatch(y -> ((y.getMarketValue() != null && StockResearchUtility.getDoubleFromString(y.getMarketValue().replace("£", "").replace(",", "")) > 500.0)));
     }
 
-    private void sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) throws MessagingException, IOException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        String data = StockResearchUtility.HTML_START;
-        data += dataBuffer.toString();
-        data += StockResearchUtility.HTML_END;
+    private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
+        try{
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            String data = StockResearchUtility.HTML_START;
+            data += dataBuffer.toString();
+            data += StockResearchUtility.HTML_END;
 
-        if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
-                "".equalsIgnoreCase(subjectBuffer.toString()) == false){
-            helper.setFrom("stockalert@stockalert.com");
-            helper.setTo(new String[]{"raghukati1950@gmail.com"});
+            if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
+                    "".equalsIgnoreCase(subjectBuffer.toString()) == false){
+                helper.setFrom("stockalert@stockalert.com");
+                helper.setTo(new String[]{"raghukati1950@gmail.com"});
 //            helper.setTo(new String[]{"raghukati1950@gmail.com","raghu.kat@outlook.com"});
-            helper.setText(data, true);
-            helper.setSubject(subjectBuffer.toString());
-            String fileName = subjectBuffer.toString();
-            fileName = fileName.replace("*", "");
-            fileName = fileName.replace(" ", "");
-            fileName =  fileName + "-" + LocalDateTime.now()  ;
-            fileName = fileName.replace(":","-");
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\" + fileName  + ".html"), data.getBytes());
-            FileSystemResource file = new FileSystemResource(System.getProperty("user.dir") + "\\logs\\" + fileName + ".html");
-            helper.addAttachment(file.getFilename(), file);
-            javaMailSender.send(message);
+                helper.setText(data, true);
+                helper.setSubject(subjectBuffer.toString());
+                String fileName = subjectBuffer.toString();
+                fileName = fileName.replace("*", "");
+                fileName = fileName.replace(" ", "");
+                fileName =  fileName + "-" + LocalDateTime.now()  ;
+                fileName = fileName.replace(":","-");
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\" + fileName  + ".html"), data.getBytes());
+                FileSystemResource file = new FileSystemResource(System.getProperty("user.dir") + "\\logs\\" + fileName + ".html");
+                helper.addAttachment(file.getFilename(), file);
+                javaMailSender.send(message);
+            }
+            }catch (Exception e){
+            return false;
         }
+        return true;
     }
 
     @PostConstruct

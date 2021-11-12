@@ -99,7 +99,8 @@ public class SensexStockResearchAlertMechanismService {
                 final StringBuilder subjectBuffer = new StringBuilder("");
 
                 generateHTMLContent(populatedLargeCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
-                sendEmail(dataBuffer, subjectBuffer);
+                int retry = 3;
+                while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
             } if (stockCategory == StockCategory.MID_CAP){
                 populatedMidCapSensexList = populatedSensexList.parallelStream()
                         .filter(x -> x.getStockRankIndex() > 150 && x.getStockRankIndex() <= 300).collect(toList());
@@ -112,7 +113,8 @@ public class SensexStockResearchAlertMechanismService {
                 final StringBuilder subjectBuffer = new StringBuilder("");
 
                 generateHTMLContent(populatedMidCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
-                sendEmail(dataBuffer, subjectBuffer);
+                int retry = 3;
+                while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
             }
             if (stockCategory == StockCategory.SMALL_CAP){
                 populatedSmallCapSensexList = populatedSensexList.parallelStream()
@@ -126,7 +128,8 @@ public class SensexStockResearchAlertMechanismService {
                 final StringBuilder subjectBuffer = new StringBuilder("");
 
                 generateHTMLContent(populatedSmallCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
-                sendEmail(dataBuffer, subjectBuffer);
+                int retry = 3;
+                while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
             }
             LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::generateAlertEmails");
         } catch (Exception e) {
@@ -232,32 +235,37 @@ public class SensexStockResearchAlertMechanismService {
         return false;
     }
 
-    private void sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) throws MessagingException, IOException {
-        LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        String data = SensexStockResearchUtility.HTML_START;
-        data += dataBuffer.toString();
-        data += SensexStockResearchUtility.HTML_END;
+    private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
+        try {
+            LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            String data = SensexStockResearchUtility.HTML_START;
+            data += dataBuffer.toString();
+            data += SensexStockResearchUtility.HTML_END;
 
-        if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
-                "".equalsIgnoreCase(subjectBuffer.toString()) == false){
-            helper.setFrom("stockalert@stockalert.com");
-            helper.setTo(new String[]{"raghukati1950@gmail.com"});
+            if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
+                    "".equalsIgnoreCase(subjectBuffer.toString()) == false){
+                helper.setFrom("stockalert@stockalert.com");
+                helper.setTo(new String[]{"raghukati1950@gmail.com"});
 //            helper.setTo(new String[]{"raghukati1950@gmail.com","raghu.kat@outlook.com"});
-            helper.setText(data, true);
-            helper.setSubject(subjectBuffer.toString());
-            String fileName = subjectBuffer.toString();
-            fileName = fileName.replace("*", "");
-            fileName = fileName.replace(" ", "");
-            fileName =  fileName + "-" + LocalDateTime.now()  ;
-            fileName = fileName.replace(":","-");
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\target\\" + fileName  + ".html"), data.getBytes());
-            FileSystemResource file = new FileSystemResource(System.getProperty("user.dir")  + "\\target\\" + fileName + ".html");
-            helper.addAttachment(file.getFilename(), file);
-            javaMailSender.send(message);
+                helper.setText(data, true);
+                helper.setSubject(subjectBuffer.toString());
+                String fileName = subjectBuffer.toString();
+                fileName = fileName.replace("*", "");
+                fileName = fileName.replace(" ", "");
+                fileName =  fileName + "-" + LocalDateTime.now()  ;
+                fileName = fileName.replace(":","-");
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\target\\" + fileName  + ".html"), data.getBytes());
+                FileSystemResource file = new FileSystemResource(System.getProperty("user.dir")  + "\\target\\" + fileName + ".html");
+                helper.addAttachment(file.getFilename(), file);
+                javaMailSender.send(message);
+            }
+            LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::sendEmail");
+        }catch (Exception e){
+            return false;
         }
-        LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::sendEmail");
+        return true;
     }
 
     @PostConstruct
