@@ -184,13 +184,12 @@ public class AllStockResearchService {
                                 .divide(x.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
                     if (x.get_52WeekHighPrice() != null && x.getCurrentMarketPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0
-                    && x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).compareTo(BigDecimal.ZERO) >= 0 ){
+                    && x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).compareTo(BigDecimal.ZERO) > 0 ){
                                 x.set_52WeekHighPriceDiff(((x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).abs())
                                 .divide(x.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
                     if (x.getCurrentMarketPrice() != null && x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                    x.getCurrentMarketPrice().subtract(x.get_52WeekLowPrice()).compareTo(BigDecimal.ZERO) >= 0
-                    && x.getCurrentMarketPrice().subtract(x.get_52WeekLowPrice()).compareTo(BigDecimal.ZERO) >= 0 ){
+                    x.getCurrentMarketPrice().subtract(x.get_52WeekLowPrice()).compareTo(BigDecimal.ZERO) > 0){
                         x.set_52WeekLowPriceDiff(((x.getCurrentMarketPrice().subtract(x.get_52WeekLowPrice()).abs())
                                 .divide(x.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
