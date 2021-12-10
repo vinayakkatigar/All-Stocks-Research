@@ -103,21 +103,18 @@ public class AllStockResearchService {
                     }
 
                     Document doc = Jsoup.parse(response.getBody());
-                    Elements spanEle = doc.getElementsByTag("span");
+                    Elements spanEle = doc.getElementsByTag("fin-streamer");
                     if (spanEle != null && spanEle.size() > 0){
-                        for (Element z : spanEle){
-                            z.getElementsByAttributeValueContaining("data-reactid","14");
                             try{
-                                if (x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) <= 0 ){
-                                    String mktPrice = z.getElementsByAttributeValueContaining("data-reactid","14").text();
+                                if (x.getCurrentMarketPrice() == null || x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) <= 0 ){
+                                    String mktPrice = spanEle.get(0).text();
                                     if (mktPrice != null && !StringUtils.isEmpty(mktPrice)){
                                         mktPrice = mktPrice.trim();
                                         mktPrice = mktPrice.replace(",", "");
-                                        x.setCurrentMarketPrice(new BigDecimal(mktPrice));
+                                        x.setCurrentMarketPrice(getBigDecimalFromString(mktPrice));
                                     }
                                 }
                             }catch (Exception e){}
-                        }
                     }
                     if (spanEle != null && spanEle.size() >12){
                        String[] currencyArr = spanEle.get(12).text().split(" ");
