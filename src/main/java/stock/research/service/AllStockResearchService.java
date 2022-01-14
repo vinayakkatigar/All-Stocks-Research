@@ -67,6 +67,7 @@ public class AllStockResearchService {
 
     private static List<StockInfo> cacheFranceStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheBelgiumStockInfoList = new ArrayList<>();
+    private static List<StockInfo> cacheJapanStockInfoList = new ArrayList<>();
 
     @PostConstruct
     public void setUp(){
@@ -87,6 +88,7 @@ public class AllStockResearchService {
         urlMap.put("SouthKorea", "SouthKoreadetailedInfo.json");
         urlMap.put("France", "FrancedetailedInfo.json");
         urlMap.put("Belgium", "BelgiumdetailedInfo.json");
+        urlMap.put("Japan", "JapandetailedInfo.json");
     }
     public List<StockInfo> populateStockDetailedInfo(String component,String uri,Integer cnt) {
         LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");
@@ -268,6 +270,67 @@ public class AllStockResearchService {
         return stockInfoList;
     }
 
+    private void setCacheForComponent(String component, List<StockInfo> stockInfoList) {
+        if ("Japan".equalsIgnoreCase(component)){
+            cacheJapanStockInfoList = stockInfoList; return;
+        }
+        if ("Belgium".equalsIgnoreCase(component)){
+            cacheBelgiumStockInfoList = stockInfoList; return;
+        }
+        if ("France".equalsIgnoreCase(component)){
+            cacheFranceStockInfoList = stockInfoList; return;
+        }
+        if ("SouthKorea".equalsIgnoreCase(component)){
+            cacheSouthKoreaStockInfoList = stockInfoList; return;
+        }
+        if ("Sweden".equalsIgnoreCase(component)){
+            cacheSwedenStockInfoList = stockInfoList; return;
+        }
+        if ("World1000".equalsIgnoreCase(component)){
+            cacheWorld1000StockInfoList = stockInfoList; return;
+        }
+        if ("Norway".equalsIgnoreCase(component)){
+            cacheNorwayStockInfoList = stockInfoList; return;
+        }
+        if ("Netherlands".equalsIgnoreCase(component)){
+            cacheNetherlandsStockInfoList = stockInfoList; return;
+        }
+        if ("Germany".equalsIgnoreCase(component)){
+            cacheGermanyStockInfoList = stockInfoList; return;
+        }
+        if ("Finland".equalsIgnoreCase(component)){
+            cacheFinlandStockInfoList = stockInfoList; return;
+        }
+        if ("Canada".equalsIgnoreCase(component)){
+            cacheCanadaStockInfoList = stockInfoList; return;
+        }
+        if ("Denmark".equalsIgnoreCase(component)){
+            cacheDenmarkStockInfoList = stockInfoList; return;
+        }
+        if ("Swiss".equalsIgnoreCase(component)){
+            cacheSwissStockInfoList = stockInfoList; return;
+        }
+        if ("Austria".equalsIgnoreCase(component)){
+            cacheAustriaStockInfoList = stockInfoList; return;
+        }
+        if ("Australia".equalsIgnoreCase(component)){
+            cacheAustraliaStockInfoList = stockInfoList; return;
+        }
+        if ("Euro".equalsIgnoreCase(component)){
+            cacheEuroStockInfoList = stockInfoList; return;
+        }
+        if ("Norway".equalsIgnoreCase(component)){
+            cacheNorwayStockInfoList = stockInfoList; return;
+        }
+        if ("Singapore".equalsIgnoreCase(component)){
+            cacheSingaporeStockInfoList = stockInfoList; return;
+        }
+        if ("HongKong".equalsIgnoreCase(component)){
+            cacheHongKongStockInfoList = stockInfoList; return;
+        }
+    }
+
+
     private void setMktCapInUsd(StockInfo stockInfo) {
         if (stockInfo != null && stockInfo.getStockMktCapRealValue() != null
                 && stockInfo.getCurrency() != null ) {
@@ -347,63 +410,6 @@ public class AllStockResearchService {
                     stockInfo.getCurrency().equalsIgnoreCase("SAR")){
                 stockInfo.setStockMktCapRealValue(stockInfo.getStockMktCapRealValue() * 0.27);return;
             }
-        }
-    }
-
-    private void setCacheForComponent(String component, List<StockInfo> stockInfoList) {
-        if ("Belgium".equalsIgnoreCase(component)){
-            cacheBelgiumStockInfoList = stockInfoList; return;
-        }
-        if ("France".equalsIgnoreCase(component)){
-            cacheFranceStockInfoList = stockInfoList; return;
-        }
-        if ("SouthKorea".equalsIgnoreCase(component)){
-            cacheSouthKoreaStockInfoList = stockInfoList; return;
-        }
-        if ("Sweden".equalsIgnoreCase(component)){
-            cacheSwedenStockInfoList = stockInfoList; return;
-        }
-        if ("World1000".equalsIgnoreCase(component)){
-            cacheWorld1000StockInfoList = stockInfoList; return;
-        }
-        if ("Norway".equalsIgnoreCase(component)){
-            cacheNorwayStockInfoList = stockInfoList; return;
-        }
-        if ("Netherlands".equalsIgnoreCase(component)){
-            cacheNetherlandsStockInfoList = stockInfoList; return;
-        }
-        if ("Germany".equalsIgnoreCase(component)){
-            cacheGermanyStockInfoList = stockInfoList; return;
-        }
-        if ("Finland".equalsIgnoreCase(component)){
-            cacheFinlandStockInfoList = stockInfoList; return;
-        }
-        if ("Canada".equalsIgnoreCase(component)){
-            cacheCanadaStockInfoList = stockInfoList; return;
-        }
-        if ("Denmark".equalsIgnoreCase(component)){
-            cacheDenmarkStockInfoList = stockInfoList; return;
-        }
-        if ("Swiss".equalsIgnoreCase(component)){
-            cacheSwissStockInfoList = stockInfoList; return;
-        }
-        if ("Austria".equalsIgnoreCase(component)){
-            cacheAustriaStockInfoList = stockInfoList; return;
-        }
-        if ("Australia".equalsIgnoreCase(component)){
-            cacheAustraliaStockInfoList = stockInfoList; return;
-        }
-        if ("Euro".equalsIgnoreCase(component)){
-            cacheEuroStockInfoList = stockInfoList; return;
-        }
-        if ("Norway".equalsIgnoreCase(component)){
-            cacheNorwayStockInfoList = stockInfoList; return;
-        }
-        if ("Singapore".equalsIgnoreCase(component)){
-            cacheSingaporeStockInfoList = stockInfoList; return;
-        }
-        if ("HongKong".equalsIgnoreCase(component)){
-            cacheHongKongStockInfoList = stockInfoList; return;
         }
     }
 
@@ -495,6 +501,10 @@ public class AllStockResearchService {
 
     public static List<StockInfo> getCacheBelgiumStockInfoList() {
         return cacheBelgiumStockInfoList;
+    }
+
+    public static List<StockInfo> getCacheJapanStockInfoList() {
+        return cacheJapanStockInfoList;
     }
 
 }
