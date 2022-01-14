@@ -205,6 +205,17 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwedenEmailAlerts" );
     }
 
+    @Scheduled(cron = "0 5 13 ? * MON-FRI")
+    public void kickOffFranceEmailAlerts() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffFranceEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("France", FRANCE_URL, FRANCE_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("France", stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("France", stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffFranceEmailAlerts" );
+    }
+
     @Scheduled(cron = "0 0 18 ? * MON-FRI")
     public void kickOffWorld1000EmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );

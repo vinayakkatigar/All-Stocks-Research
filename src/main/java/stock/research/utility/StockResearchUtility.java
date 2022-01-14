@@ -62,6 +62,9 @@ public class StockResearchUtility {
     public static final String SWEDEN_URL = "https://www.value.today/headquarters/sweden?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=";
     public static final Integer SWEDEN_CNT = 15;
 
+    public static final String FRANCE_URL = "https://www.value.today/headquarters/france?title=&field_headquarters_of_company_target_id&field_company_category_primary_target_id&field_company_website_uri=&field_market_cap_aug_01_2021__value=&page=";
+    public static final Integer FRANCE_CNT = 10;
+
     public static final Double TRILLION = 1000000000000.0;
     public static final Double BILLION = 1000000000.0;
     public static final Double MILLION = 1000000.0;
