@@ -51,12 +51,7 @@ public class Sensex500StocksController {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 ){
-                    if (((x.getStockRankIndex() <= 200  && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(80)) > 0))
-                            || ((x.getStockRankIndex() > 200 && x.getStockRankIndex() <= 350 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(100)) > 0))
-                            || (x.getStockRankIndex() > 350 && x.getStockRankIndex() <= 550 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(125)) > 0)
-                            || ((x.getStockRankIndex() > 550 && x.get_52WeekHighLowPriceDiff().compareTo(valueOf(150)) > 0))){
                         generateTableContents(dataBuffer, x);
-                    }
                 }
             });
             String data = SensexStockResearchUtility.HTML_START;
