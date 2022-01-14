@@ -116,6 +116,19 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
+    @Scheduled(cron = "0 0 7 ? * MON-FRI")
+    public void kickOffSpainEmailAlerts() {
+
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSpainEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Spain",SPAIN_URL,SPAIN_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("Spain",stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("Spain",stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSpainEmailAlerts" );
+
+    }
+
     @Scheduled(cron = "0 0 8 ? * MON-FRI")
     public void kickOffSwissEmailAlerts() {
 

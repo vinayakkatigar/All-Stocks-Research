@@ -27,9 +27,11 @@ public class AllStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        allStocksEmailAlertMechanismService.kickOffSpainEmailAlerts();
         /*
         long start = System.currentTimeMillis();
         LOGGER.info("##AllStocksCmdRunner.run::started##" );
+        allStocksEmailAlertMechanismService.kickOffSpainEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffJapanEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffBelgiumEmailAlerts();
         allStocksEmailAlertMechanismService.kickOffFranceEmailAlerts();
