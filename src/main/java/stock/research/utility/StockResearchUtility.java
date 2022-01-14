@@ -74,6 +74,9 @@ public class StockResearchUtility {
     public static final String SPAIN_URL = "https://www.value.today/headquarters/spain?title=&field_headquarters_of_company_target_id&field_company_category_primary_target_id&field_company_website_uri=&field_market_cap_aug_01_2021__value=&page=";
     public static final Integer SPAIN_CNT = 6;
 
+    public static final String ITALY_URL = "https://www.value.today/headquarters/italy?title=&field_headquarters_of_company_target_id&field_company_category_primary_target_id&field_company_website_uri=&field_market_cap_aug_01_2021__value=&page=";
+    public static final Integer ITALY_CNT = 10;
+
     public static final Double TRILLION = 1000000000000.0;
     public static final Double BILLION = 1000000000.0;
     public static final Double MILLION = 1000000.0;
