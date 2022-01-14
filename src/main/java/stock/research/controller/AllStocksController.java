@@ -31,6 +31,12 @@ public class AllStocksController {
     @Autowired
     RestTemplate restTemplate;
 
+    @RequestMapping("/Belgium")
+    public String Belgium(){
+        List<StockInfo> stockInfoList = getStockInfoListFor("Belgium");
+        return generateHtml(stockInfoList);
+    }
+
     @RequestMapping("/France")
     public String France(){
         List<StockInfo> stockInfoList = getStockInfoListFor("France");
@@ -126,6 +132,9 @@ public class AllStocksController {
         return generateHtml(stockInfoList);    }
 
     private List<StockInfo>  getStockInfoListFor(String mkt){
+        if (mkt != null && "Belgium".equalsIgnoreCase(mkt)){
+            return allStockResearchService.getCacheBelgiumStockInfoList();
+        }
         if (mkt != null && "France".equalsIgnoreCase(mkt)){
             return allStockResearchService.getCacheFranceStockInfoList();
         }

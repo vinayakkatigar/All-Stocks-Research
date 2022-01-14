@@ -216,6 +216,18 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffFranceEmailAlerts" );
     }
 
+
+    @Scheduled(cron = "0 35 13 ? * MON-FRI")
+    public void kickOffBelgiumEmailAlerts() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffBelgiumEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Belgium", BELGIUM_URL, BELGIUM_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("Belgium", stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("Belgium", stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffBelgiumEmailAlerts" );
+    }
+
     @Scheduled(cron = "0 0 18 ? * MON-FRI")
     public void kickOffWorld1000EmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );
