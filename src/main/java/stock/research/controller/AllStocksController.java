@@ -98,8 +98,8 @@ public class AllStocksController {
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/germany")
-    public String germany(){
+    @RequestMapping("/Germany")
+    public String Germany(){
         List<StockInfo> stockInfoList = getStockInfoListFor("Germany");
         return generateHtml(stockInfoList);
     }
@@ -110,43 +110,43 @@ public class AllStocksController {
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/swiss")
-    public String swiss(){
+    @RequestMapping("/Swiss")
+    public String Swiss(){
         List<StockInfo> stockInfoList = getStockInfoListFor("swiss");
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/finland")
-    public String finland(){
+    @RequestMapping("/Finland")
+    public String Finland(){
         List<StockInfo> stockInfoList = getStockInfoListFor("Finland");
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/austria")
-    public String austria(){
+    @RequestMapping("/Austria")
+    public String Austria(){
         List<StockInfo> stockInfoList = getStockInfoListFor("austria");
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/canada")
-    public String canada(){
+    @RequestMapping("/Canada")
+    public String Canada(){
         List<StockInfo> stockInfoList = getStockInfoListFor("Canada");
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/denmark")
-    public String denmark(){
+    @RequestMapping("/Denmark")
+    public String Denmark(){
         List<StockInfo> stockInfoList = getStockInfoListFor("Denmark");
         return generateHtml(stockInfoList);
     }
 
-    @RequestMapping("/australia")
-    public String australia(){
+    @RequestMapping("/Australia")
+    public String Australia(){
         List<StockInfo> stockInfoList = getStockInfoListFor("australia");
         return generateHtml(stockInfoList);    }
 
-    @RequestMapping("/euro")
-    public String euro(){
+    @RequestMapping("/Euro")
+    public String Euro(){
         List<StockInfo> stockInfoList = getStockInfoListFor("euro");
         return generateHtml(stockInfoList);    }
 
