@@ -217,7 +217,6 @@ public class AllStocksController {
 
     private String generateHtml(List<StockInfo> stockInfoList) {
         try {
-            LOGGER.info("AllStocksController::top200");
             StringBuilder dataBuffer = new StringBuilder("");
             stockInfoList.stream().forEach(x-> {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
