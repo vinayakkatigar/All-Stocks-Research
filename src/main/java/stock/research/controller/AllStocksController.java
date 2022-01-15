@@ -49,7 +49,6 @@ public class AllStocksController {
         return generateHtml(stockInfoList);
     }
 
-
     @RequestMapping("/Belgium")
     public String Belgium(){
         List<StockInfo> stockInfoList = getStockInfoListFor("Belgium");
