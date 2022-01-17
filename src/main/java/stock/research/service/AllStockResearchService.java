@@ -70,6 +70,7 @@ public class AllStockResearchService {
     private static List<StockInfo> cacheJapanStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheSpainStockInfoList = new ArrayList<>();
     private static List<StockInfo> cacheItalyStockInfoList = new ArrayList<>();
+    private static List<StockInfo> cacheIndiaStockInfoList = new ArrayList<>();
 
     @PostConstruct
     public void setUp(){
@@ -93,6 +94,7 @@ public class AllStockResearchService {
         urlMap.put("Japan", "JapandetailedInfo.json");
         urlMap.put("Spain", "SpaindetailedInfo.json");
         urlMap.put("Italy", "ItalydetailedInfo.json");
+        urlMap.put("India", "IndiadetailedInfo.json");
     }
     public List<StockInfo> populateStockDetailedInfo(String component,String uri,Integer cnt) {
         LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");
@@ -275,6 +277,9 @@ public class AllStockResearchService {
     }
 
     private void setCacheForComponent(String component, List<StockInfo> stockInfoList) {
+        if ("India".equalsIgnoreCase(component)){
+            cacheIndiaStockInfoList = stockInfoList; return;
+        }
         if ("Italy".equalsIgnoreCase(component)){
             cacheItalyStockInfoList = stockInfoList; return;
         }
@@ -523,6 +528,10 @@ public class AllStockResearchService {
 
     public static List<StockInfo> getCacheItalyStockInfoList() {
         return cacheItalyStockInfoList;
+    }
+
+    public static List<StockInfo> getCacheIndiaStockInfoList() {
+        return cacheIndiaStockInfoList;
     }
 
 }

@@ -69,6 +69,16 @@ public class AllStocksEmailAlertMechanismService {
         });
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSingaporeEmailAlerts" );
     }
+    @Scheduled(cron = "0 0 01 ? * MON-FRI")
+    public void kickOffIndiaEmailAlerts() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffIndiaEmailAlerts" );
+        final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("India", INDIA_URL, INDIA_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("India", stockInfoList,x, LARGE_CAP);
+            generateAlertEmails("India", stockInfoList,x, MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffIndiaEmailAlerts" );
+    }
 
     @Scheduled(cron = "0 45 00 ? * MON-FRI")
     public void kickOffHongKongEmailAlerts() {
