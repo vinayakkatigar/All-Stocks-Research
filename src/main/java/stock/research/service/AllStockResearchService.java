@@ -143,7 +143,8 @@ public class AllStockResearchService {
                             if (stockDetailsArr != null && stockDetailsArr.length >= 2){
                                 x.setStockCode(stockDetailsArr[0]);
                                 x.setStockName(stockDetailsArr[1]);
-                            }if (x.getStockName() == null){
+                            }
+                            if (x.getStockName() == null){
                                 stockDetailsArr = h1.text().split("-");
                                 if (stockDetailsArr != null && stockDetailsArr.length >= 2){
                                     x.setStockCode(stockDetailsArr[0]);
