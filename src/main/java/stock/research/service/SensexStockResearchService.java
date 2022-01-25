@@ -201,7 +201,9 @@ public class SensexStockResearchService {
                             sensexStockInfo.setBv(getDoubleFromString(doc.getElementsByClass("nsebv bsebv").get(0).text()));
                         }
                         if (sensexStockInfo.getBv()!= null){
-                            sensexStockInfo.setP2bv(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv());
+                            sensexStockInfo.setP2bv(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
+                                            .setScale(2, RoundingMode.HALF_UP)
+                                            .doubleValue());
                         }
                         if (doc.getElementsByClass("sharhold_insight") != null
                                 && doc.getElementsByClass("sharhold_insight").size() > 0
