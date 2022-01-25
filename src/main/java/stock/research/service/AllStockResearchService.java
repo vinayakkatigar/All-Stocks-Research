@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
+import static java.util.stream.Collectors.toList;
 import static stock.research.utility.StockResearchUtility.*;
 
 
@@ -253,7 +254,7 @@ public class AllStockResearchService {
         List<StockInfo> stockInfoList = new ArrayList<>();
         try {
             stockInfoList = objectMapper.readValue(new ClassPathResource(urlMap.get(component)).getInputStream(), new TypeReference<List<StockInfo>>(){});
-            return stockInfoList.stream().map(x -> new StockInfo(x.getStockCode(), x.getStockURL())).collect(Collectors.toList());
+            return stockInfoList.stream().map(x -> new StockInfo(x.getStockCode(), x.getStockURL())).collect(toList());
         }catch (Exception e){
             e.printStackTrace();
         }
