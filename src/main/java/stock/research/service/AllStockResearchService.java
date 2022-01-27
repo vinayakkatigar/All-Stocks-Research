@@ -108,7 +108,7 @@ public class AllStockResearchService {
                 try {
                     Thread.sleep(100 * 5);
                     LOGGER.info("AllStockResearchService::populateStockDetailedInfo::StockURL ->  " +   x.getStockURL());
-//                    response = restTemplate.exchange("https://finance.yahoo.com/quote/AAL.L", HttpMethod.GET, null, String.class);
+//                    response = restTemplate.exchange("https://uk.finance.yahoo.com/quote/WCMK.DE", HttpMethod.GET, null, String.class);
                     response = makeRestCall(x.getStockURL());
 
                     int retry =5;
@@ -155,6 +155,9 @@ public class AllStockResearchService {
                         }
                     }
                     String _52Range = extractFieldValue(doc, "52 Week Range");
+                    if (_52Range == null){
+                        _52Range = extractFieldValue(doc, "52-week range");
+                    }
                     if (_52Range != null){
                         String[]_52RangeArr = _52Range.split(" - ");
                         if (_52RangeArr != null && _52RangeArr.length >=2){
@@ -201,7 +204,9 @@ public class AllStockResearchService {
                         x.set_52WeekHighLowPriceDiff(((x.get_52WeekHighPrice().subtract(x.get_52WeekLowPrice()).abs())
                                 .divide(x.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
-                    if (x.get_52WeekHighPrice() != null && x.getCurrentMarketPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0
+                    if (x.get_52WeekHighPrice() != null && x.getCurrentMarketPrice() != null
+                            && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0
+                            && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0
                     && x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).compareTo(BigDecimal.ZERO) > 0 ){
                                 x.set_52WeekHighPriceDiff(((x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).abs())
                                 .divide(x.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
