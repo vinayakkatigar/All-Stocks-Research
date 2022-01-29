@@ -194,7 +194,7 @@ public class AllStockResearchService {
                     }
 
                 } catch (Exception e) {
-                    ERROR_LOGGER.error(x.getStockURL() + Instant.now() + ", Error ->", e);
+                    ERROR_LOGGER.error(x.getStockURL() +  "<-  Error ->", e);
                     e.printStackTrace();
                 }
                 try {
@@ -207,7 +207,7 @@ public class AllStockResearchService {
                     if (x.get_52WeekHighPrice() != null && x.getCurrentMarketPrice() != null
                             && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0
                             && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0
-                    && x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).compareTo(BigDecimal.ZERO) > 0 ){
+                            && x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).compareTo(BigDecimal.ZERO) > 0 ){
                                 x.set_52WeekHighPriceDiff(((x.get_52WeekHighPrice().subtract(x.getCurrentMarketPrice()).abs())
                                 .divide(x.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
@@ -220,7 +220,7 @@ public class AllStockResearchService {
                     x.setTimestamp(Instant.now());
                     LOGGER.info(x.toString());
                 }catch (Exception e) {
-                    ERROR_LOGGER.error(x.getStockURL() + "<->" +Instant.now() + ", Error ->", e);
+                    ERROR_LOGGER.error(x.getStockURL() + "<- Error ->", e);
                     e.printStackTrace();
                 }
             });
