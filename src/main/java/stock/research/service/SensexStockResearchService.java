@@ -201,9 +201,14 @@ public class SensexStockResearchService {
                             sensexStockInfo.setBv(getDoubleFromString(doc.getElementsByClass("nsebv bsebv").get(0).text()));
                         }
                         if (sensexStockInfo.getBv()!= null){
-                            sensexStockInfo.setP2bv(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
-                                            .setScale(2, RoundingMode.HALF_UP)
-                                            .doubleValue());
+                            try{
+                                sensexStockInfo.setP2bv(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
+                                        .setScale(2, RoundingMode.HALF_UP)
+                                        .doubleValue());
+                            }catch (Exception e){
+                                ERROR_LOGGER.error(sensexStockInfo + " <- Error ->", e);
+                                e.printStackTrace();
+                            }
                         }
                         if (doc.getElementsByClass("sharhold_insight") != null
                                 && doc.getElementsByClass("sharhold_insight").size() > 0
