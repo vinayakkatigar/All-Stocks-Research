@@ -238,7 +238,7 @@ public class AllStockResearchService {
             setCacheForComponent(component, stockInfoList);
             return (stockInfoList);
         }catch (Exception e){
-            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            ERROR_LOGGER.error(Instant.now() + ", Outer Error ->", e);
             e.printStackTrace();
         }
         setCacheForComponent(component, stockInfoList);
