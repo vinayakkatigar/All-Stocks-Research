@@ -188,40 +188,40 @@ public class SensexStockResearchService {
                                 && doc.getElementById("JLM_marketCap") != null){
                             sensexStockInfo.setStockMktCap(getDoubleFromString(doc.getElementById("JLM_marketCap").text()));
                         }
-                        if (doc.getElementsByClass("nseceps bseceps") != null
-                                && doc.getElementsByClass("nseceps bseceps").size() > 0){
-                            sensexStockInfo.setEps(getDoubleFromString(doc.getElementsByClass("nseceps bseceps").get(0).text()));
-                        }
-                        if (doc.getElementsByClass("nsepe bsepe") != null
-                                && doc.getElementsByClass("nsepe bsepe").size() > 0){
-                            sensexStockInfo.setP2eps(getDoubleFromString(doc.getElementsByClass("nsepe bsepe").get(0).text()));
-                        }
-                        if (doc.getElementsByClass("nsebv bsebv") != null
-                                && doc.getElementsByClass("nsebv bsebv").size() > 0){
-                            sensexStockInfo.setBv(getDoubleFromString(doc.getElementsByClass("nsebv bsebv").get(0).text()));
-                        }
-                        if (sensexStockInfo.getBv()!= null && (sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)) > 0
-                                && Double.compare(sensexStockInfo.getBv(), 0.0) > 0){
-                            try{
+                        try {
+                            if (doc.getElementsByClass("nseceps bseceps") != null
+                                    && doc.getElementsByClass("nseceps bseceps").size() > 0){
+                                sensexStockInfo.setEps(getDoubleFromString(doc.getElementsByClass("nseceps bseceps").get(0).text()));
+                            }
+                            if (doc.getElementsByClass("nsepe bsepe") != null
+                                    && doc.getElementsByClass("nsepe bsepe").size() > 0){
+                                sensexStockInfo.setP2eps(getDoubleFromString(doc.getElementsByClass("nsepe bsepe").get(0).text()));
+                            }
+                            if (doc.getElementsByClass("nsebv bsebv") != null
+                                    && doc.getElementsByClass("nsebv bsebv").size() > 0){
+                                sensexStockInfo.setBv(getDoubleFromString(doc.getElementsByClass("nsebv bsebv").get(0).text()));
+                            }
+                            if (sensexStockInfo.getBv()!= null && (sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)) > 0
+                                    && Double.compare(sensexStockInfo.getBv(), 0.0) > 0){
                                 sensexStockInfo.setP2bv(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
                                         .setScale(2, RoundingMode.HALF_UP)
                                         .doubleValue());
-                            }catch (Exception e){
-                                ERROR_LOGGER.error(sensexStockInfo + " <- Error ->", e);
-                                e.printStackTrace();
                             }
+                            if (sensexStockInfo.getP2bv() == null || Double.compare(sensexStockInfo.getP2bv(), 0.0) == 0 &&
+                                    (doc.getElementsByClass("nsepb bsepb") != null
+                                            && doc.getElementsByClass("nsepb bsepb").size() > 0)){
+                                sensexStockInfo.setP2bv(getDoubleFromString(doc.getElementsByClass("nsepb bsepb").get(0).text()));
+                            }
+                        }catch (Exception e){
+                            ERROR_LOGGER.error(sensexStockInfo + " <- Error ->", e);
+                            e.printStackTrace();
                         }
-                        if (sensexStockInfo.getP2bv() == null || Double.compare(sensexStockInfo.getP2bv(), 0.0) == 0 &&
-                                (doc.getElementsByClass("nsepb bsepb") != null
-                                        && doc.getElementsByClass("nsepb bsepb").size() > 0)){
-                            sensexStockInfo.setP2bv(getDoubleFromString(doc.getElementsByClass("nsepb bsepb").get(0).text()));
-                        }
+
                         if (doc.getElementsByClass("sharhold_insight") != null
                                 && doc.getElementsByClass("sharhold_insight").size() > 0
                                 && doc.getElementsByClass("sharhold_insight").get(0) != null
                                 && doc.getElementsByClass("sharhold_insight").get(0).getElementsByTag("td") != null
                                 && doc.getElementsByClass("sharhold_insight").get(0).getElementsByTag("td").size() > 8){
-
                                     sensexStockInfo.setFiiPct(getDoubleFromString(doc.getElementsByClass("sharhold_insight")
                                         .get(0).getElementsByTag("td").get(8).text()));
                         }
