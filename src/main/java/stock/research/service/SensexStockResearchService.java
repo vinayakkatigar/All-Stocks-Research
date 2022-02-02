@@ -132,7 +132,7 @@ public class SensexStockResearchService {
                 ResponseEntity<String> response = null;
 
                 LOGGER.info("SensexStockResearchService::StockURL ->  " + x);
-//                 response = makeRestCall("https://www.moneycontrol.com/india/stockpricequote/personal-care/jlmorisonindia/JLM");
+//                 response = makeRestCall("https://www.moneycontrol.com/india/stockpricequote/miscellaneous/hemispherepropertiesindia/HPI01");
                  response = makeRestCall(x);
 
                 for (int i = 0; i < 2; i++) {
@@ -200,7 +200,8 @@ public class SensexStockResearchService {
                                 && doc.getElementsByClass("nsebv bsebv").size() > 0){
                             sensexStockInfo.setBv(getDoubleFromString(doc.getElementsByClass("nsebv bsebv").get(0).text()));
                         }
-                        if (sensexStockInfo.getBv()!= null){
+                        if (sensexStockInfo.getBv()!= null && (sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)) > 0
+                                && Double.compare(sensexStockInfo.getBv(), 0.0) > 0){
                             try{
                                 sensexStockInfo.setP2bv(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
                                         .setScale(2, RoundingMode.HALF_UP)
@@ -209,6 +210,11 @@ public class SensexStockResearchService {
                                 ERROR_LOGGER.error(sensexStockInfo + " <- Error ->", e);
                                 e.printStackTrace();
                             }
+                        }
+                        if (sensexStockInfo.getP2bv() == null || Double.compare(sensexStockInfo.getP2bv(), 0.0) == 0 &&
+                                (doc.getElementsByClass("nsepb bsepb") != null
+                                        && doc.getElementsByClass("nsepb bsepb").size() > 0)){
+                            sensexStockInfo.setP2bv(getDoubleFromString(doc.getElementsByClass("nsepb bsepb").get(0).text()));
                         }
                         if (doc.getElementsByClass("sharhold_insight") != null
                                 && doc.getElementsByClass("sharhold_insight").size() > 0
