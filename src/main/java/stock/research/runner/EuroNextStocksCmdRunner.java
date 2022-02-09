@@ -36,6 +36,5 @@ public class EuroNextStocksCmdRunner implements CommandLineRunner {
         LOGGER.info("EuroNextStocksCmdRunner.run");
         euroNextEmailAlertMechanismService.kickOffEmailAlerts();
 */
-
     }
 }
