@@ -10,6 +10,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
+import stock.research.service.NyseTop1000StockResearchService;
+import stock.research.utility.NyseStockResearchUtility;
 
 @Order(1)
 @SpringBootApplication
@@ -19,6 +21,9 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Autowired
     private NyseEmailAlertMechanismService nyseEmailAlertMechanismService;
+
+    @Autowired
+    private NyseTop1000StockResearchService nyseTop1000StockResearchService;
 
     @Autowired
     private NYSEStockResearchService nyseStockResearchService;
@@ -31,6 +36,7 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
 /*
         LOGGER.info("NyseStocksCmdRunner.run" );
         List<NyseStockInfo> stocksUrlMap = nyseStockResearchService.populateNYSEStockDetailedInfo();

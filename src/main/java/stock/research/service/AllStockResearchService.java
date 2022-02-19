@@ -27,7 +27,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
@@ -101,6 +100,10 @@ public class AllStockResearchService {
         LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");
         List<StockInfo> stockInfoList = getStockUrlInfos(component,uri, cnt);
 
+        return getDetailedInfo(component, stockInfoList);
+    }
+
+    public List<StockInfo> getDetailedInfo(String component, List<StockInfo> stockInfoList) {
         try {
             stockInfoList.stream().forEach(x -> {
 //            stockInfoList.stream().limit(15).forEach(x -> {
@@ -236,13 +239,13 @@ public class AllStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ component + "detailedInfo.json"),
                     objectMapper.writeValueAsString(stockInfoList).getBytes());
             setCacheForComponent(component, stockInfoList);
-            return (stockInfoList);
+            return stockInfoList;
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Outer Error ->", e);
             e.printStackTrace();
         }
         setCacheForComponent(component, stockInfoList);
-        return (stockInfoList);
+        return stockInfoList;
     }
 
     @Retryable(maxAttempts=10, value = RuntimeException.class,

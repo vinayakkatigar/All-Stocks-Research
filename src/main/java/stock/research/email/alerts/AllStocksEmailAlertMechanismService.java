@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.StockInfo;
 import stock.research.service.AllStockResearchService;
+import stock.research.service.NyseTop1000StockResearchService;
+import stock.research.utility.NyseStockResearchUtility;
 import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
@@ -51,6 +53,9 @@ public class AllStocksEmailAlertMechanismService {
     private ObjectMapper objectMapper;
     @Autowired
     private AllStockResearchService allStockResearchService;
+
+    @Autowired
+    private NyseTop1000StockResearchService nyseTop1000StockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
@@ -275,6 +280,22 @@ public class AllStocksEmailAlertMechanismService {
         });
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffBelgiumEmailAlerts" );
     }
+
+
+    @Scheduled(cron = "0 0 14 ? * MON-FRI")
+    public void kickOffNyseTop1000() {
+        LOGGER.info(Instant.now()+ " <-  Started NYSE::kickOffNyseTop1000" );
+        final List<StockInfo> nyseStockInfoList = nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("NYSE_1000", nyseStockInfoList,x, StockCategory.LARGE_CAP);
+        });
+
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails("NYSE_1000", nyseStockInfoList,x, StockCategory.MID_CAP);
+        });
+        LOGGER.info(Instant.now()+ " <-  Ended NYSE::kickOffNyseTop1000::kickOffEmailAlerts" );
+    }
+
 
     @Scheduled(cron = "0 0 18 ? * MON-FRI")
     public void kickOffWorld1000EmailAlerts() {

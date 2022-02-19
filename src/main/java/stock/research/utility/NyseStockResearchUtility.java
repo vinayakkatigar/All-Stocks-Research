@@ -1,6 +1,7 @@
 package stock.research.utility;
 
 import stock.research.domain.NyseStockInfo;
+import stock.research.domain.StockInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,6 +15,8 @@ public class NyseStockResearchUtility {
     public static final Double MILLION = 1000000.0;
     public static final String NASDAQ_URL = "https://www.advfn.com/nasdaq/nasdaq.asp?companies=";
     public static final String NYSE_URL = "https://www.advfn.com/nyse/newyorkstockexchange.asp?companies=";
+    public static final String NYSE_1000_URL = "https://companiesmarketcap.com/usa/largest-companies-in-the-usa-by-market-cap/?page=";
+    public static final int NYSE_1000_CNT = 15;
     public static final String NYSE_MISSED_URL = "https://www.theglobeandmail.com/investing/markets/stocks/";
 
     public static final String HYPHEN = "-";
