@@ -168,9 +168,11 @@ public class AllStockResearchService {
                             x.set_52WeekHighPrice(getBigDecimalFromString(_52RangeArr[1]));
                         }
                     }
-                    x.setP2e(getDoubleFromString(extractFieldValue(doc, "PE Ratio")));
+                    x.setP2e(getDoubleFromString(extractFieldValue(doc, "PE Ratio")) == null ? getDoubleFromString(extractFieldValue(doc, "PE ratio")) : getDoubleFromString(extractFieldValue(doc, "PE Ratio")));
+                    if (x.getP2e() == null || Double.compare(x.getP2e(), 0) == 0) x.setP2e(getDoubleFromString(extractFieldValue(doc, "PE")));
                     x.setEps(getDoubleFromString(extractFieldValue(doc, "EPS")));
                     String mktCap = extractFieldValue(doc, "Market Cap");
+                    mktCap = mktCap == null ? extractFieldValue(doc, "Market Cap") == null ? extractFieldValue(doc, "Market")  : extractFieldValue(doc, "Market Cap")  : mktCap;
                     if (mktCap != null){
                         mktCap = mktCap.replace("$","");
                         mktCap = mktCap.replace("£","");
