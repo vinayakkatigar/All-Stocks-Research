@@ -297,7 +297,7 @@ public class StockResearchUtility {
     public static void killZombie() {
         try {
             try {
-                Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
+//                Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
             }catch (Exception e){
                 e.printStackTrace();
             }

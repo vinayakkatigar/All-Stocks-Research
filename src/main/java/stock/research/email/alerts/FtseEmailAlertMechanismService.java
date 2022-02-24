@@ -51,7 +51,7 @@ public class FtseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 15 13 ? * MON-FRI")
+    @Scheduled(cron = "0 15 16 ? * MON-FRI")
     public void kickOffEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
