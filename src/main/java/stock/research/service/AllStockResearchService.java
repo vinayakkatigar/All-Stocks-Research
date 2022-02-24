@@ -95,6 +95,7 @@ public class AllStockResearchService {
         urlMap.put("Spain", "SpaindetailedInfo.json");
         urlMap.put("Italy", "ItalydetailedInfo.json");
         urlMap.put("India", "IndiadetailedInfo.json");
+        urlMap.put("NYSE_1000", "NYSE_1000.json");
     }
     public List<StockInfo> populateStockDetailedInfo(String component,String uri,Integer cnt) {
         LOGGER.info("<- Started AllStockResearchService.populateStockDetailedInfo");
@@ -458,7 +459,8 @@ public class AllStockResearchService {
                     if (element != null){
                         _52Range = element.getElementsMatchingOwnText(" - ").text();
                         if (_52Range != null && !StringUtils.isEmpty(_52Range)) return _52Range;
-                        if (element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text() != null)
+                        if (element.getElementsByTag("td") != null &&
+                                element.getElementsByTag("td").size() > 0 && element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text() != null)
                             return element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text();
 
                     }
