@@ -448,24 +448,28 @@ public class AllStockResearchService {
     }
 
     private String extractFieldValue(Document doc, String field) {
-        String _52Range = null;
-        Elements _52WeekRange = doc.getElementsMatchingOwnText(field);
-        if (_52WeekRange != null && _52WeekRange.size() > 0){
-            Element element = _52WeekRange.get(0);
-            if (element != null && element.parent() != null){
-                element = element.parent();
+        try {
+            String _52Range = null;
+            Elements _52WeekRange = doc.getElementsMatchingOwnText(field);
+            if (_52WeekRange != null && _52WeekRange.size() > 0){
+                Element element = _52WeekRange.get(0);
                 if (element != null && element.parent() != null){
                     element = element.parent();
-                    if (element != null){
-                        _52Range = element.getElementsMatchingOwnText(" - ").text();
-                        if (_52Range != null && !StringUtils.isEmpty(_52Range)) return _52Range;
-                        if (element.getElementsByTag("td") != null &&
-                                element.getElementsByTag("td").size() > 0 && element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text() != null)
-                            return element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text();
+                    if (element != null && element.parent() != null){
+                        element = element.parent();
+                        if (element != null){
+                            _52Range = element.getElementsMatchingOwnText(" - ").text();
+                            if (_52Range != null && !StringUtils.isEmpty(_52Range)) return _52Range;
+                            if (element.getElementsByTag("td") != null &&
+                                    element.getElementsByTag("td").size() > 0 && element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text() != null)
+                                return element.getElementsByTag("td").get(element.getElementsByTag("td").size() - 1).text();
 
+                        }
                     }
                 }
             }
+        }catch (Exception e){
+            return null;
         }
         return null;
     }
