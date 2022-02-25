@@ -43,7 +43,6 @@ import static stock.research.utility.StockResearchUtility.*;
 @Service
 public class AllStocksEmailAlertMechanismService {
     enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
-
     enum SIDE{BUY, SELL};
     private static final Logger LOGGER = LoggerFactory.getLogger(AllStocksEmailAlertMechanismService.class);
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
