@@ -49,7 +49,7 @@ public class EuroNextEmailAlertMechanismService {
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
 
-    @Scheduled(cron = "0 35 15 ? * MON-FRI")
+    @Scheduled(cron = "0 35 9,15 ? * MON-FRI")
     public void kickOffEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
         final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
