@@ -73,7 +73,8 @@ public class AllStocksEmailAlertMechanismService {
         });
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSingaporeEmailAlerts" );
     }
-    @Scheduled(cron = "0 0 01 ? * MON-FRI")
+
+//    @Scheduled(cron = "0 0 01 ? * MON-FRI")
     public void kickOffIndiaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffIndiaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("India", INDIA_URL, INDIA_CNT);
