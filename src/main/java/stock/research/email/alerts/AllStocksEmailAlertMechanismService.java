@@ -119,7 +119,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 0 5 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 5 ? * MON-FRI")
     public void kickOffJapanEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffJapanEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Japan", JAPAN_URL, JAPAN_CNT);
