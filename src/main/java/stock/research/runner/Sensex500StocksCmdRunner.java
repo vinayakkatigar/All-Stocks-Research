@@ -29,7 +29,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
+        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
     }
 
 }
