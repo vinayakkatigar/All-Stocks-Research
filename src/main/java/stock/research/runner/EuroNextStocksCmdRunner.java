@@ -6,10 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.EuroNextEmailAlertMechanismService;
 import stock.research.utility.EuroNextStockUrlExtractor;
-
+@Order(4)
 @SpringBootApplication
 public class EuroNextStocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");

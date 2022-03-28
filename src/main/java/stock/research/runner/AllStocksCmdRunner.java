@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import stock.research.domain.StockInfo;
 import stock.research.email.alerts.AllStocksEmailAlertMechanismService;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Order(5)
 @SpringBootApplication
 public class AllStocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
