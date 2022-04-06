@@ -6,6 +6,9 @@
 <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <property name="LOG_FILE_MAX_SIZE" value="5000MB" />
+    <property name="LOG_TOTAL_SIZE_CAP" value="50000MB" />
+    <property name="LOG_FILE_MAX_HISTORY" value="200" />
 <!--<appender name="SAVE-TO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>logs/complex-lending-ms-loan-service</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -27,7 +30,7 @@
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
         <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
     </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
         <fileNamePattern>${ARCHIVED_ERROR_LOG_FILE}_%d{dd-MM-yyyy}.log</fileNamePattern>
         <maxHistory>10</maxHistory>
         <totalSizeCap>100MB</totalSizeCap>
