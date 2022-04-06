@@ -66,7 +66,7 @@ public class NyseEmailAlertMechanismService {
 
     @Scheduled(cron = "0 5 0 ? * MON-FRI")
     public void kickOffKillZombs() {
-        StockResearchUtility.killZombie();
+        StockResearchUtility.killZombie("haha");
     }
 
     public void kickOffEmailAlerts() {

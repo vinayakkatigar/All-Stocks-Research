@@ -60,7 +60,7 @@ public class AllStocksEmailAlertMechanismService {
 
     @Scheduled(cron = "0 0 0 ? * MON-FRI")
     public void kickKillZombie_4() {
-        killZombie();
+        killZombie("haha");
     }
 
     @Scheduled(cron = "0 14 00 ? * MON-FRI")
@@ -306,6 +306,14 @@ public class AllStocksEmailAlertMechanismService {
             generateAlertEmails("World1000", stockInfoList,x, MID_CAP);
         });
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );
+    }
+
+    @Scheduled(cron = "0 50 6 ? * MON-FRI")
+    public void killChrome() {
+        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::killChrome" );
+        killZombie("chrome");
+        killZombie("chromedriver");
+        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::killChrome" );
     }
 
     @Scheduled(cron = "0 0 7 ? * MON-FRI")
