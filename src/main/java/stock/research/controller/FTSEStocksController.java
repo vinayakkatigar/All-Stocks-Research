@@ -32,6 +32,13 @@ public class FTSEStocksController {
     @Autowired
     RestTemplate restTemplate;
 
+    @RequestMapping("/ftse")
+    public String ftse(){
+        List<FtseStockInfo> ftseStockDetailedInfoList = stockResearchService.getLargeCapCacheftseStockDetailedInfoList();
+        ftseStockDetailedInfoList.addAll(stockResearchService.getMidCapCapCacheftseStockDetailedInfoList());
+        return generateHtml(ftseStockDetailedInfoList);
+    }
+
     @RequestMapping("/ftse250")
     public String ftse250(){
         List<FtseStockInfo> ftseStockDetailedInfoList = stockResearchService.getMidCapCapCacheftseStockDetailedInfoList();
@@ -63,7 +70,7 @@ public class FTSEStocksController {
             data += HTML_END;
             return data;
         } catch (Exception e) {
-            ERROR_LOGGER.error(Instant.now() + ", ftse250 - , Error ->", e);
+            ERROR_LOGGER.error(Instant.now() + ", ftse - , Error ->", e);
             e.printStackTrace();
             return e.toString();
         }
