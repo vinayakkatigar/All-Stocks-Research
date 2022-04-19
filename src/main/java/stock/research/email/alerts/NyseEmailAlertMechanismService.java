@@ -16,10 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.PortfolioInfo;
-import stock.research.domain.StockInfo;
 import stock.research.service.NYSEStockResearchService;
-import stock.research.service.NyseTop1000StockResearchService;
-import stock.research.utility.NyseStockResearchUtility;
 import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
@@ -55,7 +52,7 @@ public class NyseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 9,15 ? * MON-THU")
-    public void kickOffEmailAlerts_1() {
+    public void kickOffEmailAlerts_Cron() {
         kickOffEmailAlerts();
     }
 

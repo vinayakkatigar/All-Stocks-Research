@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,8 +131,8 @@ public class NyseTop1000StockResearchService {
     private WebDriver launchBrowser() {
         System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
         try{
-//            ChromeOptions options = new ChromeOptions();
-//            options.addArguments("--headless");
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
 
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
