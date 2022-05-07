@@ -56,7 +56,6 @@ public class AllStocksCmdRunner implements CommandLineRunner {
         LOGGER.info("##AllStocksCmdRunner.run::end##" + (System.currentTimeMillis() - start));
 
 
-
     }
 
 }

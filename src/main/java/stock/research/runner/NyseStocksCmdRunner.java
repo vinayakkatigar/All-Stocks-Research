@@ -8,10 +8,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.client.RestTemplate;
+import stock.research.domain.NyseStockInfo;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
+
+import java.util.List;
 
 @Order(2)
 @SpringBootApplication
@@ -36,12 +39,12 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
         nyseEmailAlertMechanismService.kickOffEmailAlerts();
-        /*
         nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
         LOGGER.info("NyseStocksCmdRunner.run" );
         List<NyseStockInfo> stocksUrlMap = nyseStockResearchService.populateNYSEStockDetailedInfo();
-*/
+
     }
 
 }

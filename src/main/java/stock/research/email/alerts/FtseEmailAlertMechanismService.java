@@ -51,6 +51,43 @@ public class FtseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
+
+    @Scheduled(cron = "0 0 17 ? * MON-FRI")
+    public void kickOffFTSE250YearlyGainerLoserEmailAlerts() {
+
+        LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffFTSE250YearlyGainerLoserEmailAlerts" );
+        final List<FtseStockInfo> populatedftse250List = stockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo("https://www.hl.co.uk/shares/stock-market-summary/ftse-250/performance?column=date_1y&order=asc", 20);
+
+        LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
+
+        StringBuilder dataBuffer = new StringBuilder("");
+
+        final StringBuilder subjectBuffer = new StringBuilder("");
+        subjectBuffer.append("** FTSE 250 Yearly Gainer Buy Mid Cap Alert**");
+        populatedftse250List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
+        int retry = 3;
+        while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+    }
+
+
+    @Scheduled(cron = "0 0 16 ? * MON-FRI")
+    public void kickOffFTSE100YearlyGainerLoserEmailAlerts() {
+
+        LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
+        final List<FtseStockInfo> populatedftse100List = stockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo("https://www.hl.co.uk/shares/stock-market-summary/ftse-100/performance?column=date_1y&order=asc", 20);
+
+        LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
+
+        StringBuilder dataBuffer = new StringBuilder("");
+
+        final StringBuilder subjectBuffer = new StringBuilder("");
+        subjectBuffer.append("** FTSE 100 Yearly Gainer Buy Large Cap Alert**");
+        populatedftse100List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
+        int retry = 3;
+        while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+    }
+
+
     @Scheduled(cron = "0 15 10,16 ? * MON-FRI")
     public void kickOffEmailAlerts() {
 

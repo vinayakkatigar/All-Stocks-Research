@@ -70,6 +70,42 @@ public class FTSEStockResearchService {
 //        this.webDriver = launchBrowser();
     }
 
+
+    public List<FtseStockInfo> populateYearlyGainersLosersFtseStockDetailedInfo(String url, Integer trCnt) {
+        LOGGER.info("<- Started FTSEStockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo");
+        List<FtseStockInfo> ftseStockDetailedInfoList = new ArrayList<>();
+        try {
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){}
+
+        ResponseEntity<String> response = null;
+
+        LOGGER.info("FTSEStockResearchService::populateYearlyGainersLosersFtseStockDetailedInfo::url: -> " + url);
+        response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+        Document doc = Jsoup.parse(response.getBody());
+        Elements tableElements = doc.getElementsByClass("stockTable");
+        if (tableElements != null && tableElements.size() > 0){
+            Element tableElement = tableElements.get(0);
+            Elements trElements = tableElement.getElementsByTag("tr");
+            if (trElements != null && trElements.size() > 0){
+                for (int i = 0; i < trElements.size(); i++) {
+                    Element trElement = trElements.get(i);
+                    Elements tdElements = trElement.getElementsByTag("td");
+                        if (tdElements != null && tdElements.size() > 0 && trCnt  > 0){
+                            try {
+                                Double.valueOf(tdElements.get(6).text());
+                            }catch (Exception e){
+                                continue;
+                            }
+                            trCnt--;
+                            ftseStockDetailedInfoList.add(new FtseStockInfo(tdElements.get(1).toString(), new BigDecimal(tdElements.get(6).text())));
+                        }
+                    }
+                }
+            }
+        return  ftseStockDetailedInfoList;
+    }
+
     public List<FtseStockInfo> getFtseStockInfo(String urlInfo, int cnt) {
         ResponseEntity<String> response = null;
         List<FtseStockInfo> ftseStockInfoList = new ArrayList<>();

@@ -29,6 +29,11 @@ public class FtseStockInfo {
         this.currentMarketPrice = currentMarketPrice;
     }
 
+    public FtseStockInfo(String stockName, BigDecimal currentMarketPrice) {
+        this.stockName = stockName;
+        this.currentMarketPrice = currentMarketPrice;
+    }
+
     @Override
     public String toString() {
         return "Ftse250StockInfo{" +
