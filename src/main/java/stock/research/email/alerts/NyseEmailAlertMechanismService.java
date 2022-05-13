@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static stock.research.utility.NyseStockResearchUtility.*;
+import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
 
 @Service
 public class NyseEmailAlertMechanismService {
@@ -77,6 +78,14 @@ public class NyseEmailAlertMechanismService {
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(nyseStockInfoList,x, StockCategory.MID_CAP);
         });
+        try {
+            StringBuilder dataBuffer = new StringBuilder("");
+            stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
+        }catch (Exception e){
+
+        }
         LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
     }
 

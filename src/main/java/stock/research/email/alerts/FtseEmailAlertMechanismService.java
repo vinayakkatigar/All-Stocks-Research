@@ -105,6 +105,20 @@ public class FtseEmailAlertMechanismService {
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(populatedftse250List,x, StockCategory.MID_CAP);
         });
+
+
+        try {
+            final StringBuilder dataBuffer = new StringBuilder("");
+            stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, new StringBuilder("** FTSE LARGE CAP Daily Data ** ")) && --retry >= 0);
+            final StringBuilder dataMidCapBuffer = new StringBuilder("");
+            stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataMidCapBuffer, x));
+            retry = 3;
+            while (!sendEmail(dataMidCapBuffer, new StringBuilder("** FTSE MID CAP Daily Data ** ")) && --retry >= 0);
+        }catch (Exception e){
+
+        }
         LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
 
     }
