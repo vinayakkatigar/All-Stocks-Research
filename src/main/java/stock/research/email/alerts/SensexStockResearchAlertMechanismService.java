@@ -243,7 +243,7 @@ public class SensexStockResearchAlertMechanismService {
         return false;
     }
 
-    private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
+    public boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         try {
             LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
             MimeMessage message = javaMailSender.createMimeMessage();

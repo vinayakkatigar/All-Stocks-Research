@@ -9,6 +9,7 @@ public class PortfolioInfo {
 
 
     private String symbol;
+    private String stockName;
     private String qty;
     private String company;
     private String price;
@@ -257,5 +258,13 @@ public class PortfolioInfo {
 
     public void setUnrealizedProfitNLossPct(String unrealizedProfitNLossPct) {
         this.unrealizedProfitNLossPct = unrealizedProfitNLossPct;
+    }
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
     }
 }
