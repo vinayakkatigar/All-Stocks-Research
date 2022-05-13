@@ -402,7 +402,6 @@ public class SensexStockResearchService {
         ResponseEntity<String> response = null;
         try {
             Thread.sleep(10);
-            LOGGER.info("URL -> " + url);
             response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
         }catch (Exception e){
             return null;

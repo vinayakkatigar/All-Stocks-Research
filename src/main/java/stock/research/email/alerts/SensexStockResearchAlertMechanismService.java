@@ -67,6 +67,14 @@ public class SensexStockResearchAlertMechanismService {
 
         }catch (Exception e){
         }
+        try {
+            StringBuilder dataBuffer = new StringBuilder("");
+            sensexStockResearchService.getCacheSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** ")) && --retry >= 0);
+        }catch (Exception e){
+
+        }
         LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
     }
 
