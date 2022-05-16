@@ -113,7 +113,7 @@ public class FtseEmailAlertMechanismService {
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** FTSE LARGE CAP Daily Data ** ")) && --retry >= 0);
             final StringBuilder dataMidCapBuffer = new StringBuilder("");
-            stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataMidCapBuffer, x));
+            stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataMidCapBuffer, x));
             retry = 3;
             while (!sendEmail(dataMidCapBuffer, new StringBuilder("** FTSE MID CAP Daily Data ** ")) && --retry >= 0);
         }catch (Exception e){
