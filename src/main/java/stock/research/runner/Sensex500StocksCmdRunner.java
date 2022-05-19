@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.client.RestTemplate;
+import stock.research.email.alerts.FtseEmailAlertMechanismService;
 import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
 import stock.research.service.InteractiveInvestorsResearchService;
 import stock.research.service.SensexStockResearchService;

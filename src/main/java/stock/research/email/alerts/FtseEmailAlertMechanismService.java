@@ -19,9 +19,7 @@ import stock.research.domain.PortfolioInfo;
 import stock.research.service.FTSEStockResearchService;
 
 import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -89,7 +87,7 @@ public class FtseEmailAlertMechanismService {
 
 
     @Scheduled(cron = "0 15 10,16 ? * MON-FRI")
-    public void kickOffEmailAlerts() {
+    public void kickOffFTSEEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
         final List<FtseStockInfo> populatedftse100List = stockResearchService.

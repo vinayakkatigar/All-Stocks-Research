@@ -30,7 +30,7 @@ public class FtseStocksCmdRunner implements CommandLineRunner {
 
 
         LOGGER.info("FtseStocksCmdRunner.run" );
-        ftseEmailAlertMechanismService.kickOffEmailAlerts();
+        ftseEmailAlertMechanismService.kickOffFTSEEmailAlerts();
 
         ftseEmailAlertMechanismService.kickOffFTSE250YearlyGainerLoserEmailAlerts();
         ftseEmailAlertMechanismService.kickOffFTSE100YearlyGainerLoserEmailAlerts();

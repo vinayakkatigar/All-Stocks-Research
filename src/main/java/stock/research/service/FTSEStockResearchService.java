@@ -204,17 +204,6 @@ public class FTSEStockResearchService {
 
             ftseStockDetailedInfoList = getFtseStockInfo(urlInfo, cnt);
 
-            ftseStockDetailedInfoList.forEach(x -> {
-                try {
-                    int retry =5;
-                    boolean sucess = false;
-                    sucess = extractRestJSoupAttributes(x);
-                    while (!sucess && --retry > 0){
-                        sucess = extractRestJSoupAttributes(x);
-                    }
-                }catch (Exception e){ webDriver = launchBrowser(); }
-
-            });
             try {
                 if (webDriver == null) webDriver = launchBrowser();
             }catch (Exception e){}
@@ -230,6 +219,18 @@ public class FTSEStockResearchService {
                 }catch (Exception e){
                     webDriver = launchBrowser();
                 }
+            });
+
+            ftseStockDetailedInfoList.forEach(x -> {
+                try {
+                    int retry =5;
+                    boolean sucess = false;
+                    sucess = extractRestJSoupAttributes(x);
+                    while (!sucess && --retry > 0){
+                        sucess = extractRestJSoupAttributes(x);
+                    }
+                }catch (Exception e){ webDriver = launchBrowser(); }
+
             });
 
             ftseStockDetailedInfoList = ftseStockDetailedInfoList.stream().distinct().collect(Collectors.toList());
