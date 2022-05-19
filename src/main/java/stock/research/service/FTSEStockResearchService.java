@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
@@ -206,9 +208,9 @@ public class FTSEStockResearchService {
                 try {
                     int retry =5;
                     boolean sucess = false;
-                    sucess = extractAttributes(x);
+                    sucess = extractRestJSoupAttributes(x);
                     while (!sucess && --retry > 0){
-                        sucess = extractAttributes(x);
+                        sucess = extractRestJSoupAttributes(x);
                     }
                 }catch (Exception e){ webDriver = launchBrowser(); }
 
@@ -221,9 +223,9 @@ public class FTSEStockResearchService {
                 try {
                     int retry =5;
                     boolean sucess = false;
-                    sucess = extractedAttr(x);
+                    sucess = extractedChromeDriverAttr(x);
                     while (!sucess && --retry > 0){
-                        sucess = extractedAttr(x);
+                        sucess = extractedChromeDriverAttr(x);
                     }
                 }catch (Exception e){
                     webDriver = launchBrowser();
@@ -264,7 +266,7 @@ public class FTSEStockResearchService {
         return (ftseStockDetailedInfoList);
     }
 
-    private boolean extractedAttr(FtseStockInfo x) {
+    private boolean extractedChromeDriverAttr(FtseStockInfo x) {
         //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
         if (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||
                 x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0 ||
@@ -272,6 +274,19 @@ public class FTSEStockResearchService {
             if (webDriver != null){
 
                 try { webDriver.get(x.getStockURL()); Thread.sleep(1000 * 3);} catch (Exception e) {webDriver = launchBrowser(); }
+                try{
+                    //to perform Scroll on application using Selenium
+                    JavascriptExecutor js = (JavascriptExecutor) webDriver;
+                    js.executeScript("window.scrollBy(0,1200)", "");
+                    Thread.sleep(500 * 1);
+                    js.executeScript("window.scrollBy(0,250)", "");
+                    Thread.sleep(500 * 1);
+                    js.executeScript("window.scrollBy(0,250)", "");
+                    Thread.sleep(250 * 1);
+                    //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+                    webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
+                }catch (Exception e){}
 
                 try{
                     if((x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
@@ -291,7 +306,7 @@ public class FTSEStockResearchService {
         return true;
     }
 
-    private boolean extractAttributes(FtseStockInfo x) {
+    private boolean extractRestJSoupAttributes(FtseStockInfo x) {
         //            ftseStockDetailedInfoList.stream().limit(15).forEach(x -> {
         ResponseEntity<String> response = null;
         try {
