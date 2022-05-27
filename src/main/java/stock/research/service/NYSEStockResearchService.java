@@ -137,7 +137,9 @@ public class NYSEStockResearchService {
                 webDriver = launchBrowser();
                 webDriver.get(x.getValue());
             }
-
+            if (webDriver == null){
+                webDriver = launchBrowser();
+            }
             sleep(1000 * 3);
             //webDriver.navigate().refresh();
             //sleep(1000 * 5);
