@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
@@ -242,6 +244,7 @@ public class SensexStockResearchService {
                                     }
                                     if (webDriver != null){
                                         webDriver.get(sensexStockInfo.getStockURL());
+                                        scrollToolBar();
 										try{
 											if((sensexStockInfo.getStockMktCap() == null ||
 													sensexStockInfo.getStockMktCap()  == 0) && (webDriver.findElement(By.cssSelector(".nsemktcap.bsemktcap")) != null)){
@@ -354,6 +357,21 @@ public class SensexStockResearchService {
         if (webDriver != null) webDriver.close();
         cacheSensexStockInfosList = resultSensexStockInfosList;
         return (resultSensexStockInfosList);
+    }
+
+    private void scrollToolBar() {
+        try{
+
+            JavascriptExecutor js = (JavascriptExecutor) webDriver;
+            js.executeScript("window.scrollBy(0,1200)", "");
+            Thread.sleep(500 * 1);
+            js.executeScript("window.scrollBy(0,250)", "");
+            Thread.sleep(500 * 1);
+            js.executeScript("window.scrollBy(0,250)", "");
+            Thread.sleep(250 * 1);
+
+            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
+        }catch (Exception e){}
     }
 
     private void set52HighLowPriceDiff(SensexStockInfo sensexStockInfo) {

@@ -325,10 +325,10 @@ public class NYSEStockResearchService {
 
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             sleep(200 );
             webDriver.get("https://www.nasdaq.com/market-activity/stocks/screener");
-            sleep(1000 * 10);
+            sleep(1000 * 5);
 
             try { webDriver.findElement(By.id("onetrust-accept-btn-handler")).click();webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl"); } catch (Exception e) { }
 
