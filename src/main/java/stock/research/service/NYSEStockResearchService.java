@@ -258,13 +258,13 @@ public class NYSEStockResearchService {
             nyseStockInfo.setTimestamp(Instant.now());
 
             populateNYSEStockDetailedInfoList.add(nyseStockInfo);
-            System.out.println("b4 -> nyseStockInfo -> " + nyseStockInfo);
             LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
 
         }catch (Exception e) {
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
+            return false;
         }
         return true;
     }
