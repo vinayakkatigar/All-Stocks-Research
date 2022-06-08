@@ -207,7 +207,7 @@ public class SensexStockResearchService {
                                         .setScale(2, RoundingMode.HALF_UP)
                                         .doubleValue());
                             }
-                            if (sensexStockInfo.getP2bv() == null || Double.compare(sensexStockInfo.getP2bv(), 0.0) == 0 &&
+                            if ((sensexStockInfo.getP2bv() == null || Double.compare(sensexStockInfo.getP2bv(), 0.0) == 0) &&
                                     (doc.getElementsByClass("nsepb bsepb") != null
                                             && doc.getElementsByClass("nsepb bsepb").size() > 0)){
                                 sensexStockInfo.setP2bv(getDoubleFromString(doc.getElementsByClass("nsepb bsepb").get(0).text()));
