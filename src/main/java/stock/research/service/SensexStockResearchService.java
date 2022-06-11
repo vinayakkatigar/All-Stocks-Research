@@ -130,7 +130,7 @@ public class SensexStockResearchService {
 //            sensexStockInfosList = getSensex500StockInfo();
 
             stockUrlsMap.entrySet().stream().map(x -> x.getValue()).forEach(x -> {
-//            stockUrlsMap.entrySet().stream().map(x -> x.getValue()).limit(750).forEach(x -> {
+//            stockUrlsMap.entrySet().stream().map(x -> x.getValue()).limit(15).forEach(x -> {
                 ResponseEntity<String> response = null;
 
                 LOGGER.info("SensexStockResearchService::StockURL ->  " + x);
