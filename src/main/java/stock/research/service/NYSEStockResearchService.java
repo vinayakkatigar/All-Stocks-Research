@@ -35,6 +35,7 @@ import static java.lang.Thread.sleep;
 import static java.time.Instant.now;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
+import static java.util.stream.Collectors.toList;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 
@@ -82,7 +83,10 @@ public class NYSEStockResearchService {
 
              });
 
-            populateNYSEStockDetailedInfoList.sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
+            populateNYSEStockDetailedInfoList.stream().filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
+                    && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
+                    && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
+                    && (q.getStockMktCap() != null) && (q.getEps() != null))).collect(toList()).sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i =1;
@@ -264,11 +268,11 @@ public class NYSEStockResearchService {
                     && (nyseStockInfo.getStockMktCap() != null) && (nyseStockInfo.getEps() != null))){
                 populateNYSEStockDetailedInfoList.add(nyseStockInfo);
             }
-            populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream().filter(q -> ((nyseStockInfo.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
+            populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream()
+                    .filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
-                    && (q.getStockMktCap() != null) && (q.getEps() != null))).collect(Collectors.toList());
-            LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
+                    && (q.getStockMktCap() != null) && (q.getEps() != null))).collect(toList());
 
         }catch (Exception e) {
             restartWebDriver();
