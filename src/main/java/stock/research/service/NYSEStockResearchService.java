@@ -29,6 +29,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
 import static java.time.Instant.now;
@@ -166,7 +167,7 @@ public class NYSEStockResearchService {
             int retry =10;
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
 //                        webDriver.navigate().refresh();
-                if (retry < 9)sleep(1000 * (2 + (++wait)));
+                if (retry < 9)sleep(100 * (2 + (++wait)));
                 --retry;
 
                 try{
@@ -257,7 +258,16 @@ public class NYSEStockResearchService {
             }
             nyseStockInfo.setTimestamp(Instant.now());
 
-            populateNYSEStockDetailedInfoList.add(nyseStockInfo);
+            if (((nyseStockInfo.getCurrentMarketPrice() != null && nyseStockInfo.getCurrentMarketPrice().intValue() > 0)
+                    && (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().intValue() > 0)
+                    && (nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().intValue() > 0)
+                    && (nyseStockInfo.getStockMktCap() != null) && (nyseStockInfo.getEps() != null))){
+                populateNYSEStockDetailedInfoList.add(nyseStockInfo);
+            }
+            populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream().filter(q -> ((nyseStockInfo.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
+                    && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
+                    && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
+                    && (q.getStockMktCap() != null) && (q.getEps() != null))).collect(Collectors.toList());
             LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
 
         }catch (Exception e) {
