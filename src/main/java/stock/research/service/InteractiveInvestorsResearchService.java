@@ -16,27 +16,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.NyseStockInfo;
 import stock.research.email.alerts.EmailGenerationService;
-import stock.research.utility.NyseStockResearchUtility;
 import stock.research.utility.PortfolioResearchUtility;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
 import static java.time.Instant.now;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 

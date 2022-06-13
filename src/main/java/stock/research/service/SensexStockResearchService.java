@@ -23,7 +23,6 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.SensexStockInfo;
-import stock.research.utility.SensexStockResearchUtility;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -31,7 +30,6 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;

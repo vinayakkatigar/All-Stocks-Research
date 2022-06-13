@@ -13,14 +13,13 @@ import stock.research.domain.StockInfo;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
-import stock.research.utility.StockResearchUtility;
 
 import java.time.Instant;
 import java.util.List;
 
 import static java.math.BigDecimal.ZERO;
-import static java.math.BigDecimal.valueOf;
-import static stock.research.utility.NyseStockResearchUtility.*;
+import static stock.research.utility.NyseStockResearchUtility.HTML_END;
+import static stock.research.utility.NyseStockResearchUtility.HTML_START;
 import static stock.research.utility.StockResearchUtility.createTableContents;
 
 @RestController

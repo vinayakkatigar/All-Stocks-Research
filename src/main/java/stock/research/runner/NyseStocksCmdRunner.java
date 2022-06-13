@@ -8,13 +8,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.client.RestTemplate;
-import stock.research.domain.NyseStockInfo;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
 
-import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Order(2)
 @SpringBootApplication
@@ -39,11 +41,22 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Callable<Integer> c = () -> {   // Lambda Expression
 
-        nyseEmailAlertMechanismService.kickOffEmailAlerts();
-        nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
-        LOGGER.info("NyseStocksCmdRunner.run" );
-        List<NyseStockInfo> stocksUrlMap = nyseStockResearchService.populateNYSEStockDetailedInfo();
+            LOGGER.info("Started NyseStocksCmdRunner::run" );
+            nyseEmailAlertMechanismService.kickOffEmailAlerts();
+            nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
+            LOGGER.info("End NyseStocksCmdRunner::run" );
+            return 0;
+        };
+        Future<Integer> future = executor.submit(c);
+        try {
+            future.get(); //wait for a thread to complete
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
 
     }
 

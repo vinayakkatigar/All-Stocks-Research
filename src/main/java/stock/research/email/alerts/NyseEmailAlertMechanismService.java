@@ -32,10 +32,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static stock.research.utility.NyseStockResearchUtility.*;
-import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
 
 @Service
 public class NyseEmailAlertMechanismService {
@@ -68,25 +71,36 @@ public class NyseEmailAlertMechanismService {
     }
 
     public void kickOffEmailAlerts() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Callable<Integer> c = () -> {   // Lambda Expression
 
-        LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
-        final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
-        });
+            LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+            final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
+            });
 
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(nyseStockInfoList,x, StockCategory.MID_CAP);
-        });
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(nyseStockInfoList,x, StockCategory.MID_CAP);
+            });
+            try {
+                StringBuilder dataBuffer = new StringBuilder("");
+                stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+                int retry = 3;
+                while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
+            }catch (Exception e){
+
+            }
+            LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+            return 0;
+        };
+        Future<Integer> future = executor.submit(c);
         try {
-            StringBuilder dataBuffer = new StringBuilder("");
-            stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
-            int retry = 3;
-            while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
-        }catch (Exception e){
-
+            future.get(); //wait for a thread to complete
+        } catch(Exception e) {
+            e.printStackTrace();
         }
-        LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+        executor.shutdown();
     }
 
     private void generateAlertEmails(List<NyseStockInfo> nyseStockInfoList, SIDE side, StockCategory stockCategory) {

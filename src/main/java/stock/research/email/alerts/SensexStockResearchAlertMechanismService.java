@@ -20,9 +20,7 @@ import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
 import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -33,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -56,26 +58,39 @@ public class SensexStockResearchAlertMechanismService {
 
     @Scheduled(cron = "0 35 6,11 ? * MON-FRI")
     public void kickOffEmailAlerts() {
-        long start = System.currentTimeMillis();
-        LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
-        try{
-            List<SensexStockInfo> populatedSensexList = get500StocksAttributes();
-            Arrays.stream(StockCategory.values()).forEach(x -> {
-                generateAlertEmails(populatedSensexList,x, SIDE.SELL);
-                generateAlertEmails(populatedSensexList, x, SIDE.BUY);
-            });
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Callable<Integer> c = () -> {   // Lambda Expression
 
-        }catch (Exception e){
-        }
+            long start = System.currentTimeMillis();
+            LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+            try{
+                List<SensexStockInfo> populatedSensexList = get500StocksAttributes();
+                Arrays.stream(StockCategory.values()).forEach(x -> {
+                    generateAlertEmails(populatedSensexList,x, SIDE.SELL);
+                    generateAlertEmails(populatedSensexList, x, SIDE.BUY);
+                });
+
+            }catch (Exception e){
+            }
+            try {
+                StringBuilder dataBuffer = new StringBuilder("");
+                sensexStockResearchService.getCacheSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+                int retry = 3;
+                while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** ")) && --retry >= 0);
+            }catch (Exception e){
+
+            }
+            LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
+
+            return 0;
+        };
+        Future<Integer> future = executor.submit(c);
         try {
-            StringBuilder dataBuffer = new StringBuilder("");
-            sensexStockResearchService.getCacheSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
-            int retry = 3;
-            while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** ")) && --retry >= 0);
-        }catch (Exception e){
-
+            future.get(); //wait for a thread to complete
+        } catch(Exception e) {
+            e.printStackTrace();
         }
-        LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
+        executor.shutdown();
     }
 
     private List<SensexStockInfo>  get500StocksAttributes() {

@@ -1,7 +1,6 @@
 package stock.research.utility;
 
 import stock.research.domain.NyseStockInfo;
-import stock.research.domain.StockInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

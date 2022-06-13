@@ -22,9 +22,7 @@ import stock.research.utility.NyseStockResearchUtility;
 import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;

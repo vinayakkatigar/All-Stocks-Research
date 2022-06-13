@@ -9,7 +9,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import stock.research.utility.PortfolioResearchUtility;
-import stock.research.utility.SensexStockResearchUtility;
 
 import javax.mail.internet.MimeMessage;
 import java.nio.file.Files;

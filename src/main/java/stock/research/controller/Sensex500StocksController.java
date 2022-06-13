@@ -17,7 +17,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.math.BigDecimal.valueOf;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.LARGE_CAP;
 import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
