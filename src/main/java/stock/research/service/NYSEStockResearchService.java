@@ -86,15 +86,13 @@ public class NYSEStockResearchService {
             populateNYSEStockDetailedInfoList.stream().filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
-                    && (q.getStockMktCap() != null) && (q.getEps() != null))).collect(toList()).sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
+                    && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList()).sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i =1;
             for (NyseStockInfo x : populateNYSEStockDetailedInfoList){
                 x.setStockRankIndex(i++);
                 if(x.getMktCapRealValue() != null)x.setStockMktCap(truncateNumber(x.getMktCapRealValue()));
-                System.out.println("after -> nyseStockInfo -> " + x);
-                LOGGER.info("after -> nyseStockInfo -> " + x);
             }
 
 
@@ -131,7 +129,7 @@ public class NYSEStockResearchService {
     private boolean extractAttributes(List<NyseStockInfo> populateNYSEStockDetailedInfoList, Map.Entry<String, String> x) {
         //            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {
         try {
-            LOGGER.info("NYSEStockResearchService::populateNYSEStockDetailedInfo::StockURL ->  " + x.getValue());
+            LOGGER.info("NYSEStockResearchService::StockURL ->  " + x.getValue());
 //                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
             try {
                 if (webDriver == null){
@@ -181,6 +179,8 @@ public class NYSEStockResearchService {
                     Thread.sleep(500 * 1);
                     js.executeScript("window.scrollBy(0,250)", "");
                     Thread.sleep(500 * 1);
+                    js.executeScript("window.scrollBy(0,250)", "");
+                    Thread.sleep(250 * 1);
                     js.executeScript("window.scrollBy(0,250)", "");
                     Thread.sleep(250 * 1);
                     //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -265,14 +265,15 @@ public class NYSEStockResearchService {
             if (((nyseStockInfo.getCurrentMarketPrice() != null && nyseStockInfo.getCurrentMarketPrice().intValue() > 0)
                     && (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().intValue() > 0)
                     && (nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().intValue() > 0)
-                    && (nyseStockInfo.getStockMktCap() != null) && (nyseStockInfo.getEps() != null))){
+                    && (nyseStockInfo.getStockMktCap() != null || nyseStockInfo.getMktCapRealValue() != null))){
+                LOGGER.info("nyseStockInfo ->" + nyseStockInfo);
                 populateNYSEStockDetailedInfoList.add(nyseStockInfo);
             }
             populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream()
                     .filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
-                    && (q.getStockMktCap() != null) && (q.getEps() != null))).collect(toList());
+                    && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList());
 
         }catch (Exception e) {
             restartWebDriver();
