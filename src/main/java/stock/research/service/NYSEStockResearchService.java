@@ -155,10 +155,6 @@ public class NYSEStockResearchService {
                 webDriver = launchBrowser();
             }
             sleep(1000 * 3);
-            //webDriver.navigate().refresh();
-            //sleep(1000 * 5);
-//                    webDriver.navigate().refresh();
-//                    sleep(1000 * 2);
         }catch (WebDriverException e) {
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -168,8 +164,7 @@ public class NYSEStockResearchService {
             e.printStackTrace();
         }
         try {
-//                    webDriver.navigate().refresh();
-//                    sleep(1000 * 15);
+
             NyseStockInfo nyseStockInfo = new NyseStockInfo(x.getKey(), x.getValue());
 
             try{
@@ -183,11 +178,9 @@ public class NYSEStockResearchService {
             }catch (Exception e){}
 
             List<WebElement> webElementTdBodyList = null;
-            int wait =0;
             int retry = 3;
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
-//                        webDriver.navigate().refresh();
-                if (retry < 2)sleep(500 * (2 + (++wait)));
+
                 --retry;
 
                 try{
@@ -201,7 +194,6 @@ public class NYSEStockResearchService {
                     Thread.sleep(250 * 1);
                     js.executeScript("window.scrollBy(0,250)", "");
                     Thread.sleep(250 * 1);
-                    //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
                     webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
                     webElementTdBodyList =webDriver.findElement(By.xpath("//div[contains(@class, 'summary-data')]")).findElement(By.xpath("//div[contains(@class, 'summary-data--loaded')]")).findElements(By.tagName("td"));
@@ -211,9 +203,7 @@ public class NYSEStockResearchService {
                     e.printStackTrace();
                 }catch (Exception e){}
             }
-            wait=0;
 
-//                    List<WebElement> webElementTdBodyList = webDriver.findElement(By.cssSelector(".summary-data.summary-data--loaded")).findElement(By.className("summary-data__table")).findElements(By.tagName("td"));
             if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
                 for (int i = 0; i < webElementTdBodyList.size(); i++) {
                     String key = webElementTdBodyList.get(i).getText();
