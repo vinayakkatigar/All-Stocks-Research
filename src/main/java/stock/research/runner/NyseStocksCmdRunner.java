@@ -41,22 +41,10 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Integer> c = () -> {   // Lambda Expression
 
-            LOGGER.info("Started NyseStocksCmdRunner::run" );
-            nyseEmailAlertMechanismService.kickOffEmailAlerts();
-            nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
-            LOGGER.info("End NyseStocksCmdRunner::run" );
-            return 0;
-        };
-        Future<Integer> future = executor.submit(c);
-        try {
-            future.get(); //wait for a thread to complete
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
+        nyseEmailAlertMechanismService.kickOffEmailAlerts();
+        nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
+        LOGGER.info("NyseStocksCmdRunner.run" );
 
     }
 

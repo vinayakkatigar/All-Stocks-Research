@@ -400,7 +400,7 @@ public class NYSEStockResearchService {
             for (int i = 40; i < 320; i++) {
 
                 System.out.println(stocksUrlMap.entrySet());
-                int retry = 10;
+                int retry = 3;
                 Map<String, String> newStocksUrlMap = null;
                 System.out.println(i + " <-  stocksUrlMap::size -> " + stocksUrlMap.size());
                 sleep(1000 * 3);
