@@ -459,6 +459,7 @@ public class NYSEStockResearchService {
             e.printStackTrace();
             return getNyseStockInfosFile("nyseTop250StockUrlInfo.json");
         }
+        return stocksUrlMap;
     }
 
     private void selectPageIndex(int i) {
