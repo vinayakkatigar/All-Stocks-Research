@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.PortfolioInfo;
 import stock.research.service.NYSEStockResearchService;
+import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
@@ -49,6 +50,8 @@ public class NyseEmailAlertMechanismService {
     private ObjectMapper objectMapper;
     @Autowired
     private NYSEStockResearchService stockResearchService;
+    @Autowired
+    private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 9,15 ? * MON-THU")
@@ -80,6 +83,29 @@ public class NyseEmailAlertMechanismService {
             try {
                 StringBuilder dataBuffer = new StringBuilder("");
                 stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+                int retry = 3;
+                while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
+            }catch (Exception e){
+
+            }
+            LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+
+    }
+
+    public void startUpKickOffEmailAlerts() {
+
+            LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+            final List<NyseStockInfo> nyseStockInfoList = startUpNYSEStockResearchService.startPopulateNYSEStockDetailedInfo();
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
+            });
+
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(nyseStockInfoList,x, StockCategory.MID_CAP);
+            });
+            try {
+                StringBuilder dataBuffer = new StringBuilder("");
+                startUpNYSEStockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
             }catch (Exception e){

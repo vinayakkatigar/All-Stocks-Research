@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
+import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
 
 @Order(2)
@@ -20,7 +21,7 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(NyseStocksCmdRunner.class);
 
     @Autowired
-    private NyseEmailAlertMechanismService nyseEmailAlertMechanismService;
+    private NyseEmailAlertMechanismService startUpNYSEStockResearchService;
 
     @Autowired
     private NyseTop1000StockResearchService nyseTop1000StockResearchService;
@@ -37,7 +38,7 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        nyseEmailAlertMechanismService.kickOffEmailAlerts();
+        startUpNYSEStockResearchService.startUpKickOffEmailAlerts();
         nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
         LOGGER.info("NyseStocksCmdRunner.run" );
 
