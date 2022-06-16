@@ -71,8 +71,8 @@ public class NYSEStockResearchService {
         try {
             nyseStockDetailedInfoMap = getNyseStockInfo();
 
-             nyseStockDetailedInfoMap.entrySet().stream().limit(1000).forEach(x -> {
-                 int retry =5;
+             nyseStockDetailedInfoMap.entrySet().stream().limit(750).forEach(x -> {
+                 int retry = 3;
                  boolean sucess = false;
                  sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
                  while (!sucess && --retry > 0){
@@ -163,10 +163,10 @@ public class NYSEStockResearchService {
 
             List<WebElement> webElementTdBodyList = null;
             int wait =0;
-            int retry =10;
+            int retry = 3;
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
 //                        webDriver.navigate().refresh();
-                if (retry < 9)sleep(1000 * (2 + (++wait)));
+                if (retry < 2)sleep(500 * (2 + (++wait)));
                 --retry;
 
                 try{
@@ -357,7 +357,7 @@ public class NYSEStockResearchService {
             for (int i = 40; i < 320; i++) {
 
                 System.out.println(stocksUrlMap.entrySet());
-                int retry = 10;
+                int retry = 3;
                 Map<String, String> newStocksUrlMap = null;
                 System.out.println(i + " <-  stocksUrlMap::size -> " + stocksUrlMap.size());
                 sleep(1000 * 3);

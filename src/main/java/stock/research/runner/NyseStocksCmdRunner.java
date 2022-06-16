@@ -43,7 +43,6 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
         nyseEmailAlertMechanismService.kickOffEmailAlerts();
         nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
         LOGGER.info("NyseStocksCmdRunner.run" );
-        List<NyseStockInfo> stocksUrlMap = nyseStockResearchService.populateNYSEStockDetailedInfo();
 
     }
 
