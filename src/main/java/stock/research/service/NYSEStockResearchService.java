@@ -66,13 +66,17 @@ public class NYSEStockResearchService {
         final  List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
             restartWebDriver();
+        }catch (WebDriverException e) {
+            restartWebDriver();
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
         }catch (Exception e){}
 
         try {
             nyseStockDetailedInfoMap = getNyseStockInfo();
 
-             nyseStockDetailedInfoMap.entrySet().stream().limit(1000).forEach(x -> {
-                 int retry =5;
+             nyseStockDetailedInfoMap.entrySet().stream().limit(750).forEach(x -> {
+                 int retry = 3;
                  boolean sucess = false;
                  sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
                  while (!sucess && --retry > 0){
@@ -100,8 +104,16 @@ public class NYSEStockResearchService {
             cacheNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList;
             try {
                 if (webDriver != null) webDriver.close();
+            }catch (WebDriverException e) {
+                restartWebDriver();
+                ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+                e.printStackTrace();
             }catch (Exception e){ webDriver = null;}
             return (populateNYSEStockDetailedInfoList);
+        }catch (WebDriverException e) {
+            restartWebDriver();
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
         }catch (Exception e){
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -145,10 +157,13 @@ public class NYSEStockResearchService {
             //sleep(1000 * 5);
 //                    webDriver.navigate().refresh();
 //                    sleep(1000 * 2);
+        }catch (WebDriverException e) {
+            restartWebDriver();
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
         } catch (Exception e) {
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
-
         }
         try {
 //                    webDriver.navigate().refresh();
@@ -159,14 +174,18 @@ public class NYSEStockResearchService {
                 String crtPrice = webDriver.findElement(By.className("symbol-page-header__pricing-last-price")).findElement(By.className("symbol-page-header__pricing-price")).getText();
                 crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
                 nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
+            }catch (WebDriverException e) {
+                restartWebDriver();
+                ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+                e.printStackTrace();
             }catch (Exception e){}
 
             List<WebElement> webElementTdBodyList = null;
             int wait =0;
-            int retry =10;
+            int retry = 3;
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
 //                        webDriver.navigate().refresh();
-                if (retry < 9)sleep(1000 * (2 + (++wait)));
+                if (retry < 2)sleep(500 * (2 + (++wait)));
                 --retry;
 
                 try{
@@ -178,10 +197,16 @@ public class NYSEStockResearchService {
                     Thread.sleep(500 * 1);
                     js.executeScript("window.scrollBy(0,250)", "");
                     Thread.sleep(250 * 1);
+                    js.executeScript("window.scrollBy(0,250)", "");
+                    Thread.sleep(250 * 1);
                     //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
                     webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
                     webElementTdBodyList =webDriver.findElement(By.xpath("//div[contains(@class, 'summary-data')]")).findElement(By.xpath("//div[contains(@class, 'summary-data--loaded')]")).findElements(By.tagName("td"));
+                }catch (WebDriverException e) {
+                    restartWebDriver();
+                    ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+                    e.printStackTrace();
                 }catch (Exception e){}
             }
             wait=0;
@@ -260,6 +285,11 @@ public class NYSEStockResearchService {
             populateNYSEStockDetailedInfoList.add(nyseStockInfo);
             LOGGER.info("b4 -> nyseStockInfo -> " + nyseStockInfo);
 
+        }catch (WebDriverException e) {
+            restartWebDriver();
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+            return false;
         }catch (Exception e) {
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -420,6 +450,10 @@ public class NYSEStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\logs" + "\\NYSEALLstocksUrlMap.json"),
                     objectMapper.writeValueAsString(stocksUrlMap).getBytes());
             return stocksUrlMap;
+        }catch (WebDriverException e) {
+            restartWebDriver();
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
