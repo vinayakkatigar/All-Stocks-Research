@@ -31,10 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -58,8 +54,6 @@ public class SensexStockResearchAlertMechanismService {
 
     @Scheduled(cron = "0 35 6,11 ? * MON-FRI")
     public void kickOffEmailAlerts() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Integer> c = () -> {   // Lambda Expression
 
             long start = System.currentTimeMillis();
             LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
@@ -82,15 +76,6 @@ public class SensexStockResearchAlertMechanismService {
             }
             LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
 
-            return 0;
-        };
-        Future<Integer> future = executor.submit(c);
-        try {
-            future.get(); //wait for a thread to complete
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
     }
 
     private List<SensexStockInfo>  get500StocksAttributes() {

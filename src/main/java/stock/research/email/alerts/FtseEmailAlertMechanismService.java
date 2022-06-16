@@ -29,10 +29,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static stock.research.utility.FtseStockResearchUtility.*;
@@ -57,8 +53,6 @@ public class FtseEmailAlertMechanismService {
     @Scheduled(cron = "0 0 17 ? * MON-FRI")
     public void kickOffFTSE250YearlyGainerLoserEmailAlerts() {
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Integer> c = () -> {   // Lambda Expression
 
             LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffFTSE250YearlyGainerLoserEmailAlerts" );
             final List<FtseStockInfo> populatedftse250List = stockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo("https://www.hl.co.uk/shares/stock-market-summary/ftse-250/performance?column=date_1y&order=asc", 20);
@@ -72,15 +66,6 @@ public class FtseEmailAlertMechanismService {
             populatedftse250List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
             int retry = 3;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
-            return 0;
-        };
-        Future<Integer> future = executor.submit(c);
-        try {
-            future.get(); //wait for a thread to complete
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
 
 
     }

@@ -32,10 +32,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static stock.research.utility.NyseStockResearchUtility.*;
@@ -71,8 +67,6 @@ public class NyseEmailAlertMechanismService {
     }
 
     public void kickOffEmailAlerts() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Integer> c = () -> {   // Lambda Expression
 
             LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
@@ -92,15 +86,7 @@ public class NyseEmailAlertMechanismService {
 
             }
             LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
-            return 0;
-        };
-        Future<Integer> future = executor.submit(c);
-        try {
-            future.get(); //wait for a thread to complete
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
+
     }
 
     private void generateAlertEmails(List<NyseStockInfo> nyseStockInfoList, SIDE side, StockCategory stockCategory) {

@@ -13,11 +13,6 @@ import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 @Order(2)
 @SpringBootApplication
 public class NyseStocksCmdRunner implements CommandLineRunner {

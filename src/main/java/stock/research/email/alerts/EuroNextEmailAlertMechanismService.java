@@ -30,10 +30,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 @Service
 public class EuroNextEmailAlertMechanismService {
@@ -53,9 +49,6 @@ public class EuroNextEmailAlertMechanismService {
 
     @Scheduled(cron = "0 35 9,15 ? * MON-FRI")
     public void kickOffEmailAlerts() {
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Integer> c = () -> {   // Lambda Expression
 
 
             LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
@@ -77,21 +70,10 @@ public class EuroNextEmailAlertMechanismService {
             fileName = fileName.replace(":","-");
 
             try {
-                Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\" + fileName  + ".html"), data.getBytes());
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\EURO-" + fileName  + ".html"), data.getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            return 0;
-        };
-        Future<Integer> future = executor.submit(c);
-        try {
-            future.get(); //wait for a thread to complete
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
-
 
     }
 
