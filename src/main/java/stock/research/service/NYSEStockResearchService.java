@@ -102,7 +102,7 @@ public class NYSEStockResearchService {
 
             String fileName =  LocalDateTime.now() + NyseStockResearchUtility.HYPHEN  ;
             fileName = fileName.replace(":","-");
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\" + fileName + "detailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\NYSE-" + fileName + "detailedInfo.json"),
                     objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             cacheNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList;
             try {
