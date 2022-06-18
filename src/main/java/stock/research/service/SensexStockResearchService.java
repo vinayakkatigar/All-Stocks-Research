@@ -367,9 +367,11 @@ public class SensexStockResearchService {
 
             JavascriptExecutor js = (JavascriptExecutor) webDriver;
             js.executeScript("window.scrollBy(0,1200)", "");
-            Thread.sleep(500 * 1);
+            Thread.sleep(200 * 1);
             js.executeScript("window.scrollBy(0,500)", "");
-            Thread.sleep(500 * 1);
+            Thread.sleep(200 * 1);
+            js.executeScript("window.scrollBy(0,500)", "");
+            Thread.sleep(250 * 1);
             js.executeScript("window.scrollBy(0,500)", "");
             Thread.sleep(250 * 1);
 
