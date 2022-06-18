@@ -341,9 +341,8 @@ public class SensexStockResearchService {
                     objectMapper.writeValueAsString(resultSensexStockInfosList).getBytes());
             Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\SensexStock-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
-            if (webDriver == null) webDriver.close();
-            if (webDriver != null) webDriver.close();
             cacheSensexStockInfosList = resultSensexStockInfosList;
+            closeWebDriver();
             return (resultSensexStockInfosList);
         }catch (Exception e){
             if (webDriver != null) webDriver.close();
@@ -351,10 +350,16 @@ public class SensexStockResearchService {
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
-        if (webDriver == null) webDriver.close();
-        if (webDriver != null) webDriver.close();
+        closeWebDriver();
         cacheSensexStockInfosList = resultSensexStockInfosList;
         return (resultSensexStockInfosList);
+    }
+
+    private void closeWebDriver() {
+        try{
+            if (webDriver == null) webDriver.close();
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){ }
     }
 
     private void scrollToolBar() {
