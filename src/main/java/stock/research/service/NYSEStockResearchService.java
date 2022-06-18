@@ -154,7 +154,7 @@ public class NYSEStockResearchService {
             if (webDriver == null){
                 webDriver = launchBrowser();
             }
-            sleep(1000 * 3);
+            sleep(1000 * 1);
         }catch (WebDriverException e) {
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -187,12 +187,12 @@ public class NYSEStockResearchService {
                     //to perform Scroll on application using Selenium
                     JavascriptExecutor js = (JavascriptExecutor) webDriver;
                     js.executeScript("window.scrollBy(0,1200)", "");
-                    Thread.sleep(500 * 1);
-                    js.executeScript("window.scrollBy(0,250)", "");
-                    Thread.sleep(500 * 1);
-                    js.executeScript("window.scrollBy(0,250)", "");
                     Thread.sleep(250 * 1);
-                    js.executeScript("window.scrollBy(0,250)", "");
+                    js.executeScript("window.scrollBy(0,350)", "");
+                    Thread.sleep(250 * 1);
+                    js.executeScript("window.scrollBy(0,350)", "");
+                    Thread.sleep(250 * 1);
+                    js.executeScript("window.scrollBy(0,350)", "");
                     Thread.sleep(250 * 1);
 
                     webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
@@ -357,10 +357,10 @@ public class NYSEStockResearchService {
 
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
             sleep(200 );
             webDriver.get("https://www.nasdaq.com/market-activity/stocks/screener");
-            sleep(1000 * 5);
+            sleep(1000 * 2);
 
             try { webDriver.findElement(By.id("onetrust-accept-btn-handler")).click();webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl"); } catch (Exception e) { }
 
