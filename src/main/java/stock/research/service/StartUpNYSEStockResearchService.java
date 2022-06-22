@@ -128,7 +128,7 @@ public class StartUpNYSEStockResearchService {
     }
 
     private void restartWebDriver() {
-        try {
+        /*try {
             if (webDriver != null) webDriver.close();
         }catch (Exception e){ }
         try {
@@ -139,7 +139,7 @@ public class StartUpNYSEStockResearchService {
         }catch (Exception e){ }
         try {
             webDriver = launchBrowser();
-        }catch (Exception e){ }
+        }catch (Exception e){ }*/
     }
 
     private boolean extractAttributes(List<NyseStockInfo> populateNYSEStockDetailedInfoList, Map.Entry<String, String> x) {
