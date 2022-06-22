@@ -132,6 +132,12 @@ public class StartUpNYSEStockResearchService {
             if (webDriver != null) webDriver.close();
         }catch (Exception e){ }
         try {
+            Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
+        }catch (Exception e){ }
+        try {
+            Runtime.getRuntime().exec("TASKKILL /IM  chrome.exe /F");
+        }catch (Exception e){ }
+        try {
             webDriver = launchBrowser();
         }catch (Exception e){ }
     }
