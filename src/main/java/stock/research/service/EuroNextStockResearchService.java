@@ -136,17 +136,17 @@ public class EuroNextStockResearchService {
                     objectMapper.writeValueAsString(populateEuroNextStockDetailedInfoList).getBytes());
             cacheEuroNextStockDetailedInfoList = populateEuroNextStockDetailedInfoList;
             try {
-                if (webDriver != null) webDriver.close();
+                if (webDriver != null) webDriver.close();webDriver = null;
             }catch (Exception e){ webDriver = null;}
             return (populateEuroNextStockDetailedInfoList);
         }catch (StaleElementReferenceException e){
-            if (webDriver != null) webDriver.close();
+            if (webDriver != null) webDriver.close();webDriver = null;
             webDriver = launchBrowser();
             e.printStackTrace();
             webDriver.navigate().refresh();
         }
         catch (Exception e){
-            if (webDriver != null) webDriver.close();
+            if (webDriver != null) webDriver.close();webDriver = null;
             webDriver = launchBrowser();
             webDriver.navigate().refresh();
             ERROR_LOGGER.error(now() + ", Error ->", e);
@@ -154,7 +154,7 @@ public class EuroNextStockResearchService {
         }
         cacheEuroNextStockDetailedInfoList = populateEuroNextStockDetailedInfoList;
         try {
-            if (webDriver != null) webDriver.close();
+            if (webDriver != null) webDriver.close();webDriver = null;
         }catch (Exception e){ webDriver = null;}
         return (populateEuroNextStockDetailedInfoList);
     }
