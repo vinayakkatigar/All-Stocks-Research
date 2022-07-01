@@ -21,7 +21,7 @@ public class AllStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+/*
             long start = System.currentTimeMillis();
             LOGGER.info("##AllStocksCmdRunner.run::started##" );
             allStocksEmailAlertMechanismService.kickOffNyseTop1000();
@@ -48,7 +48,7 @@ public class AllStocksCmdRunner implements CommandLineRunner {
             allStocksEmailAlertMechanismService.kickOffWorld1000EmailAlerts();
             allStocksEmailAlertMechanismService.kickOffAustraliaEmailAlerts();
             LOGGER.info("##AllStocksCmdRunner.run::end##" + (System.currentTimeMillis() - start));
-
+*/
     }
 
 }
