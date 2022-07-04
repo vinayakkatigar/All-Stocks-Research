@@ -175,7 +175,7 @@ public class EuroNextStockResearchService {
             if (webDriver == null) launchBrowser();
 //            webDriver.get("https://live.euronext.com/en/product/equities/FR0011053636-ALXP/the-blockchain-gp/altbg/quotes");
             webDriver.get(euroNextStockInfo.getStockURL());
-            webDriver.navigate().refresh();
+            scrollToolbar();
             Thread.sleep(1000 * 1);
 
             hoverAndScollBrowser();
@@ -382,7 +382,9 @@ public class EuroNextStockResearchService {
             webDriver.get("https://live.euronext.com/en/product/equities/FR0000120321-XPAR/l%27oreal/or/quotes");
 
             try { webDriver.findElement(By.className("eu-cookie-compliance-save-preferences-button")).click(); } catch (Exception e) { }
+            sleep(1000 * 1);
             try { webDriver.switchTo().alert().accept();
+                sleep(1000 * 1);
 
             } catch (Exception e) { }
 
@@ -409,6 +411,28 @@ public class EuroNextStockResearchService {
             webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
             Thread.sleep(100 * 1);
 //            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.HOME);
+        }catch (Exception e){}
+    }
+
+
+    private void scrollToolbar() {
+        try{
+            //to perform Scroll on application using Selenium
+            JavascriptExecutor js = (JavascriptExecutor) webDriver;
+            js.executeScript("window.scrollBy(0,1200)", "");
+            Thread.sleep(500 * 2);
+            js.executeScript("window.scrollBy(0,250)", "");
+            Thread.sleep(500 * 2);
+            js.executeScript("window.scrollBy(0,250)", "");
+            Thread.sleep(500 * 2);
+            /*
+            js.executeScript("window.scrollBy(0,250)", "");
+            Thread.sleep(500 * 2);
+            */
+
+//            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
+            Thread.sleep(500 * 2);
+
         }catch (Exception e){}
     }
 
