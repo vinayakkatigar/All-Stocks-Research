@@ -392,6 +392,13 @@ public class StartUpNYSEStockResearchService {
 
     private WebDriver launchBrowser() {
         System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
+        try {
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){}
+        try {
+            if (webDriver != null) webDriver.quit();
+        }catch (Exception e){}
+
         try{
 
             killChrome("chrome");
