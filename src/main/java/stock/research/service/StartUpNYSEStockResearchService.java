@@ -38,6 +38,7 @@ import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
 import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
+import static stock.research.service.NYSEStockResearchService.killChrome;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 
@@ -392,6 +393,8 @@ public class StartUpNYSEStockResearchService {
     private WebDriver launchBrowser() {
         System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
         try{
+
+            killChrome("chrome");
 
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
 

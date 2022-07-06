@@ -22,14 +22,18 @@ import stock.research.domain.NyseStockInfo;
 import stock.research.utility.NyseStockResearchUtility;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
 import static java.time.Instant.now;
@@ -386,8 +390,10 @@ public class NYSEStockResearchService {
 
 
     private WebDriver launchBrowser() {
+
         System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
         try{
+            killChrome("chrome");
 
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
 
@@ -532,5 +538,43 @@ public class NYSEStockResearchService {
         }
         return stocksUrlMap;
     }
+
+
+
+    public static void killChrome(String process) {
+        try {
+            try {
+                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            try {
+                Files.walk(Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp"))
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);        }catch (Exception e){ }
+            try {
+                Path path = Paths.get("C:\\Users\\vinka\\AppData\\Local\\Temp");
+                try (Stream<Path> walk = Files.walk(path)) {
+                    walk.sorted(Comparator.reverseOrder())
+                            .forEach(x -> {
+                                try {
+                                    Files.deleteIfExists(x);
+                                } catch (IOException e) {
+                                }
+                            });
+                }
+
+                Runtime.getRuntime().exec("RD %temp%");
+            }catch (Exception e){
+            }
+            try {
+                Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
+            }catch (Exception e){
+            }
+        }catch (Exception e){ }
+
+    }
+
 
 }
