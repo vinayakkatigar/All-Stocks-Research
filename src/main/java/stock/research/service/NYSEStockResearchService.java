@@ -158,14 +158,10 @@ public class NYSEStockResearchService {
                 Thread.sleep(1000 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
-                if (webDriver == null){
-                    webDriver = launchBrowser();
-                }webDriver.get(x.getValue());
-            }
-            if (webDriver == null){
                 webDriver = launchBrowser();
+                webDriver.get(x.getValue());
             }
-            sleep(1000 * 5);
+            sleep(1000 * 2);
             scrollToolbar();
 
         }catch (WebDriverException e) {
