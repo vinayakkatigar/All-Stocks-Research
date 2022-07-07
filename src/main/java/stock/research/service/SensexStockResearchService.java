@@ -116,8 +116,10 @@ public class SensexStockResearchService {
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
         }catch (Exception e){
-            webDriver = null;
-            webDriver = launchBrowser();
+            try {
+                webDriver = null;
+                webDriver = launchBrowser();
+            }catch (Exception e1){}
         }
 
         try {
