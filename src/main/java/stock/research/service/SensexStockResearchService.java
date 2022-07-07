@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
+import static stock.research.service.NYSEStockResearchService.killChrome;
 import static stock.research.utility.SensexStockResearchUtility.getBigDecimalFromString;
 import static stock.research.utility.SensexStockResearchUtility.getDoubleFromString;
 
@@ -243,7 +244,15 @@ public class SensexStockResearchService {
                                         webDriver = launchBrowser();
                                     }
                                     if (webDriver != null){
-                                        webDriver.get(sensexStockInfo.getStockURL());
+                                        try {
+                                            webDriver.get(sensexStockInfo.getStockURL());
+                                        }catch (Exception e11){
+                                            try {
+                                                webDriver.close();
+                                            }catch (Exception e2){
+                                                webDriver.get(sensexStockInfo.getStockURL());
+                                            }
+                                        }
                                         scrollToolBar();
 										try{
 											if((sensexStockInfo.getStockMktCap() == null ||
@@ -307,7 +316,10 @@ public class SensexStockResearchService {
                                 }
                             }
                         }catch (Exception e){
-                            if (webDriver != null) webDriver.close();
+                            try {
+                                if (webDriver != null) webDriver.close();
+                            }catch (Exception e1){
+                            }
                             webDriver = launchBrowser();
 
                             isException = true;
@@ -318,7 +330,9 @@ public class SensexStockResearchService {
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
                     }
                 }catch (Exception e) {
-                    if (webDriver != null) webDriver.close();
+                    try {
+                        if (webDriver != null) webDriver.close();
+                    }catch (Exception e1){}
                     webDriver = launchBrowser();
 
                     ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -347,7 +361,9 @@ public class SensexStockResearchService {
             closeWebDriver();
             return (resultSensexStockInfosList);
         }catch (Exception e){
-            if (webDriver != null) webDriver.close();
+            try{
+                if (webDriver != null) webDriver.close();
+            }catch (Exception e1){}
             webDriver = launchBrowser();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
@@ -407,6 +423,7 @@ public class SensexStockResearchService {
 
     private WebDriver launchBrowser() {
         try{
+//            killChrome("chrome");
             System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();

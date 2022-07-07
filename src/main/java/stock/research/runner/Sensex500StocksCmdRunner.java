@@ -13,8 +13,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.StockInfo;
+import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
 import stock.research.service.InteractiveInvestorsResearchService;
+import stock.research.service.NYSEStockResearchService;
 import stock.research.service.SensexStockResearchService;
 
 import java.util.LinkedHashMap;
@@ -42,11 +44,14 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
     RestTemplate restTemplate;
     @Autowired
     SensexStockResearchAlertMechanismService sensexStockResearchAlertMechanismService;
+    @Autowired
+    private NyseEmailAlertMechanismService startUpNYSEStockResearchService;
+
 
     @Override
     public void run(String... args) throws Exception {
 
-
+/*
         List<NyseStockInfo> stockInfoList = objectMapper.readValue(new ClassPathResource("NYSE--detailedInfo.json").getInputStream(), new TypeReference<List<NyseStockInfo>>(){});
 
         stockInfoList = stockInfoList.stream()
@@ -54,12 +59,15 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
                         && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                         && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
                         && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList());
-        LOGGER.info("Started Sensex500StocksCmdRunner::run" );
         Map<String, String> stringMap = new LinkedHashMap<>();
         stockInfoList.stream().forEach(x -> stringMap.put(x.getStockCode(), x.getStockURL()));
         System.out.println(objectMapper.writeValueAsString(stringMap));
+*/
+        LOGGER.info("Started Sensex500StocksCmdRunner::run" );
         sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
         LOGGER.info("End Sensex500StocksCmdRunner::run" );
+
+//        startUpNYSEStockResearchService.kickOffEmailAlerts();
     }
 
 }

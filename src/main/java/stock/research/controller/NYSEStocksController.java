@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.StockInfo;
+import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.math.BigDecimal.ZERO;
 import static stock.research.utility.NyseStockResearchUtility.HTML_END;
@@ -36,10 +39,22 @@ public class NYSEStocksController {
 
     @Autowired
     private NyseTop1000StockResearchService nyseTop1000StockResearchService;
+    @Autowired
+    private NyseEmailAlertMechanismService nyseEmailAlertMechanismService;
 
     @Autowired
     RestTemplate restTemplate;
 
+    @RequestMapping("/kickNyse")
+    public String kickNyse() throws InterruptedException {
+
+       ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            nyseEmailAlertMechanismService.kickOffEmailAlerts();
+        });
+        Thread.sleep(1000 * 60 * 1);
+        return "kickNyse";
+    }
     @RequestMapping("/nyse1000")
     public String nyse1000(){
         try {
