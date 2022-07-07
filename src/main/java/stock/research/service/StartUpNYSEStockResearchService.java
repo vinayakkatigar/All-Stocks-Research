@@ -80,7 +80,7 @@ public class StartUpNYSEStockResearchService {
         try {
             nyseStockDetailedInfoMap = getNyseStockInfo();
 
-             nyseStockDetailedInfoMap.entrySet().stream().limit(750).forEach(x -> {
+             nyseStockDetailedInfoMap.entrySet().stream().limit(675).forEach(x -> {
                  int retry = 3;
                  boolean sucess = false;
                  sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
