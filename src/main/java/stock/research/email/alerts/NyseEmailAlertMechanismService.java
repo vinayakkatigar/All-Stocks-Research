@@ -143,7 +143,7 @@ public class NyseEmailAlertMechanismService {
                                     || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
                             if (!(checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                                 if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                                    subjectBuffer.append("** NYSE Buy Large Cap Alert**");
+                                    subjectBuffer.append("** NASDAQ Buy Large Cap Alert**");
                                 }
                                 createTableContents(dataBuffer, x);
                             }
@@ -156,7 +156,7 @@ public class NyseEmailAlertMechanismService {
                                         x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5.0)) <= 0))){
                                 if (!(checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                                     if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                                        subjectBuffer.append("** NYSE Buy Mid Cap Alert**");
+                                        subjectBuffer.append("** NASDAQ Buy Mid Cap Alert**");
                                     }
                                     createTableContents(dataBuffer, x);
                                 }
@@ -168,7 +168,7 @@ public class NyseEmailAlertMechanismService {
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5.0)) <= 0)){
                         if ((checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                                subjectBuffer.append("** NYSE Sell Large Cap Alert**");
+                                subjectBuffer.append("** NASDAQ Sell Large Cap Alert**");
                             }
                             createTableContents(dataBuffer, x);
                         }
@@ -180,7 +180,7 @@ public class NyseEmailAlertMechanismService {
                                     || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0))){
                         if ((checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                                subjectBuffer.append("** NYSE Sell Mid Cap Alert**");
+                                subjectBuffer.append("** NASDAQ Sell Mid Cap Alert**");
                             }
                             createTableContents(dataBuffer, x);
                         }
