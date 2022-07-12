@@ -408,14 +408,17 @@ public class NYSEStockResearchService {
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             sleep(200 );
-            webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
-            sleep(1000 * 5);
+            for (int i = 0; i < 3; i++) {
+                try {
+                    sleep(200 );
+                    webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
+                    sleep(1000 * 5);
+                    try {
+                        webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
+                    } catch (Exception e) {}
 
-            try {
-                webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
-            } catch (Exception e) {
+                }catch (Exception exception){}
             }
-
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
