@@ -410,7 +410,8 @@ public class NYSEStockResearchService {
             sleep(200 );
             for (int i = 0; i < 3; i++) {
                 try {
-                    sleep(200 );
+                    webDriver.navigate().refresh();
+                    sleep(1000 );
                     webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
                     sleep(1000 * 5);
                     try {

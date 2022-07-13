@@ -376,18 +376,22 @@ public class EuroNextStockResearchService {
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-            Thread.sleep(200 );
-            sleep(1000 * 10);
+            sleep(1000 * 2);
 
-            webDriver.get("https://live.euronext.com/en/product/equities/FR0000120321-XPAR/l%27oreal/or/quotes");
+            for (int i = 0; i < 3; i++) {
+                try {
+                    webDriver.navigate().refresh();
+                    webDriver.get("https://live.euronext.com/en/product/equities/FR0000120321-XPAR/l%27oreal/or/quotes");
 
-            try { webDriver.findElement(By.className("eu-cookie-compliance-save-preferences-button")).click(); } catch (Exception e) { }
-            sleep(1000 * 1);
-            try { webDriver.switchTo().alert().accept();
-                sleep(1000 * 1);
-
-            } catch (Exception e) { }
-
+                    sleep(1000 * 5);
+                    try { webDriver.findElement(By.className("eu-cookie-compliance-save-preferences-button")).click(); } catch (Exception e) { }
+                    sleep(1000 * 3);
+                    try {
+                        webDriver.switchTo().alert().accept();
+                        sleep(1000 * 2);
+                    } catch (Exception e) { }
+                }catch (Exception e){ }
+            }
 
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
