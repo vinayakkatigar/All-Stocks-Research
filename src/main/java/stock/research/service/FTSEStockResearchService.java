@@ -398,9 +398,15 @@ public class FTSEStockResearchService {
             Thread.sleep(200 );
 //            webDriver.navigate().refresh();
 //            Thread.sleep(200 * 5);
-            webDriver.get("https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc");
-            try { webDriver.findElement(By.id("ccc-notify-accept")).click(); } catch (Exception e) { }
-            Thread.sleep(200 );
+            for (int i = 0; i < 3; i++) {
+                try {
+                    webDriver.navigate().refresh();
+                    webDriver.get("https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc");
+                    try { webDriver.findElement(By.id("ccc-notify-accept")).click(); } catch (Exception e) { }
+                    Thread.sleep(200 );
+                }catch (Exception e){}
+            }
+
 
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
