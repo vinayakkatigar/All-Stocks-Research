@@ -111,7 +111,7 @@ public class EuroNextStockResearchService {
                             e.printStackTrace();
                             if (webDriver != null) webDriver.close();
                             webDriver = launchBrowser();
-                            webDriver.navigate().refresh();
+                            refreshDriver();
                         }
                     }
                 }
@@ -143,12 +143,12 @@ public class EuroNextStockResearchService {
             if (webDriver != null) webDriver.close();webDriver = null;
             webDriver = launchBrowser();
             e.printStackTrace();
-            webDriver.navigate().refresh();
+            refreshDriver();
         }
         catch (Exception e){
             if (webDriver != null) webDriver.close();webDriver = null;
             webDriver = launchBrowser();
-            webDriver.navigate().refresh();
+            refreshDriver();
             ERROR_LOGGER.error(now() + ", Error ->", e);
             e.printStackTrace();
         }
@@ -336,20 +336,26 @@ public class EuroNextStockResearchService {
             webDriver = launchBrowser();
             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
-            webDriver.navigate().refresh();
+            refreshDriver();
         }catch (Exception e){
             if (webDriver != null) webDriver.close();
             webDriver = launchBrowser();
 
-            webDriver.navigate().refresh();
+            refreshDriver();
             ERROR_LOGGER.error("$"+euroNextStockInfo.getStockURL() + "$ <- Error Url" +now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
         }
         return true;
     }
 
+    private void refreshDriver() {
+        try {
+            webDriver.navigate().refresh();
+        }catch (Exception e){}
+    }
 
-    private static boolean updateDomDriver(WebDriver driver, WebDriverWait wait, String searchText) {
+
+    private boolean updateDomDriver(WebDriver driver, WebDriverWait wait, String searchText) {
         try {
             driver.getTitle();
             Thread.sleep(10);
@@ -360,9 +366,7 @@ public class EuroNextStockResearchService {
             driver.findElement(By.id("edit-search-input-quote--3")).clear();
             Thread.sleep(10);
         }catch (Exception e){
-            try{
-                driver.navigate().refresh();
-            }catch (Exception ex){}
+            refreshDriver();
             return false;
         }
         return true;
@@ -380,7 +384,7 @@ public class EuroNextStockResearchService {
 
             for (int i = 0; i < 3; i++) {
                 try {
-                    webDriver.navigate().refresh();
+                    refreshDriver();
                     webDriver.get("https://live.euronext.com/en/product/equities/FR0000120321-XPAR/l%27oreal/or/quotes");
 
                     sleep(1000 * 5);
