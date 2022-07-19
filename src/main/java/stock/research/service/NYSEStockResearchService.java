@@ -409,24 +409,35 @@ public class NYSEStockResearchService {
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             sleep(200 );
-            for (int i = 0; i < 3; i++) {
-                try {
-                    webDriver.navigate().refresh();
-                    sleep(1000 );
-                    webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
-                    sleep(1000 * 5);
-                    try {
-                        webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
-                    } catch (Exception e) {}
-
-                }catch (Exception exception){}
+            int x = 5;
+            while (--x > 0 && !acceptCookies()){
+                sleep(1000 );
             }
+            acceptCookies();
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
             return null;
         }
         return webDriver;
+    }
+
+    private boolean acceptCookies() {
+        try {
+            webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
+            sleep(1000 * 5);
+            try {
+                webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
+            } catch (Exception e) {
+                return false;
+            }
+            webDriver.navigate().refresh();
+            sleep(1000 );
+        }catch (Exception exception){
+            return false;
+        }
+
+        return true;
     }
 
 
