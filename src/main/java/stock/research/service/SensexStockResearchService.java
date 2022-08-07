@@ -428,7 +428,22 @@ public class SensexStockResearchService {
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-            Thread.sleep(200 );
+            try {
+                webDriver.get("https://www.moneycontrol.com/");
+                Thread.sleep(5000 );
+            }catch (Exception e){}
+            try {
+                webDriver.findElements(By.className("fc-footer-buttons")).get(0).findElements(By.className("fc-button-label")).get(0).click();
+            }catch (Exception e){}
+            try {
+                webDriver.get("https://www.moneycontrol.com/");
+                Thread.sleep(5000 );
+                webDriver.navigate().refresh();
+                Thread.sleep(5000 );
+            }catch (Exception e){}
+
+            Thread.sleep(10000 );
+            webDriver.findElements(By.className("fc-footer-buttons"));
         }catch (Exception e){
             ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
             e.printStackTrace();
