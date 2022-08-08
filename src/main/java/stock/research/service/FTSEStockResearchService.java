@@ -241,12 +241,12 @@ public class FTSEStockResearchService {
                 midCapCapCacheftseStockDetailedInfoList = ftseStockDetailedInfoList;
             }
 
-            String fileName =  LocalDateTime.now() + HYPHEN  ;
-            fileName = fileName.replace(":","-");
-            fileName = fileName + "top"+  HYPHEN + ftseStockDetailedInfoList.get(0).getStockRankIndex()+  HYPHEN + ftseStockDetailedInfoList.get(ftseStockDetailedInfoList.size() - 1).getStockRankIndex() +  HYPHEN;
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "detailedInfo.json"),
-                    objectMapper.writeValueAsString(ftseStockDetailedInfoList).getBytes());
             try {
+                String fileName =  LocalDateTime.now() + HYPHEN  ;
+                fileName = fileName.replace(":","-");
+                fileName = fileName + "top"+  HYPHEN + ftseStockDetailedInfoList.get(0).getStockRankIndex()+  HYPHEN + ftseStockDetailedInfoList.get(ftseStockDetailedInfoList.size() - 1).getStockRankIndex() +  HYPHEN;
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "detailedInfo.json"),
+                        objectMapper.writeValueAsString(ftseStockDetailedInfoList).getBytes());
                 if (webDriver != null) webDriver.close();
             }catch (Exception e){ webDriver = null;}
             return (ftseStockDetailedInfoList);
