@@ -248,7 +248,9 @@ public class FTSEStockResearchService {
                 Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ fileName + "detailedInfo.json"),
                         objectMapper.writeValueAsString(ftseStockDetailedInfoList).getBytes());
                 if (webDriver != null) webDriver.close();
-            }catch (Exception e){ webDriver = null;}
+            }catch (Exception e){
+                webDriver = null;
+            }
             return (ftseStockDetailedInfoList);
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
