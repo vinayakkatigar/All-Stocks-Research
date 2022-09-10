@@ -322,8 +322,6 @@ public class SensexStockResearchUtility {
        }
     }
 
-
-
     public static synchronized void generateTableContents(StringBuilder dataBuffer, PortfolioInfo k, SensexStockInfo x) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
 
@@ -355,7 +353,6 @@ public class SensexStockResearchUtility {
         dataBuffer.append("</tr>");
     }
 
-
     public static synchronized void generateTableContents(StringBuilder dataBuffer, SensexStockInfo x) {
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
             dataBuffer.append("<tr style=\"background-color:#FFBA75\">");
@@ -379,6 +376,5 @@ public class SensexStockResearchUtility {
         dataBuffer.append("<td>" + x.getBv() + SensexStockResearchUtility.START_BRACKET + x.getP2bv() + SensexStockResearchUtility.END_BRACKET + "</td>");
         dataBuffer.append("</tr>");
     }
-
 
 }
