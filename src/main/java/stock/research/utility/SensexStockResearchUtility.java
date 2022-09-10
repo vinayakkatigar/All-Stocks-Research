@@ -5,7 +5,9 @@ import stock.research.domain.SensexStockInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class SensexStockResearchUtility {
@@ -323,6 +325,8 @@ public class SensexStockResearchUtility {
 
 
     public static synchronized void generateTableContents(StringBuilder dataBuffer, PortfolioInfo k, SensexStockInfo x) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
             dataBuffer.append("<tr style=\"background-color:#FFBA75\">");
         }else if (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 ){
@@ -334,7 +338,7 @@ public class SensexStockResearchUtility {
                 + SensexStockResearchUtility.START_BRACKET + x.getStockMktCap()
                 + SensexStockResearchUtility.END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
-        dataBuffer.append("<td>" + k.getUnrealizedProfitNLoss() + "</td>");
+        dataBuffer.append("<td>" + formatter.format(k.getUnrealizedProfitNLoss()) + "</td>");
         dataBuffer.append("<td>" + k.getUnrealizedProfitNLossPct() + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekHighPrice().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
