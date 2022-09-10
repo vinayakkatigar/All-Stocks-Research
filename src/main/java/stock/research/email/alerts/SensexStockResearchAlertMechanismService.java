@@ -79,7 +79,7 @@ public class SensexStockResearchAlertMechanismService {
                     });
 
                     LOGGER.info("SensexStockResearchAlertMechanismService.portfolioInfoMap");
-                    LOGGER.info(portfolioInfoMap);
+                    LOGGER.info(portfolioInfoMap.toString());
                     if (portfolioInfoMap != null && portfolioInfoMap.size() > 0){
                         portfolioInfoMap.forEach((k,v) -> generateTableContents(dataBuffer, k ,v));
                     }
