@@ -343,8 +343,8 @@ public class SensexStockResearchUtility {
             dataBuffer.append("<td style=\"background-color:#FFBA75\">" + k.getUnrealizedProfitNLossPct() + "</td>");
         }
 
-        dataBuffer.append("<td>" + formatter.format(k.getValueAtCost()) + "</td>");
-        dataBuffer.append("<td>" + formatter.format(k.getValueAtMarketPrice()) + "</td>");
+        dataBuffer.append("<td>" + (k.getValueAtCost()) + "</td>");
+        dataBuffer.append("<td>" + (k.getValueAtMarketPrice()) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekHighPrice().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighLowPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
