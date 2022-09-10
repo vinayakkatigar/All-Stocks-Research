@@ -1,5 +1,6 @@
 package stock.research.email.alerts;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
+import stock.research.domain.StockInfo;
 import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
@@ -27,10 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -57,25 +56,46 @@ public class SensexStockResearchAlertMechanismService {
 
             long start = System.currentTimeMillis();
             LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
-            try{
+//                List<SensexStockInfo> populatedSensexList = objectMapper.readValue(new ClassPathResource("SensexStock-1000-MktCap-detailedInfo.json").getInputStream(), new TypeReference<List<SensexStockInfo>>(){});
+        try{
                 List<SensexStockInfo> populatedSensexList = get500StocksAttributes();
                 Arrays.stream(StockCategory.values()).forEach(x -> {
                     generateAlertEmails(populatedSensexList,x, SIDE.SELL);
                     generateAlertEmails(populatedSensexList, x, SIDE.BUY);
                 });
+                Map<PortfolioInfo, SensexStockInfo> portfolioInfoMap = new LinkedHashMap<>();
+                try {
+                    StringBuilder dataBuffer = new StringBuilder("");
+                    sensexStockResearchService.getPortfolioInfoList().forEach(portfolioInfo -> {
+                        try {
+                            Optional<SensexStockInfo>sensexStockInfo = populatedSensexList.stream()
+                                    .filter(x -> (portfolioInfo.getiSIN() != null && x.getIsin() != null) && (x.getIsin().equalsIgnoreCase(portfolioInfo.getiSIN()))).findAny();
+                            if (sensexStockInfo != null && sensexStockInfo.isPresent()){
+                                portfolioInfoMap.put(portfolioInfo, sensexStockInfo.get());
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    });
 
-            }catch (Exception e){
-            }
+                    if (portfolioInfoMap != null && portfolioInfoMap.size() > 0){
+                        portfolioInfoMap.forEach((k,v) -> generateTableContents(dataBuffer, k ,v));
+                    }
+
+                    int retry = 3;
+                    while (!sendEmail(dataBuffer, new StringBuilder("** Portfolio Sensex Daily Data ** "), true) && --retry >= 0);
+                }catch (Exception e){ }
+
+            }catch (Exception e){ }
+
             try {
                 StringBuilder dataBuffer = new StringBuilder("");
                 sensexStockResearchService.getCacheSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
-                while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** ")) && --retry >= 0);
-            }catch (Exception e){
+                while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** "), false) && --retry >= 0);
+            }catch (Exception e){ }
 
-            }
             LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
-
     }
 
     private List<SensexStockInfo>  get500StocksAttributes() {
@@ -108,7 +128,7 @@ public class SensexStockResearchAlertMechanismService {
 
                 generateHTMLContent(populatedLargeCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
                 int retry = 3;
-                while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+                while (!sendEmail(dataBuffer, subjectBuffer, false) && --retry >= 0);
             } if (stockCategory == StockCategory.MID_CAP){
                 populatedMidCapSensexList = populatedSensexList.parallelStream()
                         .filter(x -> x.getStockRankIndex() > 150 && x.getStockRankIndex() <= 300).collect(toList());
@@ -122,7 +142,7 @@ public class SensexStockResearchAlertMechanismService {
 
                 generateHTMLContent(populatedMidCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
                 int retry = 3;
-                while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+                while (!sendEmail(dataBuffer, subjectBuffer, false) && --retry >= 0);
             }
             if (stockCategory == StockCategory.SMALL_CAP){
                 populatedSmallCapSensexList = populatedSensexList.parallelStream()
@@ -137,7 +157,7 @@ public class SensexStockResearchAlertMechanismService {
 
                 generateHTMLContent(populatedSmallCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
                 int retry = 3;
-                while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+                while (!sendEmail(dataBuffer, subjectBuffer, false) && --retry >= 0);
             }
             LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::generateAlertEmails");
         } catch (Exception e) {
@@ -243,14 +263,23 @@ public class SensexStockResearchAlertMechanismService {
         return false;
     }
 
-    public boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
+    public boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer, boolean isPortfolio) {
         try {
             LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            String data = SensexStockResearchUtility.HTML_START;
+            String data = "";
+            if (isPortfolio){
+                data = SensexStockResearchUtility.HTML_PORTFOLIO_START;
+            }else {
+                data = SensexStockResearchUtility.HTML_START;
+            }
             data += dataBuffer.toString();
-            data += SensexStockResearchUtility.HTML_END;
+            if (isPortfolio){
+                data += HTML_PORTFOLIO_END;
+            }else {
+                data += SensexStockResearchUtility.HTML_END;
+            }
 
             if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
                     "".equalsIgnoreCase(subjectBuffer.toString()) == false){

@@ -1,7 +1,10 @@
 package stock.research.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,6 +25,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
 
 import javax.annotation.PostConstruct;
@@ -54,6 +58,7 @@ public class SensexStockResearchService {
     }
 
     private static List<SensexStockInfo> cacheSensexStockInfosList = new ArrayList<>();
+    private static List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
     @Autowired
     RestTemplate restTemplate;
@@ -62,7 +67,20 @@ public class SensexStockResearchService {
 
     @PostConstruct
     public void setUp(){
-//        this.webDriver = launchBrowser();
+        try {
+            CsvMapper csvMapper = new CsvMapper();
+            CsvSchema schema = csvMapper.typedSchemaFor(PortfolioInfo.class).withHeader();
+            MappingIterator<PortfolioInfo  > portfolioInfoMappingIterator = csvMapper.readerFor(PortfolioInfo.class).with(schema)
+                    .readValues(new ClassPathResource("SensexPortFolioEqtSummary.csv").getFile());
+
+//            MappingIterator<PortfolioInfo> portfolioInfoMappingIterator = new CsvMapper().
+//                    readerWithTypedSchemaFor(PortfolioInfo.class).readValues(new ClassPathResource("SensexPortFolioEqtSummary.csv").getFile());
+            portfolioInfoList = portfolioInfoMappingIterator.readAll();
+            portfolioInfoList.stream().filter(x -> x.getUnrealizedProfitNLoss() < 0).forEach(x -> x.setUnrealizedProfitNLossPct(-1 * x.getUnrealizedProfitNLossPct()));
+            portfolioInfoList.sort(Comparator.comparing(PortfolioInfo::getUnrealizedProfitNLoss).reversed());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public List<SensexStockInfo> getSensex500StockInfo() {
@@ -468,4 +486,14 @@ public class SensexStockResearchService {
         }
         return response;
     }
+
+    public static List<PortfolioInfo> getPortfolioInfoList() {
+        return portfolioInfoList;
+    }
+
+    public static void setPortfolioInfoList(List<PortfolioInfo> portfolioInfoList) {
+        SensexStockResearchService.portfolioInfoList = portfolioInfoList;
+    }
+
+
 }

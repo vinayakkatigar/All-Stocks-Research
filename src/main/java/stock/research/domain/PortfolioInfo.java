@@ -1,13 +1,17 @@
 package stock.research.domain;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.util.Objects;
 
+@JsonPropertyOrder({ "symbol", "stockName", "iSIN", "qty" , "averageCostPrice", "currentMarketPrice"
+        , "changeoverprevclosePct", "valueAtCost", "valueAtCost", "valueAtMarketPrice"
+        , "daysGain", "daysGainPct", "realizedProfitNLoss", "unrealizedProfitNLoss", "unrealizedProfitNLossPct" })
 
 public class PortfolioInfo {
+    public PortfolioInfo(){
 
-    public PortfolioInfo(){}
-
-
+    }
     private String symbol;
     private String stockName;
     private String qty;
@@ -31,14 +35,15 @@ public class PortfolioInfo {
     private String daysGain;
     private String daysGainPct;
     private String realizedProfitNLoss;
-    private String unrealizedProfitNLoss;
-    private String unrealizedProfitNLossPct;
+    private double unrealizedProfitNLoss;
+    private double unrealizedProfitNLossPct;
 
     @Override
     public String toString() {
         return "PortfolioInfo{" +
                 "symbol='" + symbol + '\'' +
                 ", qty='" + qty + '\'' +
+                ", stockName='" + stockName + '\'' +
                 ", company='" + company + '\'' +
                 ", price='" + price + '\'' +
                 ", change='" + change + '\'' +
@@ -244,19 +249,19 @@ public class PortfolioInfo {
         this.realizedProfitNLoss = realizedProfitNLoss;
     }
 
-    public String getUnrealizedProfitNLoss() {
+    public double getUnrealizedProfitNLoss() {
         return unrealizedProfitNLoss;
     }
 
-    public void setUnrealizedProfitNLoss(String unrealizedProfitNLoss) {
+    public void setUnrealizedProfitNLoss(double unrealizedProfitNLoss) {
         this.unrealizedProfitNLoss = unrealizedProfitNLoss;
     }
 
-    public String getUnrealizedProfitNLossPct() {
+    public double getUnrealizedProfitNLossPct() {
         return unrealizedProfitNLossPct;
     }
 
-    public void setUnrealizedProfitNLossPct(String unrealizedProfitNLossPct) {
+    public void setUnrealizedProfitNLossPct(double unrealizedProfitNLossPct) {
         this.unrealizedProfitNLossPct = unrealizedProfitNLossPct;
     }
 
