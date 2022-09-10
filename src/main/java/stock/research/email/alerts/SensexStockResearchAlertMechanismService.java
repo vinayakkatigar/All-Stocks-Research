@@ -78,15 +78,21 @@ public class SensexStockResearchAlertMechanismService {
                         }
                     });
 
+                    LOGGER.info("SensexStockResearchAlertMechanismService.portfolioInfoMap");
+                    LOGGER.info(portfolioInfoMap);
                     if (portfolioInfoMap != null && portfolioInfoMap.size() > 0){
                         portfolioInfoMap.forEach((k,v) -> generateTableContents(dataBuffer, k ,v));
                     }
 
                     int retry = 3;
                     while (!sendEmail(dataBuffer, new StringBuilder("** Portfolio Sensex Daily Data ** "), true) && --retry >= 0);
-                }catch (Exception e){ }
+                }catch (Exception e){
+                    LOGGER.error("Error - ",e);
+                }
 
-            }catch (Exception e){ }
+            }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
 
             try {
                 StringBuilder dataBuffer = new StringBuilder("");
