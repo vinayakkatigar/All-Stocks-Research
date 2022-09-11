@@ -323,8 +323,6 @@ public class SensexStockResearchUtility {
     }
 
     public static synchronized void generateTableContents(StringBuilder dataBuffer, PortfolioInfo k, SensexStockInfo x) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
-
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
             dataBuffer.append("<tr style=\"background-color:#FFBA75\">");
         }else if (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 ){
@@ -332,19 +330,20 @@ public class SensexStockResearchUtility {
         }else {
             dataBuffer.append("<tr>");
         }
+
         dataBuffer.append("<td><a href=" +x.getStockURL() +" target=\"_blank\">" + x.getStockName()
                 + SensexStockResearchUtility.START_BRACKET + x.getStockMktCap()
                 + SensexStockResearchUtility.END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
-        dataBuffer.append("<td>" + formatter.format(k.getUnrealizedProfitNLoss()) + "</td>");
+        dataBuffer.append("<td>" + formatLakh(k.getUnrealizedProfitNLoss()) + "</td>");
         if (k.getUnrealizedProfitNLossPct() > 0){
             dataBuffer.append("<td style=\"background-color:#A7D971\">" + k.getUnrealizedProfitNLossPct() + "</td>");
         }else {
             dataBuffer.append("<td style=\"background-color:#FFBA75\">" + k.getUnrealizedProfitNLossPct() + "</td>");
         }
 
-        dataBuffer.append("<td>" + (k.getValueAtCost()) + "</td>");
-        dataBuffer.append("<td>" + (k.getValueAtMarketPrice()) + "</td>");
+        dataBuffer.append("<td>" + formatLakh(getDoubleFromString(k.getValueAtCost())) + "</td>");
+        dataBuffer.append("<td>" + formatLakh(getDoubleFromString(k.getValueAtMarketPrice())) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekHighPrice().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighLowPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
@@ -375,6 +374,15 @@ public class SensexStockResearchUtility {
         dataBuffer.append("<td>" + x.getP2eps() + SensexStockResearchUtility.START_BRACKET + x.getEps() + SensexStockResearchUtility.END_BRACKET + "</td>");
         dataBuffer.append("<td>" + x.getBv() + SensexStockResearchUtility.START_BRACKET + x.getP2bv() + SensexStockResearchUtility.END_BRACKET + "</td>");
         dataBuffer.append("</tr>");
+    }
+
+    private static String formatLakh(double d) {
+        String s = String.format(Locale.UK, "%1.2f", Math.abs(d));
+        s = s.replaceAll("(.+)(...\\...)", "$1,$2");
+        while (s.matches("\\d{3,},.+")) {
+            s = s.replaceAll("(\\d+)(\\d{2},.+)", "$1,$2");
+        }
+        return d < 0 ? ("-" + s) : s;
     }
 
 }
