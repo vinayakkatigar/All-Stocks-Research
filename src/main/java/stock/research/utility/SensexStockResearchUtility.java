@@ -103,6 +103,7 @@ public class SensexStockResearchUtility {
             " Buy</td><td>Year High Diff(%)\n" +
             " Sell</td><td>P/E(EPS)</td><td>Book(P/B)</td></tr></thead>\n" +
             "<tbody>";
+
     public static final String HTML_PORTFOLIO_START = "<html><head>\n"
             + "<style>\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
@@ -186,7 +187,7 @@ public class SensexStockResearchUtility {
             "\n <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js\" integrity=\"sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==\" crossorigin=\"anonymous\"></script>\n" +
 
             "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead><tr>" +
-            "<td>Name-Code(MktCap)<td>Market Price</td><td>Unrealized P/L</td><td>Unrealized %</td><td>Cost Price</td><td>Market Price</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>Year Low Diff(%)\n" +
+            "<td>Name-Code(MktCap)<td>Market Price</td><td>Unrealized P/L</td><td>Unrealized %</td><td>Avg Share Price</td><td>Cost Price</td><td>Market Price</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>Year Low Diff(%)\n" +
             " Buy</td><td>Year High Diff(%)\n" +
             " Sell</td></tr></thead>\n" +
             "<tbody>";
@@ -342,6 +343,7 @@ public class SensexStockResearchUtility {
             dataBuffer.append("<td style=\"background-color:#FFBA75\">" + k.getUnrealizedProfitNLossPct() + "</td>");
         }
 
+        dataBuffer.append("<td>" + formatLakh(getDoubleFromString(k.getAverageCostPrice())) + "</td>");
         dataBuffer.append("<td>" + formatLakh(getDoubleFromString(k.getValueAtCost())) + "</td>");
         dataBuffer.append("<td>" + formatLakh(getDoubleFromString(k.getValueAtMarketPrice())) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekHighPrice().setScale(2, RoundingMode.HALF_UP) + "</td>");
