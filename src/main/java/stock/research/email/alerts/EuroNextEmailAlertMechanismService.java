@@ -51,6 +51,7 @@ public class EuroNextEmailAlertMechanismService {
     public void kickOffEmailAlerts() {
 
 
+        try {
             LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
             Arrays.stream(SIDE.values()).forEach(x -> {
@@ -74,6 +75,10 @@ public class EuroNextEmailAlertMechanismService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+        }catch (Exception e){
+
+        }
 
     }
 
