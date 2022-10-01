@@ -46,7 +46,7 @@ public class NYSEStocksController {
     RestTemplate restTemplate;
 
     @RequestMapping("/kickNyse")
-    public String kickNyse() throws InterruptedException {
+    public String kickNyse() throws Exception {
 
        ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
