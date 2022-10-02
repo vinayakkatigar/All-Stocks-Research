@@ -98,7 +98,7 @@ public class NyseStockResearchUtility {
             "\n <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js\" integrity=\"sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==\" crossorigin=\"anonymous\"></script> \n" +
             "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead><tr><td>RankIndex</td><td>Name-Code(MktCap)<td>Market Price</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>Year Low Diff(%)\n" +
             " Buy</td><td>Year High Diff(%)\n" +
-            " Sell</td><td>EPS</td><td>Sector/Industry</td></tr></thead>\n" +
+            " Sell</td><td>P/E</td><td>Sector/Industry</td></tr></thead>\n" +
             "<tbody>";
 
     public static final String HTML_END = "</tbody>\n" +
@@ -213,7 +213,7 @@ public class NyseStockResearchUtility {
         dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.getEps() + "</td>");
+        dataBuffer.append("<td>" + x.getCurrentMarketPrice().divide(BigDecimal.valueOf(x.getEps()), 2 , RoundingMode.HALF_EVEN) + "</td>");
         dataBuffer.append("<td>" + x.getSectorIndustry() + "</td>");
         dataBuffer.append("</tr>");
     }
