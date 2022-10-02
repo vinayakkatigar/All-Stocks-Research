@@ -205,7 +205,6 @@ public class NyseStockResearchUtility {
         dataBuffer.append("<td>" + x.getStockRankIndex() + "</td>");
         dataBuffer.append("<td><a href=" +x.getStockURL() +" target=\"_blank\">"
                 +  x.getStockCode()
-//                + x.getStockName() + HYPHEN + x.getStockCode()
                 + START_BRACKET + x.getStockMktCap() + END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekHighPrice() + "</td>");
