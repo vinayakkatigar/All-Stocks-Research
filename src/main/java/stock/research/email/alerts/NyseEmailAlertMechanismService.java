@@ -86,7 +86,8 @@ public class NyseEmailAlertMechanismService {
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
             }catch (Exception e){
-
+                e.printStackTrace();
+                LOGGER.error("NASDAQ Daily Data, Error ->",e);
             }
             LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
 
