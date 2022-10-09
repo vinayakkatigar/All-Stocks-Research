@@ -212,7 +212,15 @@ public class NyseStockResearchUtility {
         dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.getCurrentMarketPrice().divide(BigDecimal.valueOf(x.getEps()), 2 , RoundingMode.HALF_EVEN) + "</td>");
+        try {
+            if (x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 && (x.getEps()) > 0){
+                dataBuffer.append("<td>" + x.getCurrentMarketPrice().divide(BigDecimal.valueOf((x.getEps())), 2 , RoundingMode.HALF_EVEN) + "</td>");
+            }else {
+                dataBuffer.append("<td>0</td>");
+            }
+        }catch (Exception e){
+            dataBuffer.append("<td>0</td>");
+        }
         dataBuffer.append("<td>" + x.getSectorIndustry() + "</td>");
         dataBuffer.append("</tr>");
     }
