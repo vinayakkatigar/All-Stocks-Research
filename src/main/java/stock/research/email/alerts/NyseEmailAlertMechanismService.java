@@ -73,6 +73,7 @@ public class NyseEmailAlertMechanismService {
 
             LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
+            final List<NyseStockInfo> dailyNasdaqStockInfoList = new ArrayList<>(nyseStockInfoList);
             Arrays.stream(SIDE.values()).forEach(x -> {
                 generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
             });
@@ -82,7 +83,7 @@ public class NyseEmailAlertMechanismService {
             });
             try {
                 StringBuilder dataBuffer = new StringBuilder("");
-                stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+                dailyNasdaqStockInfoList.forEach(x ->  createTableContents(dataBuffer, x));
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
             }catch (Exception e){
