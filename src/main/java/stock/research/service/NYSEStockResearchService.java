@@ -90,10 +90,16 @@ public class NYSEStockResearchService {
                 while (!sucess && --retry > 0){
                     sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
                 }
-
             });
+            try{
+                String fileName =  LocalDateTime.now() + NyseStockResearchUtility.HYPHEN  ;
+                fileName = fileName.replace(":","-");
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\NYSE-ALL-STOCKS-" + fileName + "detailedInfo.json"),
+                        objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
+            }catch (Exception e){}
 
-            populateNYSEStockDetailedInfoList.stream().filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
+            populateNYSEStockDetailedInfoList.stream().filter(q -> (
+                    (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
                     && (q.getStockMktCap() != null || q.getMktCapRealValue() != null)))
