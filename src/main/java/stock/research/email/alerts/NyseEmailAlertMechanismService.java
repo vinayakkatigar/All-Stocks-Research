@@ -59,6 +59,11 @@ public class NyseEmailAlertMechanismService {
         kickOffEmailAlerts();
     }
 
+    @Scheduled(cron = "0 05 00 ? * MON-FRI")
+    public void kickOffEmailAlerts_Nightly() {
+        kickOffEmailAlerts();
+    }
+
     @Scheduled(cron = "0 5 15 ? * FRI")
     public void kickOffEmailAlerts_Fri() {
         kickOffEmailAlerts();
