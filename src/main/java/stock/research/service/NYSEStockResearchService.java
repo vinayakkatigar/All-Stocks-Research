@@ -83,14 +83,8 @@ public class NYSEStockResearchService {
         try {
             nyseStockDetailedInfoMap = getNyseStockInfo();
 
-            nyseStockDetailedInfoMap.entrySet().stream().limit(750).forEach(x -> {
-                int retry = 3;
-                boolean sucess = false;
-                sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
-                while (!sucess && --retry > 0){
-                    sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
-                }
-            });
+            runNyse(nyseStockDetailedInfoMap, populateNYSEStockDetailedInfoList);
+
             try{
                 String fileName =  LocalDateTime.now() + NyseStockResearchUtility.HYPHEN  ;
                 fileName = fileName.replace(":","-");
@@ -139,6 +133,20 @@ public class NYSEStockResearchService {
             if (webDriver != null) webDriver.close();
         }catch (Exception e){ webDriver = null;}
         return (populateNYSEStockDetailedInfoList);
+    }
+
+    private void runNyse(Map<String, String> nyseStockDetailedInfoMap, List<NyseStockInfo> populateNYSEStockDetailedInfoList) {
+        nyseStockDetailedInfoMap.entrySet().stream().forEach(x -> {
+            if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 500){
+                return;
+            }
+            int retry = 3;
+            boolean sucess = false;
+            sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
+            while (!sucess && --retry > 0){
+                sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
+            }
+        });
     }
 
     private void restartWebDriver() {
