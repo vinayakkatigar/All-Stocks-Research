@@ -298,6 +298,7 @@ public class StockResearchUtility {
         try {
             try {
                 Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
+                Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
             }catch (Exception e){
                 e.printStackTrace();
             }
