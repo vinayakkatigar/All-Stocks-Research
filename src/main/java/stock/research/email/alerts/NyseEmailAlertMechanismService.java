@@ -54,12 +54,12 @@ public class NyseEmailAlertMechanismService {
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
-    @Scheduled(cron = "0 45 9,15 ? * MON-THU")
+    @Scheduled(cron = "0 45 9,13 ? * MON-THU")
     public void kickOffEmailAlerts_Cron() {
         kickOffEmailAlerts();
     }
 
-    @Scheduled(cron = "0 05 00 ? * MON-SAT")
+    @Scheduled(cron = "0 18 00 ? * MON-SAT")
     public void kickOffEmailAlerts_Nightly() {
         kickOffEmailAlerts();
     }
@@ -71,7 +71,7 @@ public class NyseEmailAlertMechanismService {
 
     @Scheduled(cron = "0 5 0 ? * MON-FRI")
     public void kickOffKillZombs() {
-        StockResearchUtility.killZombie("haha");
+        StockResearchUtility.killZombie("chrome");
     }
 
     public void kickOffEmailAlerts() {

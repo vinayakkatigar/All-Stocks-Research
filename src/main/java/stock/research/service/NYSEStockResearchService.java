@@ -581,7 +581,7 @@ public class NYSEStockResearchService {
     public static void killChrome(String process) {
         try {
             try {
-                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
+//                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
             }catch (Exception e){
                 e.printStackTrace();
             }

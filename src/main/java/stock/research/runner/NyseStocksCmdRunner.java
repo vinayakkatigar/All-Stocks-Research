@@ -11,8 +11,6 @@ import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
-import stock.research.service.StartUpNYSEStockResearchService;
-import stock.research.utility.NyseStockResearchUtility;
 
 @Order(2)
 @SpringBootApplication

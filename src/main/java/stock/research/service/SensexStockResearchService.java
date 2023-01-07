@@ -42,7 +42,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
-import static stock.research.service.NYSEStockResearchService.killChrome;
 import static stock.research.utility.SensexStockResearchUtility.getBigDecimalFromString;
 import static stock.research.utility.SensexStockResearchUtility.getDoubleFromString;
 
