@@ -33,6 +33,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static stock.research.utility.NyseStockResearchUtility.*;
@@ -56,17 +58,29 @@ public class NyseEmailAlertMechanismService {
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 9,13 ? * MON-THU")
     public void kickOffEmailAlerts_Cron() {
-        kickOffEmailAlerts();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            kickOffEmailAlerts();
+        });
+        executorService.shutdown();
     }
 
     @Scheduled(cron = "0 18 00 ? * MON-SAT")
     public void kickOffEmailAlerts_Nightly() {
-        kickOffEmailAlerts();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            kickOffEmailAlerts();
+        });
+        executorService.shutdown();
     }
 
     @Scheduled(cron = "0 5 12 ? * FRI")
     public void kickOffEmailAlerts_Fri() {
-        kickOffEmailAlerts();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            kickOffEmailAlerts();
+        });
+        executorService.shutdown();
     }
 
     @Scheduled(cron = "0 5 0 ? * MON-SAT")

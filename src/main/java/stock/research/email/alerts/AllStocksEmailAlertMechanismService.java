@@ -105,7 +105,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSouthKoreaEmailAlerts" );
     }
 
-    @Scheduled(cron = "0 15 15 ? * MON-FRI")
+//    @Scheduled(cron = "0 15 15 ? * MON-FRI")
     public void kickOffAustraliaEmailAlerts() {
         try{
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustraliaEmailAlerts" );
@@ -132,7 +132,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 0 1 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 1 ? * MON-FRI")
     public void kickOffSpainEmailAlerts() {
 
         try{
@@ -150,7 +150,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 20 1 ? * MON-FRI")
+//    @Scheduled(cron = "0 20 1 ? * MON-FRI")
     public void kickOffItalyEmailAlerts() {
 
         try {
@@ -168,7 +168,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 0 2 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 2 ? * MON-FRI")
     public void kickOffSwissEmailAlerts() {
 
         try {
@@ -230,7 +230,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffFinlandEmailAlerts" );
     }
 
-    @Scheduled(cron = "0 30 3 ? * MON-FRI")
+//    @Scheduled(cron = "0 30 3 ? * MON-FRI")
     public void kickOffGermanyEmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffGermanyEmailAlerts" );
@@ -246,7 +246,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 0 4 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 4 ? * MON-FRI")
     public void kickOffNetherlandsEmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNetherlandsEmailAlerts" );
@@ -284,7 +284,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwedenEmailAlerts" );
     }
 
-    @Scheduled(cron = "0 5 5 ? * MON-FRI")
+//    @Scheduled(cron = "0 5 5 ? * MON-FRI")
     public void kickOffFranceEmailAlerts() {
         try{
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffFranceEmailAlerts" );
@@ -301,7 +301,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 35 5 ? * MON-FRI")
+//    @Scheduled(cron = "0 35 5 ? * MON-FRI")
     public void kickOffBelgiumEmailAlerts() {
         try{
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffBelgiumEmailAlerts" );
@@ -318,7 +318,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 0 6 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 6 ? * MON-FRI")
     public void kickOffNyseTop1000() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started NYSE::kickOffNyseTop1000" );
@@ -338,7 +338,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 30 6 ? * MON-FRI")
+//    @Scheduled(cron = "0 30 6 ? * MON-FRI")
     public void kickOffWorld1000EmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );
@@ -354,7 +354,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 50 6 ? * MON-FRI")
+    @Scheduled(cron = "0 50 2 ? * MON-FRI")
     public void killChrome() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::killChrome" );
         killZombie("chrome");
@@ -362,7 +362,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::killChrome" );
     }
 
-    @Scheduled(cron = "0 0 7 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 7 ? * MON-FRI")
     public void kickOffCanadaEmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffCanadaEmailAlerts" );

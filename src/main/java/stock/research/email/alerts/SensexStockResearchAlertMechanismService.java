@@ -1,5 +1,6 @@
 package stock.research.email.alerts;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
+import stock.research.domain.StockInfo;
 import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
@@ -28,6 +30,8 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -49,7 +53,15 @@ public class SensexStockResearchAlertMechanismService {
 
     private List<String> pfStockName = new ArrayList<>();
 
-    @Scheduled(cron = "0 05 6,11 ? * MON-FRI")
+    @Scheduled(cron = "0 35 6,11 ? * MON-FRI")
+    public void kickOffEmailAlerts_Cron() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            kickOffEmailAlerts();
+        });
+        executorService.shutdown();
+    }
+
     public void kickOffEmailAlerts() {
 
             long start = System.currentTimeMillis();

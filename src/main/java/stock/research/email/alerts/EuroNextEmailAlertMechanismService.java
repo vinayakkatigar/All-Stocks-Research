@@ -30,6 +30,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class EuroNextEmailAlertMechanismService {
@@ -50,36 +52,39 @@ public class EuroNextEmailAlertMechanismService {
     @Scheduled(cron = "0 35 9,15 ? * MON-FRI")
     public void kickOffEmailAlerts() {
 
-
-        try {
-            LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
-            final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
-            Arrays.stream(SIDE.values()).forEach(x -> {
-                generateAlertEmails(EuroNextStockInfoList,x);
-            });
-            LOGGER.info(Instant.now()+ " <-  Ended  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
-
-            StringBuilder dataBuffer = new StringBuilder("");
-            EuroNextStockInfoList.stream().forEach(x -> EuroNextStockResearchUtility.createTableContents(dataBuffer, x));
-            String data = EuroNextStockResearchUtility.HTML_START;
-            data += dataBuffer.toString();
-            data += EuroNextStockResearchUtility.HTML_END;
-            String fileName = "EuroNextTop250".toString();
-            fileName = fileName.replace("*", "");
-            fileName = fileName.replace(" ", "");
-            fileName =  fileName + "-" + LocalDateTime.now()  ;
-            fileName = fileName.replace(":","-");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
 
             try {
-                Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\EURO-" + fileName  + ".html"), data.getBytes());
-            } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
+                final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
+                Arrays.stream(SIDE.values()).forEach(x -> {
+                    generateAlertEmails(EuroNextStockInfoList,x);
+                });
+                LOGGER.info(Instant.now()+ " <-  Ended  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
+
+                StringBuilder dataBuffer = new StringBuilder("");
+                EuroNextStockInfoList.stream().forEach(x -> EuroNextStockResearchUtility.createTableContents(dataBuffer, x));
+                String data = EuroNextStockResearchUtility.HTML_START;
+                data += dataBuffer.toString();
+                data += EuroNextStockResearchUtility.HTML_END;
+                String fileName = "EuroNextTop250".toString();
+                fileName = fileName.replace("*", "");
+                fileName = fileName.replace(" ", "");
+                fileName =  fileName + "-" + LocalDateTime.now()  ;
+                fileName = fileName.replace(":","-");
+
+                try {
+                    Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\EURO-" + fileName  + ".html"), data.getBytes());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }catch (Exception e){
+
             }
-
-        }catch (Exception e){
-
-        }
-
+        });
+        executorService.shutdown();
     }
 
     private void generateAlertEmails(List<EuroNextStockInfo> EuroNextStockInfoList, SIDE side) {
