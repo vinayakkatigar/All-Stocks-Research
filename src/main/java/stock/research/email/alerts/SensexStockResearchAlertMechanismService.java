@@ -49,7 +49,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private List<String> pfStockName = new ArrayList<>();
 
-    @Scheduled(cron = "0 35 6,11 ? * MON-FRI")
+    @Scheduled(cron = "0 05 6,11 ? * MON-FRI")
     public void kickOffEmailAlerts() {
 
             long start = System.currentTimeMillis();
