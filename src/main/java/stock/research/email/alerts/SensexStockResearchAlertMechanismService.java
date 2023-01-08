@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
 import stock.research.domain.StockInfo;
+import stock.research.service.ScreenerSensexStockResearchService;
 import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
@@ -51,6 +52,9 @@ public class SensexStockResearchAlertMechanismService {
     @Autowired
     private SensexStockResearchService sensexStockResearchService;
 
+    @Autowired
+    private ScreenerSensexStockResearchService screenerSensexStockResearchService;
+
     private List<String> pfStockName = new ArrayList<>();
 
     @Scheduled(cron = "0 35 6,11 ? * MON-FRI")
@@ -58,8 +62,34 @@ public class SensexStockResearchAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
+            kickOffScreenerEmailAlerts();
         });
         executorService.shutdown();
+    }
+
+    public void kickOffScreenerEmailAlerts() {
+
+        long start = System.currentTimeMillis();
+        LOGGER.info(Instant.now()+ " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+        try{
+            List<SensexStockInfo> populatedSensexList = screenerSensexStockResearchService.populateStocksAttributes();
+            Arrays.stream(StockCategory.values()).forEach(x -> {
+                generateAlertEmails(populatedSensexList,x, SIDE.SELL);
+                generateAlertEmails(populatedSensexList, x, SIDE.BUY);
+            });
+
+        }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
+
+        try {
+            StringBuilder dataBuffer = new StringBuilder("");
+            screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
+        }catch (Exception e){ }
+
+        LOGGER.info(Instant.now()+ " <- Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
     }
 
     public void kickOffEmailAlerts() {

@@ -306,8 +306,16 @@ public class SensexStockResearchUtility {
 
     public static Double getDoubleFromString(String input){
        try {
+           input = input.trim();
            input = input.replace(",", "");
-           return new Double(input);
+           String rupee = "\u20B9";
+           byte[] utf8 = rupee.getBytes("UTF-8");
+
+           rupee = new String(utf8, "UTF-8");
+           input = input.replace(rupee, "");
+           input = input.replace("%", "");
+           input = input.replace("Cr.", "");
+           return Double.valueOf(input);
        }catch (Exception e){
            return new Double(0);
        }
@@ -315,7 +323,15 @@ public class SensexStockResearchUtility {
 
     public static BigDecimal getBigDecimalFromString(String input){
        try {
+           input = input.trim();
            input = input.replace(",", "");
+           String rupee = "\u20B9";
+           byte[] utf8 = rupee.getBytes("UTF-8");
+
+           rupee = new String(utf8, "UTF-8");
+           input = input.replace(rupee, "");
+           input = input.replace("%", "");
+           input = input.replace("Cr.", "");
            return new BigDecimal(input);
        }catch (Exception e){
            return new BigDecimal(0);
