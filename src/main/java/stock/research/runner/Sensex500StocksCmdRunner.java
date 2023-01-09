@@ -43,7 +43,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
+        sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
 /*
         List<NyseStockInfo> stockInfoList = objectMapper.readValue(new ClassPathResource("NYSE--detailedInfo.json").getInputStream(), new TypeReference<List<NyseStockInfo>>(){});
 
@@ -57,7 +57,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
         System.out.println(objectMapper.writeValueAsString(stringMap));
 */
         LOGGER.info("Started Sensex500StocksCmdRunner::run" );
-//        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
+        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
         LOGGER.info("End Sensex500StocksCmdRunner::run" );
 
 //        startUpNYSEStockResearchService.kickOffEmailAlerts();
