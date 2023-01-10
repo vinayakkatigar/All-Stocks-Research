@@ -56,7 +56,7 @@ public class NyseEmailAlertMechanismService {
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
-    @Scheduled(cron = "0 45 9,13 ? * MON-THU")
+    @Scheduled(cron = "0 45 9,17 ? * MON-THU")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
