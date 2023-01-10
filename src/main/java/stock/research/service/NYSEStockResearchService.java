@@ -423,7 +423,7 @@ public class NYSEStockResearchService {
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             sleep(200 );
-            int x = 5;
+            int x = 3;
             while (--x > 0 && !acceptCookies()){
                 sleep(1000 );
             }
@@ -439,7 +439,7 @@ public class NYSEStockResearchService {
     private boolean acceptCookies() {
         try {
             webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
-            sleep(1000 * 5);
+            sleep(1000 * 2);
             try {
                 webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
             } catch (Exception e) {
