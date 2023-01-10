@@ -354,7 +354,7 @@ public class NYSEStockResearchService {
 //            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
 //            Thread.sleep(500 * 2);
 
-        }catch (Exception e) {
+        }catch (WebDriverException e) {
             restartWebDriver();
         }catch (Exception e){}
     }
