@@ -179,8 +179,8 @@ public class NYSEStockResearchService {
 //                webDriver = launchBrowser();
                 webDriver = launchBrowser();
                 webDriver.get(x.getValue());
+                sleep(1000 * 2);
             }
-            sleep(1000 * 2);
             scrollToolbar();
 
         }catch (WebDriverException e) {
@@ -352,7 +352,7 @@ public class NYSEStockResearchService {
             */
 
 //            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
-            Thread.sleep(500 * 2);
+//            Thread.sleep(500 * 2);
 
         }catch (WebDriverException e) {
             restartWebDriver();
