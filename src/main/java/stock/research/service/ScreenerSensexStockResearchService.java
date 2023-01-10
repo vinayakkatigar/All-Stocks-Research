@@ -87,6 +87,12 @@ public class ScreenerSensexStockResearchService {
                         SensexStockInfo sensexStockInfo = new SensexStockInfo();
                         sensexStockInfo.setStockURL(x);
                         Document doc = Jsoup.parse(response.getBody());
+                        try{
+                            Element topDiv = doc.getElementById("top");
+                            sensexStockInfo.setStockName(topDiv.getElementsByTag("h1").get(0).text());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         try {
                             Elements companyInfoElements = doc.getElementsByClass("company-ratios");
                             if (companyInfoElements != null && companyInfoElements.size() > 0){
