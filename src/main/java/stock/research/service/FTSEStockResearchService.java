@@ -118,6 +118,8 @@ public class FTSEStockResearchService {
                     Thread.sleep(1000 * 2);
                 }catch (Exception e){
                     webDriver = launchBrowser();
+                    webDriver.get(urlInfo + i);
+                    Thread.sleep(1000 * 2);
                 }
                 WebElement  tabElements = webDriver.findElement(By.cssSelector(".full-width.ftse-index-table-table"));
                 if (tabElements != null){
