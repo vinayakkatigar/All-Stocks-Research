@@ -119,12 +119,10 @@ public class FTSEStockResearchService {
                 if (tabElements != null){
                     List<WebElement>   trElements = webDriver.findElements(By.cssSelector(".medium-font-weight.slide-panel"));
                     if (trElements != null && trElements.size() >= 20){
-                        System.out.println("trElements-> " + trElements.size());
                         trElements.stream().forEach(tr -> {
                             FtseStockInfo ftseStockInfo = new FtseStockInfo();
                             List<WebElement> tdElements = tr.findElements(By.tagName("td"));
                             if (tdElements != null && tdElements.size() >= 7){
-                                System.out.println("tdElements-> " + tdElements.size());
                                 for (int j = 0; j < 7; j++) {
                                     WebElement tdElement = tdElements.get(j);
                                     if (tdElement != null){
@@ -150,7 +148,6 @@ public class FTSEStockResearchService {
                         ftseStockInfoList.add(ftseStockInfo);
                         });
 
-                        System.out.println(ftseStockInfoList);
                     }
 
                 }
