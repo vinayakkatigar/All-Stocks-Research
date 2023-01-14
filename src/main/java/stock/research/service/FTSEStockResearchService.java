@@ -6,10 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,56 +112,49 @@ public class FTSEStockResearchService {
         try {
             LOGGER.info("<- Started FTSEStockResearchService::getFtseStockInfo:: -> ");
             for (int i = 1; i < cnt; i++) {
-                String url = urlInfo + i;
 
-                LOGGER.info("FTSEStockResearchService::getFtseStockInfo::url: -> " + url);
-                response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-                Document doc = Jsoup.parse(response.getBody());
-                Elements tableElements = doc.getElementsByTag("tbody");
-                if (tableElements != null && tableElements.size() >0){
-                    Elements trElements = tableElements.get(0).getElementsByClass("medium-font-weight slide-panel");
-                    String stockName = null,stockURL = null,stockCode = null;
-                    Double stockMktCap= 0d;
-                    BigDecimal currentMarketPrice= BigDecimal.ZERO;
-                    for (Element tr: trElements){
-                        Elements tdCodeElements = tr.getElementsByClass("clickable bold-font-weight instrument-tidm gtm-trackable td-with-link");
-                        if (tdCodeElements != null && tdCodeElements.size() > 0){
-                            Elements aElements = tdCodeElements.get(0).getElementsByClass("dash-link blue-text");
-                            if (aElements != null && aElements.size() > 0){
-                                stockURL = LSE_URL + aElements.get(0).attr("href");
-                                stockCode = aElements.get(0).text();
+                webDriver.get(urlInfo + i);
+                Thread.sleep(1000 * 2);
+                WebElement  tabElements = webDriver.findElement(By.cssSelector(".full-width.ftse-index-table-table"));
+                if (tabElements != null){
+                    List<WebElement>   trElements = webDriver.findElements(By.cssSelector(".medium-font-weight.slide-panel"));
+                    if (trElements != null && trElements.size() >= 20){
+                        System.out.println("trElements-> " + trElements.size());
+                        trElements.stream().forEach(tr -> {
+                            FtseStockInfo ftseStockInfo = new FtseStockInfo();
+                            List<WebElement> tdElements = tr.findElements(By.tagName("td"));
+                            if (tdElements != null && tdElements.size() >= 7){
+                                System.out.println("tdElements-> " + tdElements.size());
+                                for (int j = 0; j < 7; j++) {
+                                    WebElement tdElement = tdElements.get(j);
+                                    if (tdElement != null){
+                                        if (j == 0 && tdElement.findElement(By.tagName("a")) != null) {
+                                            ftseStockInfo.setStockURL(tdElement.findElement(By.tagName("a")).getAttribute("href"));
+                                            ftseStockInfo.setStockCode(tdElement.findElement(By.tagName("a")).getText());
+                                            continue;
+                                        }if (j == 1 && tdElement.findElement(By.tagName("a")) != null) {
+                                            ftseStockInfo.setStockName((tdElement.findElement(By.tagName("a")).getText()));
+                                            continue;
+                                        }if (j == 3) {
+                                            ftseStockInfo.setStockMktCap(getDoubleFromString(tdElement.getText()));
+                                            continue;
+                                        }if (j == 4) {
+                                            ftseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(tdElement.getText()));
+                                            continue;
+                                        }
+                                    }
+
+                                }
+
                             }
-                        }
+                        ftseStockInfoList.add(ftseStockInfo);
+                        });
 
-                        Elements tdNameElements = tr.getElementsByClass("clickable instrument-name gtm-trackable td-with-link");
-                        if (tdNameElements != null && tdNameElements.size() > 0){
-                            Elements aElements = tdNameElements.get(0).getElementsByClass("dash-link black-link ellipsed");
-                            if (aElements != null && aElements.size() > 0){
-                                stockName = aElements.get(0).text();
-                            }
-                        }
-
-                        Elements tdMktCapElements = tr.getElementsByClass("instrument-marketcapitalization hide-on-landscape");
-                        if (tdMktCapElements != null && tdMktCapElements.size() > 0){
-                            String mktCap = tdMktCapElements.get(0).text();
-                            if (mktCap != null){
-                                mktCap = mktCap.replace(",", "");
-                                stockMktCap = getDoubleFromString(mktCap);
-                            }
-                        }
-
-                        Elements tdMktPriceElements = tr.getElementsByClass("instrument-lastprice");
-                        if (tdMktPriceElements != null && tdMktPriceElements.size() > 0){
-                            String mktPrice = tdMktPriceElements.get(0).text();
-                            if (mktPrice != null){
-                                mktPrice = mktPrice.replace(",", "");
-                                currentMarketPrice = getBigDecimalFromString(mktPrice);
-                            }
-                        }
-
-                        ftseStockInfoList.add(new FtseStockInfo(stockName, stockURL, stockCode, stockMktCap, currentMarketPrice));
+                        System.out.println(ftseStockInfoList);
                     }
+
                 }
+
             }
             ftseStockInfoList.sort(Comparator.comparing(FtseStockInfo::getStockMktCap).reversed());
             int i = 1;
@@ -395,7 +385,7 @@ public class FTSEStockResearchService {
 //            System.setProperty("webdriver.chrome.webDriver","D:\\Software\\chromedriver_win32\\chromedriver.exe");
             webDriver = new ChromeDriver();
 //            webDriver = new ChromeDriver(options);
-            webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 //            webDriver.manage().window().
 //            webDriver.get(url);
 //            webDriver.navigate().refresh();

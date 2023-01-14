@@ -20,6 +20,9 @@ public class FtseStockInfo {
     private Double eps;
     private Instant timestamp;
 
+    public FtseStockInfo() {
+    }
+
     public FtseStockInfo(String stockName, String stockURL,
                          String stockCode, Double stockMktCap, BigDecimal currentMarketPrice) {
         this.stockName = stockName;
