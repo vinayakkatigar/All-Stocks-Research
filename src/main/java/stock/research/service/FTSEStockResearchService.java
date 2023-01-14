@@ -113,8 +113,12 @@ public class FTSEStockResearchService {
             LOGGER.info("<- Started FTSEStockResearchService::getFtseStockInfo:: -> ");
             for (int i = 1; i < cnt; i++) {
 
-                webDriver.get(urlInfo + i);
-                Thread.sleep(1000 * 2);
+                try {
+                    webDriver.get(urlInfo + i);
+                    Thread.sleep(1000 * 2);
+                }catch (Exception e){
+                    webDriver = launchBrowser();
+                }
                 WebElement  tabElements = webDriver.findElement(By.cssSelector(".full-width.ftse-index-table-table"));
                 if (tabElements != null){
                     List<WebElement>   trElements = webDriver.findElements(By.cssSelector(".medium-font-weight.slide-panel"));
@@ -180,9 +184,12 @@ public class FTSEStockResearchService {
         LOGGER.info("<- Started FTSEStockResearchService.populateFtseStockDetailedInfo");
         List<FtseStockInfo> ftseStockDetailedInfoList = new ArrayList<>();
         try {
-            if (webDriver != null) webDriver.close();
+            if (webDriver != null) {
+                webDriver.get("https://www.londonstockexchange.com/indices/ftse-100/constituents/table?lang=en&page=1");
+            }
+        }catch (Exception e){
             webDriver = launchBrowser();
-        }catch (Exception e){}
+        }
 
         try {
 
