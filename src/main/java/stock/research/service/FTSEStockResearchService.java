@@ -230,6 +230,7 @@ public class FTSEStockResearchService {
             });
 
             ftseStockDetailedInfoList = ftseStockDetailedInfoList.stream().distinct().collect(Collectors.toList());
+            ftseStockDetailedInfoList.sort(Comparator.comparing(FtseStockInfo::getStockMktCap).reversed());
             if (cnt == FTSE_100_CNT){
                 largeCapCacheftseStockDetailedInfoList = ftseStockDetailedInfoList;
             }
