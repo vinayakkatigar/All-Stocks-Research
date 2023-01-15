@@ -17,6 +17,7 @@ public class FtseStockInfo {
     private BigDecimal _52WeekHighLowPriceDiff =  BigDecimal.ZERO;
     private BigDecimal _52WeekHighPriceDiff =  BigDecimal.ZERO;
     private BigDecimal _52WeekLowPriceDiff =  BigDecimal.ZERO;
+    private BigDecimal p2e =  BigDecimal.ZERO;
     private Double eps;
     private Instant timestamp;
 
@@ -171,4 +172,13 @@ public class FtseStockInfo {
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
+
+    public BigDecimal getP2e() {
+        return p2e;
+    }
+
+    public void setP2e(BigDecimal p2e) {
+        this.p2e = p2e;
+    }
+
 }

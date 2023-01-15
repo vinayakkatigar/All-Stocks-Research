@@ -290,6 +290,25 @@ public class FTSEStockResearchService {
                     webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
                 }catch (Exception e){}
 
+                try {
+                    if (webDriver.findElement(By.className("chart-table-instrument-information")) != null &&
+                            webDriver.findElement(By.className("chart-table-instrument-information")).findElements(By.tagName("app-index-item")) != null
+                    && webDriver.findElement(By.className("chart-table-instrument-information")).findElements(By.tagName("app-index-item")).size() > 2 &&
+                    webDriver.findElement(By.className("chart-table-instrument-information")).findElements(By.tagName("app-index-item")).get(2) != null) {
+                        String eps = webDriver.findElement(By.className("chart-table-instrument-information")).findElements(By.tagName("app-index-item")).get(2).getText();
+                        if (eps != null && eps.split("\n").length > 1
+                                && eps.split("\n")[0] != null && eps.split("\n")[0].contains("Earnings")) {
+                            x.setEps(getDoubleFromString(eps.split("\n")[1]));
+                            if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                                    x.getEps() != null && BigDecimal.valueOf(x.getEps()).compareTo(BigDecimal.ZERO) > 0) {
+                                x.setP2e(x.getCurrentMarketPrice().divide(BigDecimal.valueOf(x.getEps()), 2, RoundingMode.HALF_EVEN));
+                            }
+                        }
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 try{
                     if((x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0) && (webDriver.findElements(By.className("widget-results")).size() > 1)){
                         x.set_52WeekLowPrice(getBigDecimalFromString(webDriver.findElements(By.className("widget-results")).get(0).getText()));
