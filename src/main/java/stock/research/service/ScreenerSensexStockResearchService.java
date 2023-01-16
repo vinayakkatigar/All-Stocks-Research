@@ -92,6 +92,19 @@ public class ScreenerSensexStockResearchService {
                             sensexStockInfo.setStockName(topDiv.getElementsByTag("h1").get(0).text());
                         }catch (Exception e){
                             e.printStackTrace();
+                        }try{
+                            Elements tablelements = doc.getElementsByClass("data-table");
+                            if (tablelements != null && tablelements.size() > 5 && tablelements.get(tablelements.size() - 1) != null){
+                                Elements trelements = tablelements.get(tablelements.size() - 1).getElementsByTag("tr");
+                                if (trelements != null && trelements.size() > 2 && trelements.get(2) != null){
+                                    Elements tdelements = trelements.get(2).getElementsByTag("td");
+                                        if (tdelements != null && tdelements.size() > 11 && tdelements.get(tdelements.size() - 1 ) != null){
+                                            sensexStockInfo.setFiiPct(getDoubleFromString(tdelements.get(tdelements.size() - 1 ).text()));
+                                        }
+                                    }
+                                }
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
                         try {
                             Elements companyInfoElements = doc.getElementsByClass("company-ratios");
@@ -124,15 +137,12 @@ public class ScreenerSensexStockResearchService {
                                                             sensexStockInfo.set_52WeekLowPrice(getBigDecimalFromString(replaceRupee(highLow[1])));
                                                         }
                                                     }
-
                                                 }
                                             });
                                         }
                                     }
-
                                 }
-
-                                }
+                            }
 
                         }catch (Exception e){
                         }
