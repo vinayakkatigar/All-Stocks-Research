@@ -59,6 +59,7 @@ public class FtseEmailAlertMechanismService {
 
             LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
 
+            /*
             StringBuilder dataBuffer = new StringBuilder("");
 
             final StringBuilder subjectBuffer = new StringBuilder("");
@@ -66,7 +67,7 @@ public class FtseEmailAlertMechanismService {
             populatedftse250List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
             int retry = 3;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
-
+             */
 
     }
 
@@ -79,13 +80,14 @@ public class FtseEmailAlertMechanismService {
 
         LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
 
+        /*
         StringBuilder dataBuffer = new StringBuilder("");
-
         final StringBuilder subjectBuffer = new StringBuilder("");
         subjectBuffer.append("** FTSE 100 Yearly Gainer Buy Large Cap Alert**");
         populatedftse100List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
         int retry = 3;
         while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+         */
     }
 
 
