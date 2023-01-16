@@ -301,7 +301,7 @@ public class FTSEStockResearchService {
                             x.setEps(getDoubleFromString(eps.split("\n")[1]));
                             if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                                     x.getEps() != null && BigDecimal.valueOf(x.getEps()).compareTo(BigDecimal.ZERO) > 0) {
-                                x.setP2e(x.getCurrentMarketPrice().divide(BigDecimal.valueOf(x.getEps()), 2, RoundingMode.HALF_EVEN));
+                                x.setP2e(x.getCurrentMarketPrice().divide(BigDecimal.valueOf(x.getEps() * 100), 2, RoundingMode.HALF_EVEN));
                             }
                         }
                     }
