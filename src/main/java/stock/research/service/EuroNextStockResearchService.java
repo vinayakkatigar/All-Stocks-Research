@@ -170,7 +170,7 @@ public class EuroNextStockResearchService {
 
     private boolean launchAndExtract(EuroNextStockInfo euroNextStockInfo) {
         try{
-            WebDriverWait wait = new WebDriverWait(webDriver, (60));
+            WebDriverWait wait = new WebDriverWait(webDriver, (10));
 
             if (webDriver == null) launchBrowser();
 //            webDriver.get("https://live.euronext.com/en/product/equities/FR0011053636-ALXP/the-blockchain-gp/altbg/quotes");
@@ -387,9 +387,9 @@ public class EuroNextStockResearchService {
                     refreshDriver();
                     webDriver.get("https://live.euronext.com/en/product/equities/FR0000120321-XPAR/l%27oreal/or/quotes");
 
-                    sleep(1000 * 5);
-                    try { webDriver.findElement(By.className("eu-cookie-compliance-save-preferences-button")).click(); } catch (Exception e) { }
                     sleep(1000 * 3);
+                    try { webDriver.findElement(By.className("eu-cookie-compliance-save-preferences-button")).click(); } catch (Exception e) { }
+                    sleep(1000 * 2);
                     try {
                         webDriver.switchTo().alert().accept();
                         sleep(1000 * 2);
