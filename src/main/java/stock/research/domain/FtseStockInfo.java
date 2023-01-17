@@ -62,12 +62,12 @@ public class FtseStockInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FtseStockInfo that = (FtseStockInfo) o;
-        return  Objects.equals(getStockRankIndex(), that.getStockRankIndex()) ;
+        return  (Objects.equals(getStockCode(), that.getStockCode()) || (Objects.equals(getStockURL(), that.getStockURL())));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( getStockRankIndex());
+        return Objects.hash( getStockCode(), getStockURL());
     }
 
     public String getStockName() {
