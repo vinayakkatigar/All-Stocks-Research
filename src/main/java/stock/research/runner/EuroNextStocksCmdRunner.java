@@ -11,6 +11,9 @@ import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.EuroNextEmailAlertMechanismService;
 import stock.research.utility.EuroNextStockUrlExtractor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Order(4)
 @SpringBootApplication
 public class EuroNextStocksCmdRunner implements CommandLineRunner {
@@ -33,8 +36,12 @@ public class EuroNextStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LOGGER.info("EuroNextStocksCmdRunner.run");
-        euroNextEmailAlertMechanismService.kickOffEmailAlerts();
 
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            LOGGER.info("EuroNextStocksCmdRunner.run");
+            euroNextEmailAlertMechanismService.kickOffEmailAlerts();
+        });
+        executorService.shutdown();
     }
 }

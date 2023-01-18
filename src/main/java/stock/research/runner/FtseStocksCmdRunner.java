@@ -10,6 +10,9 @@ import org.springframework.core.annotation.Order;
 import stock.research.email.alerts.FtseEmailAlertMechanismService;
 import stock.research.service.FTSEStockResearchService;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Order(3)
 @SpringBootApplication
 public class FtseStocksCmdRunner implements CommandLineRunner {
@@ -28,12 +31,15 @@ public class FtseStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
             LOGGER.info("FtseStocksCmdRunner.run" );
             ftseEmailAlertMechanismService.kickOffFTSEEmailAlerts();
 
             ftseEmailAlertMechanismService.kickOffFTSE250YearlyGainerLoserEmailAlerts();
             ftseEmailAlertMechanismService.kickOffFTSE100YearlyGainerLoserEmailAlerts();
-
+        });
+        executorService.shutdown();
     }
 
 }

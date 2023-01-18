@@ -15,6 +15,9 @@ import stock.research.service.InteractiveInvestorsResearchService;
 import stock.research.service.ScreenerSensexStockResearchService;
 import stock.research.service.SensexStockResearchService;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Order(1)
 @SpringBootApplication
 public class Sensex500StocksCmdRunner implements CommandLineRunner {
@@ -43,7 +46,12 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
+        });
+        executorService.shutdown();
 /*
         List<NyseStockInfo> stockInfoList = objectMapper.readValue(new ClassPathResource("NYSE--detailedInfo.json").getInputStream(), new TypeReference<List<NyseStockInfo>>(){});
 
@@ -56,10 +64,15 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
         stockInfoList.stream().forEach(x -> stringMap.put(x.getStockCode(), x.getStockURL()));
         System.out.println(objectMapper.writeValueAsString(stringMap));
 */
-        LOGGER.info("Started Sensex500StocksCmdRunner::run" );
-        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
-        LOGGER.info("End Sensex500StocksCmdRunner::run" );
 
+
+        ExecutorService _executorService = Executors.newSingleThreadExecutor();
+        _executorService.submit(() -> {
+            LOGGER.info("Started Sensex500StocksCmdRunner::run" );
+            sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
+            LOGGER.info("End Sensex500StocksCmdRunner::run" );
+        });
+        _executorService.shutdown();
 //        startUpNYSEStockResearchService.kickOffEmailAlerts();
     }
 
