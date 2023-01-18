@@ -58,7 +58,7 @@ public class AllStocksEmailAlertMechanismService {
 
     @Scheduled(cron = "0 0 0 ? * MON-FRI")
     public void kickKillZombie_4() {
-        killZombie("haha");
+        killZombie("chrome");
     }
 
 //    @Scheduled(cron = "0 14 00 ? * MON-FRI")

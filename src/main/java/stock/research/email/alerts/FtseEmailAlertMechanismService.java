@@ -29,6 +29,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static stock.research.utility.FtseStockResearchUtility.*;
@@ -94,35 +96,40 @@ public class FtseEmailAlertMechanismService {
     @Scheduled(cron = "0 15 10,16 ? * MON-FRI")
     public void kickOffFTSEEmailAlerts() {
 
-        LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
-        final List<FtseStockInfo> populatedftse100List = stockResearchService.
-                populateFtseStockDetailedInfo(FTSE_100_URL, FTSE_100_CNT);
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(populatedftse100List,x, StockCategory.LARGE_CAP);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
+            final List<FtseStockInfo> populatedftse100List = stockResearchService.
+                    populateFtseStockDetailedInfo(FTSE_100_URL, FTSE_100_CNT);
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(populatedftse100List,x, StockCategory.LARGE_CAP);
+            });
+            LOGGER.info(Instant.now()+ " <-  Ended FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
+
+            LOGGER.info(Instant.now()+ " <- Started FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts");
+            final List<FtseStockInfo> populatedftse250List = stockResearchService.
+                    populateFtseStockDetailedInfo(FTSE_250_URL, FTSE_250_CNT);
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(populatedftse250List,x, StockCategory.MID_CAP);
+            });
+
+
+            try {
+                final StringBuilder dataBuffer = new StringBuilder("");
+                stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+                int retry = 3;
+                while (!sendEmail(dataBuffer, new StringBuilder("** FTSE LARGE CAP Daily Data ** ")) && --retry >= 0);
+                final StringBuilder dataMidCapBuffer = new StringBuilder("");
+                stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataMidCapBuffer, x));
+                retry = 3;
+                while (!sendEmail(dataMidCapBuffer, new StringBuilder("** FTSE MID CAP Daily Data ** ")) && --retry >= 0);
+            }catch (Exception e){
+
+            }
+            LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
+
         });
-        LOGGER.info(Instant.now()+ " <-  Ended FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
-
-        LOGGER.info(Instant.now()+ " <- Started FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts");
-        final List<FtseStockInfo> populatedftse250List = stockResearchService.
-                populateFtseStockDetailedInfo(FTSE_250_URL, FTSE_250_CNT);
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(populatedftse250List,x, StockCategory.MID_CAP);
-        });
-
-
-        try {
-            final StringBuilder dataBuffer = new StringBuilder("");
-            stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
-            int retry = 3;
-            while (!sendEmail(dataBuffer, new StringBuilder("** FTSE LARGE CAP Daily Data ** ")) && --retry >= 0);
-            final StringBuilder dataMidCapBuffer = new StringBuilder("");
-            stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataMidCapBuffer, x));
-            retry = 3;
-            while (!sendEmail(dataMidCapBuffer, new StringBuilder("** FTSE MID CAP Daily Data ** ")) && --retry >= 0);
-        }catch (Exception e){
-
-        }
-        LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
+        executorService.shutdown();
 
     }
 
