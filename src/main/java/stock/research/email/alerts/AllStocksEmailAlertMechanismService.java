@@ -354,7 +354,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 50 2 ? * MON-FRI")
+    @Scheduled(cron = "0 2 0 ? * MON-FRI")
     public void killChrome() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::killChrome" );
         killZombie("chrome");

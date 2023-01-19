@@ -84,7 +84,7 @@ public class NyseEmailAlertMechanismService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 1 0 ? * MON-SAT")
+    @Scheduled(cron = "0 5 0 ? * MON-SAT")
     public void kickOffKillZombs() {
         StockResearchUtility.killZombie("chrome");
     }
