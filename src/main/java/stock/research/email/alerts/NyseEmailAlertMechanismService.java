@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,12 +84,13 @@ public class NyseEmailAlertMechanismService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 5 0 ? * MON-SAT")
+    @Scheduled(cron = "0 1 0 ? * MON-SAT")
     public void kickOffKillZombs() {
         StockResearchUtility.killZombie("chrome");
     }
 
     public void kickOffEmailAlerts() {
+            Instant instantBefore = Instant.now();
 
             LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
@@ -109,12 +111,13 @@ public class NyseEmailAlertMechanismService {
                 e.printStackTrace();
                 LOGGER.error("NASDAQ Daily Data, Error ->",e);
             }
-            LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
 
     }
 
     public void startUpKickOffEmailAlerts() {
 
+            Instant instantBefore = Instant.now();
             LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<NyseStockInfo> nyseStockInfoList = startUpNYSEStockResearchService.startPopulateNYSEStockDetailedInfo();
             Arrays.stream(SIDE.values()).forEach(x -> {
@@ -132,7 +135,7 @@ public class NyseEmailAlertMechanismService {
             }catch (Exception e){
 
             }
-            LOGGER.info(Instant.now()+ " <-  Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
 
     }
 

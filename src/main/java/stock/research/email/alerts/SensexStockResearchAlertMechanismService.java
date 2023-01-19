@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,8 +70,8 @@ public class SensexStockResearchAlertMechanismService {
 
     public void kickOffScreenerEmailAlerts() {
 
-        long start = System.currentTimeMillis();
-        LOGGER.info(Instant.now()+ " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+        Instant instantBefore = Instant.now();
+        LOGGER.info(Instant.now() + " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
         try{
             List<SensexStockInfo> populatedSensexList = screenerSensexStockResearchService.populateStocksAttributes();
             Arrays.stream(StockCategory.values()).forEach(x -> {
@@ -89,12 +90,12 @@ public class SensexStockResearchAlertMechanismService {
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
         }catch (Exception e){ }
 
-        LOGGER.info(Instant.now()+ " <- Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
+        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
     }
 
     public void kickOffEmailAlerts() {
 
-            long start = System.currentTimeMillis();
+            Instant instantBefore = Instant.now();
             LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
 //                List<SensexStockInfo> populatedSensexList = objectMapper.readValue(new ClassPathResource("SensexStock-1000-MktCap-detailedInfo.json").getInputStream(), new TypeReference<List<SensexStockInfo>>(){});
         try{
@@ -141,7 +142,7 @@ public class SensexStockResearchAlertMechanismService {
                 while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** "), false) && --retry >= 0);
             }catch (Exception e){ }
 
-            LOGGER.info(Instant.now()+ " <- Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + (System.currentTimeMillis() - start));
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
     }
 
     private List<SensexStockInfo>  get500StocksAttributes() {
