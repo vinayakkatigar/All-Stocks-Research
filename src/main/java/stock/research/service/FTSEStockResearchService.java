@@ -228,9 +228,23 @@ public class FTSEStockResearchService {
                 }catch (Exception e){ webDriver = launchBrowser(); }
 
             });
-
+            ftseStockDetailedInfoList.stream().filter(x -> (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||
+                    x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0 ||
+                    x.get_52WeekHighLowPriceDiff() == null || x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) == 0) ).forEach(x -> {
+                try {
+                    int retry =5;
+                    boolean sucess = false;
+                    sucess = extractedChromeDriverAttr(x);
+                    while (!sucess && --retry > 0){
+                        sucess = extractedChromeDriverAttr(x);
+                    }
+                }catch (Exception e){
+                    webDriver = launchBrowser();
+                }
+            });
             ftseStockDetailedInfoList = ftseStockDetailedInfoList.stream().distinct().collect(Collectors.toList());
             ftseStockDetailedInfoList.sort(Comparator.comparing(FtseStockInfo::getStockMktCap).reversed());
+
             if (cnt == FTSE_100_CNT){
                 largeCapCacheftseStockDetailedInfoList = ftseStockDetailedInfoList;
             }
