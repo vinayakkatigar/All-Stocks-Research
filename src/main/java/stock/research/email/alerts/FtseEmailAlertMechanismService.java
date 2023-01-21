@@ -100,7 +100,7 @@ public class FtseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             Instant instantBefore = Instant.now();
-            LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
+            LOGGER.info(Instant.now() + " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<FtseStockInfo> populatedftse100List = stockResearchService.
                     populateFtseStockDetailedInfo(FTSE_100_URL, FTSE_100_CNT);
             Arrays.stream(SIDE.values()).forEach(x -> {
@@ -125,7 +125,7 @@ public class FtseEmailAlertMechanismService {
                 retry = 3;
                 while (!sendEmail(dataMidCapBuffer, new StringBuilder("** FTSE MID CAP Daily Data ** ")) && --retry >= 0);
             }catch (Exception e){ }
-            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts" );
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended FTSE250 FtseEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now() );
         });
         executorService.shutdown();
 

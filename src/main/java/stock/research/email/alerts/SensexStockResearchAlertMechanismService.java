@@ -90,7 +90,7 @@ public class SensexStockResearchAlertMechanismService {
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
         }catch (Exception e){ }
 
-        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
     }
 
     public void kickOffEmailAlerts() {
@@ -142,7 +142,7 @@ public class SensexStockResearchAlertMechanismService {
                 while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** "), false) && --retry >= 0);
             }catch (Exception e){ }
 
-            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
     }
 
     private List<SensexStockInfo>  get500StocksAttributes() {

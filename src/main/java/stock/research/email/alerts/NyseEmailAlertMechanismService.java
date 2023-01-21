@@ -111,7 +111,7 @@ public class NyseEmailAlertMechanismService {
                 e.printStackTrace();
                 LOGGER.error("NASDAQ Daily Data, Error ->",e);
             }
-            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now());
 
     }
 

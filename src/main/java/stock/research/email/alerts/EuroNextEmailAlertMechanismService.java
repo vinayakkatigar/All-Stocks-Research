@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +57,7 @@ public class EuroNextEmailAlertMechanismService {
         executorService.submit(() -> {
 
             try {
+                Instant instantBefore = Instant.now();
                 LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
                 final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
                 Arrays.stream(SIDE.values()).forEach(x -> {
@@ -79,7 +81,7 @@ public class EuroNextEmailAlertMechanismService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended EuroNextEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now() );
             }catch (Exception e){
 
             }
