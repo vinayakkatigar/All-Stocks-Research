@@ -370,9 +370,9 @@ public class SensexStockResearchService {
                 x.setStockRankIndex(i++);
             }
 
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\SensexStockDetailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\SensexStockDetailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList).getBytes());
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\SensexStock-1000-MktCap-detailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\SensexStock-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
             cacheSensexStockInfosList = resultSensexStockInfosList;
             closeWebDriver();

@@ -67,7 +67,7 @@ public class NyseTop1000StockResearchService {
         List<StockInfo> stockInfoList = stockMap.entrySet().stream().map(x-> new StockInfo(x.getKey(), x.getValue())).collect(toList());
         stockInfoList = allStockResearchService.getDetailedInfo("NYSE_1000", stockInfoList);
         try {
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ component + ".json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ component + ".json"),
                     objectMapper.writeValueAsString(stockInfoList).getBytes());
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Outer Error ->", e);

@@ -131,7 +131,7 @@ public class EuroNextStockResearchService {
             String fileName =  LocalDateTime.now() + HYPHEN  ;
             fileName = fileName.replace(":","-");
 
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\" + fileName + HYPHEN
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\" + fileName + HYPHEN
                             + "EuroNext" + HYPHEN  + "ALLDetailedInfo.json"),
                     objectMapper.writeValueAsString(populateEuroNextStockDetailedInfoList).getBytes());
             cacheEuroNextStockDetailedInfoList = populateEuroNextStockDetailedInfoList;

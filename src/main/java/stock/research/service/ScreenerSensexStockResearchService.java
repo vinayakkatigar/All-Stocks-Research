@@ -193,9 +193,9 @@ public class ScreenerSensexStockResearchService {
                 x.setStockRankIndex(i++);
             }
 
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\ScreenerSensexStockDetailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStockDetailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList).getBytes());
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\ScreenerSensexStock-1000-MktCap-detailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStock-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
             cacheScreenerSensexStockInfosList = resultSensexStockInfosList;
             return (resultSensexStockInfosList);

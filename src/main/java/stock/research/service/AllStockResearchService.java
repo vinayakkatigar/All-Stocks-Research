@@ -239,7 +239,7 @@ public class AllStockResearchService {
                 x.setStockRankIndex(i++);
             }
 
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\logs\\"+ component + "detailedInfo.json"),
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ component + "detailedInfo.json"),
                     objectMapper.writeValueAsString(stockInfoList).getBytes());
             setCacheForComponent(component, stockInfoList);
             return stockInfoList;
