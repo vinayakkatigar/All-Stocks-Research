@@ -254,7 +254,7 @@ public class FTSEStockResearchService {
 
             try {
                 if (ftseStockDetailedInfoList != null && ftseStockDetailedInfoList.size() > 0){
-                    String fileName =  LocalDateTime.now() + HYPHEN  ;
+                    String fileName =  "FTSE_" + LocalDateTime.now() + HYPHEN  ;
                     fileName = fileName.replace(":","-");
                     fileName = fileName + "top"+  HYPHEN + ftseStockDetailedInfoList.get(0).getStockRankIndex()+  HYPHEN + ftseStockDetailedInfoList.get(ftseStockDetailedInfoList.size() - 1).getStockRankIndex() +  HYPHEN;
                     Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ fileName + "detailedInfo.json"),

@@ -340,8 +340,8 @@ public class SensexStockResearchAlertMechanismService {
                 fileName = fileName.replace(" ", "");
                 fileName =  fileName + "-" + LocalDateTime.now()  ;
                 fileName = fileName.replace(":","-");
-                Files.write(Paths.get(System.getProperty("user.dir") + "\\target\\" + fileName  + ".html"), data.getBytes());
-                FileSystemResource file = new FileSystemResource(System.getProperty("user.dir")  + "\\target\\" + fileName + ".html");
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\" + fileName  + ".html"), data.getBytes());
+                FileSystemResource file = new FileSystemResource(System.getProperty("user.dir")  + "\\genFiles\\" + fileName + ".html");
                 helper.addAttachment(file.getFilename(), file);
                 javaMailSender.send(message);
             }
