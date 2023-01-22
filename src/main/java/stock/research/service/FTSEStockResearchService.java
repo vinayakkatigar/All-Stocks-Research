@@ -70,41 +70,6 @@ public class FTSEStockResearchService {
     }
 
 
-    public List<FtseStockInfo> populateYearlyGainersLosersFtseStockDetailedInfo(String url, Integer trCnt) {
-        LOGGER.info("<- Started FTSEStockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo");
-        List<FtseStockInfo> ftseStockDetailedInfoList = new ArrayList<>();
-        try {
-            if (webDriver != null) webDriver.close();
-        }catch (Exception e){}
-
-        ResponseEntity<String> response = null;
-
-        LOGGER.info("FTSEStockResearchService::populateYearlyGainersLosersFtseStockDetailedInfo::url: -> " + url);
-        response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-        Document doc = Jsoup.parse(response.getBody());
-        Elements tableElements = doc.getElementsByClass("stockTable");
-        if (tableElements != null && tableElements.size() > 0){
-            Element tableElement = tableElements.get(0);
-            Elements trElements = tableElement.getElementsByTag("tr");
-            if (trElements != null && trElements.size() > 0){
-                for (int i = 0; i < trElements.size(); i++) {
-                    Element trElement = trElements.get(i);
-                    Elements tdElements = trElement.getElementsByTag("td");
-                        if (tdElements != null && tdElements.size() > 0 && trCnt  > 0){
-                            try {
-                                Double.valueOf(tdElements.get(6).text());
-                            }catch (Exception e){
-                                continue;
-                            }
-                            trCnt--;
-                            ftseStockDetailedInfoList.add(new FtseStockInfo(tdElements.get(1).toString(), new BigDecimal(tdElements.get(6).text())));
-                        }
-                    }
-                }
-            }
-        return  ftseStockDetailedInfoList;
-    }
-
     public List<FtseStockInfo> getFtseStockInfo(String urlInfo, int cnt) {
         ResponseEntity<String> response = null;
         List<FtseStockInfo> ftseStockInfoList = new ArrayList<>();
@@ -112,6 +77,12 @@ public class FTSEStockResearchService {
         try {
             LOGGER.info("<- Started FTSEStockResearchService::getFtseStockInfo:: -> ");
             for (int i = 1; i < cnt; i++) {
+
+                try {
+                    if (webDriver == null){
+                        webDriver = launchBrowser();
+                    }
+                }catch (Exception e){}
 
                 try {
                     webDriver.get(urlInfo + i);
@@ -228,6 +199,7 @@ public class FTSEStockResearchService {
                 }catch (Exception e){ webDriver = launchBrowser(); }
 
             });
+
             ftseStockDetailedInfoList.stream().filter(x -> (x.get_52WeekLowPrice() == null || x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) == 0 ||
                     x.get_52WeekHighPrice() == null || x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) == 0 ||
                     x.get_52WeekHighLowPriceDiff() == null || x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) == 0) ).forEach(x -> {
@@ -465,6 +437,42 @@ public class FTSEStockResearchService {
             x.set_52WeekLowPriceDiff(((x.getCurrentMarketPrice().subtract(x.get_52WeekLowPrice()).abs())
                     .divide(x.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
         }
+    }
+
+
+    public List<FtseStockInfo> populateYearlyGainersLosersFtseStockDetailedInfo(String url, Integer trCnt) {
+        LOGGER.info("<- Started FTSEStockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo");
+        List<FtseStockInfo> ftseStockDetailedInfoList = new ArrayList<>();
+        try {
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){}
+
+        ResponseEntity<String> response = null;
+
+        LOGGER.info("FTSEStockResearchService::populateYearlyGainersLosersFtseStockDetailedInfo::url: -> " + url);
+        response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+        Document doc = Jsoup.parse(response.getBody());
+        Elements tableElements = doc.getElementsByClass("stockTable");
+        if (tableElements != null && tableElements.size() > 0){
+            Element tableElement = tableElements.get(0);
+            Elements trElements = tableElement.getElementsByTag("tr");
+            if (trElements != null && trElements.size() > 0){
+                for (int i = 0; i < trElements.size(); i++) {
+                    Element trElement = trElements.get(i);
+                    Elements tdElements = trElement.getElementsByTag("td");
+                    if (tdElements != null && tdElements.size() > 0 && trCnt  > 0){
+                        try {
+                            Double.valueOf(tdElements.get(6).text());
+                        }catch (Exception e){
+                            continue;
+                        }
+                        trCnt--;
+                        ftseStockDetailedInfoList.add(new FtseStockInfo(tdElements.get(1).toString(), new BigDecimal(tdElements.get(6).text())));
+                    }
+                }
+            }
+        }
+        return  ftseStockDetailedInfoList;
     }
 
 }
