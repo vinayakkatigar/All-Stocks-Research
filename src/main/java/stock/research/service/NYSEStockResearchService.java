@@ -71,7 +71,7 @@ public class NYSEStockResearchService {
     public List<NyseStockInfo> populateNYSEStockDetailedInfo() {
         LOGGER.info("<- Started NYSEStockResearchService.populateNYSEStockDetailedInfo");
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
-        final  List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
+         List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
             restartWebDriver();
         }catch (WebDriverException e) {
@@ -92,17 +92,19 @@ public class NYSEStockResearchService {
                         objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             }catch (Exception e){}
 
-            populateNYSEStockDetailedInfoList.stream().filter(q -> (
-                    (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
-                    && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
-                    && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
-                    && (q.getStockMktCap() != null || q.getMktCapRealValue() != null)))
-                    .collect(toList()).sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
+            populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream().filter(q -> (
+                            (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
+                                    && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
+                                    && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
+                                    && (q.getStockMktCap() != null || q.getMktCapRealValue() != null)))
+                    .collect(toList());
+            populateNYSEStockDetailedInfoList.sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i =1;
             for (NyseStockInfo x : populateNYSEStockDetailedInfoList){
                 x.setStockRankIndex(i++);
+                x.setStockName(x.getStockCode());
                 if(x.getMktCapRealValue() != null)x.setStockMktCap(truncateNumber(x.getMktCapRealValue()));
             }
 
