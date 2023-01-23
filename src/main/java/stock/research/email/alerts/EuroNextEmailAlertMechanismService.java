@@ -50,43 +50,54 @@ public class EuroNextEmailAlertMechanismService {
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
 
-    @Scheduled(cron = "0 35 9,15 ? * MON-FRI")
-    public void kickOffEmailAlerts() {
-
+    @Scheduled(cron = "0 15 1 ? * MON-SAT")
+    public void kickOffNightlyEmailAlerts() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-
-            try {
-                Instant instantBefore = Instant.now();
-                LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
-                final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
-                Arrays.stream(SIDE.values()).forEach(x -> {
-                    generateAlertEmails(EuroNextStockInfoList,x);
-                });
-                LOGGER.info(Instant.now()+ " <-  Ended  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
-
-                StringBuilder dataBuffer = new StringBuilder("");
-                EuroNextStockInfoList.stream().forEach(x -> EuroNextStockResearchUtility.createTableContents(dataBuffer, x));
-                String data = EuroNextStockResearchUtility.HTML_START;
-                data += dataBuffer.toString();
-                data += EuroNextStockResearchUtility.HTML_END;
-                String fileName = "EuroNextTop250".toString();
-                fileName = fileName.replace("*", "");
-                fileName = fileName.replace(" ", "");
-                fileName =  fileName + "-" + LocalDateTime.now()  ;
-                fileName = fileName.replace(":","-");
-
-                try {
-                    Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\EURO-" + fileName  + ".html"), data.getBytes());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended EuroNextEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now() );
-            }catch (Exception e){
-
-            }
+            kickOffEuro();
         });
         executorService.shutdown();
+    }
+
+    @Scheduled(cron = "0 35 9,15 ? * MON-FRI")
+    public void kickOffEmailAlerts() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            kickOffEuro();
+        });
+        executorService.shutdown();
+    }
+
+    private void kickOffEuro() {
+        try {
+            Instant instantBefore = Instant.now();
+            LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
+            final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
+            Arrays.stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(EuroNextStockInfoList,x);
+            });
+            LOGGER.info(Instant.now()+ " <-  Ended  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
+
+            StringBuilder dataBuffer = new StringBuilder("");
+            EuroNextStockInfoList.stream().forEach(x -> EuroNextStockResearchUtility.createTableContents(dataBuffer, x));
+            String data = EuroNextStockResearchUtility.HTML_START;
+            data += dataBuffer.toString();
+            data += EuroNextStockResearchUtility.HTML_END;
+            String fileName = "EuroNextTop250".toString();
+            fileName = fileName.replace("*", "");
+            fileName = fileName.replace(" ", "");
+            fileName =  fileName + "-" + LocalDateTime.now()  ;
+            fileName = fileName.replace(":","-");
+
+            try {
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\EURO-" + fileName  + ".html"), data.getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended EuroNextEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now() );
+        }catch (Exception e){
+
+        }
     }
 
     private void generateAlertEmails(List<EuroNextStockInfo> EuroNextStockInfoList, SIDE side) {

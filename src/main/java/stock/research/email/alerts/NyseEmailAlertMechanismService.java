@@ -57,16 +57,7 @@ public class NyseEmailAlertMechanismService {
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
-    @Scheduled(cron = "0 45 9,17 ? * MON-THU")
-    public void kickOffEmailAlerts_Cron() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            kickOffEmailAlerts();
-        });
-        executorService.shutdown();
-    }
-
-    @Scheduled(cron = "0 18 00 ? * MON-SAT")
+    @Scheduled(cron = "0 45 2 ? * MON-SAT")
     public void kickOffEmailAlerts_Nightly() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -74,9 +65,8 @@ public class NyseEmailAlertMechanismService {
         });
         executorService.shutdown();
     }
-
-    @Scheduled(cron = "0 5 12 ? * FRI")
-    public void kickOffEmailAlerts_Fri() {
+    @Scheduled(cron = "0 5 9,18 ? * MON-SAT")
+    public void kickOffEmailAlerts_Daily() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
