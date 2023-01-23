@@ -69,7 +69,6 @@ public class NYSEStockResearchService {
 //        this.webDriver = launchBrowser();
     }
     public List<NyseStockInfo> populateNYSEStockDetailedInfo() {
-        LOGGER.info("<- Started NYSEStockResearchService.populateNYSEStockDetailedInfo");
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
          List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
@@ -92,13 +91,12 @@ public class NYSEStockResearchService {
                         objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             }catch (Exception e){}
 
-            populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream().filter(q -> (
+            populateNYSEStockDetailedInfoList.stream().filter(q -> (
                             (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
                                     && (q.getStockMktCap() != null || q.getMktCapRealValue() != null)))
-                    .collect(toList());
-            populateNYSEStockDetailedInfoList.sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
+                    .collect(toList()).sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i =1;
