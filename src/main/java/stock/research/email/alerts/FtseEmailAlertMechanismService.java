@@ -131,11 +131,21 @@ public class FtseEmailAlertMechanismService {
 
         try {
             final StringBuilder dataBuffer = new StringBuilder("");
-            stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
+            stockResearchService.getLargeCapCacheftseStockDetailedInfoList().stream().filter((x -> (x.get_52WeekLowPrice() != null
+                    && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                    x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                    x.get_52WeekHighLowPriceDiff() != null &&
+                    x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
+                    .forEach(x ->  createTableContents(dataBuffer, x));
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** FTSE LARGE CAP Daily Data ** ")) && --retry >= 0);
             final StringBuilder dataMidCapBuffer = new StringBuilder("");
-            stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().forEach(x ->  createTableContents(dataMidCapBuffer, x));
+            stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().stream().filter((x -> (x.get_52WeekLowPrice() != null
+                            && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                            x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                            x.get_52WeekHighLowPriceDiff() != null &&
+                            x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
+                    .forEach(x ->  createTableContents(dataMidCapBuffer, x));
             retry = 3;
             while (!sendEmail(dataMidCapBuffer, new StringBuilder("** FTSE MID CAP Daily Data ** ")) && --retry >= 0);
         }catch (Exception e){ }
