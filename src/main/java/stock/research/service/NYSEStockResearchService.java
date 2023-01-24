@@ -91,12 +91,14 @@ public class NYSEStockResearchService {
                         objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             }catch (Exception e){}
 
-            populateNYSEStockDetailedInfoList.stream().filter(q -> (
+            populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream().filter(q -> (
                             (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
                                     && (q.getStockMktCap() != null || q.getMktCapRealValue() != null)))
-                    .collect(toList()).sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
+                    .collect(toList());
+
+            populateNYSEStockDetailedInfoList.sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i =1;
