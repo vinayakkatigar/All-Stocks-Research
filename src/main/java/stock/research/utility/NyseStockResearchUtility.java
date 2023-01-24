@@ -221,7 +221,7 @@ public class NyseStockResearchUtility {
         }catch (Exception e){
             dataBuffer.append("<td>0</td>");
         }
-        dataBuffer.append("<td>" + x.getSectorIndustry() + "-" + x.getMktCapRealValue() + "</td>");
+        dataBuffer.append("<td>" + x.getSectorIndustry() + "- ( " + String.format("%,.2f",x.getMktCapRealValue()) + " )</td>");
         dataBuffer.append("</tr>");
     }
 
