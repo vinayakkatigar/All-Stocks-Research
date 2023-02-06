@@ -117,7 +117,8 @@ public class NyseEmailAlertMechanismService {
         }
     }
 
-    private void generateHTMLContent(List<NyseStockInfo> nyseStockInfoList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer, StockCategory stockCategory) {
+    private void generateHTMLContent(List<NyseStockInfo> nyseStockInfoList, SIDE side, StringBuilder dataBuffer,
+                                     StringBuilder subjectBuffer, StockCategory stockCategory) {
         if (nyseStockInfoList != null && nyseStockInfoList.size() >0){
             nyseStockInfoList = nyseStockInfoList.stream().distinct().collect(Collectors.toList());
             nyseStockInfoList.stream().distinct().forEach(x -> {
