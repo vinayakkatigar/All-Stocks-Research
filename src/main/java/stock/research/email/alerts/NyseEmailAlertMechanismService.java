@@ -105,30 +105,6 @@ public class NyseEmailAlertMechanismService {
 
     }
 
-    public void startUpKickOffEmailAlerts() {
-
-            Instant instantBefore = Instant.now();
-            LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
-            final List<NyseStockInfo> nyseStockInfoList = startUpNYSEStockResearchService.startPopulateNYSEStockDetailedInfo();
-            Arrays.stream(SIDE.values()).forEach(x -> {
-                generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
-            });
-
-            Arrays.stream(SIDE.values()).forEach(x -> {
-                generateAlertEmails(nyseStockInfoList,x, StockCategory.MID_CAP);
-            });
-            try {
-                StringBuilder dataBuffer = new StringBuilder("");
-                startUpNYSEStockResearchService.getCacheNYSEStockDetailedInfoList().forEach(x ->  createTableContents(dataBuffer, x));
-                int retry = 3;
-                while (!sendEmail(dataBuffer, new StringBuilder("** NASDAQ Daily Data ** ")) && --retry >= 0);
-            }catch (Exception e){
-
-            }
-            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
-
-    }
-
     private void generateAlertEmails(List<NyseStockInfo> nyseStockInfoList, SIDE side, StockCategory stockCategory) {
         try {
             StringBuilder dataBuffer = new StringBuilder("");
@@ -151,29 +127,25 @@ public class NyseEmailAlertMechanismService {
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighLowPriceDiff() != null) {
                     if (x.getStockRankIndex() <= 250  && stockCategory == StockCategory.LARGE_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(75)) > 0
+                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(65)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0
                                     || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
-                            if (!(checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                                 if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                     subjectBuffer.append("** NASDAQ Buy Large Cap Alert**");
                                 }
                                 createTableContents(dataBuffer, x);
-                            }
                     }
 
                     if ( x.getStockRankIndex() > 250 && stockCategory == StockCategory.MID_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(100)) > 0
+                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(80)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null &&
                                 ((x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0 ||
                                         x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5.0)) <= 0))){
-                                if (!(checkPortfolioSizeAndQtyExists(x.getStockCode()))){
                                     if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                         subjectBuffer.append("** NASDAQ Buy Mid Cap Alert**");
                                     }
                                     createTableContents(dataBuffer, x);
-                                }
                     }
 
                     if (x.getStockRankIndex() <= 250 && stockCategory == StockCategory.LARGE_CAP
