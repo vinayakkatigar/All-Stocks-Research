@@ -137,7 +137,7 @@ public class SensexStockResearchAlertMechanismService {
                     }
 
                     int retry = 3;
-                    while (!sendEmail(dataBuffer, new StringBuilder("** Portfolio Sensex Daily Data ** "), true) && --retry >= 0);
+//                    while (!sendEmail(dataBuffer, new StringBuilder("** Portfolio Sensex Daily Data ** "), true) && --retry >= 0);
                 }catch (Exception e){
                     LOGGER.error("Error - ",e);
                 }
