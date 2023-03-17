@@ -62,8 +62,8 @@ public class SensexStockResearchAlertMechanismService {
     public void kickOffNightlyEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            kickOffEmailAlerts();
-            kickOffScreenerEmailAlerts();
+            //kickOffEmailAlerts();
+            //kickOffScreenerEmailAlerts();
         });
         executorService.shutdown();
     }
@@ -73,8 +73,8 @@ public class SensexStockResearchAlertMechanismService {
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            kickOffEmailAlerts();
-            kickOffScreenerEmailAlerts();
+            //kickOffEmailAlerts();
+            //kickOffScreenerEmailAlerts();
         });
         executorService.shutdown();
     }
