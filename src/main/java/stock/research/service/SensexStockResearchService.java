@@ -62,8 +62,6 @@ public class SensexStockResearchService {
     @Autowired
     RestTemplate restTemplate;
 
-    private WebDriver webDriver;
-
     @PostConstruct
     public void setUp(){
         try {
@@ -130,29 +128,17 @@ public class SensexStockResearchService {
     public List<SensexStockInfo> populateStocksAttributes() {
         List<SensexStockInfo> populatedSensexStockInfosList = new ArrayList<>();
         List<SensexStockInfo> resultSensexStockInfosList = new ArrayList<>();
-        try {
-            if (webDriver != null) webDriver.close();
-            webDriver = launchBrowser();
-        }catch (Exception e){
-            try {
-                webDriver = null;
-                webDriver = launchBrowser();
-            }catch (Exception e1){}
-        }
 
         try {
 
 //            sensexStockInfosList = objectMapper.readValue(new ClassPathResource("top500.json").getInputStream(), new TypeReference<List<SensexStockInfo>>(){});
             LinkedHashMap<String,String> stockUrlsMap = objectMapper.readValue(new ClassPathResource("mktCap1K/top5KMktCapUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String,String>>(){});
 
-//            sensexStockInfosList = getSensex500StockInfo();
-
             stockUrlsMap.entrySet().stream().map(x -> x.getValue()).forEach(x -> {
-//            stockUrlsMap.entrySet().stream().map(x -> x.getValue()).limit(15).forEach(x -> {
+
                 ResponseEntity<String> response = null;
 
                 LOGGER.info("SensexStockResearchService::StockURL ->  " + x);
-//                 response = makeRestCall("https://www.moneycontrol.com/india/stockpricequote/miscellaneous/hemispherepropertiesindia/HPI01");
                  response = makeRestCall(x);
 
                 for (int i = 0; i < 2; i++) {
@@ -251,107 +237,11 @@ public class SensexStockResearchService {
                             sensexStockInfo.setFiiPct(0.0);
                         }
                         sensexStockInfo.setTimestamp(Instant.now());
-                        try {
-                            if (sensexStockInfo.getCurrentMarketPrice() == null ||
-                                    sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0
-                                    || sensexStockInfo.getStockMktCap() == null || sensexStockInfo.getStockMktCap() == 0){
-
-                                for (int i = 0; i < 2; i++) {
-                                    if (webDriver == null){
-                                        webDriver = launchBrowser();
-                                    }
-                                    if (webDriver != null){
-                                        try {
-                                            webDriver.get(sensexStockInfo.getStockURL());
-                                        }catch (Exception e11){
-                                            try {
-                                                webDriver.close();
-                                            }catch (Exception e2){
-                                                webDriver.get(sensexStockInfo.getStockURL());
-                                            }
-                                        }
-                                        scrollToolBar();
-										try{
-											if((sensexStockInfo.getStockMktCap() == null ||
-													sensexStockInfo.getStockMktCap()  == 0) && (webDriver.findElement(By.cssSelector(".nsemktcap.bsemktcap")) != null)){
-												sensexStockInfo.setStockMktCap(getDoubleFromString(webDriver.findElement(By.cssSelector(".nsemktcap.bsemktcap")).getText()));
-											}
-										}catch(Exception e1){}
-
-                                        if((sensexStockInfo.getCurrentMarketPrice() == null ||
-                                                sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  == 0) &&
-                                                ( webDriver.findElement(By.cssSelector(".pcstkspr.nsestkcp.bsestkcp.futstkcp.optstkcp")) != null )){
-                                            sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(webDriver.findElement(By.cssSelector(".pcstkspr.nsestkcp.bsestkcp.futstkcp.optstkcp")).getText()));
-                                        }
-
-                                        if((sensexStockInfo.getCurrentMarketPrice() == null ||
-                                                sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  == 0) &&
-                                                ( webDriver.findElement(By.cssSelector(".nseopn.bseopn")) != null )){
-                                            sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(webDriver.findElement(By.cssSelector(".nseopn.bseopn")).getText()));
-                                        }
-                                        try{
-                                            if((sensexStockInfo.getCurrentMarketPrice() == null ||
-                                                    sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  == 0) &&
-                                                    (webDriver.findElement(By.id("sp_high")) != null)){
-                                                sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(webDriver.findElement(By.id("sp_high")).getText()));
-                                            }
-                                            if((sensexStockInfo.get_52WeekHighPrice() == null ||
-                                                    sensexStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO)  == 0)
-                                                    && ( webDriver.findElement(By.id("sp_yearlyhigh")) != null )){
-                                                sensexStockInfo.set_52WeekHighPrice(getBigDecimalFromString(webDriver.findElement(By.id("sp_yearlyhigh")).getText()));
-                                            }
-                                            if((sensexStockInfo.get_52WeekLowPrice() == null ||
-                                                    sensexStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO)  == 0)
-                                                    && ( webDriver.findElement(By.id("sp_yearlylow")) != null )){
-                                                sensexStockInfo.set_52WeekLowPrice(getBigDecimalFromString(webDriver.findElement(By.id("sp_yearlylow")).getText()));
-                                            }
-                                        }catch (Exception e){
-                                            try{
-                                                if((sensexStockInfo.getCurrentMarketPrice() == null ||
-                                                        sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  == 0) &&
-                                                        (webDriver.findElement(By.cssSelector(".nseprvclose.bseprvclose")) != null)){
-                                                    sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(webDriver.findElement(By.cssSelector(".nseprvclose.bseprvclose")).getText()));
-                                                }
-                                                if((sensexStockInfo.get_52WeekHighPrice() == null ||
-                                                        sensexStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO)  == 0)
-                                                        && ( webDriver.findElement(By.cssSelector(".nseH52.bseH52")) != null )){
-                                                    sensexStockInfo.set_52WeekHighPrice(getBigDecimalFromString(webDriver.findElement(By.cssSelector(".nseH52.bseH52")).getText()));
-                                                }
-                                                if((sensexStockInfo.get_52WeekLowPrice() == null ||
-                                                        sensexStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO)  == 0)
-                                                        && ( webDriver.findElement(By.cssSelector(".nseL52.bseL52")) != null )){
-                                                    sensexStockInfo.set_52WeekLowPrice(getBigDecimalFromString(webDriver.findElement(By.cssSelector(".nseL52.bseL52")).getText()));
-                                                }
-                                            }catch (Exception ex){}
-
-                                        }
-
-                                        set52HighLowPriceDiff(sensexStockInfo);
-                                        System.out.println("SensexStockResearchService.populateStocksAttributes" + sensexStockInfo);
-                                    }
-
-                                }
-                            }
-                        }catch (Exception e){
-                            try {
-                                if (webDriver != null) webDriver.close();
-                            }catch (Exception e1){
-                            }
-                            webDriver = launchBrowser();
-
-                            isException = true;
-                            e.printStackTrace();
-                        }
 
                         LOGGER.info(sensexStockInfo.toString());
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
                     }
                 }catch (Exception e) {
-                    try {
-                        if (webDriver != null) webDriver.close();
-                    }catch (Exception e1){}
-                    webDriver = launchBrowser();
-
                     ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                     e.printStackTrace();
                 }
@@ -375,43 +265,13 @@ public class SensexStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\SensexStock-1000-MktCap-detailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
             cacheSensexStockInfosList = resultSensexStockInfosList;
-            closeWebDriver();
             return (resultSensexStockInfosList);
         }catch (Exception e){
-            try{
-                if (webDriver != null) webDriver.close();
-            }catch (Exception e1){}
-            webDriver = launchBrowser();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
-        closeWebDriver();
         cacheSensexStockInfosList = resultSensexStockInfosList;
         return (resultSensexStockInfosList);
-    }
-
-    private void closeWebDriver() {
-        try{
-            if (webDriver == null) webDriver.close();
-            if (webDriver != null) webDriver.close();
-        }catch (Exception e){ }
-    }
-
-    private void scrollToolBar() {
-        try{
-
-            JavascriptExecutor js = (JavascriptExecutor) webDriver;
-            js.executeScript("window.scrollBy(0,1200)", "");
-            Thread.sleep(200 * 1);
-            js.executeScript("window.scrollBy(0,500)", "");
-            Thread.sleep(200 * 1);
-            js.executeScript("window.scrollBy(0,500)", "");
-            Thread.sleep(250 * 1);
-            js.executeScript("window.scrollBy(0,500)", "");
-            Thread.sleep(250 * 1);
-
-            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
-        }catch (Exception e){}
     }
 
     private void set52HighLowPriceDiff(SensexStockInfo sensexStockInfo) {
@@ -436,38 +296,6 @@ public class SensexStockResearchService {
             sensexStockInfo.set_52WeekLowPriceDiff(((sensexStockInfo.getCurrentMarketPrice().subtract(sensexStockInfo.get_52WeekLowPrice()))
                     .divide(sensexStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
         }
-    }
-
-    private WebDriver launchBrowser() {
-        try{
-//            killChrome("chrome");
-            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
-            System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
-            webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-            try {
-                webDriver.get("https://www.moneycontrol.com/");
-                Thread.sleep(5000 );
-            }catch (Exception e){}
-            try {
-                webDriver.findElements(By.className("fc-footer-buttons")).get(0).findElements(By.className("fc-button-label")).get(0).click();
-            }catch (Exception e){}
-            try {
-                webDriver.get("https://www.moneycontrol.com/");
-                Thread.sleep(5000 );
-                webDriver.navigate().refresh();
-                Thread.sleep(5000 );
-            }catch (Exception e){}
-
-            Thread.sleep(10000 );
-            webDriver.findElements(By.className("fc-footer-buttons"));
-        }catch (Exception e){
-            ERROR_LOGGER.error(now() + ",launchAndExtract::Error ->", e);
-            e.printStackTrace();
-            //if (webDriver != null) webDriver.close();
-            return null;
-        }
-        return webDriver;
     }
 
     @Retryable(maxAttempts=10, value = RuntimeException.class,
