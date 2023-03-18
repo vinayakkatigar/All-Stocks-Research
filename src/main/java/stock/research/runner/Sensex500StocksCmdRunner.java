@@ -69,7 +69,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
         ExecutorService _executorService = Executors.newSingleThreadExecutor();
         _executorService.submit(() -> {
             LOGGER.info("Started Sensex500StocksCmdRunner::run" );
-            sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
+//            sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
             LOGGER.info("End Sensex500StocksCmdRunner::run" );
         });
         _executorService.shutdown();

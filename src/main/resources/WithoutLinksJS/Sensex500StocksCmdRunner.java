@@ -67,7 +67,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
         System.out.println(objectMapper.writeValueAsString(stringMap));
 */
         LOGGER.info("Started Sensex500StocksCmdRunner::run" );
-        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
+//        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
         LOGGER.info("End Sensex500StocksCmdRunner::run" );
 
 //        startUpNYSEStockResearchService.kickOffEmailAlerts();
