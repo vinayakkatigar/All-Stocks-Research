@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static stock.research.utility.NyseStockResearchUtility.createTableContents;
+
 @Service
 public class EuroNextEmailAlertMechanismService {
 
@@ -72,14 +74,14 @@ public class EuroNextEmailAlertMechanismService {
         try {
             Instant instantBefore = Instant.now();
             LOGGER.info(Instant.now()+ " <-  Started  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
-            final List<EuroNextStockInfo> EuroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
+            final List<EuroNextStockInfo> euroNextStockInfoList = stockResearchService.populateEuroNextStockDetailedInfo();
             Arrays.stream(SIDE.values()).forEach(x -> {
-                generateAlertEmails(EuroNextStockInfoList,x);
+                generateAlertEmails(euroNextStockInfoList,x);
             });
             LOGGER.info(Instant.now()+ " <-  Ended  EuroNextEmailAlertMechanismService::kickOffEmailAlerts" );
 
             StringBuilder dataBuffer = new StringBuilder("");
-            EuroNextStockInfoList.stream().forEach(x -> EuroNextStockResearchUtility.createTableContents(dataBuffer, x));
+            euroNextStockInfoList.stream().forEach(x -> EuroNextStockResearchUtility.createTableContents(dataBuffer, x));
             String data = EuroNextStockResearchUtility.HTML_START;
             data += dataBuffer.toString();
             data += EuroNextStockResearchUtility.HTML_END;
@@ -94,6 +96,17 @@ public class EuroNextEmailAlertMechanismService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            try {
+                StringBuilder euroDataBuffer = new StringBuilder("");
+                euroNextStockInfoList.forEach(x ->  EuroNextStockResearchUtility.createTableContents(euroDataBuffer, x));
+                int retry = 3;
+                while (!sendEmail(euroDataBuffer, new StringBuilder("** EURO Daily Data ** ")) && --retry >= 0);
+            }catch (Exception e){
+                e.printStackTrace();
+                LOGGER.error("NASDAQ Daily Data, Error ->",e);
+            }
+
             LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended EuroNextEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now() );
         }catch (Exception e){
 
