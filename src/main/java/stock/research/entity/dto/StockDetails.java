@@ -18,7 +18,7 @@ public class StockDetails {
     String email;
 
     @Column(name = "UPDATED_TS")
-    Timestamp uppdatedTS;
+    Timestamp updatedTS;
 
     //getters and setters, contructors
 
