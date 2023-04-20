@@ -16,6 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.PortfolioInfo;
+import stock.research.entity.dto.NyseStockDetails;
+import stock.research.entity.dto.SensexStockDetails;
+import stock.research.entity.repo.NyseStockRepositary;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.StockResearchUtility;
@@ -28,6 +31,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -55,6 +59,8 @@ public class NyseEmailAlertMechanismService {
     private NYSEStockResearchService stockResearchService;
     @Autowired
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
+    @Autowired
+    private NyseStockRepositary nyseStockRepositary;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 2 ? * MON-SAT")
@@ -62,6 +68,14 @@ public class NyseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
+            try {
+                NyseStockDetails nyseStockDetails = new NyseStockDetails();
+                nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
+                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
+                nyseStockRepositary.save(nyseStockDetails);
+            }catch (Exception e){
+                LOGGER.error("Failed to write Sensex Stock Details", e);
+            }
         });
         executorService.shutdown();
     }
@@ -70,6 +84,14 @@ public class NyseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
+            try {
+                NyseStockDetails nyseStockDetails = new NyseStockDetails();
+                nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
+                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
+                nyseStockRepositary.save(nyseStockDetails);
+            }catch (Exception e){
+                LOGGER.error("Failed to write Sensex Stock Details", e);
+            }
         });
         executorService.shutdown();
     }

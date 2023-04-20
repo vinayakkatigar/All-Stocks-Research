@@ -11,10 +11,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
+import stock.research.entity.dto.SensexStockDetails;
+import stock.research.entity.repo.SensexStockRepositary;
 import stock.research.service.InteractiveInvestorsResearchService;
 import stock.research.service.ScreenerSensexStockResearchService;
 import stock.research.service.SensexStockResearchService;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,6 +46,9 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Autowired
     private ScreenerSensexStockResearchService screenerSensexStockResearchService;
+
+    @Autowired
+    private SensexStockRepositary sensexStockRepositary;
 
 
     @Override

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
 import stock.research.domain.StockInfo;
+import stock.research.entity.dto.SensexStockDetails;
+import stock.research.entity.repo.SensexStockRepositary;
 import stock.research.service.ScreenerSensexStockResearchService;
 import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
@@ -28,6 +30,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -56,6 +59,9 @@ public class SensexStockResearchAlertMechanismService {
     @Autowired
     private ScreenerSensexStockResearchService screenerSensexStockResearchService;
 
+    @Autowired
+    private SensexStockRepositary sensexStockRepositary;
+
     private List<String> pfStockName = new ArrayList<>();
 
     @Scheduled(cron = "0 35 0 ? * MON-SAT")
@@ -64,6 +70,14 @@ public class SensexStockResearchAlertMechanismService {
         executorService.submit(() -> {
 //            kickOffEmailAlerts();
             kickOffScreenerEmailAlerts();
+            try {
+                SensexStockDetails sensexStockDetails = new SensexStockDetails();
+                sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
+                sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
+                sensexStockRepositary.save(sensexStockDetails);
+            }catch (Exception e){
+                LOGGER.error("Failed to write Sensex Stock Details", e);
+            }
         });
         executorService.shutdown();
     }
@@ -75,6 +89,14 @@ public class SensexStockResearchAlertMechanismService {
         executorService.submit(() -> {
 //            kickOffEmailAlerts();
             kickOffScreenerEmailAlerts();
+            try {
+                SensexStockDetails sensexStockDetails = new SensexStockDetails();
+                sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
+                sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
+                sensexStockRepositary.save(sensexStockDetails);
+            }catch (Exception e){
+                LOGGER.error("Failed to write Sensex Stock Details", e);
+            }
         });
         executorService.shutdown();
     }
