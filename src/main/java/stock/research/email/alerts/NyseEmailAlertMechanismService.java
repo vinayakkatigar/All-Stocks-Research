@@ -18,6 +18,7 @@ import stock.research.domain.NyseStockInfo;
 import stock.research.domain.PortfolioInfo;
 import stock.research.entity.dto.NyseStockDetails;
 import stock.research.entity.repo.NyseStockDetailsRepositary;
+import stock.research.entity.repo.NyseStockInfoRepositary;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.StockResearchUtility;
@@ -59,7 +60,9 @@ public class NyseEmailAlertMechanismService {
     @Autowired
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
     @Autowired
-    private NyseStockDetailsRepositary nyseStockRepositary;
+    private NyseStockDetailsRepositary nyseStockPayloadRepositary;
+    @Autowired
+    private NyseStockInfoRepositary nyseStockInfoRepositary;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 2 ? * MON-SAT")
@@ -67,30 +70,19 @@ public class NyseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
-            try {
-                NyseStockDetails nyseStockDetails = new NyseStockDetails();
-                nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
-                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
-                nyseStockRepositary.save(nyseStockDetails);
-            }catch (Exception e){
-                LOGGER.error("Failed to write Sensex Stock Details", e);
-            }
+            writeNYSEDetailsPayload();
+            writeNYSEStockInfo();
         });
         executorService.shutdown();
     }
+
     @Scheduled(cron = "0 5 9,18 ? * MON-SAT")
     public void kickOffEmailAlerts_Daily() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
-            try {
-                NyseStockDetails nyseStockDetails = new NyseStockDetails();
-                nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
-                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
-                nyseStockRepositary.save(nyseStockDetails);
-            }catch (Exception e){
-                LOGGER.error("Failed to write Sensex Stock Details", e);
-            }
+            writeNYSEDetailsPayload();
+            writeNYSEStockInfo();
         });
         executorService.shutdown();
     }
@@ -249,6 +241,29 @@ public class NyseEmailAlertMechanismService {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
+    }
+
+    private void writeNYSEDetailsPayload() {
+        try {
+            NyseStockDetails nyseStockDetails = new NyseStockDetails();
+            nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
+            nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
+            nyseStockPayloadRepositary.save(nyseStockDetails);
+        }catch (Exception e){
+            LOGGER.error("Failed to write Sensex Stock Details", e);
+        }
+    }
+
+
+    private void writeNYSEStockInfo() {
+        stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(nyseStockInfo -> {
+            try {
+                nyseStockInfoRepositary.save(nyseStockInfo);
+            }catch (Exception e){
+                LOGGER.error("Failed to write Sensex Stock Details", e);
+            }
+
+        });
     }
 
 }
