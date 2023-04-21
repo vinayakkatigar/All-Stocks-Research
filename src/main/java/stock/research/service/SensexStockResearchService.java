@@ -160,7 +160,7 @@ public class SensexStockResearchService {
                             Element ulElement = companyInfoElement.getElementsByClass("comp_inf company_slider").get(0);
                             Element liElement = ulElement.getElementsByTag("li").get(34);
                             if (liElement.getElementsByTag("span").get(0).text().equalsIgnoreCase("ISIN")){
-                                sensexStockInfo.setIsin(liElement.getElementsByTag("p").get(0).text());
+//                                sensexStockInfo.setIsin(liElement.getElementsByTag("p").get(0).text());
                             }
 
                         }catch (Exception e){

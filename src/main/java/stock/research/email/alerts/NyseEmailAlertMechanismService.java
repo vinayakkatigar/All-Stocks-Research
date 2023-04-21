@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.PortfolioInfo;
 import stock.research.entity.dto.NyseStockDetails;
-import stock.research.entity.dto.SensexStockDetails;
-import stock.research.entity.repo.NyseStockRepositary;
+import stock.research.entity.repo.NyseStockDetailsRepositary;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.StockResearchUtility;
@@ -60,7 +59,7 @@ public class NyseEmailAlertMechanismService {
     @Autowired
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
     @Autowired
-    private NyseStockRepositary nyseStockRepositary;
+    private NyseStockDetailsRepositary nyseStockRepositary;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 2 ? * MON-SAT")

@@ -1,6 +1,5 @@
 package stock.research.email.alerts;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -17,9 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
-import stock.research.domain.StockInfo;
 import stock.research.entity.dto.SensexStockDetails;
-import stock.research.entity.repo.SensexStockRepositary;
+import stock.research.entity.repo.SensexStockDetailsRepositary;
+import stock.research.entity.repo.SensexStockInfoRepositary;
 import stock.research.service.ScreenerSensexStockResearchService;
 import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
@@ -60,7 +59,10 @@ public class SensexStockResearchAlertMechanismService {
     private ScreenerSensexStockResearchService screenerSensexStockResearchService;
 
     @Autowired
-    private SensexStockRepositary sensexStockRepositary;
+    private SensexStockDetailsRepositary sensexStockRepositary;
+
+    @Autowired
+    private SensexStockInfoRepositary sensexStockInfoRepositary;
 
     private List<String> pfStockName = new ArrayList<>();
 
@@ -70,18 +72,11 @@ public class SensexStockResearchAlertMechanismService {
         executorService.submit(() -> {
 //            kickOffEmailAlerts();
             kickOffScreenerEmailAlerts();
-            try {
-                SensexStockDetails sensexStockDetails = new SensexStockDetails();
-                sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
-                sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
-                sensexStockRepositary.save(sensexStockDetails);
-            }catch (Exception e){
-                LOGGER.error("Failed to write Sensex Stock Details", e);
-            }
+            writeSensexPayload();
+            writeSensexInfoToDB();
         });
         executorService.shutdown();
     }
-
 
     @Scheduled(cron = "0 35 6,11 ? * MON-FRI")
     public void kickOffEmailAlerts_Cron() {
@@ -89,14 +84,8 @@ public class SensexStockResearchAlertMechanismService {
         executorService.submit(() -> {
 //            kickOffEmailAlerts();
             kickOffScreenerEmailAlerts();
-            try {
-                SensexStockDetails sensexStockDetails = new SensexStockDetails();
-                sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
-                sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
-                sensexStockRepositary.save(sensexStockDetails);
-            }catch (Exception e){
-                LOGGER.error("Failed to write Sensex Stock Details", e);
-            }
+            writeSensexPayload();
+            writeSensexInfoToDB();
         });
         executorService.shutdown();
     }
@@ -123,6 +112,10 @@ public class SensexStockResearchAlertMechanismService {
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
         }catch (Exception e){ }
 
+        writeSensexPayload();
+
+        writeSensexInfoToDB();
+
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
     }
 
@@ -141,15 +134,7 @@ public class SensexStockResearchAlertMechanismService {
                 try {
                     StringBuilder dataBuffer = new StringBuilder("");
                     sensexStockResearchService.getPortfolioInfoList().forEach(portfolioInfo -> {
-                        try {
-                            Optional<SensexStockInfo>sensexStockInfo = populatedSensexList.stream()
-                                    .filter(x -> (portfolioInfo.getiSIN() != null && x.getIsin() != null) && (x.getIsin().equalsIgnoreCase(portfolioInfo.getiSIN()))).findAny();
-                            if (sensexStockInfo != null && sensexStockInfo.isPresent()){
-                                portfolioInfoMap.put(portfolioInfo, sensexStockInfo.get());
-                            }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                        //ToDo
                     });
 
                     LOGGER.info("SensexStockResearchAlertMechanismService.portfolioInfoMap");
@@ -325,8 +310,7 @@ public class SensexStockResearchAlertMechanismService {
     }
 
     private boolean isStockInPortfolio(SensexStockInfo x) {
-        return portfolioInfoList.stream().map(PortfolioInfo::getiSIN).anyMatch(y -> y.equalsIgnoreCase(x.getIsin()))
-                && pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0]))
+        return pfStockName.stream().anyMatch(s -> ((x.getStockName().split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0]))
                 || s.toLowerCase().split(" ")[0].equalsIgnoreCase(x.getStockName().split(" ")[0].toLowerCase())));
     }
 
@@ -406,4 +390,29 @@ public class SensexStockResearchAlertMechanismService {
             e.printStackTrace();
         }
     }
+
+    private void writeSensexPayload() {
+        try {
+            SensexStockDetails sensexStockDetails = new SensexStockDetails();
+            sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
+            sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
+            sensexStockRepositary.save(sensexStockDetails);
+        }catch (Exception e){
+            LOGGER.error("Failed to write Sensex Stock Details", e);
+        }
+    }
+
+
+    private void writeSensexInfoToDB() {
+        screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach( sensexStockInfo -> {
+            try {
+                sensexStockInfoRepositary.save(sensexStockInfo);
+            }catch (Exception e){
+                LOGGER.error("Failed to write Sensex Stock Info", e);
+            }
+        });
+
+    }
+
+
 }

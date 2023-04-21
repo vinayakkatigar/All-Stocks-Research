@@ -1,28 +1,67 @@
 package stock.research.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
+@Entity
+@Table(name = "SENSEX_STOCK_INFO")
 public class SensexStockInfo {
 
+
+    @Column(name = "SENSEX_STOCK_INFO_ID")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SENSEX_STOCK_INFO_ID_SEQ")
+    @SequenceGenerator(sequenceName = "SENSEX_STOCK_INFO_ID_SEQ", allocationSize = 1, name = "SENSEX_STOCK_INFO_ID_SEQ")
+    Long id;
+
+    @Column(name = "STOCK_NAME")
     private String stockName;
-    private String stockCode;
-    private String isin;
+
+    @Column(name = "STOCK_URL")
     private String stockURL;
+
+    @Column(name = "STOCK_RANK")
     private Integer stockRankIndex;
+
+    @Column(name = "STOCK_MKT_CAP")
     private Double stockMktCap;
+
+    @Column(name = "CURRENT_MARKET_PRICE")
     private BigDecimal currentMarketPrice =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_LOW")
     private BigDecimal _52WeekLowPrice =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_HIGH")
     private BigDecimal _52WeekHighPrice =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_HIGH_LOW_DIFF")
     private BigDecimal _52WeekHighLowPriceDiff =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_HIGH_DIFF")
     private BigDecimal _52WeekHighPriceDiff =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_LOW_DIFF")
     private BigDecimal _52WeekLowPriceDiff =  BigDecimal.ZERO;
+
+    @Column(name = "FII_PCT")
     private Double fiiPct;
+
+    @Column(name = "EPS")
     private Double eps;
+
+    @Column(name = "P2EPS")
     private Double p2eps;
+
+    @Column(name = "BOOK_VALUE")
     private Double bv;
+
+    @Column(name = "PRICE_TO_BOOK_VALUE")
     private Double p2bv;
+
+    @Column(name = "QUOTETS")
     private Instant timestamp;
 
     public SensexStockInfo(String stockName, String stockURL, Integer stockRankIndex, Double stockMktCap) {
@@ -45,8 +84,6 @@ public class SensexStockInfo {
     public String toString() {
         return "Sensex500StockInfo{" +
                 "stockName='" + stockName + '\'' +
-                ", stockCode='" + stockCode + '\'' +
-                ", isin='" + isin + '\'' +
                 ", stockURL='" + stockURL + '\'' +
                 ", stockRankIndex=" + stockRankIndex +
                 ", stockMktCap=" + stockMktCap +
@@ -71,8 +108,6 @@ public class SensexStockInfo {
         if (o == null || getClass() != o.getClass()) return false;
         SensexStockInfo that = (SensexStockInfo) o;
         return Objects.equals(getStockName(), that.getStockName()) &&
-                Objects.equals(getStockCode(), that.getStockCode()) &&
-                Objects.equals(getIsin(), that.getIsin()) &&
                 Objects.equals(getStockURL(), that.getStockURL()) &&
                 Objects.equals(getStockRankIndex(), that.getStockRankIndex()) &&
                 Objects.equals(getStockMktCap(), that.getStockMktCap()) &&
@@ -92,7 +127,7 @@ public class SensexStockInfo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStockName(), getStockCode(), getIsin(), getStockURL(), getStockRankIndex(), getStockMktCap(), getCurrentMarketPrice(), get_52WeekLowPrice(), get_52WeekHighPrice(), get_52WeekHighLowPriceDiff(), get_52WeekHighPriceDiff(), get_52WeekLowPriceDiff(), getFiiPct(), getEps(), getP2eps(), getBv(), getP2bv(), getTimestamp());
+        return Objects.hash(getStockName(), getStockURL(), getStockRankIndex(), getStockMktCap(), getCurrentMarketPrice(), get_52WeekLowPrice(), get_52WeekHighPrice(), get_52WeekHighLowPriceDiff(), get_52WeekHighPriceDiff(), get_52WeekLowPriceDiff(), getFiiPct(), getEps(), getP2eps(), getBv(), getP2bv(), getTimestamp());
     }
 
     public String getStockName() {
@@ -149,14 +184,6 @@ public class SensexStockInfo {
 
     public void set_52WeekHighPrice(BigDecimal _52WeekHighPrice) {
         this._52WeekHighPrice = _52WeekHighPrice;
-    }
-
-    public String getStockCode() {
-        return stockCode;
-    }
-
-    public void setStockCode(String stockCode) {
-        this.stockCode = stockCode;
     }
 
     public Double getFiiPct() {
@@ -220,14 +247,6 @@ public class SensexStockInfo {
 
     public void setP2bv(Double p2bv) {
         this.p2bv = p2bv;
-    }
-
-    public String getIsin() {
-        return isin;
-    }
-
-    public void setIsin(String isin) {
-        this.isin = isin;
     }
 
     public Instant getTimestamp() {
