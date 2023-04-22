@@ -347,7 +347,7 @@ public class NYSEStockResearchService {
             js.executeScript("window.scrollBy(0,250)", "");
             Thread.sleep(500 * 2);
             js.executeScript("window.scrollBy(0,250)", "");
-            Thread.sleep(500 * 2);
+            Thread.sleep(500 * 1);
             /*
             js.executeScript("window.scrollBy(0,250)", "");
             Thread.sleep(500 * 2);
