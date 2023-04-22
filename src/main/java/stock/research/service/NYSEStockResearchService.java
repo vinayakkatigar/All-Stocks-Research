@@ -320,7 +320,7 @@ public class NYSEStockResearchService {
                     && (nyseStockInfo.get_52WeekLowPrice() != null && nyseStockInfo.get_52WeekLowPrice().intValue() > 0)
                     && (nyseStockInfo.get_52WeekHighPrice() != null && nyseStockInfo.get_52WeekHighPrice().intValue() > 0)
                     && (nyseStockInfo.getStockMktCap() != null || nyseStockInfo.getMktCapRealValue() != null))){
-                LOGGER.info("nyseStockInfo ->" + nyseStockInfo);
+                LOGGER.info(populateNYSEStockDetailedInfoList.size() + "<- size::nyseStockInfo ->" + nyseStockInfo);
                 populateNYSEStockDetailedInfoList.add(nyseStockInfo);
             }
             populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream()
