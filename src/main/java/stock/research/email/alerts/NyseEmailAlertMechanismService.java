@@ -76,7 +76,7 @@ public class NyseEmailAlertMechanismService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 5 9,18 ? * MON-SAT")
+    @Scheduled(cron = "0 5 9,15,19 ? * MON-SAT")
     public void kickOffEmailAlerts_Daily() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
