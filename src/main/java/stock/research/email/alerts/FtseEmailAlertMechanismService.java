@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.FtseStockInfo;
 import stock.research.domain.PortfolioInfo;
+import stock.research.entity.repo.FtseStockInfoRepositary;
 import stock.research.service.FTSEStockResearchService;
 
 import javax.annotation.PostConstruct;
@@ -49,6 +50,9 @@ public class FtseEmailAlertMechanismService {
     private ObjectMapper objectMapper;
     @Autowired
     private FTSEStockResearchService stockResearchService;
+
+    @Autowired
+    private FtseStockInfoRepositary ftseStockInfoRepositary;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
@@ -99,6 +103,7 @@ public class FtseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickFTSE();
+            writeFTSEStockInfo();
         });
         executorService.shutdown();
     }
@@ -108,6 +113,7 @@ public class FtseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickFTSE();
+            writeFTSEStockInfo();
         });
         executorService.shutdown();
     }
@@ -277,6 +283,24 @@ public class FtseEmailAlertMechanismService {
             ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
             e.printStackTrace();
         }
+    }
+
+
+    private void writeFTSEStockInfo() {
+        stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(ftseStockInfo -> {
+            try {
+                ftseStockInfoRepositary.save(ftseStockInfo);
+            }catch (Exception e){
+                LOGGER.error("Failed to write FTSE Stock Large Cap Info", e);
+            }
+        });
+        stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().forEach(ftseStockInfo -> {
+            try {
+                ftseStockInfoRepositary.save(ftseStockInfo);
+            }catch (Exception e){
+                LOGGER.error("Failed to write FTSE Stock Mid Cap Info", e);
+            }
+        });
     }
 
 }

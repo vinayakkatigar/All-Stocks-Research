@@ -1,24 +1,59 @@
 package stock.research.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
+
+@Entity
+@Table(name = "FTSE_STOCK_INFO")
 public class FtseStockInfo {
 
+    @Column(name = "FTSE_STOCK_INFO_ID")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FTSE_STOCK_INFO_ID_SEQ")
+    @SequenceGenerator(sequenceName = "FTSE_STOCK_INFO_ID_SEQ", allocationSize = 1, name = "FTSE_STOCK_INFO_ID_SEQ")
+    Long id;
+
+    @Column(name = "STOCK_NAME")
     private String stockName;
+
+    @Column(name = "STOCK_CODE")
     private String stockCode;
+
+    @Column(name = "STOCK_URL")
     private String stockURL;
+
+    @Column(name = "STOCK_RANK")
     private Integer stockRankIndex;
+
+    @Column(name = "STOCK_MKT_CAP")
     private Double stockMktCap;
+
+    @Column(name = "CURRENT_MARKET_PRICE")
     private BigDecimal currentMarketPrice =  BigDecimal.ZERO;
+    @Column(name = "YEAR_LOW")
     private BigDecimal _52WeekLowPrice =  BigDecimal.ZERO;
+
+    @Column(name = "YEAR_HIGH")
     private BigDecimal _52WeekHighPrice =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_HIGH_LOW_DIFF")
     private BigDecimal _52WeekHighLowPriceDiff =  BigDecimal.ZERO;
+    @Column(name = "YEARLY_HIGH_DIFF")
     private BigDecimal _52WeekHighPriceDiff =  BigDecimal.ZERO;
+
+    @Column(name = "YEARLY_LOW_DIFF")
     private BigDecimal _52WeekLowPriceDiff =  BigDecimal.ZERO;
+
+    @Column(name = "P2EPS")
     private BigDecimal p2e =  BigDecimal.ZERO;
+
+    @Column(name = "EPS")
     private Double eps;
+
+    @Column(name = "QUOTETS")
     private Instant timestamp;
 
     public FtseStockInfo() {

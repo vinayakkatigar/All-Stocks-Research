@@ -250,7 +250,7 @@ public class NyseEmailAlertMechanismService {
             nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
             nyseStockPayloadRepositary.save(nyseStockDetails);
         }catch (Exception e){
-            LOGGER.error("Failed to write Sensex Stock Details", e);
+            LOGGER.error("Failed to write NYSE Stock Details", e);
         }
     }
 
@@ -260,7 +260,7 @@ public class NyseEmailAlertMechanismService {
             try {
                 nyseStockInfoRepositary.save(nyseStockInfo);
             }catch (Exception e){
-                LOGGER.error("Failed to write Sensex Stock Details", e);
+                LOGGER.error("Failed to write NYSE Stock Info", e);
             }
 
         });
