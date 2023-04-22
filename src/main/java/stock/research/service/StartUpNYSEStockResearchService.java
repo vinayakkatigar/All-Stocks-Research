@@ -429,7 +429,7 @@ public class StartUpNYSEStockResearchService {
     public Map<String , String> getNyseStockInfo() {
         Map<String , String> stocksUrlMap = new LinkedHashMap<>();
         try {
-            LinkedHashMap<String , String> stocksUrlInfo =  objectMapper.readValue(new ClassPathResource("nyseAllStockUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String , String>>(){});
+            LinkedHashMap<String , String> stocksUrlInfo =  objectMapper.readValue(new ClassPathResource("nyse-Top-750-StockUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String , String>>(){});
             return stocksUrlInfo;
         } catch (Exception e) {
             e.printStackTrace();

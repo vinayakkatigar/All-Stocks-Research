@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -463,7 +461,7 @@ public class NYSEStockResearchService {
     public Map<String , String> getNyseStockInfo() {
         Map<String , String> stocksUrlMap = new LinkedHashMap<>();
         try {
-            LinkedHashMap<String , String> stocksUrlInfo =  objectMapper.readValue(new ClassPathResource("NYSE/nyseAllStockUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String , String>>(){});
+            LinkedHashMap<String , String> stocksUrlInfo =  objectMapper.readValue(new ClassPathResource("NYSE/nyse-Top-750-StockUrlInfo.json").getInputStream(), new TypeReference<LinkedHashMap<String , String>>(){});
             return stocksUrlInfo;
         } catch (Exception e) {
             e.printStackTrace();
