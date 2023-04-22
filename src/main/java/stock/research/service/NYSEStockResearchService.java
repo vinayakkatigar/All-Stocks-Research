@@ -64,11 +64,17 @@ public class NYSEStockResearchService {
 
     private WebDriver webDriver;
 
+    private boolean isRunningFlag = false;
+
     @PostConstruct
     public void setUp(){
 //        this.webDriver = launchBrowser();
     }
     public List<NyseStockInfo> populateNYSEStockDetailedInfo() {
+        if (isRunningFlag) {
+            return getCacheNYSEStockDetailedInfoList();
+        }
+        isRunningFlag = true;
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
          List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
         try {
@@ -134,6 +140,7 @@ public class NYSEStockResearchService {
         try {
             if (webDriver != null) webDriver.close();
         }catch (Exception e){ webDriver = null;}
+        isRunningFlag = false;
         return (populateNYSEStockDetailedInfoList);
     }
 
@@ -496,6 +503,14 @@ public class NYSEStockResearchService {
             }
         }catch (Exception e){ }
 
+    }
+
+    public boolean isRunningFlag() {
+        return isRunningFlag;
+    }
+
+    public void setRunningFlag(boolean runningFlag) {
+        isRunningFlag = runningFlag;
     }
 
 
