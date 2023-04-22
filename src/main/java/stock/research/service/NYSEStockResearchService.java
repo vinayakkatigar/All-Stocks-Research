@@ -385,9 +385,6 @@ public class NYSEStockResearchService {
         }
     }
 
-
-    @Retryable(maxAttempts=10, value = RuntimeException.class,
-            backoff = @Backoff(delay = 5000, multiplier = 2))
     private void makeRestCall(Map<String, String> stockCodeUrlMap, String stockUrl) {
         ResponseEntity<String> response;
         LOGGER.info("NYSEStockResearchService::getNyseStockInfo::stockUrl: -> " + stockUrl);
@@ -404,7 +401,6 @@ public class NYSEStockResearchService {
             }
         }
     }
-
 
     private WebDriver launchBrowser() {
 
