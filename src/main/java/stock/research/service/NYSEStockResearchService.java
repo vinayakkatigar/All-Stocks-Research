@@ -176,12 +176,12 @@ public class NYSEStockResearchService {
                     webDriver = launchBrowser();
                 }
                 webDriver.get(x.getValue());
-                Thread.sleep(1000 * 3);
+                Thread.sleep(500 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
                 webDriver = launchBrowser();
                 webDriver.get(x.getValue());
-                sleep(1000 * 2);
+                sleep(1000 * 1);
             }
             scrollToolbar();
 
@@ -205,7 +205,7 @@ public class NYSEStockResearchService {
                 if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
             }catch (Exception e) {
                 webDriver.navigate().refresh();
-                sleep(1000 * 2);
+//                sleep(1000 * 2);
                 try {
 
                     webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.HOME);
@@ -215,7 +215,7 @@ public class NYSEStockResearchService {
                     crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
                     if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
                 }catch (Exception ex){
-                    restartWebDriver();
+//                    restartWebDriver();
                 }
             }
 
