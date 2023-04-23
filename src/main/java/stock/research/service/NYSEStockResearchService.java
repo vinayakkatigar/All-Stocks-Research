@@ -125,7 +125,9 @@ public class NYSEStockResearchService {
                 restartWebDriver();
                 ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                 e.printStackTrace();
-            }return (populateNYSEStockDetailedInfoList);
+            }
+
+            return (populateNYSEStockDetailedInfoList);
         }catch (WebDriverException e) {
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
