@@ -42,6 +42,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.stream;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 @Service
@@ -94,11 +95,11 @@ public class NyseEmailAlertMechanismService {
             LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
             final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
             final List<NyseStockInfo> dailyNasdaqStockInfoList = new ArrayList<>(nyseStockInfoList);
-            Arrays.stream(SIDE.values()).forEach(x -> {
+            stream(SIDE.values()).forEach(x -> {
                 generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
             });
 
-            Arrays.stream(SIDE.values()).forEach(x -> {
+            stream(SIDE.values()).forEach(x -> {
                 generateAlertEmails(nyseStockInfoList,x, StockCategory.MID_CAP);
             });
             try {
