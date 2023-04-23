@@ -33,10 +33,10 @@ public class FtseStockInfo {
 
     @Column(name = "CURRENT_MARKET_PRICE")
     private BigDecimal currentMarketPrice =  BigDecimal.ZERO;
-    @Column(name = "YEAR_LOW")
+    @Column(name = "YEARLY_LOW")
     private BigDecimal _52WeekLowPrice =  BigDecimal.ZERO;
 
-    @Column(name = "YEAR_HIGH")
+    @Column(name = "YEARLY_HIGH")
     private BigDecimal _52WeekHighPrice =  BigDecimal.ZERO;
 
     @Column(name = "YEARLY_HIGH_LOW_DIFF")
