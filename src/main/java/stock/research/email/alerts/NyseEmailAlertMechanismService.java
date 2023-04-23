@@ -70,8 +70,6 @@ public class NyseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
-            writeNYSEDetailsPayload();
-            writeNYSEStockInfo();
         });
         executorService.shutdown();
     }
@@ -81,8 +79,6 @@ public class NyseEmailAlertMechanismService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             kickOffEmailAlerts();
-            writeNYSEDetailsPayload();
-            writeNYSEStockInfo();
         });
         executorService.shutdown();
     }
@@ -115,6 +111,12 @@ public class NyseEmailAlertMechanismService {
                 LOGGER.error("NASDAQ Daily Data, Error ->",e);
             }
             LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now());
+            try{
+                writeNYSEDetailsPayload();
+                writeNYSEStockInfo();
+            }catch (Exception e){
+                LOGGER.error("NYSE DB Error", e);
+            }
 
     }
 
