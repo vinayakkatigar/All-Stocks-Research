@@ -19,6 +19,7 @@ import stock.research.domain.PortfolioInfo;
 import stock.research.entity.dto.NyseStockDetails;
 import stock.research.entity.repo.NyseStockDetailsRepositary;
 import stock.research.entity.repo.NyseStockInfoRepositary;
+import stock.research.service.FTSEStockResearchService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.StockResearchUtility;
@@ -36,7 +37,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,13 +57,15 @@ public class NyseEmailAlertMechanismService {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private NYSEStockResearchService stockResearchService;
+    private NYSEStockResearchService nyseStockResearchService;
     @Autowired
     private StartUpNYSEStockResearchService startUpNYSEStockResearchService;
     @Autowired
     private NyseStockDetailsRepositary nyseStockPayloadRepositary;
     @Autowired
     private NyseStockInfoRepositary nyseStockInfoRepositary;
+    @Autowired
+    private FTSEStockResearchService ftseStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
     @Scheduled(cron = "0 45 2 ? * MON-SAT")
@@ -88,7 +90,7 @@ public class NyseEmailAlertMechanismService {
             Instant instantBefore = Instant.now();
 
             LOGGER.info(Instant.now()+ " <-  Started NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" );
-            final List<NyseStockInfo> nyseStockInfoList = stockResearchService.populateNYSEStockDetailedInfo();
+            final List<NyseStockInfo> nyseStockInfoList = nyseStockResearchService.populateNYSEStockDetailedInfo();
             final List<NyseStockInfo> dailyNasdaqStockInfoList = new ArrayList<>(nyseStockInfoList);
             stream(SIDE.values()).forEach(x -> {
                 generateAlertEmails(nyseStockInfoList,x, StockCategory.LARGE_CAP);
@@ -108,12 +110,19 @@ public class NyseEmailAlertMechanismService {
             }
             LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now());
             try{
-                if (!stockResearchService.isRunningFlag()){
+                if (!nyseStockResearchService.isRunningFlag()){
                     writeNYSEDetailsPayload();
                     writeNYSEStockInfo();
                 }
             }catch (Exception e){
                 LOGGER.error("NYSE DB Error", e);
+            }
+            try {
+                if (!nyseStockResearchService.isRunningFlag() && !ftseStockResearchService.isFsteRunningFlag()){
+                    kickOffKillProcess();
+                }
+            }catch (Exception e){
+                LOGGER.error("NYSE Kill Process Error", e);
             }
 
     }
@@ -245,11 +254,11 @@ public class NyseEmailAlertMechanismService {
 
     private void writeNYSEDetailsPayload() {
         try {
-            if (stockResearchService.getCacheNYSEStockDetailedInfoList() != null &&
-                    stockResearchService.getCacheNYSEStockDetailedInfoList().size() > 0){
+            if (nyseStockResearchService.getCacheNYSEStockDetailedInfoList() != null &&
+                    nyseStockResearchService.getCacheNYSEStockDetailedInfoList().size() > 0){
                 NyseStockDetails nyseStockDetails = new NyseStockDetails();
                 nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
-                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(stockResearchService.getCacheNYSEStockDetailedInfoList()));
+                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(nyseStockResearchService.getCacheNYSEStockDetailedInfoList()));
                 nyseStockPayloadRepositary.save(nyseStockDetails);
             }
         }catch (Exception e){
@@ -259,7 +268,7 @@ public class NyseEmailAlertMechanismService {
 
 
     private void writeNYSEStockInfo() {
-        stockResearchService.getCacheNYSEStockDetailedInfoList().forEach(nyseStockInfo -> {
+        nyseStockResearchService.getCacheNYSEStockDetailedInfoList().forEach(nyseStockInfo -> {
             try {
                 nyseStockInfoRepositary.save(nyseStockInfo);
             }catch (Exception e){
@@ -270,8 +279,8 @@ public class NyseEmailAlertMechanismService {
     }
 
     @Scheduled(cron = "0 5 0 ? * MON-SAT")
-    public void kickOffKillZombs() {
-        StockResearchUtility.killZombie("chrome");
+    public void kickOffKillProcess() {
+        StockResearchUtility.killProcess("chrome");
     }
 
 }

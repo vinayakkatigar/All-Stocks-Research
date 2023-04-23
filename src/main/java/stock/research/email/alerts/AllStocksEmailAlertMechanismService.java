@@ -58,7 +58,7 @@ public class AllStocksEmailAlertMechanismService {
 
     @Scheduled(cron = "0 0 0 ? * MON-FRI")
     public void kickKillZombie_4() {
-        killZombie("chrome");
+        killProcess("chrome");
     }
 
 //    @Scheduled(cron = "0 14 00 ? * MON-FRI")
@@ -357,8 +357,8 @@ public class AllStocksEmailAlertMechanismService {
     @Scheduled(cron = "0 2 0 ? * MON-FRI")
     public void killChrome() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::killChrome" );
-        killZombie("chrome");
-        killZombie("chromedriver");
+        killProcess("chrome");
+        killProcess("chromedriver");
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::killChrome" );
     }
 

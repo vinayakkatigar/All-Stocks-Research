@@ -52,17 +52,11 @@ public class FTSEStockResearchService {
 
     private WebDriver webDriver;
 
-    public static List<FtseStockInfo> getLargeCapCacheftseStockDetailedInfoList() {
-        return largeCapCacheftseStockDetailedInfoList;
-    }
-    public static List<FtseStockInfo> getMidCapCapCacheftseStockDetailedInfoList() {
-        return midCapCapCacheftseStockDetailedInfoList;
-    }
-
     private static List<FtseStockInfo> largeCapCacheftseStockDetailedInfoList = new ArrayList<>();
 
     private static List<FtseStockInfo> midCapCapCacheftseStockDetailedInfoList = new ArrayList<>();
 
+    private boolean isFsteRunningFlag = false;
 
     @PostConstruct
     public void setUp(){
@@ -70,91 +64,9 @@ public class FTSEStockResearchService {
     }
 
 
-    public List<FtseStockInfo> getFtseStockInfo(String urlInfo, int cnt) {
-        ResponseEntity<String> response = null;
-        List<FtseStockInfo> ftseStockInfoList = new ArrayList<>();
-
-        try {
-            LOGGER.info("<- Started FTSEStockResearchService::getFtseStockInfo:: -> ");
-            for (int i = 1; i < cnt; i++) {
-
-                try {
-                    if (webDriver == null){
-                        webDriver = launchBrowser();
-                    }
-                }catch (Exception e){}
-
-                try {
-                    webDriver.get(urlInfo + i);
-                    Thread.sleep(1000 * 2);
-                }catch (Exception e){
-                    webDriver = launchBrowser();
-                    webDriver.get(urlInfo + i);
-                    Thread.sleep(1000 * 2);
-                }
-                WebElement  tabElements = webDriver.findElement(By.cssSelector(".full-width.ftse-index-table-table"));
-                if (tabElements != null){
-                    List<WebElement>   trElements = webDriver.findElements(By.cssSelector(".medium-font-weight.slide-panel"));
-                    if (trElements != null && trElements.size() >= 20){
-                        trElements.stream().forEach(tr -> {
-                            FtseStockInfo ftseStockInfo = new FtseStockInfo();
-                            List<WebElement> tdElements = tr.findElements(By.tagName("td"));
-                            if (tdElements != null && tdElements.size() >= 7){
-                                for (int j = 0; j < 7; j++) {
-                                    WebElement tdElement = tdElements.get(j);
-                                    if (tdElement != null){
-                                        if (j == 0 && tdElement.findElement(By.tagName("a")) != null) {
-                                            ftseStockInfo.setStockURL(tdElement.findElement(By.tagName("a")).getAttribute("href"));
-                                            ftseStockInfo.setStockCode(tdElement.findElement(By.tagName("a")).getText());
-                                            continue;
-                                        }if (j == 1 && tdElement.findElement(By.tagName("a")) != null) {
-                                            ftseStockInfo.setStockName((tdElement.findElement(By.tagName("a")).getText()));
-                                            continue;
-                                        }if (j == 3) {
-                                            ftseStockInfo.setStockMktCap(getDoubleFromString(tdElement.getText()));
-                                            continue;
-                                        }if (j == 4) {
-                                            ftseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(tdElement.getText()));
-                                            continue;
-                                        }
-                                    }
-
-                                }
-
-                            }
-                        ftseStockInfoList.add(ftseStockInfo);
-                        });
-
-                    }
-
-                }
-
-            }
-            ftseStockInfoList.sort(Comparator.comparing(FtseStockInfo::getStockMktCap).reversed());
-            int i = 1;
-            for (FtseStockInfo x : ftseStockInfoList) {
-                x.setStockRankIndex(i++);
-            }
-
-            if (cnt == FTSE_250_CNT){
-                Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\ftse250Info.json"),
-                        objectMapper.writeValueAsString(ftseStockInfoList).getBytes());
-            }
-            if (cnt == FTSE_100_CNT){
-                Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\ftse100Info.json"),
-                        objectMapper.writeValueAsString(ftseStockInfoList).getBytes());
-            }
-            }catch (Exception e){
-                ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-                e.printStackTrace();
-                return getFtseStockInfosFile("ftse250Info.json");
-            }
-
-        return ftseStockInfoList;
-    }
-
     public List<FtseStockInfo> populateFtseStockDetailedInfo(String urlInfo, Integer cnt) {
         LOGGER.info("<- Started FTSEStockResearchService.populateFtseStockDetailedInfo");
+        isFsteRunningFlag = true;
         List<FtseStockInfo> ftseStockDetailedInfoList = new ArrayList<>();
         try {
             if (webDriver != null) {
@@ -223,7 +135,7 @@ public class FTSEStockResearchService {
             if (cnt == FTSE_250_CNT){
                 midCapCapCacheftseStockDetailedInfoList = ftseStockDetailedInfoList;
             }
-
+            isFsteRunningFlag = false;
             try {
                 if (ftseStockDetailedInfoList != null && ftseStockDetailedInfoList.size() > 0){
                     String fileName =  "FTSE_" + LocalDateTime.now() + HYPHEN  ;
@@ -236,6 +148,7 @@ public class FTSEStockResearchService {
             }catch (Exception e){
                 webDriver = null;
             }
+            isFsteRunningFlag = false;
             return (ftseStockDetailedInfoList);
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
@@ -251,6 +164,9 @@ public class FTSEStockResearchService {
         try {
             if (webDriver != null) webDriver.close();
         }catch (Exception e){ webDriver = null;}
+
+        isFsteRunningFlag = false;
+
         return (ftseStockDetailedInfoList);
     }
 
@@ -473,6 +389,106 @@ public class FTSEStockResearchService {
             }
         }
         return  ftseStockDetailedInfoList;
+    }
+
+
+    public List<FtseStockInfo> getFtseStockInfo(String urlInfo, int cnt) {
+        ResponseEntity<String> response = null;
+        List<FtseStockInfo> ftseStockInfoList = new ArrayList<>();
+
+        try {
+            LOGGER.info("<- Started FTSEStockResearchService::getFtseStockInfo:: -> ");
+            for (int i = 1; i < cnt; i++) {
+
+                try {
+                    if (webDriver == null){
+                        webDriver = launchBrowser();
+                    }
+                }catch (Exception e){}
+
+                try {
+                    webDriver.get(urlInfo + i);
+                    Thread.sleep(1000 * 2);
+                }catch (Exception e){
+                    webDriver = launchBrowser();
+                    webDriver.get(urlInfo + i);
+                    Thread.sleep(1000 * 2);
+                }
+                WebElement  tabElements = webDriver.findElement(By.cssSelector(".full-width.ftse-index-table-table"));
+                if (tabElements != null){
+                    List<WebElement>   trElements = webDriver.findElements(By.cssSelector(".medium-font-weight.slide-panel"));
+                    if (trElements != null && trElements.size() >= 20){
+                        trElements.stream().forEach(tr -> {
+                            FtseStockInfo ftseStockInfo = new FtseStockInfo();
+                            List<WebElement> tdElements = tr.findElements(By.tagName("td"));
+                            if (tdElements != null && tdElements.size() >= 7){
+                                for (int j = 0; j < 7; j++) {
+                                    WebElement tdElement = tdElements.get(j);
+                                    if (tdElement != null){
+                                        if (j == 0 && tdElement.findElement(By.tagName("a")) != null) {
+                                            ftseStockInfo.setStockURL(tdElement.findElement(By.tagName("a")).getAttribute("href"));
+                                            ftseStockInfo.setStockCode(tdElement.findElement(By.tagName("a")).getText());
+                                            continue;
+                                        }if (j == 1 && tdElement.findElement(By.tagName("a")) != null) {
+                                            ftseStockInfo.setStockName((tdElement.findElement(By.tagName("a")).getText()));
+                                            continue;
+                                        }if (j == 3) {
+                                            ftseStockInfo.setStockMktCap(getDoubleFromString(tdElement.getText()));
+                                            continue;
+                                        }if (j == 4) {
+                                            ftseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(tdElement.getText()));
+                                            continue;
+                                        }
+                                    }
+
+                                }
+
+                            }
+                            ftseStockInfoList.add(ftseStockInfo);
+                        });
+
+                    }
+
+                }
+
+            }
+            ftseStockInfoList.sort(Comparator.comparing(FtseStockInfo::getStockMktCap).reversed());
+            int i = 1;
+            for (FtseStockInfo x : ftseStockInfoList) {
+                x.setStockRankIndex(i++);
+            }
+
+            if (cnt == FTSE_250_CNT){
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\ftse250Info.json"),
+                        objectMapper.writeValueAsString(ftseStockInfoList).getBytes());
+            }
+            if (cnt == FTSE_100_CNT){
+                Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\ftse100Info.json"),
+                        objectMapper.writeValueAsString(ftseStockInfoList).getBytes());
+            }
+        }catch (Exception e){
+            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
+            e.printStackTrace();
+            return getFtseStockInfosFile("ftse250Info.json");
+        }
+
+        return ftseStockInfoList;
+    }
+
+    public static List<FtseStockInfo> getLargeCapCacheftseStockDetailedInfoList() {
+        return largeCapCacheftseStockDetailedInfoList;
+    }
+    public static List<FtseStockInfo> getMidCapCapCacheftseStockDetailedInfoList() {
+        return midCapCapCacheftseStockDetailedInfoList;
+    }
+
+
+    public boolean isFsteRunningFlag() {
+        return isFsteRunningFlag;
+    }
+
+    public void setFsteRunningFlag(boolean fsteRunningFlag) {
+        isFsteRunningFlag = fsteRunningFlag;
     }
 
 }
