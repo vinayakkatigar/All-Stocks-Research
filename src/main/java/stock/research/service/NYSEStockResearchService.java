@@ -117,14 +117,15 @@ public class NYSEStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\NYSE-" + fileName + "detailedInfo.json"),
                     objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             cacheNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList;
+            isRunningFlag = false;
+
             try {
                 if (webDriver != null) webDriver.close();
-            }catch (WebDriverException e) {
+            }catch (Exception e) {
                 restartWebDriver();
                 ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                 e.printStackTrace();
-            }catch (Exception e){ webDriver = null;}
-            return (populateNYSEStockDetailedInfoList);
+            }return (populateNYSEStockDetailedInfoList);
         }catch (WebDriverException e) {
             restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
