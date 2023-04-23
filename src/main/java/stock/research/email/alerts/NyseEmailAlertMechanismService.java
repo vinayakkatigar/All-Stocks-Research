@@ -113,8 +113,10 @@ public class NyseEmailAlertMechanismService {
             }
             LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins, Ended NYSE NyseEmailAlertMechanismService::kickOffEmailAlerts" + Instant.now());
             try{
-                writeNYSEDetailsPayload();
-                writeNYSEStockInfo();
+                if (!stockResearchService.isRunningFlag()){
+                    writeNYSEDetailsPayload();
+                    writeNYSEStockInfo();
+                }
             }catch (Exception e){
                 LOGGER.error("NYSE DB Error", e);
             }
