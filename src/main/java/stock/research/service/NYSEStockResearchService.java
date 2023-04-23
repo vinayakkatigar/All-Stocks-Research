@@ -147,7 +147,7 @@ public class NYSEStockResearchService {
             if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 750){
                 return;
             }
-            int retry = 3;
+            int retry = 2;
             boolean sucess = false;
             sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
             while (!sucess && --retry > 0){
@@ -228,7 +228,7 @@ public class NYSEStockResearchService {
             nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
 
             List<WebElement> webElementTdBodyList = null;
-            int retry = 3;
+            int retry = 2;
 
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
                 --retry;
@@ -424,11 +424,11 @@ public class NYSEStockResearchService {
 
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
             sleep(200 );
-            int x = 3;
+            int x = 2;
             while (--x > 0 && !acceptCookies()){
-                sleep(1000 );
+                sleep(500 );
             }
             acceptCookies();
         }catch (Exception e){
