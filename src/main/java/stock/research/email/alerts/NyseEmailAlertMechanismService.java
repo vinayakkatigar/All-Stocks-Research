@@ -84,11 +84,6 @@ public class NyseEmailAlertMechanismService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 5 0 ? * MON-SAT")
-    public void kickOffKillZombs() {
-        StockResearchUtility.killZombie("chrome");
-    }
-
     public void kickOffEmailAlerts() {
             Instant instantBefore = Instant.now();
 
@@ -269,6 +264,11 @@ public class NyseEmailAlertMechanismService {
             }
 
         });
+    }
+
+    @Scheduled(cron = "0 5 0 ? * MON-SAT")
+    public void kickOffKillZombs() {
+        StockResearchUtility.killZombie("chrome");
     }
 
 }
