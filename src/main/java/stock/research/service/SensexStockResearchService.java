@@ -236,7 +236,7 @@ public class SensexStockResearchService {
                         if (sensexStockInfo.getFiiPct() == null){
                             sensexStockInfo.setFiiPct(0.0);
                         }
-                        sensexStockInfo.setTimestamp(Instant.now());
+                        sensexStockInfo.setTimestamp(Instant.now().toString());
 
                         LOGGER.info(sensexStockInfo.toString());
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);

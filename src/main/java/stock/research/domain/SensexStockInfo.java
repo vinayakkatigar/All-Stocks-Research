@@ -62,7 +62,7 @@ public class SensexStockInfo {
     private Double p2bv;
 
     @Column(name = "QUOTETS")
-    private Instant timestamp;
+    private String timestamp;
 
     public SensexStockInfo(String stockName, String stockURL, Integer stockRankIndex, Double stockMktCap) {
         this.stockName = stockName;
@@ -249,11 +249,11 @@ public class SensexStockInfo {
         this.p2bv = p2bv;
     }
 
-    public Instant getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

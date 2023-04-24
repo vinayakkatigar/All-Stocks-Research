@@ -170,7 +170,7 @@ public class ScreenerSensexStockResearchService {
                         }
                         System.out.println(" @@@@@@ "+sensexStockInfo);
 
-                        sensexStockInfo.setTimestamp(Instant.now());
+                        sensexStockInfo.setTimestamp(Instant.now().toString());
 
                         LOGGER.info(sensexStockInfo.toString());
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
