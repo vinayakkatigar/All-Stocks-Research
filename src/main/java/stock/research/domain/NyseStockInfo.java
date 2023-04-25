@@ -99,29 +99,6 @@ public class NyseStockInfo {
     }
 
     @Override
-    public String toString() {
-        return "NyseStockInfo{" +
-                "stockName='" + stockName + '\'' +
-                ", sectorIndustry='" + sectorIndustry + '\'' +
-                ", stockCode='" + stockCode + '\'' +
-                ", stockURL='" + stockURL + '\'' +
-                ", currentMarketPriceStr='" + currentMarketPriceStr + '\'' +
-                ", stockRankIndex=" + stockRankIndex +
-                ", stockMktCap='" + stockMktCap + '\'' +
-                ", currentMarketPrice=" + currentMarketPrice +
-                ", _52WeekLowPrice=" + _52WeekLowPrice +
-                ", _52WeekHighPrice=" + _52WeekHighPrice +
-                ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
-                ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
-                ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
-                ", eps=" + eps +
-                ", mktCapRealValue=" + mktCapRealValue +
-                ", p2e=" + p2e +
-                ", timestamp=" + timestamp +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -284,4 +261,27 @@ public class NyseStockInfo {
     public NyseStockInfo(){
     }
 
+    @Override
+    public String toString() {
+        return "NyseStockInfo{" +
+                "id=" + id +
+                ", stockName='" + stockName + '\'' +
+                ", sectorIndustry='" + sectorIndustry + '\'' +
+                ", stockCode='" + stockCode + '\'' +
+                ", stockURL='" + stockURL + '\'' +
+                ", currentMarketPriceStr='" + currentMarketPriceStr + '\'' +
+                ", stockRankIndex=" + stockRankIndex +
+                ", mktCapRealValue=" + mktCapRealValue +
+                ", stockMktCap='" + stockMktCap + '\'' +
+                ", currentMarketPrice=" + currentMarketPrice +
+                ", _52WeekLowPrice=" + _52WeekLowPrice +
+                ", _52WeekHighPrice=" + _52WeekHighPrice +
+                ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
+                ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
+                ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
+                ", eps=" + eps +
+                ", p2e=" + p2e +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

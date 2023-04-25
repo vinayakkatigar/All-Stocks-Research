@@ -82,8 +82,9 @@ public class SensexStockInfo {
 
     @Override
     public String toString() {
-        return "Sensex500StockInfo{" +
-                "stockName='" + stockName + '\'' +
+        return "SensexStockInfo{" +
+                "id=" + id +
+                ", stockName='" + stockName + '\'' +
                 ", stockURL='" + stockURL + '\'' +
                 ", stockRankIndex=" + stockRankIndex +
                 ", stockMktCap=" + stockMktCap +
@@ -98,7 +99,7 @@ public class SensexStockInfo {
                 ", p2eps=" + p2eps +
                 ", bv=" + bv +
                 ", p2bv=" + p2bv +
-                ", timestamp=" + timestamp +
+                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
 
