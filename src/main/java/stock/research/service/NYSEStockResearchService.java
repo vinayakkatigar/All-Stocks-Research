@@ -206,29 +206,18 @@ public class NYSEStockResearchService {
             NyseStockInfo nyseStockInfo = new NyseStockInfo(x.getKey(), x.getValue());
 
             String crtPrice = "";
-            try{
-                crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--increase"))
-                        .findElement(By.className("symbol-page-header__pricing-price")).getText();
-                crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
-                if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
-            }catch (Exception e) {
-                e.printStackTrace();
-                LOGGER.error(x.getValue() + "<- URL, CMP 1st Block ->", e);
-                try{
-                    crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--decrease"))
-                            .findElement(By.className("symbol-page-header__pricing-price")).getText();
-                    crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
-                    if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
-                }catch (Exception ex){
-                    LOGGER.error(x.getValue() + "<- URL, CMP 2nd Block ->", ex);
-                }
+
+            int retry = 3;
+
+            while (--retry > 0 && ( "".equalsIgnoreCase(crtPrice))){
+                crtPrice = setNYSECmp(x, nyseStockInfo, crtPrice);
             }
 
             crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
             if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
 
             List<WebElement> webElementTdBodyList = null;
-            int retry = 2;
+            retry = 2;
 
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
                 --retry;
@@ -344,6 +333,23 @@ public class NYSEStockResearchService {
             return false;
         }
         return true;
+    }
+
+    private String setNYSECmp(Map.Entry<String, String> x, NyseStockInfo nyseStockInfo, String crtPrice) {
+        try{
+            crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--decrease"))
+                    .findElement(By.className("symbol-page-header__pricing-price")).getText();
+        }catch (Exception ex){
+            try{
+                crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--increase"))
+                        .findElement(By.className("symbol-page-header__pricing-price")).getText();
+            }catch (Exception exception){
+                LOGGER.error(x.getValue() + "<- URL, CMP 2nd Block ->", ex);
+            }
+        }
+        crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
+        if (!StringUtils.isEmpty(crtPrice)) nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
+        return crtPrice;
     }
 
     private void scrollToolbar() {
