@@ -344,7 +344,7 @@ public class NYSEStockResearchService {
                 crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--increase"))
                         .findElement(By.className("symbol-page-header__pricing-price")).getText();
             }catch (Exception exception){
-                LOGGER.error(x + "<- URL, CMP 2nd Block ->", ex);
+                LOGGER.error(x + "<- URL, CMP 2nd Block ->", ex.getMessage());
             }
         }
         crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
