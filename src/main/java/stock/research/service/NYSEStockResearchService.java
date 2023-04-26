@@ -209,13 +209,19 @@ public class NYSEStockResearchService {
             try{
                 crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--increase"))
                         .findElement(By.className("symbol-page-header__pricing-price")).getText();
-//                crtPrice = webDriver.findElement(xpath("//div[contains(@class, 'symbol-page-header__pricing-details symbol-page-header__pricing-details--current symbol-page-header__pricing-details--increase')]")).findElement(By.className("symbol-page-header__pricing-price")).getText();
-
                 crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
                 if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
             }catch (Exception e) {
                 e.printStackTrace();
-                LOGGER.error("CMP ->", e);
+                LOGGER.error(x.getValue() + "<- URL, CMP 1st Block ->", e);
+                try{
+                    crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--decrease"))
+                            .findElement(By.className("symbol-page-header__pricing-price")).getText();
+                    crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
+                    if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
+                }catch (Exception ex){
+                    LOGGER.error(x.getValue() + "<- URL, CMP 2nd Block ->", ex);
+                }
             }
 
             crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
