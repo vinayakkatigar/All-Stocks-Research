@@ -210,7 +210,7 @@ public class NYSEStockResearchService {
             int retry = 3;
 
             while (--retry > 0 && ( "".equalsIgnoreCase(crtPrice))){
-                crtPrice = setNYSECmp(x, nyseStockInfo, crtPrice);
+                crtPrice = setNYSECmp(x.getValue(), nyseStockInfo, crtPrice);
             }
 
             crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
@@ -335,7 +335,7 @@ public class NYSEStockResearchService {
         return true;
     }
 
-    private String setNYSECmp(Map.Entry<String, String> x, NyseStockInfo nyseStockInfo, String crtPrice) {
+    private String setNYSECmp(String x, NyseStockInfo nyseStockInfo, String crtPrice) {
         try{
             crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--decrease"))
                     .findElement(By.className("symbol-page-header__pricing-price")).getText();
@@ -344,7 +344,7 @@ public class NYSEStockResearchService {
                 crtPrice = webDriver.findElement(By.cssSelector(".symbol-page-header__pricing-details.symbol-page-header__pricing-details--current.symbol-page-header__pricing-details--increase"))
                         .findElement(By.className("symbol-page-header__pricing-price")).getText();
             }catch (Exception exception){
-                LOGGER.error(x.getValue() + "<- URL, CMP 2nd Block ->", ex);
+                LOGGER.error(x + "<- URL, CMP 2nd Block ->", ex);
             }
         }
         crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
