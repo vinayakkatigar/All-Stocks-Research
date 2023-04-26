@@ -219,7 +219,7 @@ public class NYSEStockResearchService {
             }
 
             crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
-            nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
+            if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
 
             List<WebElement> webElementTdBodyList = null;
             int retry = 2;
@@ -258,14 +258,17 @@ public class NYSEStockResearchService {
                         int mktIndex = i;
                         nyseStockInfo.setP2e(getDoubleFromString(webElementTdBodyList.get(++mktIndex).getText()));
                     }
-                    if ("".equalsIgnoreCase(crtPrice) && StringUtils.isEmpty(crtPrice)
+                    if (nyseStockInfo.getCurrentMarketPrice() != null
+                             && nyseStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0 &&
+                            "".equalsIgnoreCase(crtPrice) && StringUtils.isEmpty(crtPrice)
                             && key != null && key.contains("Previous Close")){
                         int mktIndex = i;
                         crtPrice = webElementTdBodyList.get(++mktIndex).getText();
                         crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
                         nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
                     }
-                    if ("".equalsIgnoreCase(crtPrice) && StringUtils.isEmpty(crtPrice)
+                    if (nyseStockInfo.getCurrentMarketPrice() != null
+                            && nyseStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0 && "".equalsIgnoreCase(crtPrice) && StringUtils.isEmpty(crtPrice)
                             && nyseStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) == 0){
 
                         if (key != null && key.contains("Today's High/Low")){
