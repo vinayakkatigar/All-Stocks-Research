@@ -214,19 +214,8 @@ public class NYSEStockResearchService {
                 crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
                 if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
             }catch (Exception e) {
-                webDriver.navigate().refresh();
-//                sleep(1000 * 2);
-                try {
-
-                    webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.HOME);
-                    scrollToolbar();
-
-                    crtPrice = webDriver.findElement(xpath("//div[contains(@class, 'symbol-page-header__pricing-details symbol-page-header__pricing-details--current symbol-page-header__pricing-details--increase')]")).findElement(By.className("symbol-page-header__pricing-price")).getText();
-                    crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
-                    if (!StringUtils.isEmpty(crtPrice))nyseStockInfo.setCurrentMarketPrice(getBigDecimalFromString(crtPrice));
-                }catch (Exception ex){
-//                    restartWebDriver();
-                }
+                e.printStackTrace();
+                LOGGER.error("CMP ->", e);
             }
 
             crtPrice = crtPrice.replace('$', ' ').replaceAll(" ", "");
