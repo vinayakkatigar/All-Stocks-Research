@@ -56,7 +56,7 @@ public class EuroNextEmailAlertMechanismService {
     public void kickOffNightlyEmailAlerts() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            kickOffEuro();
+//            kickOffEuro();
         });
         executorService.shutdown();
     }
@@ -65,7 +65,7 @@ public class EuroNextEmailAlertMechanismService {
     public void kickOffEmailAlerts() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            kickOffEuro();
+//            kickOffEuro();
         });
         executorService.shutdown();
     }
