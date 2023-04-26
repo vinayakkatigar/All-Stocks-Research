@@ -40,7 +40,7 @@ public class EuroNextStocksCmdRunner implements CommandLineRunner {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             LOGGER.info("EuroNextStocksCmdRunner.run");
-            euroNextEmailAlertMechanismService.kickOffEmailAlerts();
+//            euroNextEmailAlertMechanismService.kickOffEmailAlerts();
         });
         executorService.shutdown();
     }
