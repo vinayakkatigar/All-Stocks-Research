@@ -255,6 +255,7 @@ public class AllStockResearchService {
             backoff = @Backoff(delay = 5000, multiplier = 2))
     public ResponseEntity<String> makeRestCall(String stockURL) {
         try {
+            Thread.sleep(100 * 5);
             return restTemplate.exchange(stockURL, HttpMethod.GET, null, String.class);
         }catch (Exception e){ERROR_LOGGER.error(stockURL , e); }
 
