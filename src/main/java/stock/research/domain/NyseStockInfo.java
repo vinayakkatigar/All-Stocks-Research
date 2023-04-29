@@ -3,6 +3,7 @@ package stock.research.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -66,6 +67,9 @@ public class NyseStockInfo {
 
     @Column(name = "QUOTETS")
     private Instant timestamp;
+
+    @Column(name = "STOCKTS")
+    Timestamp stockTS;
 
     public NyseStockInfo(String stockName, String stockURL,
                          String stockCode, String stockMktCap, BigDecimal currentMarketPrice) {
@@ -261,6 +265,14 @@ public class NyseStockInfo {
     public NyseStockInfo(){
     }
 
+    public Timestamp getStockTS() {
+        return stockTS;
+    }
+
+    public void setStockTS(Timestamp stockTS) {
+        this.stockTS = stockTS;
+    }
+
     @Override
     public String toString() {
         return "NyseStockInfo{" +
@@ -282,6 +294,7 @@ public class NyseStockInfo {
                 ", eps=" + eps +
                 ", p2e=" + p2e +
                 ", timestamp=" + timestamp +
+                ", stockTS=" + stockTS +
                 '}';
     }
 }

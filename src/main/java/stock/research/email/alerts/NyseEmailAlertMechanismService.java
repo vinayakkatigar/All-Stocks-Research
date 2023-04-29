@@ -270,6 +270,7 @@ public class NyseEmailAlertMechanismService {
     private void writeNYSEStockInfo() {
         nyseStockResearchService.getCacheNYSEStockDetailedInfoList().forEach(nyseStockInfo -> {
             try {
+                nyseStockInfo.setStockTS(Timestamp.from(Instant.now()));
                 nyseStockInfoRepositary.save(nyseStockInfo);
             }catch (Exception e){
                 LOGGER.error("Failed to write NYSE Stock Info", e);

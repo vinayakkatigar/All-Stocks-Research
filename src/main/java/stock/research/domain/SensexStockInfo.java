@@ -2,6 +2,7 @@ package stock.research.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -64,6 +65,9 @@ public class SensexStockInfo {
     @Column(name = "QUOTETS")
     private String timestamp;
 
+    @Column(name = "STOCKTS")
+    Timestamp stockTS;
+
     public SensexStockInfo(String stockName, String stockURL, Integer stockRankIndex, Double stockMktCap) {
         this.stockName = stockName;
         this.stockURL = stockURL;
@@ -100,7 +104,16 @@ public class SensexStockInfo {
                 ", bv=" + bv +
                 ", p2bv=" + p2bv +
                 ", timestamp='" + timestamp + '\'' +
+                ", stockTS=" + stockTS +
                 '}';
+    }
+
+    public Timestamp getStockTS() {
+        return stockTS;
+    }
+
+    public void setStockTS(Timestamp stockTS) {
+        this.stockTS = stockTS;
     }
 
     @Override

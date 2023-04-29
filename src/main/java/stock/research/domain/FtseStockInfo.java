@@ -2,6 +2,7 @@ package stock.research.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -56,6 +57,9 @@ public class FtseStockInfo {
     @Column(name = "QUOTETS")
     private Instant timestamp;
 
+    @Column(name = "STOCKTS")
+    Timestamp stockTS;
+
     public FtseStockInfo() {
     }
 
@@ -73,10 +77,19 @@ public class FtseStockInfo {
         this.currentMarketPrice = currentMarketPrice;
     }
 
+    public Timestamp getStockTS() {
+        return stockTS;
+    }
+
+    public void setStockTS(Timestamp stockTS) {
+        this.stockTS = stockTS;
+    }
+
     @Override
     public String toString() {
-        return "Ftse250StockInfo{" +
-                "stockName='" + stockName + '\'' +
+        return "FtseStockInfo{" +
+                "id=" + id +
+                ", stockName='" + stockName + '\'' +
                 ", stockCode='" + stockCode + '\'' +
                 ", stockURL='" + stockURL + '\'' +
                 ", stockRankIndex=" + stockRankIndex +
@@ -87,8 +100,10 @@ public class FtseStockInfo {
                 ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
                 ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
                 ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
+                ", p2e=" + p2e +
                 ", eps=" + eps +
                 ", timestamp=" + timestamp +
+                ", stockTS=" + stockTS +
                 '}';
     }
 

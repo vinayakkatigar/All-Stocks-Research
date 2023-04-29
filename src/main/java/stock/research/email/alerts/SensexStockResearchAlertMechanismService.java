@@ -406,6 +406,7 @@ public class SensexStockResearchAlertMechanismService {
     private void writeSensexInfoToDB() {
         screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach( sensexStockInfo -> {
             try {
+                sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
                 LOGGER.info("writeSensexInfoToDB::sensexStockInfo -> " + sensexStockInfo);
                 sensexStockInfoRepositary.save(sensexStockInfo);
             }catch (Exception e){

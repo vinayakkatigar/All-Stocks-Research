@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -289,6 +290,7 @@ public class FtseEmailAlertMechanismService {
     private void writeFTSEStockInfo() {
         stockResearchService.getLargeCapCacheftseStockDetailedInfoList().forEach(ftseStockInfo -> {
             try {
+                ftseStockInfo.setStockTS(Timestamp.from(Instant.now()));
                 ftseStockInfoRepositary.save(ftseStockInfo);
             }catch (Exception e){
                 LOGGER.error("Failed to write FTSE Stock Large Cap Info", e);
@@ -296,6 +298,7 @@ public class FtseEmailAlertMechanismService {
         });
         stockResearchService.getMidCapCapCacheftseStockDetailedInfoList().forEach(ftseStockInfo -> {
             try {
+                ftseStockInfo.setStockTS(Timestamp.from(Instant.now()));
                 ftseStockInfoRepositary.save(ftseStockInfo);
             }catch (Exception e){
                 LOGGER.error("Failed to write FTSE Stock Mid Cap Info", e);
