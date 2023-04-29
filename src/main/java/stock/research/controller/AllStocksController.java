@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.StockInfo;
+import stock.research.email.alerts.AllStocksEmailAlertMechanismService;
 import stock.research.service.AllStockResearchService;
 import stock.research.utility.StockResearchUtility;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 public class AllStocksController {
@@ -29,7 +32,46 @@ public class AllStocksController {
     private AllStockResearchService allStockResearchService;
 
     @Autowired
+    private AllStocksEmailAlertMechanismService allStocksEmailAlertMechanismService;
+
+    @Autowired
     RestTemplate restTemplate;
+
+    @RequestMapping("/AllStocks")
+    public String AllStocks() throws InterruptedException {
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            long start = System.currentTimeMillis();
+            LOGGER.info("##AllStocksController.AllStocks::started##" );
+            allStocksEmailAlertMechanismService.kickOffNyseTop1000();
+            allStocksEmailAlertMechanismService.kickOffIndiaEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffItalyEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffSpainEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffJapanEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffBelgiumEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffFranceEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffSouthKoreaEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffSingaporeEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffHongKongEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffWorld1000EmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffAustriaEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffSwissEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffSwedenEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffEUROEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffCanadaEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffDenmarkEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffFinlandEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffGermanyEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffNetherlandsEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffNorwayEmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffWorld1000EmailAlerts();
+            allStocksEmailAlertMechanismService.kickOffAustraliaEmailAlerts();
+            LOGGER.info("##AllStocksCmdRunner.run::end##" + (System.currentTimeMillis() - start));
+        });
+        Thread.sleep(1000 * 60 * 1);
+        return "AllStocks";
+    }
 
     @RequestMapping("/India")
     public String India(){
