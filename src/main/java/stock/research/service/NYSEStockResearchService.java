@@ -209,7 +209,7 @@ public class NYSEStockResearchService {
 
             int retry = 3;
 
-            while (--retry > 0 && ( "".equalsIgnoreCase(crtPrice))){
+            while (retry-- > 0 && ( "".equalsIgnoreCase(crtPrice))){
                 crtPrice = setNYSECmp(x.getValue(), nyseStockInfo, crtPrice);
             }
 
