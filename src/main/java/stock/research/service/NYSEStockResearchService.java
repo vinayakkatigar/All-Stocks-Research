@@ -69,8 +69,11 @@ public class NYSEStockResearchService {
 //        this.webDriver = launchBrowser();
     }
     public List<NyseStockInfo> populateNYSEStockDetailedInfo() {
-        if (isRunningFlag) {
-            return getCacheNYSEStockDetailedInfoList();
+        int maxRetries = 50;
+        while (maxRetries-- > 0 && isRunningFlag) {
+            try {
+                Thread.sleep(1000 * 60 * 5);
+            } catch (Exception e) { }
         }
         isRunningFlag = true;
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
