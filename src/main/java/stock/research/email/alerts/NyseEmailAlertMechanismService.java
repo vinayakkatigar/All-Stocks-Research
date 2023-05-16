@@ -150,7 +150,7 @@ public class NyseEmailAlertMechanismService {
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighLowPriceDiff() != null) {
                     if (x.getStockRankIndex() <= 250  && stockCategory == StockCategory.LARGE_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(65)) > 0
+                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(40)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0
                                     || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
@@ -161,7 +161,7 @@ public class NyseEmailAlertMechanismService {
                     }
 
                     if ( x.getStockRankIndex() > 250 && stockCategory == StockCategory.MID_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(80)) > 0
+                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(50)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null &&
                                 ((x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0 ||
                                         x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5.0)) <= 0))){
