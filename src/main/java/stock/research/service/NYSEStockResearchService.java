@@ -188,12 +188,12 @@ public class NYSEStockResearchService {
                     webDriver = launchBrowser();
                 }
                 webDriver.get(x.getValue());
-                Thread.sleep(500 * 3);
+                Thread.sleep(1500 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
                 webDriver = launchBrowser();
                 webDriver.get(x.getValue());
-                sleep(1000 * 1);
+                sleep(1000 * 3);
             }
             scrollToolbar();
 
@@ -378,7 +378,7 @@ public class NYSEStockResearchService {
             js.executeScript("window.scrollBy(0,250)", "");
             Thread.sleep(500 * 2);
             js.executeScript("window.scrollBy(0,250)", "");
-            Thread.sleep(500 * 1);
+            Thread.sleep(2500 * 1);
             /*
             js.executeScript("window.scrollBy(0,250)", "");
             Thread.sleep(500 * 2);
@@ -475,7 +475,7 @@ public class NYSEStockResearchService {
                 return false;
             }
             webDriver.navigate().refresh();
-            sleep(1000 );
+            sleep(1000 * 3);
         }catch (Exception exception){
             return false;
         }
