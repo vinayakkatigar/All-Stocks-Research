@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.NyseStockInfo;
 import stock.research.utility.NyseStockResearchUtility;
+import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -224,10 +225,14 @@ public class NYSEStockResearchService {
 
             while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
                 --retry;
-                try {
-                    webElementTdBodyList = webDriver.findElement(By.className("summary-data__table")).findElements(tagName("td"));
-                }catch (Exception e){
-                    webDriver.findElement(xpath("//div[contains(@class, 'summary-data__table')]")).findElements(tagName("td"));
+                try{
+                    try {
+                        webElementTdBodyList = webDriver.findElement(By.className("summary-data__table")).findElements(tagName("td"));
+                    }catch (Exception e){
+                        webDriver.findElement(xpath("//div[contains(@class, 'summary-data__table')]")).findElements(tagName("td"));
+                    }
+                }catch (Exception exp){
+                    StockResearchUtility.killProcess("chrome");
                 }
             }
             if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
