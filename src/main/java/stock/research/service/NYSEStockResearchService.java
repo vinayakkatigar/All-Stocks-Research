@@ -184,16 +184,14 @@ public class NYSEStockResearchService {
             LOGGER.info("NYSEStockResearchService::StockURL ->  " + x.getValue());
 //                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
             try {
-                if (webDriver == null){
-                    webDriver = launchBrowser();
-                }
+                webDriver = setUpDriver();
                 webDriver.get(x.getValue());
                 Thread.sleep(1500 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
-                webDriver = launchBrowser();
+                webDriver = setUpDriver();
                 if (webDriver == null){
-                    webDriver = launchBrowser();
+                    webDriver = setUpDriver();
                 }
                 webDriver.get(x.getValue());
                 sleep(1000 * 3);
@@ -344,6 +342,14 @@ public class NYSEStockResearchService {
             return false;
         }
         return true;
+    }
+
+    private WebDriver setUpDriver() {
+        int retry = 3;
+        while (webDriver == null && retry-- >= 0){
+            webDriver = launchBrowser();
+        }
+        return webDriver;
     }
 
     private String setNYSECmp(String x, NyseStockInfo nyseStockInfo, String crtPrice) {
