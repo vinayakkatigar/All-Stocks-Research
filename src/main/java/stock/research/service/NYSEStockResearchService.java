@@ -192,6 +192,9 @@ public class NYSEStockResearchService {
             }catch (Exception e){
 //                webDriver = launchBrowser();
                 webDriver = launchBrowser();
+                if (webDriver == null){
+                    webDriver = launchBrowser();
+                }
                 webDriver.get(x.getValue());
                 sleep(1000 * 3);
             }
