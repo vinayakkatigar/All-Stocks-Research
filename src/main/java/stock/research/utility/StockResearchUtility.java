@@ -1,5 +1,6 @@
 package stock.research.utility;
 
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import stock.research.domain.StockInfo;
 
@@ -294,7 +295,7 @@ public class StockResearchUtility {
     }
 
 
-    public static void killProcess(String process) {
+    public static void killProcess(String process, WebDriver webDriver) {
         try {
             try {
                 Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
@@ -329,6 +330,9 @@ public class StockResearchUtility {
             try {
                 Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
             }catch (Exception e){
+            }
+            if (webDriver != null){
+                webDriver = null;
             }
         }catch (Exception e){ }
 

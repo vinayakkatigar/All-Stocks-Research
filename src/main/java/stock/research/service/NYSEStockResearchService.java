@@ -207,7 +207,7 @@ public class NYSEStockResearchService {
                         webDriver.findElement(xpath("//div[contains(@class, 'summary-data__table')]")).findElements(tagName("td"));
                     }
                 }catch (Exception exp){
-                    StockResearchUtility.killProcess("chrome");
+                    StockResearchUtility.killProcess("chrome" ,webDriver);
                     webDriver = null;
                     webDriver = setUpDriver();
                 }
