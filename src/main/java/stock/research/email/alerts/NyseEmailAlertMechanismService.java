@@ -279,8 +279,9 @@ public class NyseEmailAlertMechanismService {
         });
     }
 
-    @Scheduled(cron = "0 5 0 ? * MON-SAT")
+    @Scheduled(cron = "0 5 0 ? * MON-SAT", zone = "GMT")
     public void kickOffKillProcess() {
+        System.out.println("NyseEmailAlertMechanismService.kickOffKillProcess");
         StockResearchUtility.killProcess("chrome");
     }
 

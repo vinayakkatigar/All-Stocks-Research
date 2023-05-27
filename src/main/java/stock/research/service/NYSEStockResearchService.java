@@ -79,13 +79,6 @@ public class NYSEStockResearchService {
         isRunningFlag = true;
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
          List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
-        try {
-            restartWebDriver();
-        }catch (WebDriverException e) {
-            restartWebDriver();
-            ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
-            e.printStackTrace();
-        }catch (Exception e){}
 
         try {
             nyseStockDetailedInfoMap = getNyseStockInfo();
@@ -126,18 +119,15 @@ public class NYSEStockResearchService {
             try {
                 if (webDriver != null) webDriver.close();
             }catch (Exception e) {
-                restartWebDriver();
                 ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
                 e.printStackTrace();
             }
 
             return (populateNYSEStockDetailedInfoList);
         }catch (WebDriverException e) {
-            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }catch (Exception e){
-            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         }
@@ -151,7 +141,7 @@ public class NYSEStockResearchService {
 
     private void runNyse(Map<String, String> nyseStockDetailedInfoMap, List<NyseStockInfo> populateNYSEStockDetailedInfoList) {
         nyseStockDetailedInfoMap.entrySet().stream().forEach(x -> {
-            if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 750){
+            if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 775){
                 return;
             }
             int retry = 2;
@@ -163,21 +153,6 @@ public class NYSEStockResearchService {
         });
     }
 
-    private void restartWebDriver() {
-        /*try {
-            if (webDriver != null) webDriver.close();
-        }catch (Exception e){ }
-        try {
-            Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
-        }catch (Exception e){ }
-        try {
-            Runtime.getRuntime().exec("TASKKILL /IM  chrome.exe /F");
-        }catch (Exception e){ }
-        try {
-            webDriver = launchBrowser();
-        }catch (Exception e){ }*/
-    }
-
     private boolean extractAttributes(List<NyseStockInfo> populateNYSEStockDetailedInfoList, Map.Entry<String, String> x) {
         //            nyseStockDetailedInfoMap.entrySet().stream().limit(25).forEach(x -> {
         try {
@@ -185,7 +160,7 @@ public class NYSEStockResearchService {
 //                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
             try {
                 webDriver = setUpDriver();
-                webDriver.get(x.getValue());
+                browseUrl(webDriver, x.getValue());
                 Thread.sleep(1500 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
@@ -193,13 +168,12 @@ public class NYSEStockResearchService {
                 if (webDriver == null){
                     webDriver = setUpDriver();
                 }
-                webDriver.get(x.getValue());
+                browseUrl(webDriver, x.getValue());
                 sleep(1000 * 3);
             }
             scrollToolbar();
 
         }catch (WebDriverException e) {
-            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
         } catch (Exception e) {
@@ -234,6 +208,8 @@ public class NYSEStockResearchService {
                     }
                 }catch (Exception exp){
                     StockResearchUtility.killProcess("chrome");
+                    webDriver = null;
+                    webDriver = setUpDriver();
                 }
             }
             if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
@@ -331,17 +307,24 @@ public class NYSEStockResearchService {
                             && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList());
 
         }catch (WebDriverException e) {
-            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
             return false;
         }catch (Exception e) {
-            restartWebDriver();
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    private void browseUrl(WebDriver webDriver, String x) {
+        try{
+            webDriver.get(x);
+        }catch (Exception e){
+            webDriver = setUpDriver();
+            webDriver.get(x);
+        }
     }
 
     private WebDriver setUpDriver() {
@@ -396,8 +379,6 @@ public class NYSEStockResearchService {
 //            webDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL, Keys.END);
 //            Thread.sleep(500 * 2);
 
-        }catch (WebDriverException e) {
-            restartWebDriver();
         }catch (Exception e){}
     }
 
@@ -448,6 +429,7 @@ public class NYSEStockResearchService {
         try {
             if (webDriver != null) webDriver.close();
         }catch (Exception e){}
+
         try {
             if (webDriver != null) webDriver.quit();
         }catch (Exception e){}
@@ -476,7 +458,7 @@ public class NYSEStockResearchService {
 
     private boolean acceptCookies() {
         try {
-            webDriver.get("https://www.nasdaq.com/market-activity/stocks/aapl");
+            browseUrl(webDriver, "https://www.nasdaq.com/market-activity/stocks/aapl");
             sleep(1000 * 2);
             try {
                 webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();

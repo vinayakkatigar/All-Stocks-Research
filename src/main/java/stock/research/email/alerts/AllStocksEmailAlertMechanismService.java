@@ -56,7 +56,7 @@ public class AllStocksEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 0 0 ? * MON-FRI")
+    @Scheduled(cron = "0 0 0 ? * MON-FRI", zone = "GMT")
     public void kickKillZombie_4() {
         killProcess("chrome");
     }
@@ -354,7 +354,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 2 0 ? * MON-FRI")
+    @Scheduled(cron = "0 2 0 ? * MON-FRI", zone = "GMT")
     public void killChrome() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::killChrome" );
         killProcess("chrome");
