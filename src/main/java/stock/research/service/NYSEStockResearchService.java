@@ -442,11 +442,11 @@ public class NYSEStockResearchService {
 
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            sleep(200 );
+            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            sleep(2000 );
             int x = 2;
             while (--x > 0 && !acceptCookies()){
-                sleep(500 );
+                sleep(500 * 5);
             }
             acceptCookies();
         }catch (Exception e){
