@@ -68,16 +68,8 @@ public class NyseEmailAlertMechanismService {
     private FTSEStockResearchService ftseStockResearchService;
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
-    @Scheduled(cron = "0 5 0,5 ? * MON-SAT", zone = "GMT")
-    public void kickOffEmailAlerts_Nightly() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            kickOffEmailAlerts();
-        });
-        executorService.shutdown();
-    }
 
-    @Scheduled(cron = "0 5 9,15,19 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 5 3,9,15,21 ? * MON-SAT", zone = "GMT")
     public void kickOffEmailAlerts_Daily() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {

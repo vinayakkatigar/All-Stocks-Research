@@ -57,25 +57,34 @@ public class FtseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
+    @Scheduled(cron = "0 15 0,10,16 ? * MON-SAT", zone = "GMT")
+    public void kickOffFTSEEmailAlerts() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            kickFTSE();
+            writeFTSEStockInfo();
+        });
+        executorService.shutdown();
+    }
 
-    @Scheduled(cron = "0 0 17 ? * MON-FRI")
+
+    @Scheduled(cron = "0 0 17 ? * MON-FRI", zone = "GMT")
     public void kickOffFTSE250YearlyGainerLoserEmailAlerts() {
 
+        LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffFTSE250YearlyGainerLoserEmailAlerts" );
+        final List<FtseStockInfo> populatedftse250List = stockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo("https://www.hl.co.uk/shares/stock-market-summary/ftse-250/performance?column=date_1y&order=asc", 20);
 
-            LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffFTSE250YearlyGainerLoserEmailAlerts" );
-            final List<FtseStockInfo> populatedftse250List = stockResearchService.populateYearlyGainersLosersFtseStockDetailedInfo("https://www.hl.co.uk/shares/stock-market-summary/ftse-250/performance?column=date_1y&order=asc", 20);
+        LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
 
-            LOGGER.info(Instant.now()+ " <-  Ended FTSE250 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );
+        /*
+        StringBuilder dataBuffer = new StringBuilder("");
 
-            /*
-            StringBuilder dataBuffer = new StringBuilder("");
-
-            final StringBuilder subjectBuffer = new StringBuilder("");
-            subjectBuffer.append("** FTSE 250 Yearly Gainer Buy Mid Cap Alert**");
-            populatedftse250List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
-            int retry = 3;
-            while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
-             */
+        final StringBuilder subjectBuffer = new StringBuilder("");
+        subjectBuffer.append("** FTSE 250 Yearly Gainer Buy Mid Cap Alert**");
+        populatedftse250List.stream().forEach(x -> dataBuffer.append("<tr><td>" + x.getStockName() + "</td><td>" + x.getCurrentMarketPrice() + "</td></tr>" ));
+        int retry = 3;
+        while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+         */
 
     }
 
@@ -98,26 +107,6 @@ public class FtseEmailAlertMechanismService {
          */
     }
 
-
-    @Scheduled(cron = "0 05 0 ? * MON-SAT")
-    public void kickOffNightlyFTSEEmailAlerts() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            kickFTSE();
-            writeFTSEStockInfo();
-        });
-        executorService.shutdown();
-    }
-
-    @Scheduled(cron = "0 15 10,16 ? * MON-FRI")
-    public void kickOffFTSEEmailAlerts() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            kickFTSE();
-            writeFTSEStockInfo();
-        });
-        executorService.shutdown();
-    }
 
     private void kickFTSE() {
         Instant instantBefore = Instant.now();
