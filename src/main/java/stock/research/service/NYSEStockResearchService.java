@@ -105,7 +105,6 @@ public class NYSEStockResearchService {
             int i =1;
             for (NyseStockInfo x : populateNYSEStockDetailedInfoList){
                 x.setStockRankIndex(i++);
-                x.setStockName(x.getStockCode());
                 if(x.getMktCapRealValue() != null)x.setStockMktCap(truncateNumber(x.getMktCapRealValue()));
             }
 
@@ -183,6 +182,12 @@ public class NYSEStockResearchService {
         try {
 
             NyseStockInfo nyseStockInfo = new NyseStockInfo(x.getKey(), x.getValue());
+
+            try {
+                nyseStockInfo.setStockName(webDriver.findElement(By.className("symbol-page-header__name")).getText());
+                String[] urls = nyseStockInfo.getStockURL().split("stocks");
+                nyseStockInfo.setStockCode(urls[urls.length - 1].replace("/", ""));
+            }catch (Exception e){ }
 
             String crtPrice = "";
 
@@ -398,30 +403,6 @@ public class NYSEStockResearchService {
                 x < BILLION ?  String.format("%.2f", x / MILLION) + "M" :
                         x < TRILLION ? String.format("%.2f", x / BILLION) + "B" :
                                 String.format("%.2f", x / TRILLION) + "T";
-    }
-    private void populateStockCodeUrlMap(Map<String, String> stockCodeUrlMap, String url) {
-        LOGGER.info("<- Started NYSEStockResearchService::getNyseStockInfo:: -> ");
-        for(char i = 'A'; i <= 'Z'; ++i) {
-            String stockUrl = url + i;
-            makeRestCall(stockCodeUrlMap, stockUrl);
-        }
-    }
-
-    private void makeRestCall(Map<String, String> stockCodeUrlMap, String stockUrl) {
-        ResponseEntity<String> response;
-        LOGGER.info("NYSEStockResearchService::getNyseStockInfo::stockUrl: -> " + stockUrl);
-        response = restTemplate.exchange(stockUrl, HttpMethod.GET, null, String.class);
-        Document doc = Jsoup.parse(response.getBody());
-        Elements tableElements = doc.getElementsByClass("market tab1");
-        if (tableElements != null && tableElements.size() >0){
-            Elements anchorElements = tableElements.get(0).getElementsByTag("a");
-            if (anchorElements != null && anchorElements.size() > 0){
-                anchorElements.stream().forEach(x -> {
-                    if(x != null && x.text() != null && x.text().length() <= 4 && !"".equalsIgnoreCase(x.text()))
-                        stockCodeUrlMap.put(x.text(), x.attr("href"));
-                });
-            }
-        }
     }
 
     private WebDriver launchBrowser() {
