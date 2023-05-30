@@ -73,7 +73,7 @@ public class NYSEStockResearchService {
         int maxRetries = 50;
         while (maxRetries-- > 0 && isRunningFlag) {
             try {
-                Thread.sleep(1000 * 60 * 5);
+                Thread.sleep(1000 * 60 * 1);
             } catch (Exception e) { }
         }
         isRunningFlag = true;
