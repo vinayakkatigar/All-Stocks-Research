@@ -2,17 +2,12 @@ package stock.research.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -203,19 +198,17 @@ public class NYSEStockResearchService {
             List<WebElement> webElementTdBodyList = null;
             retry = 2;
 
-            while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
-                --retry;
-                try{
-                    try {
-                        webElementTdBodyList = webDriver.findElement(By.className("summary-data__table")).findElements(tagName("td"));
-                    }catch (Exception e){
-                        webDriver.findElement(xpath("//div[contains(@class, 'summary-data__table')]")).findElements(tagName("td"));
-                    }
-                }catch (Exception exp){
-                    StockResearchUtility.killProcess("chrome" ,webDriver);
-                    webDriver = null;
-                    webDriver = setUpDriver();
-                }
+            try {
+                webElementTdBodyList = getWebElements(retry, webElementTdBodyList, nyseStockInfo.getStockURL());
+            }catch (Exception e){
+                StockResearchUtility.killProcess("chrome" ,webDriver);
+                webDriver = null;
+                webDriver = setUpDriver();
+                webDriver.get(nyseStockInfo.getStockURL());
+            }
+
+            if (((webElementTdBodyList ==null || webElementTdBodyList.size() ==0))){
+                webElementTdBodyList = getWebElements(retry, webElementTdBodyList, nyseStockInfo.getStockURL());
             }
             if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
                 for (int i = 0; i < webElementTdBodyList.size(); i++) {
@@ -328,6 +321,25 @@ public class NYSEStockResearchService {
             return false;
         }
         return true;
+    }
+
+    private List<WebElement> getWebElements(int retry, List<WebElement> webElementTdBodyList, String stockURL) {
+        while (retry > 0 && ( webElementTdBodyList ==null || webElementTdBodyList.size() ==0)){
+            --retry;
+            try{
+                try {
+                    webElementTdBodyList = webDriver.findElement(By.className("summary-data__table")).findElements(tagName("td"));
+                }catch (Exception e){
+                    webDriver.findElement(xpath("//div[contains(@class, 'summary-data__table')]")).findElements(tagName("td"));
+                }
+            }catch (Exception exp){
+                StockResearchUtility.killProcess("chrome" ,webDriver);
+                webDriver = null;
+                webDriver = setUpDriver();
+                webDriver.get(stockURL);
+            }
+        }
+        return webElementTdBodyList;
     }
 
     private void browseUrl(WebDriver webDriver, String x) {
