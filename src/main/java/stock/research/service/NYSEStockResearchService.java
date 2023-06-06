@@ -219,6 +219,13 @@ public class NYSEStockResearchService {
             }
             if (webElementTdBodyList != null && webElementTdBodyList.size() > 0){
                 for (int i = 0; i < webElementTdBodyList.size(); i++) {
+                    try{
+                        webElementTdBodyList.get(i).getText();
+                    }catch (Exception exp){
+                        StockResearchUtility.killProcess("chrome" ,webDriver);
+                        webDriver = null;
+                        webDriver = setUpDriver();
+                    }
                     String key = webElementTdBodyList.get(i).getText();
                     if (key != null && key.contains("Market Cap")){
                         int mktIndex = i;
