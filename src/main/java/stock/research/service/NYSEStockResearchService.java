@@ -71,6 +71,9 @@ public class NYSEStockResearchService {
                 Thread.sleep(1000 * 60 * 1);
             } catch (Exception e) { }
         }
+        if(maxRetries > 2 && isRunningFlag) {
+            return getCacheNYSEStockDetailedInfoList();
+        }
         isRunningFlag = true;
         Map<String, String> nyseStockDetailedInfoMap = new LinkedHashMap<>();
          List<NyseStockInfo> populateNYSEStockDetailedInfoList = new ArrayList<>();
