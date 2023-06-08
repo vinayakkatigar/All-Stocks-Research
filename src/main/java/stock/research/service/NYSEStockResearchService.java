@@ -350,7 +350,7 @@ public class NYSEStockResearchService {
             webDriver.get(x);
         }catch (Exception e){
             webDriver = null;
-            webDriver = setUpDriver(true);
+            webDriver = launchBrowser();
             webDriver.get(x);
         }
     }
