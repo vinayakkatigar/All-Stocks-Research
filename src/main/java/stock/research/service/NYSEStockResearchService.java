@@ -156,14 +156,14 @@ public class NYSEStockResearchService {
             LOGGER.info("NYSEStockResearchService::StockURL ->  " + x.getValue());
 //                    response = restTemplate.exchange("https://ih.advfn.com/stock-market/NASDAQ/amazon-com-AMZN/stock-price", HttpMethod.GET, null, String.class);
             try {
-                webDriver = setUpDriver();
+                webDriver = setUpDriver(false);
                 browseUrl(webDriver, x.getValue());
                 Thread.sleep(1500 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
-                webDriver = setUpDriver();
+                webDriver = setUpDriver(true);
                 if (webDriver == null){
-                    webDriver = setUpDriver();
+                    webDriver = setUpDriver(true);
                 }
                 browseUrl(webDriver, x.getValue());
                 sleep(1000 * 3);
@@ -206,7 +206,7 @@ public class NYSEStockResearchService {
             }catch (Exception e){
                 StockResearchUtility.killProcess("chrome" ,webDriver);
                 webDriver = null;
-                webDriver = setUpDriver();
+                webDriver = setUpDriver(true);
                 webDriver.get(nyseStockInfo.getStockURL());
             }
 
@@ -220,7 +220,7 @@ public class NYSEStockResearchService {
                     }catch (Exception exp){
                         StockResearchUtility.killProcess("chrome" ,webDriver);
                         webDriver = null;
-                        webDriver = setUpDriver();
+                        webDriver = setUpDriver(true);
                     }
                     String key = webElementTdBodyList.get(i).getText();
                     if (key != null && key.contains("Market Cap")){
@@ -338,7 +338,7 @@ public class NYSEStockResearchService {
             }catch (Exception exp){
                 StockResearchUtility.killProcess("chrome" ,webDriver);
                 webDriver = null;
-                webDriver = setUpDriver();
+                webDriver = setUpDriver(true);
                 webDriver.get(stockURL);
             }
         }
@@ -350,14 +350,14 @@ public class NYSEStockResearchService {
             webDriver.get(x);
         }catch (Exception e){
             webDriver = null;
-            webDriver = setUpDriver();
+            webDriver = setUpDriver(true);
             webDriver.get(x);
         }
     }
 
-    private WebDriver setUpDriver() {
+    private WebDriver setUpDriver(boolean reload) {
         int retry = 3;
-        while (webDriver == null && retry-- >= 0){
+        while ((reload || webDriver == null) && retry-- >= 0){
             webDriver = launchBrowser();
         }
         return webDriver;
