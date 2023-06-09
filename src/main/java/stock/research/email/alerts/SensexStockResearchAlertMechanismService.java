@@ -174,7 +174,8 @@ public class SensexStockResearchAlertMechanismService {
                                         .filter(x -> x.getStockRankIndex() <= LARGE_CAP).collect(toList());
                 //Filter large Cap with Y/L diff of 75 or more
                 populatedLargeCapSensexList = populatedLargeCapSensexList.stream()
-                        .filter(x -> x.getStockRankIndex() <= LARGE_CAP &&  x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(75)) > 0).collect(toList());
+                        .filter(x -> x.getStockRankIndex() <= LARGE_CAP
+                                &&  x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(75)) > 0).collect(toList());
 
                 StringBuilder dataBuffer = new StringBuilder("");
                 final StringBuilder subjectBuffer = new StringBuilder("");
@@ -188,7 +189,8 @@ public class SensexStockResearchAlertMechanismService {
 
                 //Filter Mid Cap with Y/L diff of 100 or more
                 populatedMidCapSensexList = populatedMidCapSensexList.stream()
-                        .filter(x -> x.getStockRankIndex() > LARGE_CAP &&  x.getStockRankIndex() <= 300 &&  x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(100)) > 0).collect(toList());
+                        .filter(x -> x.getStockRankIndex() > LARGE_CAP &&  x.getStockRankIndex() <= 300
+                                &&  x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(75)) > 0).collect(toList());
 
                 StringBuilder dataBuffer = new StringBuilder("");
                 final StringBuilder subjectBuffer = new StringBuilder("");
@@ -203,7 +205,8 @@ public class SensexStockResearchAlertMechanismService {
 
                 //Filter Small Cap with Y/L diff of 125 or more
                 populatedSmallCapSensexList = populatedSmallCapSensexList.stream()
-                        .filter(x -> x.getStockRankIndex() > 300 &&  x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(125)) > 0).collect(toList());
+                        .filter(x -> x.getStockRankIndex() > 300 &&
+                                x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(100)) > 0).collect(toList());
 
                 StringBuilder dataBuffer = new StringBuilder("");
                 final StringBuilder subjectBuffer = new StringBuilder("");
