@@ -116,7 +116,7 @@ public class NyseStockInfo {
                 return true;
             }
         }
-        return  Objects.equals(getStockURL(), that.getStockURL()) ;
+        return  Objects.equals(getStockURL().toLowerCase(), that.getStockURL().toLowerCase()) ;
     }
 
 
@@ -132,7 +132,7 @@ public class NyseStockInfo {
 
     @Override
     public int hashCode() {
-        return Objects.hash( getStockCode());
+        return Objects.hash( getStockURL());
     }
 
     public String getStockName() {

@@ -95,6 +95,7 @@ public class NYSEStockResearchService {
                                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
                                     && (q.getStockMktCap() != null || q.getMktCapRealValue() != null)))
+                    .distinct()
                     .collect(toList());
 
             populateNYSEStockDetailedInfoList.sort(Comparator.comparing(NyseStockInfo::getMktCapRealValue,
@@ -312,7 +313,7 @@ public class NYSEStockResearchService {
                     .filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                             && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                             && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
-                            && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList());
+                            && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).distinct().collect(toList());
 
         }catch (WebDriverException e) {
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);
