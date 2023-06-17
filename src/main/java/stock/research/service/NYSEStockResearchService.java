@@ -76,7 +76,7 @@ public class NYSEStockResearchService {
                 Thread.sleep(1000 * 60 * 1);
             } catch (Exception e) { }
         }
-        if(maxRetries > 2 && isRunningFlag) {
+        if(maxRetries <= 1 && isRunningFlag) {
             processingQueue.add(queueCounter.getAndIncrement());
             return getCacheNYSEStockDetailedInfoList();
         }
