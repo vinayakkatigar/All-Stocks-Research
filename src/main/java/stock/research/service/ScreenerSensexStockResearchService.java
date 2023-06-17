@@ -172,8 +172,8 @@ public class ScreenerSensexStockResearchService {
 
                         sensexStockInfo.setTimestamp(Instant.now().toString());
 
-                        LOGGER.info(sensexStockInfo.toString());
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
+                        LOGGER.info(populatedSensexStockInfosList.size() + " <- Size::" + sensexStockInfo.toString());
                     }
                 }catch (Exception e) {
                     e.printStackTrace();
