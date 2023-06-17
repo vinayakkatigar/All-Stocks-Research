@@ -211,7 +211,7 @@ public class NYSEStockResearchService {
             try {
                 webElementTdBodyList = getWebElements(retry, webElementTdBodyList, nyseStockInfo.getStockURL());
             }catch (Exception e){
-                StockResearchUtility.killProcess("chrome" ,webDriver);
+//                StockResearchUtility.killProcess("chrome" ,webDriver);
                 webDriver = null;
                 webDriver = setUpDriver(true);
                 webDriver.get(nyseStockInfo.getStockURL());
@@ -225,7 +225,7 @@ public class NYSEStockResearchService {
                     try{
                         webElementTdBodyList.get(i).getText();
                     }catch (Exception exp){
-                        StockResearchUtility.killProcess("chrome" ,webDriver);
+//                        StockResearchUtility.killProcess("chrome" ,webDriver);
                         webDriver = null;
                         webDriver = setUpDriver(true);
                     }
@@ -343,7 +343,7 @@ public class NYSEStockResearchService {
                     webDriver.findElement(xpath("//div[contains(@class, 'summary-data__table')]")).findElements(tagName("td"));
                 }
             }catch (Exception exp){
-                StockResearchUtility.killProcess("chrome" ,webDriver);
+//                StockResearchUtility.killProcess("chrome" ,webDriver);
                 webDriver = null;
                 webDriver = setUpDriver(true);
                 webDriver.get(stockURL);
