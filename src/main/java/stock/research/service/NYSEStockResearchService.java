@@ -354,6 +354,10 @@ public class NYSEStockResearchService {
             webDriver = launchBrowser();
             webDriver.get(x);
         }
+        try {
+            webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
+        } catch (Exception e) {}
+
     }
 
     private WebDriver setUpDriver(boolean reload) {
