@@ -159,7 +159,7 @@ public class NYSEStockResearchService {
             try {
                 webDriver = setUpDriver(false);
                 browseUrl(webDriver, x.getValue());
-                Thread.sleep(1500 * 3);
+                Thread.sleep(1000 * 3);
             }catch (Exception e){
 //                webDriver = launchBrowser();
                 webDriver = setUpDriver(true);
@@ -450,7 +450,7 @@ public class NYSEStockResearchService {
 
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
             sleep(2000 );
             int x = 2;
             while (--x > 0 && !acceptCookies()){
