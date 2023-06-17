@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
@@ -60,6 +61,10 @@ public class NYSEStockResearchService {
 
     private boolean isRunningFlag = false;
 
+    private AtomicInteger queueCounter = new AtomicInteger(0);
+
+    private List<Integer> processingQueue = new ArrayList<>();
+
     @PostConstruct
     public void setUp(){
 //        this.webDriver = launchBrowser();
@@ -72,6 +77,7 @@ public class NYSEStockResearchService {
             } catch (Exception e) { }
         }
         if(maxRetries > 2 && isRunningFlag) {
+            processingQueue.add(queueCounter.getAndIncrement());
             return getCacheNYSEStockDetailedInfoList();
         }
         isRunningFlag = true;
