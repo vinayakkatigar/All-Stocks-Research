@@ -211,6 +211,7 @@ public class NYSEStockResearchService {
             try {
                 webElementTdBodyList = getWebElements(retry, webElementTdBodyList, nyseStockInfo.getStockURL());
             }catch (Exception e){
+                closeWebDriver();
 //                StockResearchUtility.killProcess("chrome" ,webDriver);
                 webDriver = null;
                 webDriver = setUpDriver(true);
@@ -226,6 +227,7 @@ public class NYSEStockResearchService {
                         webElementTdBodyList.get(i).getText();
                     }catch (Exception exp){
 //                        StockResearchUtility.killProcess("chrome" ,webDriver);
+                        closeWebDriver();
                         webDriver = null;
                         webDriver = setUpDriver(true);
                     }
@@ -344,6 +346,7 @@ public class NYSEStockResearchService {
                 }
             }catch (Exception exp){
 //                StockResearchUtility.killProcess("chrome" ,webDriver);
+                closeWebDriver();
                 webDriver = null;
                 webDriver = setUpDriver(true);
                 webDriver.get(stockURL);
@@ -356,6 +359,7 @@ public class NYSEStockResearchService {
         try{
             webDriver.get(x);
         }catch (Exception e){
+            closeWebDriver();
             webDriver = null;
             webDriver = launchBrowser();
             webDriver.get(x);
@@ -441,13 +445,7 @@ public class NYSEStockResearchService {
     private WebDriver launchBrowser() {
 
         System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
-        try {
-            if (webDriver != null) webDriver.close();
-        }catch (Exception e){}
-
-        try {
-            if (webDriver != null) webDriver.quit();
-        }catch (Exception e){}
+        closeWebDriver();
 
         try{
 //            killChrome("chrome");
@@ -469,6 +467,16 @@ public class NYSEStockResearchService {
             return null;
         }
         return webDriver;
+    }
+
+    private void closeWebDriver() {
+        try {
+            if (webDriver != null) webDriver.close();
+        }catch (Exception e){}
+
+        try {
+            if (webDriver != null) webDriver.quit();
+        }catch (Exception e){}
     }
 
     private boolean acceptCookies() {
