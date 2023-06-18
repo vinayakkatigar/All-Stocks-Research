@@ -145,7 +145,7 @@ public class NYSEStockResearchService {
 
     private void runNyse(Map<String, String> nyseStockDetailedInfoMap, List<NyseStockInfo> populateNYSEStockDetailedInfoList) {
         nyseStockDetailedInfoMap.entrySet().stream().forEach(x -> {
-            if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 800){
+            if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 750){
                 return;
             }
             int retry = 2;
