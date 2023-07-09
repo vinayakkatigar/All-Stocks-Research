@@ -1,3 +1,5 @@
+mvn spring-boot:run -D"spring-boot.run.profiles"=i5db
+
 https://www.value.today/stocks/sp-europe-350
 
 mvn clean spring-boot:run -Dcnt=11 -Dlogfile.name=indonesia-test-stock-research -Dserver.port=9090 -Dcurrency=IDR -Dcomponent=INDONESIA -Durl=https://www.value.today/headquarters/indonesia?title=&field_company_category_primary_target_id&field_market_value_jan_2020_value_1=&page=
