@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
+import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.getBigDecimalFromString;
 import static stock.research.utility.SensexStockResearchUtility.getDoubleFromString;
 
@@ -180,11 +181,14 @@ public class ScreenerSensexStockResearchService {
                 }
             });
 
-            resultSensexStockInfosList = populatedSensexStockInfosList.stream().filter(x -> x.getStockMktCap() != null && x.getCurrentMarketPrice() != null
-                                                            && x.get_52WeekHighLowPriceDiff() != null
-                                                            && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO)  > 0
-                                                            && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  > 0
-                                                                &&  x.getStockMktCap() > 999).collect(Collectors.toList());
+            resultSensexStockInfosList = populatedSensexStockInfosList.stream()
+                    .filter(x -> x.getStockMktCap() != null
+                    && x.getCurrentMarketPrice() != null
+                    && x.get_52WeekHighLowPriceDiff() != null
+                    && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO)  > 0
+                    && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  > 0
+                    &&  x.getStockMktCap() > 999).collect(toList());
+
             resultSensexStockInfosList.sort(Comparator.comparing(SensexStockInfo::getStockMktCap,
                                                                         Comparator.nullsLast(Comparator.naturalOrder())).reversed());
 
@@ -196,7 +200,7 @@ public class ScreenerSensexStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStockDetailedInfo.json"),
                     objectMapper.writeValueAsString(resultSensexStockInfosList).getBytes());
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStock-1000-MktCap-detailedInfo.json"),
-                    objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(Collectors.toList())).getBytes());
+                    objectMapper.writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(toList())).getBytes());
             cacheScreenerSensexStockInfosList = resultSensexStockInfosList;
             return (resultSensexStockInfosList);
         }catch (Exception e) {
