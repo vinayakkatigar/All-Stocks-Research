@@ -148,6 +148,7 @@ public class NYSEStockResearchService {
             if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() == 350){
                 killChrome("chrome");
                 webDriver = setUpDriver(true);
+                goSleep(1000 * 60 * 5);
             }
             if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 750){
                 return;
@@ -159,6 +160,14 @@ public class NYSEStockResearchService {
                 sucess = extractAttributes(populateNYSEStockDetailedInfoList, x);
             }
         });
+    }
+
+    private void goSleep(int millis) {
+        try {
+            sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean extractAttributes(List<NyseStockInfo> populateNYSEStockDetailedInfoList, Map.Entry<String, String> x) {
@@ -177,7 +186,7 @@ public class NYSEStockResearchService {
                     webDriver = setUpDriver(true);
                 }
                 browseUrl(webDriver, x.getValue());
-                sleep(1000 * 3);
+                goSleep(1000 * 3);
             }
             scrollToolbar();
 
@@ -465,10 +474,10 @@ public class NYSEStockResearchService {
             System.setProperty("webdriver.chrome.webDriver",System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe");
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            sleep(2000 );
+            goSleep(2000);
             int x = 2;
             while (--x > 0 && !acceptCookies()){
-                sleep(500 * 5);
+                goSleep(500 * 5);
             }
             acceptCookies();
         }catch (Exception e){
@@ -492,14 +501,14 @@ public class NYSEStockResearchService {
     private boolean acceptCookies() {
         try {
             browseUrl(webDriver, "https://www.nasdaq.com/market-activity/stocks/aapl");
-            sleep(1000 * 2);
+            goSleep(1000 * 2);
             try {
                 webDriver.findElement(By.id("onetrust-button-group")).findElement(By.id("onetrust-accept-btn-handler")).click();
             } catch (Exception e) {
                 return false;
             }
             webDriver.navigate().refresh();
-            sleep(1000 * 3);
+            goSleep(1000 * 3);
         }catch (Exception exception){
             return false;
         }
