@@ -145,6 +145,10 @@ public class NYSEStockResearchService {
 
     private void runNyse(Map<String, String> nyseStockDetailedInfoMap, List<NyseStockInfo> populateNYSEStockDetailedInfoList) {
         nyseStockDetailedInfoMap.entrySet().stream().forEach(x -> {
+            if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() == 350){
+                killChrome("chrome");
+                webDriver = setUpDriver(true);
+            }
             if (populateNYSEStockDetailedInfoList != null && populateNYSEStockDetailedInfoList.size() >= 750){
                 return;
             }
@@ -517,7 +521,7 @@ public class NYSEStockResearchService {
     public static void killChrome(String process) {
         try {
             try {
-//                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
+                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -542,6 +546,7 @@ public class NYSEStockResearchService {
             }catch (Exception e){
             }
             try {
+                Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
                 Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
             }catch (Exception e){
             }
