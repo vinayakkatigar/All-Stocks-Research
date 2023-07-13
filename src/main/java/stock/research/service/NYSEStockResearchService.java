@@ -201,7 +201,7 @@ public class NYSEStockResearchService {
             while (retry-- > 0 && ( "".equalsIgnoreCase(crtPrice))){
                 crtPrice = setNYSECmp(x.getValue(), nyseStockInfo, crtPrice);
             }
-            if (retry < 1 && ( "".equalsIgnoreCase(crtPrice))){
+            if (retry <= 1 && ( "".equalsIgnoreCase(crtPrice))){
                 killChrome("chrome");
                 webDriver = setUpDriver(true);
                 browseUrl(webDriver, nyseStockInfo.getStockURL());
