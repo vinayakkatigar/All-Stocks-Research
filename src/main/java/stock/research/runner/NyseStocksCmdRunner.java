@@ -19,7 +19,7 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(NyseStocksCmdRunner.class);
 
     @Autowired
-    private NyseEmailAlertMechanismService startUpNYSEStockResearchService;
+    private NyseEmailAlertMechanismService nyseEmailAlertMechanismService;
 
     @Autowired
     private NyseTop1000StockResearchService nyseTop1000StockResearchService;
@@ -35,6 +35,7 @@ public class NyseStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        nyseEmailAlertMechanismService.kickOffEmailAlerts();
 /*
         startUpNYSEStockResearchService.startUpKickOffEmailAlerts();
         nyseTop1000StockResearchService.populateStockDetailedInfo("NYSE_1000", NyseStockResearchUtility.NYSE_1000_URL, NyseStockResearchUtility.NYSE_1000_CNT);
