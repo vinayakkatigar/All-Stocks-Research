@@ -26,6 +26,9 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(Sensex500StocksCmdRunner.class);
 
     @Autowired
+    private NyseEmailAlertMechanismService nyseEmailAlertMechanismService;
+
+    @Autowired
     private SensexStockResearchService sensexStockResearchService;
 
     @Autowired
@@ -50,6 +53,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        nyseEmailAlertMechanismService.kickOffEmailAlerts();
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
