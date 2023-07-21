@@ -62,6 +62,7 @@ public class ScreenerSensexStockResearchService {
     }
 
     public List<SensexStockInfo> populateStocksAttributes() {
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
         List<SensexStockInfo> populatedSensexStockInfosList = new ArrayList<>();
         List<SensexStockInfo> resultSensexStockInfosList = new ArrayList<>();
 

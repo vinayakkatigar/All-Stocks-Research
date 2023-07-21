@@ -70,6 +70,8 @@ public class NYSEStockResearchService {
 //        this.webDriver = launchBrowser();
     }
     public List<NyseStockInfo> populateNYSEStockDetailedInfo() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
         int maxRetries = 50;
         while (maxRetries-- > 0 && isRunningFlag) {
             try {
