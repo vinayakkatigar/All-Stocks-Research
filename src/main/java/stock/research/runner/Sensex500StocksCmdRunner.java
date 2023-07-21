@@ -53,7 +53,6 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        nyseEmailAlertMechanismService.kickOffEmailAlerts();
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
