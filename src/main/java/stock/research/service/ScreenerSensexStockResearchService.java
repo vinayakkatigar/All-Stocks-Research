@@ -48,19 +48,6 @@ public class ScreenerSensexStockResearchService {
     @Autowired
     RestTemplate restTemplate;
 
-    private void extractedAndPopulate(ResponseEntity<String> response, List<SensexStockInfo> sensexStockInfos) {
-        Document doc = Jsoup.parse(response.getBody());
-        Elements tableElements =  doc.getElementsByClass("pcq_tbl MT10");
-        if (tableElements != null && tableElements.size() > 0){
-            for (Element e : tableElements){
-                Elements anchorElements =  e.getElementsByTag("a");
-                for (Element ahref : anchorElements){
-                    sensexStockInfos.add(new SensexStockInfo(ahref.text(), ahref.attr("href")));
-                }
-            }
-        }
-    }
-
     public List<SensexStockInfo> populateStocksAttributes() {
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
         List<SensexStockInfo> populatedSensexStockInfosList = new ArrayList<>();
@@ -70,7 +57,7 @@ public class ScreenerSensexStockResearchService {
             List<String> stockUrlsMap = objectMapper.readValue(new ClassPathResource("ScreenerSensexStockURLInfo.json").getInputStream(), new TypeReference<List<String>>(){});
 
             stockUrlsMap.stream().forEach(x -> {
-                try { sleep(1000 * 3);} catch (Exception e) { }
+                goSleep(3);
                 ResponseEntity<String> response = null;
 
                 LOGGER.info("SensexStockResearchService::StockURL ->  " + x);
@@ -211,6 +198,10 @@ public class ScreenerSensexStockResearchService {
         return (resultSensexStockInfosList);
     }
 
+    private void goSleep(int x) {
+        try { sleep(1000 * x);} catch (Exception e) { }
+    }
+
     private String replaceRupee(String input) {
         try {
             String rupee = "\u20B9";
@@ -255,18 +246,33 @@ public class ScreenerSensexStockResearchService {
         }
     }
 
+    private void extractedAndPopulate(ResponseEntity<String> response, List<SensexStockInfo> sensexStockInfos) {
+        Document doc = Jsoup.parse(response.getBody());
+        Elements tableElements =  doc.getElementsByClass("pcq_tbl MT10");
+        if (tableElements != null && tableElements.size() > 0){
+            for (Element e : tableElements){
+                Elements anchorElements =  e.getElementsByTag("a");
+                for (Element ahref : anchorElements){
+                    sensexStockInfos.add(new SensexStockInfo(ahref.text(), ahref.attr("href")));
+                }
+            }
+        }
+    }
 
     public ResponseEntity<String> makeRestCall(String url) {
         ResponseEntity<String> response = null;
         try {
             sleep(10);
             response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+            if (response == null || response.getStatusCode() != HttpStatus.OK){
+                return null;
+            }
         }catch (Exception e){
             return null;
+        }finally {
+            goSleep(2);
         }
-        if (response == null || response.getStatusCode() != HttpStatus.OK){
-            return null;
-        }
+
         return response;
     }
 }
