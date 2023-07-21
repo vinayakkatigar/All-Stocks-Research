@@ -75,6 +75,7 @@ public class NYSEStockResearchService {
         int maxRetries = 50;
         while (maxRetries-- > 0 && isRunningFlag) {
             try {
+                System.out.println("Process already running, sleeping");
                 Thread.sleep(1000 * 60 * 1);
             } catch (Exception e) { }
         }
