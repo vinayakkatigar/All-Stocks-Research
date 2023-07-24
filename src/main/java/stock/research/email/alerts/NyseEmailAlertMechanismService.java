@@ -69,7 +69,7 @@ public class NyseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 5 4,10,16,22 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 5 4,10,16,22 ? * MON-SAT", zone = "GMT")
     public void kickOffEmailAlerts_Daily() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -271,7 +271,7 @@ public class NyseEmailAlertMechanismService {
         });
     }
 
-    @Scheduled(cron = "0 5 0 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 5 0 ? * MON-SAT", zone = "GMT")
     public void kickOffKillProcess() {
         System.out.println("NyseEmailAlertMechanismService.kickOffKillProcess");
         StockResearchUtility.killProcess("chrome", null);
