@@ -380,6 +380,7 @@ public class NYSEStockResearchService {
     private void browseUrl(WebDriver webDriver, String x) {
         try{
             webDriver.get(x);
+            goSleep(1000 * 50);
         }catch (Exception e){
             closeWebDriver();
             webDriver = null;
@@ -535,7 +536,7 @@ public class NYSEStockResearchService {
     public static void killChrome(String process) {
         try {
             try {
-                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
+//                Runtime.getRuntime().exec("TASKKILL /IM  "+ process + ".exe /F");
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -560,7 +561,7 @@ public class NYSEStockResearchService {
             }catch (Exception e){
             }
             try {
-                Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
+//                Runtime.getRuntime().exec("TASKKILL /IM  chromedriver.exe /F");
                 Runtime.getRuntime().exec("RMDIR /Q/S %temp%");
             }catch (Exception e){
             }
