@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceNYSEStockInfo;
+import stock.research.gfinance.repo.GFinanceNyseStockInfoRepositary;
 import stock.research.gfinance.service.GFinanceNYSEStockService;
 
 import javax.mail.internet.MimeMessage;
@@ -44,6 +45,8 @@ public class GFinanceNYSEEmailAlertService {
     private ObjectMapper objectMapper;
     @Autowired
     private GFinanceNYSEStockService gFinanceNYSEStockService;
+    @Autowired
+    private GFinanceNyseStockInfoRepositary gFinanceNyseStockInfoRepositary;
 
     private List<GFinanceNYSEStockInfo> gFinanceNYSEStockList = new ArrayList<>();
 
@@ -80,6 +83,11 @@ public class GFinanceNYSEEmailAlertService {
             while (!sendEmail(dataBuffer, new StringBuilder("** Google Finance NYSE Daily Data ** ")) && --retry >= 0);
         }catch (Exception e){
             ERROR_LOGGER.error("Google Finance NYSE -> ", e);
+        }
+        try {
+            gFinanceNYSEStockInfoList.forEach(x -> gFinanceNyseStockInfoRepositary.save(x));
+        }catch (Exception e){
+            ERROR_LOGGER.error("GFinance NYSE DB inserts", e);
         }
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
     }
