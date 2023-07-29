@@ -79,7 +79,7 @@ public class GFinanceNYSEStockService {
                         .execute();
                 List<List<Object>> values = response.getValues();
                 if (values == null || values.isEmpty()) {
-                    LOGGER.info("No data found.");
+                    ERROR_LOGGER.error("No data found.");
                 } else {
                     for (List row : values) {
                         LOGGER.info("Size"+row.size());
