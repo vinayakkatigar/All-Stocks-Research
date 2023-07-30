@@ -147,6 +147,7 @@ public class GFinanceNyseStockUtility {
            if (input != null && input.trim() != null){
                input = input.trim();
                input = input.replace(",", "");
+               input = input.replace("#", "");
                input = input.replace("$", "");
                input = input.replace("£", "");
            }
@@ -161,6 +162,7 @@ public class GFinanceNyseStockUtility {
            if (input != null && input.trim() != null){
                input = input.trim();
                input = input.replace(",", "");
+               input = input.replace("#", "");
                input = input.replace("$", "");
                input = input.replace("£", "");
            }
