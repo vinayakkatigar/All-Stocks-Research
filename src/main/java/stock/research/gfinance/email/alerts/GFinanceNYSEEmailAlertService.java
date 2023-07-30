@@ -50,7 +50,7 @@ public class GFinanceNYSEEmailAlertService {
 
     private List<GFinanceNYSEStockInfo> gFinanceNYSEStockList = new ArrayList<>();
 
-    @Scheduled(cron = "0 0/15 0 * * *", zone = "GMT")
+    @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGFinanceRefresh" );
