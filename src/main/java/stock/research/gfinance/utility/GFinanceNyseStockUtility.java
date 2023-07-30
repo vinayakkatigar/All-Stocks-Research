@@ -147,6 +147,8 @@ public class GFinanceNyseStockUtility {
            if (input != null && input.trim() != null){
                input = input.trim();
                input = input.replace(",", "");
+               input = input.replace("$", "");
+               input = input.replace("£", "");
            }
            return Double.valueOf(input);
        }catch (Exception e){
@@ -159,6 +161,8 @@ public class GFinanceNyseStockUtility {
            if (input != null && input.trim() != null){
                input = input.trim();
                input = input.replace(",", "");
+               input = input.replace("$", "");
+               input = input.replace("£", "");
            }
            return new BigDecimal(input);
        }catch (Exception e){
