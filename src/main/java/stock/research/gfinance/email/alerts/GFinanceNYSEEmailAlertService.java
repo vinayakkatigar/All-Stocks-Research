@@ -172,7 +172,7 @@ public class GFinanceNYSEEmailAlertService {
             if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
                     "".equalsIgnoreCase(subjectBuffer.toString()) == false){
                 helper.setFrom("raghu_kat_stocks@outlook.com");
-                helper.setTo(new String[]{"raghu_kat_stocks@outlook.com"});
+                helper.setTo(new String[]{"raghu_kat_stocks@outlook.com", "pabari_sush_stocks@outlook.com"});
 //            helper.setTo(new String[]{"raghu_kat_stocks@outlook.com","raghu.kat@outlook.com"});
                 helper.setText(data, true);
                 helper.setSubject(subjectBuffer.toString());
