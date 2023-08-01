@@ -40,7 +40,7 @@ import static org.openqa.selenium.By.xpath;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 
-//@Service
+@Service
 public class NYSEStockResearchService {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     private static final Logger LOGGER = LoggerFactory.getLogger(NYSEStockResearchService.class);
@@ -468,6 +468,8 @@ public class NYSEStockResearchService {
     }
 
     private WebDriver launchBrowser() {
+        return null;
+/*
 
         System.out.println("StockResearchService.launchBrowser" + System.getProperty("user.dir"));
         closeWebDriver();
@@ -492,6 +494,7 @@ public class NYSEStockResearchService {
             return null;
         }
         return webDriver;
+*/
     }
 
     private void closeWebDriver() {
