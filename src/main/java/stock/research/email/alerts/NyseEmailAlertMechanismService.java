@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
-@Service
+//@Service
 public class NyseEmailAlertMechanismService {
     enum StockCategory{LARGE_CAP, MID_CAP};
 

@@ -34,7 +34,7 @@ import static java.time.Instant.now;
 import static java.util.stream.Collectors.toList;
 
 
-@Service
+//@Service
 public class NyseTop1000StockResearchService {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     private static final Logger LOGGER = LoggerFactory.getLogger(NyseTop1000StockResearchService.class);

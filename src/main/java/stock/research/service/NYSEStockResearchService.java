@@ -40,7 +40,7 @@ import static org.openqa.selenium.By.xpath;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 
-@Service
+//@Service
 public class NYSEStockResearchService {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     private static final Logger LOGGER = LoggerFactory.getLogger(NYSEStockResearchService.class);
