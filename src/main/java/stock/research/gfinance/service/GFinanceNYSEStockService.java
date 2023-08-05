@@ -61,7 +61,6 @@ public class GFinanceNYSEStockService {
                 //    final String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
 
                 final String range = k + "!A2:L";
-                List<String> ranges = Arrays.asList("E1", "E5");
 
                 Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                         .setApplicationName(APPLICATION_NAME)
