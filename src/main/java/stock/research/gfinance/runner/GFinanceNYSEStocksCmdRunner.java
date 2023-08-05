@@ -30,6 +30,7 @@ public class GFinanceNYSEStocksCmdRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         gFinanceNYSEEmailAlertService.kickOffGFinanceRefresh();
         gFinanceNYSEEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
+        gFinanceNYSEEmailAlertService.kickOffGFPortfolioEmailAlerts();
 
     }
 

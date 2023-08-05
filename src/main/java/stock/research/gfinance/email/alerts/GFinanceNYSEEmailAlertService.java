@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.util.Arrays.*;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
@@ -33,7 +34,7 @@ import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 
 @Service
 public class GFinanceNYSEEmailAlertService {
-    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
+//    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
 
     enum SIDE{BUY, SELL};
     private static final Logger LOGGER = LoggerFactory.getLogger(GFinanceNYSEEmailAlertService.class);
@@ -48,19 +49,36 @@ public class GFinanceNYSEEmailAlertService {
     private GFinanceNyseStockInfoRepositary gFinanceNyseStockInfoRepositary;
 
     private Map<String, String> urlInfo = new HashMap<>();
+    private Map<String, String> portfolioUrl = new HashMap<>();
     @PostConstruct
     public void setUp(){
         urlInfo.put("Vin-Nyse-1", "1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao");
         urlInfo.put("Vin-Nyse-2", "1DdkJYnXIR0UCLeB7cjB8G4LGzZMXHKQ_dGpXGO8CU8I");
         urlInfo.put("Vin-Nyse-3", "1YmgSZuLMPJqgPLUuaQCTq2TXjts4aPD0w19zYpV0WpE");
         urlInfo.put("Vin-Nyse-4", "1TGdtwdz_6O9wTO3xFzUwo4wlbsyGsQWeHolLVJzxLyQ");
+        portfolioUrl.put("Vin-portfolio", "1M7swFwopiNGRZn052yCc1YM3cYVQvLiBytJNehncSPI");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGFinanceRefresh" );
         gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(urlInfo);
+        gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(portfolioUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
+    }
+
+    @Scheduled(cron = "0 0 5,11,17,23 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFPortfolioEmailAlerts() {
+        Instant instantBefore = now();
+        LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
+        final List<GFinanceNYSEStockInfo> gfPortfolioList = gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(portfolioUrl);
+        stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF " + x + " Portfolio Alerts ***"));
+        });
+        generateDailyEmail(gfPortfolioList, new StringBuilder("** GF Portfolio Daily Data ** "));
+        writeToDB(gfPortfolioList);
+        LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
     }
 
     @Scheduled(cron = "0 0 0,6,12,18 ? * MON-SAT", zone = "GMT")
@@ -73,36 +91,22 @@ public class GFinanceNYSEEmailAlertService {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
 */
-        generateAlertEmails(gFinanceNYSEStockInfoList,SIDE.BUY, StockCategory.LARGE_CAP);
+        final StringBuilder subjectBuffer = new StringBuilder("");
+        generateAlertEmails(gFinanceNYSEStockInfoList,SIDE.BUY, subjectBuffer);
         LOGGER.info(now()+ " <-  Ended kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceNYSEEmailAlerts" );
 
-        try {
-            final StringBuilder dataBuffer = new StringBuilder("");
-            gFinanceNYSEStockInfoList.stream().filter((x -> (x.get_52WeekLowPrice() != null
-                    && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) != 0 &&
-                    x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) != 0 &&
-                    x.get_52WeekHighLowPriceDiff() != null &&
-                    x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
-                    .forEach(x ->  createTableContents(dataBuffer, x));
-            int retry = 3;
-            while (!sendEmail(dataBuffer, new StringBuilder("** GF NYSE Daily Data ** ")) && --retry >= 0);
-        }catch (Exception e){
-            ERROR_LOGGER.error("GF NYSE -> ", e);
-        }
-        try {
-            gFinanceNYSEStockInfoList.forEach(x -> gFinanceNyseStockInfoRepositary.save(x));
-        }catch (Exception e){
-            ERROR_LOGGER.error("GFinance NYSE DB inserts", e);
-        }
+        StringBuilder subject = new StringBuilder("** GF NYSE Daily Data ** ");
+        generateDailyEmail(gFinanceNYSEStockInfoList, subject);
+        writeToDB(gFinanceNYSEStockInfoList);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
     }
 
-    private void generateAlertEmails(List<GFinanceNYSEStockInfo> populatedFtseList, SIDE side, StockCategory stockCategory) {
+    private void generateAlertEmails(List<GFinanceNYSEStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer) {
         try {
+            System.out.println("Size -> " + populatedFtseList.size());
             StringBuilder dataBuffer = new StringBuilder("");
-            final StringBuilder subjectBuffer = new StringBuilder("");
 
-            generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer, stockCategory);
+            generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer);
             int retry = 3;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
         } catch (Exception e) {
@@ -110,7 +114,7 @@ public class GFinanceNYSEEmailAlertService {
         }
     }
 
-    private void generateHTMLContent(List<GFinanceNYSEStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer, StockCategory stockCategory) {
+    private void generateHTMLContent(List<GFinanceNYSEStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         if (populatedFtseList != null && populatedFtseList.size() >0){
             populatedFtseList = populatedFtseList.stream().distinct().collect(Collectors.toList());
 
@@ -119,8 +123,8 @@ public class GFinanceNYSEEmailAlertService {
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighLowPriceDiff() != null) {
-                    if (x.getStockRankIndex() <=150 && stockCategory == StockCategory.LARGE_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(35)) > 0
+                    if (x.getStockRankIndex() != null && x.getStockRankIndex() <= 150
+                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(44)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0
                                 || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
@@ -130,7 +134,7 @@ public class GFinanceNYSEEmailAlertService {
                             createTableContents(dataBuffer, x);
                     }
 
-                    if (x.getStockRankIndex() > 150 && stockCategory == StockCategory.MID_CAP
+                    if (x.getStockRankIndex() != null && x.getStockRankIndex() > 150
                             && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(50)) > 0
                             && side == SIDE.BUY && x.get_52WeekLowPriceDiff() != null &&
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0 )
@@ -141,8 +145,8 @@ public class GFinanceNYSEEmailAlertService {
                             createTableContents(dataBuffer, x);
                     }
 
-                    if (stockCategory == StockCategory.LARGE_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(45)) > 0
+                    if (x.getStockRankIndex() != null && x.getStockRankIndex() <= 150 &&
+                            x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(45)) > 0
                             && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
@@ -151,8 +155,8 @@ public class GFinanceNYSEEmailAlertService {
                                 }
                                 createTableContents(dataBuffer, x);
                     }
-                    if (stockCategory == StockCategory.MID_CAP
-                            && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(45)) > 0
+                    if (x.getStockRankIndex() != null && x.getStockRankIndex() > 150 &&
+                            x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(45)) > 0
                             && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null &&
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
                                     || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0))){
@@ -198,10 +202,9 @@ public class GFinanceNYSEEmailAlertService {
         return true;
     }
 
-
     public void createTableContents(StringBuilder dataBuffer, GFinanceNYSEStockInfo x) {
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
-            dataBuffer.append("<tr style=\"background-color:#FFBA75\">");
+            dataBuffer.append("<tr style=\"background-color:#00ffff\">");
         }else if (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 ){
             dataBuffer.append("<tr style=\"background-color:#A7D971\">");
         }else {
@@ -218,6 +221,30 @@ public class GFinanceNYSEEmailAlertService {
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.getP2e() + "</td>");
         dataBuffer.append("</tr>");
+    }
+
+    private void writeToDB(List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoList) {
+        try {
+            gFinanceNYSEStockInfoList.forEach(x -> gFinanceNyseStockInfoRepositary.save(x));
+        }catch (Exception e){
+            ERROR_LOGGER.error("GF DB inserts", e);
+        }
+    }
+
+    private void generateDailyEmail(List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoList, StringBuilder subject) {
+        try {
+            final StringBuilder dataBuffer = new StringBuilder("");
+            gFinanceNYSEStockInfoList.stream().filter((x -> (x.get_52WeekLowPrice() != null
+                            && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                            x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                            x.get_52WeekHighLowPriceDiff() != null &&
+                            x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
+                    .forEach(x ->  createTableContents(dataBuffer, x));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, subject) && --retry >= 0);
+        }catch (Exception e){
+            ERROR_LOGGER.error("GF NYSE Email error -> ", e);
+        }
     }
 
 }
