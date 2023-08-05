@@ -47,21 +47,13 @@ public class GFinanceNYSEStockService {
             Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "gfinance/credentials.json";
 
-    private Map<String, String> urlInfo = new HashMap<>();
-    @PostConstruct
-    public void setUp(){
-        urlInfo.put("Vin-Nyse-1", "1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao");
-        urlInfo.put("Vin-Nyse-2", "1DdkJYnXIR0UCLeB7cjB8G4LGzZMXHKQ_dGpXGO8CU8I");
-        urlInfo.put("Vin-Nyse-3", "1YmgSZuLMPJqgPLUuaQCTq2TXjts4aPD0w19zYpV0WpE");
-        urlInfo.put("Vin-Nyse-4", "1TGdtwdz_6O9wTO3xFzUwo4wlbsyGsQWeHolLVJzxLyQ");
-    }
-    public List<GFinanceNYSEStockInfo> getGFinanceNYSEStockInfoList() {
+
+    public List<GFinanceNYSEStockInfo> getGFinanceNYSEStockInfoList(Map<String, String> urlInfo) {
         final List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoList = new ArrayList<>();
         List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoFilteredList = null;
 
         urlInfo.forEach((k, v) -> {
-            LOGGER.info(k);
-            LOGGER.info(v);
+            LOGGER.info("key ->" + k + ", value ->" + v);
             try {
                 // Build a new authorized API client service.
                 final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
