@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceNYSEStockInfo;
 import stock.research.gfinance.utility.GFinanceNyseStockUtility;
 
-import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,9 +47,9 @@ public class GFinanceNYSEStockService {
     private static final String CREDENTIALS_FILE_PATH = "gfinance/credentials.json";
 
 
-    public List<GFinanceNYSEStockInfo> getGFinanceNYSEStockInfoList(Map<String, String> urlInfo) {
-        final List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoList = new ArrayList<>();
-        List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoFilteredList = null;
+    public List<GFinanceNYSEStockInfo> getGFStockInfoList(Map<String, String> urlInfo) {
+        final List<GFinanceNYSEStockInfo> gfStockInfoList = new ArrayList<>();
+        List<GFinanceNYSEStockInfo> gfStockInfoFilteredList = null;
 
         urlInfo.forEach((k, v) -> {
             LOGGER.info("key ->" + k + ", value ->" + v);
@@ -79,7 +78,7 @@ public class GFinanceNYSEStockService {
                         }else {
                             gFinanceNYSEStockInfo = new GFinanceNYSEStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                         }
-                        gFinanceNYSEStockInfoList.add(gFinanceNYSEStockInfo);
+                        gfStockInfoList.add(gFinanceNYSEStockInfo);
                     }
                 }
 
@@ -89,18 +88,18 @@ public class GFinanceNYSEStockService {
         });
 
         try {
-            gFinanceNYSEStockInfoFilteredList = gFinanceNYSEStockInfoList.stream().filter(q -> (
+            gfStockInfoFilteredList = gfStockInfoList.stream().filter(q -> (
                             (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
                                     && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
                                     && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
                                     && ((q.getMktCapRealValue() != null && q.getMktCapRealValue().doubleValue() > 0) || q.getMktCapRealValue() != null)))
                     .distinct().collect(toList());
 
-            gFinanceNYSEStockInfoFilteredList.sort(Comparator.comparing(GFinanceNYSEStockInfo::getMktCapRealValue,
+            gfStockInfoFilteredList.sort(Comparator.comparing(GFinanceNYSEStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i = 1;
-            for (GFinanceNYSEStockInfo x : gFinanceNYSEStockInfoFilteredList) {
+            for (GFinanceNYSEStockInfo x : gfStockInfoFilteredList) {
                 x.setStockRankIndex(i++);
                 if (x.getMktCapRealValue() != null) x.setMktCapFriendyValue(truncateNumber(x.getMktCapRealValue()));
             }
@@ -108,11 +107,11 @@ public class GFinanceNYSEStockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("gFinanceNYSEStockInfoFilteredList::Size -> " + gFinanceNYSEStockInfoFilteredList.size());
+        LOGGER.info("gfStockInfoFilteredList::Size -> " + gfStockInfoFilteredList.size());
 
-        LOGGER.info("gFinanceNYSEStockInfoList::Size -> " + gFinanceNYSEStockInfoList.size());
+        LOGGER.info("gfStockInfoList::Size -> " + gfStockInfoList.size());
 
-        return gFinanceNYSEStockInfoFilteredList;
+        return gfStockInfoFilteredList;
     }
 
 

@@ -48,30 +48,52 @@ public class GFinanceNYSEEmailAlertService {
     @Autowired
     private GFinanceNyseStockInfoRepositary gFinanceNyseStockInfoRepositary;
 
-    private Map<String, String> urlInfo = new HashMap<>();
+    private Map<String, String> nyseUrlInfo = new HashMap<>();
+    private Map<String, String> nseUrlInfo = new HashMap<>();
     private Map<String, String> portfolioUrl = new HashMap<>();
     @PostConstruct
     public void setUp(){
-        urlInfo.put("Vin-Nyse-1", "1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao");
-        urlInfo.put("Vin-Nyse-2", "1DdkJYnXIR0UCLeB7cjB8G4LGzZMXHKQ_dGpXGO8CU8I");
-        urlInfo.put("Vin-Nyse-3", "1YmgSZuLMPJqgPLUuaQCTq2TXjts4aPD0w19zYpV0WpE");
-        urlInfo.put("Vin-Nyse-4", "1TGdtwdz_6O9wTO3xFzUwo4wlbsyGsQWeHolLVJzxLyQ");
+        nyseUrlInfo.put("Vin-Nyse-1", "1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao");
+        nyseUrlInfo.put("Vin-Nyse-2", "1DdkJYnXIR0UCLeB7cjB8G4LGzZMXHKQ_dGpXGO8CU8I");
+        nyseUrlInfo.put("Vin-Nyse-3", "1YmgSZuLMPJqgPLUuaQCTq2TXjts4aPD0w19zYpV0WpE");
+        nyseUrlInfo.put("Vin-Nyse-4", "1TGdtwdz_6O9wTO3xFzUwo4wlbsyGsQWeHolLVJzxLyQ");
         portfolioUrl.put("Vin-portfolio", "1M7swFwopiNGRZn052yCc1YM3cYVQvLiBytJNehncSPI");
+        nseUrlInfo.put("Vin-Nse-1", "1wjfxknOyQ5TghGwoFOt-LTz2E-APPXFAfsYqaooIyBQ");
+        nseUrlInfo.put("Vin-Nse-2", "1j6QRSY9A9b8hYWBEidkl5B4X6FaiVByS2tUc4aU4b6M");
+        nseUrlInfo.put("Vin-Nse-3", "1Hvw1BJH1eJWbtJwReD3n96DGeHarFVXeR93B3-0tKPE");
+        nseUrlInfo.put("Vin-Nse-4", "1WSVRVhqU6vUdatoic49kwdAUSoBUaOlqZscyTVzX8CE");
+        nseUrlInfo.put("Vin-Nse-5", "1YlVMw15EIi2-Z62TIJ3Bt6-zb0UlR_4FZrjc1LoPnHU");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGFinanceRefresh" );
-        gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(urlInfo);
-        gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(portfolioUrl);
+        gFinanceNYSEStockService.getGFStockInfoList(nyseUrlInfo);
+        gFinanceNYSEStockService.getGFStockInfoList(portfolioUrl);
+        gFinanceNYSEStockService.getGFStockInfoList(nseUrlInfo);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
     }
+
+    @Scheduled(cron = "0 0 4,10,16,22 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFNSEEmailAlerts() {
+        Instant instantBefore = now();
+        LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
+        final List<GFinanceNYSEStockInfo> gfPortfolioList = gFinanceNYSEStockService.getGFStockInfoList(portfolioUrl);
+        stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF " + x + " NSE Alerts ***"));
+        });
+        generateDailyEmail(gfPortfolioList, new StringBuilder("** GF NSE Daily Data ** "));
+        writeToDB(gfPortfolioList);
+        LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFNSEEmailAlerts" + now() );
+    }
+
 
     @Scheduled(cron = "0 0 5,11,17,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFPortfolioEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
-        final List<GFinanceNYSEStockInfo> gfPortfolioList = gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(portfolioUrl);
+        final List<GFinanceNYSEStockInfo> gfPortfolioList = gFinanceNYSEStockService.getGFStockInfoList(portfolioUrl);
         stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF " + x + " Portfolio Alerts ***"));
         });
@@ -85,7 +107,7 @@ public class GFinanceNYSEEmailAlertService {
     public void kickOffGoogleFinanceNYSEEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceNYSEEmailAlerts" );
-        final List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoList = gFinanceNYSEStockService.getGFinanceNYSEStockInfoList(urlInfo);
+        final List<GFinanceNYSEStockInfo> gFinanceNYSEStockInfoList = gFinanceNYSEStockService.getGFStockInfoList(nyseUrlInfo);
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);

@@ -31,6 +31,7 @@ public class GFinanceNYSEStocksCmdRunner implements CommandLineRunner {
         gFinanceNYSEEmailAlertService.kickOffGFinanceRefresh();
         gFinanceNYSEEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
         gFinanceNYSEEmailAlertService.kickOffGFPortfolioEmailAlerts();
+        gFinanceNYSEEmailAlertService.kickOffGFNSEEmailAlerts();
 
     }
 
