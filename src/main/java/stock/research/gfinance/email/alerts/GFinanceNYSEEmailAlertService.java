@@ -78,10 +78,10 @@ public class GFinanceNYSEEmailAlertService {
     public void kickOffGFNSEEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
-        final List<GFinanceNYSEStockInfo> gfPortfolioList = gFinanceNYSEStockService.getGFStockInfoList(portfolioUrl);
-        stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF " + x + " NSE Alerts ***"));
-        });
+        final List<GFinanceNYSEStockInfo> gfPortfolioList = gFinanceNYSEStockService.getGFStockInfoList(nseUrlInfo);
+//        stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gfPortfolioList, SIDE.BUY, new StringBuilder("*** GF " + SIDE.BUY + " NSE Alerts ***"));
+//        });
         generateDailyEmail(gfPortfolioList, new StringBuilder("** GF NSE Daily Data ** "));
         writeToDB(gfPortfolioList);
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
