@@ -6,6 +6,8 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
@@ -61,7 +63,9 @@ public class GFinanceNYSEStockService {
 
                 final String range = k + "!A2:L";
 
-                Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                Credential credential = getCredentials(HTTP_TRANSPORT);
+
+                Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setTimeout(credential, (60000 * 5)))
                         .setApplicationName(APPLICATION_NAME)
                         .build();
                 ValueRange response = service.spreadsheets().values()
@@ -143,4 +147,11 @@ public class GFinanceNYSEStockService {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("vkatigar@gmail.com");
     }
 
+    private HttpRequestInitializer setTimeout(final HttpRequestInitializer initializer, final int timeout) {
+        return request -> {
+            initializer.initialize(request);
+            request.setReadTimeout(timeout);
+            request.setConnectTimeout(timeout);
+        };
+    }
 }
