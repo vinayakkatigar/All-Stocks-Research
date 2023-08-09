@@ -69,7 +69,7 @@ public class NyseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 0 9 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 0 9 ? * MON-SAT", zone = "GMT")
     public void kickOffEmailAlerts_Daily() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
