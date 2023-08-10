@@ -64,13 +64,13 @@ public class GFinanceNYSEStockService {
                 final String range = k + "!A2:L";
 
                 Credential credential = getCredentials(HTTP_TRANSPORT);
+                int retry = 5;
+                ValueRange response = null;
 
-                Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setTimeout(credential, (60000 * 5)))
-                        .setApplicationName(APPLICATION_NAME)
-                        .build();
-                ValueRange response = service.spreadsheets().values()
-                        .get(v, range)
-                        .execute();
+                while (retry-- >= 0 && response == null){
+                    response = runGFQuery(v, HTTP_TRANSPORT, range, credential);
+                }
+
                 List<List<Object>> values = response.getValues();
                 if (values == null || values.isEmpty()) {
                     ERROR_LOGGER.error("No data found.");
@@ -116,6 +116,21 @@ public class GFinanceNYSEStockService {
         LOGGER.info("gfStockInfoList::Size -> " + gfStockInfoList.size());
 
         return gfStockInfoFilteredList;
+    }
+
+    private ValueRange runGFQuery(String v, NetHttpTransport HTTP_TRANSPORT, String range, Credential credential) throws IOException {
+        try{
+            Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setTimeout(credential, (60000 * 5)))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+            ValueRange response = service.spreadsheets().values()
+                    .get(v, range)
+                    .execute();
+            return response;
+        }catch (Exception e){
+            ERROR_LOGGER.error("Error in runGFQuery -> ", e);
+            return null;
+        }
     }
 
 
