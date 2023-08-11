@@ -44,6 +44,9 @@ public class GFinanceNYSEStockInfo {
     @Transient
     private String mktCapFriendyValue;
 
+    @Transient
+    private Double changePct;
+
     @Column(name = "CURRENT_MARKET_PRICE")
     private BigDecimal currentMarketPrice =  BigDecimal.ZERO;
 
@@ -216,6 +219,15 @@ public class GFinanceNYSEStockInfo {
                 ", p2e=" + p2e +
                 ", timestamp=" + timestamp +
                 ", stockTS=" + stockTS +
+                ", changePct=" + changePct +
                 '}';
+    }
+
+    public Double getChangePct() {
+        return changePct;
+    }
+
+    public void setChangePct(Double changePct) {
+        this.changePct = changePct;
     }
 }

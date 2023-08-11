@@ -82,6 +82,7 @@ public class GFinanceNYSEStockService {
                         }else {
                             gFinanceNYSEStockInfo = new GFinanceNYSEStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                         }
+                        gFinanceNYSEStockInfo.setChangePct(getDoubleFromString((String) row.get(7)));
                         gfStockInfoList.add(gFinanceNYSEStockInfo);
                     }
                 }

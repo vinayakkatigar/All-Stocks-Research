@@ -90,7 +90,7 @@ public class GFinanceNyseStockUtility {
             "\n <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js\" integrity=\"sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==\" crossorigin=\"anonymous\"></script> \n" +
             "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead><tr><td>RankIndex</td><td>Name(MktCap)<td>Market Price</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>Year Low Diff(%)\n" +
             " Buy</td><td>Year High Diff(%)\n" +
-            " Sell</td><td>P/E</td></tr></thead>\n" +
+            " Sell</td><td>Change %</td><td>P/E</td></tr></thead>\n" +
             "<tbody>";
 
     public static final String HTML_END = "</tbody>\n" +
