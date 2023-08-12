@@ -19,6 +19,12 @@ start chrome https://docs.google.com/spreadsheets/d/1WSVRVhqU6vUdatoic49kwdAUSoB
 timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1YlVMw15EIi2-Z62TIJ3Bt6-zb0UlR_4FZrjc1LoPnHU/edit#gid=0
 timeout /t 30 /nobreak > NUL
+start chrome https://docs.google.com/spreadsheets/d/1iF_6oxXe2bvyQCNadAUlaLB_3GSkhNrzik9HZyK2iUI/edit#gid=0
+timeout /t 30 /nobreak > NUL
+start chrome https://docs.google.com/spreadsheets/d/1gqq8oNpG35WwhSARwIoFhTQOs2yqVa6UPzTTzLgAdew/edit#gid=0
+timeout /t 30 /nobreak > NUL
+start chrome https://docs.google.com/spreadsheets/d/1qijUJ91J-Qzuj2wI9RdWULOoq1XaZQMrAZOpWwbyt3Y/edit#gid=0
+timeout /t 30 /nobreak > NUL
 
 
 timeout /t 600 /nobreak > NUL

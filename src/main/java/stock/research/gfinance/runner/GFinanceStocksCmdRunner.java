@@ -28,6 +28,7 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffGFPortfolioEmailAlerts();
         gFinanceEmailAlertService.kickOffGFNSEEmailAlerts();
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
 
     }
 
