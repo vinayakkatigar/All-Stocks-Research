@@ -2,14 +2,13 @@ package stock.research.gfinance.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "GFINANCE_NYSE_STOCK_INFO")
-public class GFinanceNYSEStockInfo {
+public class GFinanceStockInfo {
 
     @Column(name = "GFINANCE_NYSE_STOCK_INFO_ID")
     @Id
@@ -17,7 +16,7 @@ public class GFinanceNYSEStockInfo {
     @SequenceGenerator(sequenceName = "GFINANCE_NYSE_STOCK_INFO_ID_SEQ", allocationSize = 1, name = "GFINANCE_NYSE_STOCK_INFO_ID_SEQ")
     Long id;
 
-    public GFinanceNYSEStockInfo(String stockName, Double mktCapRealValue, String mktCapFriendyValue, BigDecimal currentMarketPrice, BigDecimal _52WeekLowPrice, BigDecimal _52WeekHighPrice, BigDecimal _52WeekHighLowPriceDiff, BigDecimal _52WeekHighPriceDiff, BigDecimal _52WeekLowPriceDiff, Double p2e, Instant timestamp, Timestamp stockTS) {
+    public GFinanceStockInfo(String stockName, Double mktCapRealValue, String mktCapFriendyValue, BigDecimal currentMarketPrice, BigDecimal _52WeekLowPrice, BigDecimal _52WeekHighPrice, BigDecimal _52WeekHighLowPriceDiff, BigDecimal _52WeekHighPriceDiff, BigDecimal _52WeekLowPriceDiff, Double p2e, Instant timestamp, Timestamp stockTS) {
         this.stockName = stockName;
         this.mktCapRealValue = mktCapRealValue;
         this.mktCapFriendyValue = mktCapFriendyValue;
@@ -74,7 +73,7 @@ public class GFinanceNYSEStockInfo {
     @Column(name = "STOCKTS")
     Timestamp stockTS;
 
-    public GFinanceNYSEStockInfo() {
+    public GFinanceStockInfo() {
     }
 
     public Long getId() {
@@ -193,7 +192,7 @@ public class GFinanceNYSEStockInfo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GFinanceNYSEStockInfo that = (GFinanceNYSEStockInfo) o;
+        GFinanceStockInfo that = (GFinanceStockInfo) o;
         return stockName.equals(that.stockName);
     }
 

@@ -6,7 +6,6 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -19,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import stock.research.gfinance.domain.GFinanceNYSEStockInfo;
+import stock.research.gfinance.domain.GFinanceStockInfo;
 import stock.research.gfinance.utility.GFinanceNyseStockUtility;
 
 import java.io.FileNotFoundException;
@@ -36,9 +35,9 @@ import static java.util.stream.Collectors.toList;
 import static stock.research.utility.NyseStockResearchUtility.*;
 
 @Service
-public class GFinanceNYSEStockService {
+public class GFinanceStockService {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
-    private static final Logger LOGGER = LoggerFactory.getLogger(GFinanceNYSEStockService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GFinanceStockService.class);
 
     private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -49,9 +48,9 @@ public class GFinanceNYSEStockService {
     private static final String CREDENTIALS_FILE_PATH = "gfinance/credentials.json";
 
 
-    public List<GFinanceNYSEStockInfo> getGFStockInfoList(Map<String, String> urlInfo) {
-        final List<GFinanceNYSEStockInfo> gfStockInfoList = new ArrayList<>();
-        List<GFinanceNYSEStockInfo> gfStockInfoFilteredList = null;
+    public List<GFinanceStockInfo> getGFStockInfoList(Map<String, String> urlInfo) {
+        final List<GFinanceStockInfo> gfStockInfoList = new ArrayList<>();
+        List<GFinanceStockInfo> gfStockInfoFilteredList = null;
 
         urlInfo.forEach((k, v) -> {
             LOGGER.info("key ->" + k + ", value ->" + v);
@@ -76,14 +75,14 @@ public class GFinanceNYSEStockService {
                     ERROR_LOGGER.error("No data found.");
                 } else {
                     for (List row : values) {
-                        GFinanceNYSEStockInfo gFinanceNYSEStockInfo = null;
+                        GFinanceStockInfo gFinanceStockInfo = null;
                         if ("Vin-portfolio".equalsIgnoreCase(k)){
-                            gFinanceNYSEStockInfo = new GFinanceNYSEStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
+                            gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                         }else {
-                            gFinanceNYSEStockInfo = new GFinanceNYSEStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
+                            gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                         }
-                        gFinanceNYSEStockInfo.setChangePct(getDoubleFromString((String) row.get(7)));
-                        gfStockInfoList.add(gFinanceNYSEStockInfo);
+                        gFinanceStockInfo.setChangePct(getDoubleFromString((String) row.get(7)));
+                        gfStockInfoList.add(gFinanceStockInfo);
                     }
                 }
 
@@ -100,11 +99,11 @@ public class GFinanceNYSEStockService {
                                     && ((q.getMktCapRealValue() != null && q.getMktCapRealValue().doubleValue() > 0) || q.getMktCapRealValue() != null)))
                     .distinct().collect(toList());
 
-            gfStockInfoFilteredList.sort(Comparator.comparing(GFinanceNYSEStockInfo::getMktCapRealValue,
+            gfStockInfoFilteredList.sort(Comparator.comparing(GFinanceStockInfo::getMktCapRealValue,
                     nullsFirst(naturalOrder())).reversed());
 
             int i = 1;
-            for (GFinanceNYSEStockInfo x : gfStockInfoFilteredList) {
+            for (GFinanceStockInfo x : gfStockInfoFilteredList) {
                 x.setStockRankIndex(i++);
                 if (x.getMktCapRealValue() != null) x.setMktCapFriendyValue(truncateNumber(x.getMktCapRealValue()));
             }
