@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
-import stock.research.gfinance.repo.GFinanceNyseStockInfoRepositary;
+import stock.research.gfinance.repo.GFinanceStockInfoRepositary;
 import stock.research.gfinance.service.GFinanceStockService;
 
 import javax.annotation.PostConstruct;
@@ -46,7 +46,7 @@ public class GFinanceEmailAlertService {
     @Autowired
     private GFinanceStockService gFinanceStockService;
     @Autowired
-    private GFinanceNyseStockInfoRepositary gFinanceNyseStockInfoRepositary;
+    private GFinanceStockInfoRepositary gFinanceStockInfoRepositary;
 
     private Map<String, String> nyseUrlInfo = new HashMap<>();
     private Map<String, String> nseUrlInfo = new HashMap<>();
@@ -124,7 +124,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
     }
 
-    @Scheduled(cron = "0 0 0,6,12,18 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 0,14,17,20 ? * MON-SAT", zone = "GMT")
     public void kickOffGoogleFinanceNYSEEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceNYSEEmailAlerts" );
@@ -219,7 +219,7 @@ public class GFinanceEmailAlertService {
 
     private void writeToDB(List<GFinanceStockInfo> gFinanceStockInfoList) {
         try {
-            gFinanceStockInfoList.forEach(x -> gFinanceNyseStockInfoRepositary.save(x));
+            gFinanceStockInfoList.forEach(x -> gFinanceStockInfoRepositary.save(x));
         }catch (Exception e){
             ERROR_LOGGER.error("GF DB inserts", e);
         }
