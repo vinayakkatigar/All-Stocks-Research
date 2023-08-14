@@ -54,6 +54,7 @@ public class YFStockService {
                     powerShellProcess.getInputStream()))) {
                 while ((output = stdout.readLine()) != null) {
                     System.out.println("Output -> " + output);
+                    return output;
                 }
             }
             try (BufferedReader stderr = new BufferedReader(new InputStreamReader(
