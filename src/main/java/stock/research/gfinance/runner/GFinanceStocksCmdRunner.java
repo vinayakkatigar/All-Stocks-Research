@@ -23,6 +23,7 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
         gFinanceEmailAlertService.kickOffGFPortfolioEmailAlerts();
