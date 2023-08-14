@@ -14,6 +14,6 @@ public class YFStocksCmdRunner  implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-//        yfEmailAlertService.kickOffYFNYSEEmailAlerts();
+        yfEmailAlertService.kickOffYFNYSEEmailAlerts();
     }
 }
