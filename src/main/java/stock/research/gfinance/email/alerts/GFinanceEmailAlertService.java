@@ -85,6 +85,7 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 30 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFASXEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(asxUrl);
@@ -99,6 +100,7 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 30 3,9,12,15 ? * MON-SAT", zone = "GMT")
     public void kickOffGFFTSEEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(ftseUrl);
@@ -114,6 +116,7 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 0 4,10,16,22 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
         final List<GFinanceStockInfo> gfPortfolioList = gFinanceStockService.getGFStockInfoList(nseUrlInfo);
@@ -129,6 +132,7 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 0 5,11,17,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFPortfolioEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
         final List<GFinanceStockInfo> gfPortfolioList = gFinanceStockService.getGFStockInfoList(portfolioUrl);
@@ -143,6 +147,7 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 30 0,14,17,20 ? * MON-SAT", zone = "GMT")
     public void kickOffGoogleFinanceNYSEEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceNYSEEmailAlerts" );
         final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
