@@ -1,4 +1,8 @@
+
 mvn spring-boot:run -D"spring-boot.run.profiles"=i5db
+
+ Set-ExecutionPolicy RemoteSigned
+
 
 https://www.value.today/stocks/sp-europe-350
 
