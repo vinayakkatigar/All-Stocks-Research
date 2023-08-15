@@ -11,6 +11,7 @@ import stock.research.yfinance.domain.YFinance;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -24,13 +25,17 @@ public class YFStockService {
     private ObjectMapper objectMapper;
 
     public List<GFinanceStockInfo> getYFStockInfoList(List<String> stockCodes) {
-
+        List<GFinanceStockInfo> gFinanceStockInfos = new ArrayList<>();
 
         System.out.println();
-//        stockCodes.forEach(this::queryYF);
-        stockCodes.forEach(x -> {
+        stockCodes.forEach(stock -> {
             try {
-                YFinance yFinance = objectMapper.readValue(queryYF(x), YFinance.class) ;
+                String yfFinance = null;
+                int retry =5;
+                while (retry-- > 0 && yfFinance == null){
+                    yfFinance = queryYF(stock);
+                }
+                YFinance yFinance = objectMapper.readValue(yfFinance, YFinance.class) ;
                 System.out.println(yFinance);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -67,23 +72,21 @@ public class YFStockService {
 
 
         }catch (Exception exception){
+            ERROR_LOGGER.error("YF Query Error ->", exception);
             return null;
         }
 
         return output;
     }
 
-    private void goSleep(int x) {
-        try { sleep(1000 * x);} catch (Exception e) { }
-    }
-
-
-
     private String truncateNumber(double x) {
         return x < MILLION ?  String.valueOf(x) :
                 x < BILLION ?  String.format("%.2f", x / MILLION) + "M" :
                         x < TRILLION ? String.format("%.2f", x / BILLION) + "B" :
                                 String.format("%.2f", x / TRILLION) + "T";
+    }
+    private void goSleep(int x) {
+        try { sleep(1000 * x);} catch (Exception e) { }
     }
 
 }
