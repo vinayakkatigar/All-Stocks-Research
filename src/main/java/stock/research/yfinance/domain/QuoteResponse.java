@@ -2,6 +2,7 @@
 package stock.research.yfinance.domain;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,37 +14,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "raw",
-    "fmt"
+    "result",
+    "error"
 })
 @Generated("jsonschema2pojo")
-public class RegularMarketChangePercent {
+public class QuoteResponse {
 
-    @JsonProperty("raw")
-    private Double raw;
-    @JsonProperty("fmt")
-    private String fmt;
+    @JsonProperty("result")
+    private List<Result> result;
+    @JsonProperty("error")
+    private Object error;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("raw")
-    public Double getRaw() {
-        return raw;
+    @JsonProperty("result")
+    public List<Result> getResult() {
+        return result;
     }
 
-    @JsonProperty("raw")
-    public void setRaw(Double raw) {
-        this.raw = raw;
+    @JsonProperty("result")
+    public void setResult(List<Result> result) {
+        this.result = result;
     }
 
-    @JsonProperty("fmt")
-    public String getFmt() {
-        return fmt;
+    @JsonProperty("error")
+    public Object getError() {
+        return error;
     }
 
-    @JsonProperty("fmt")
-    public void setFmt(String fmt) {
-        this.fmt = fmt;
+    @JsonProperty("error")
+    public void setError(Object error) {
+        this.error = error;
     }
 
     @JsonAnyGetter

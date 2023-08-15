@@ -10,7 +10,9 @@ try { Invoke-WebRequest -UseBasicParsing -Uri 'https://fc.yahoo.com/' -SessionVa
 $crumb = Invoke-WebRequest -UseBasicParsing -Uri 'https://query2.finance.yahoo.com/v1/test/getcrumb' -WebSession $session
 
 
-$URL = $('https://query2.finance.yahoo.com/v10/finance/quoteSummary/' + $Stock + '?modules=price&crumb=' + $crumb)
+#$URL = $('https://query2.finance.yahoo.com/v10/finance/quoteSummary/' + $Stock + '?modules=price&crumb=' + $crumb)
+$URL = $('https://query2.finance.yahoo.com/v7/finance/quote?symbols=' + $Stock + '&crumb=' + $crumb)
+#$URL = $('https://query2.finance.yahoo.com/v7/finance/quote?symbols=' + $Stock + '&crumb=' + $crumb)
 $ResponseText = Invoke-WebRequest -UseBasicParsing -Uri $URL -WebSession $session
 
     

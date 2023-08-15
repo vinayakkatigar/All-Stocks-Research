@@ -8,7 +8,8 @@ public class Delete {
     public static void main(String[] args) throws Exception {
         //String command = "powershell.exe  your command";
         //Getting the version
-        String command = "powershell.exe  " + "C:\\Delete\\yfiance.ps1 TSLA";
+        String st = "MSFT,GOOG,TSLA,IFF,SCHW";
+        String command = "powershell.exe  " + System.getProperty("user.dir") + "\\src\\main\\resources\\YF\\yfiance.ps1 " + "'"+  st + "'" ;
         // Executing the command
         Process powerShellProcess = Runtime.getRuntime().exec(command);
 
@@ -19,7 +20,7 @@ public class Delete {
         BufferedReader stdout = new BufferedReader(new InputStreamReader(
                 powerShellProcess.getInputStream()));
         while ((line = stdout.readLine()) != null) {
-            System.out.println("Output -> " + line);
+            System.out.println("Output -> \n" + line);
         }
         stdout.close();
         System.out.println("Standard Error:");

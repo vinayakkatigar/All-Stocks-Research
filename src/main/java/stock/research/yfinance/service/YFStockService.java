@@ -1,6 +1,5 @@
 package stock.research.yfinance.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,7 @@ import stock.research.yfinance.domain.YFinance;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +36,10 @@ public class YFStockService {
                     yfFinance = queryYF(stock);
                 }
                 YFinance yFinance = objectMapper.readValue(yfFinance, YFinance.class) ;
+                GFinanceStockInfo gFinanceStockInfo = transformToGF(yFinance);
                 System.out.println(yFinance);
-            } catch (JsonProcessingException e) {
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error in getYFStockInfoList", e);
                 e.printStackTrace();
             }
         });
@@ -46,13 +48,19 @@ public class YFStockService {
         return null;
     }
 
+    private GFinanceStockInfo transformToGF(YFinance yfFinance) {
+        GFinanceStockInfo gFinanceStockInfo = new GFinanceStockInfo();
+        return gFinanceStockInfo;
+
+    }
 
 
     private String queryYF(String stockCode) {
         String output = null;
 
         try {
-            String command = "powershell.exe  " + System.getProperty("user.dir") + "\\src\\main\\resources\\YF\\yfiance.ps1 " + stockCode ;
+            String st = "MSFT,GOOG,TSLA,IFF,SCHW";
+            String command = "powershell.exe  " + System.getProperty("user.dir") + "\\src\\main\\resources\\YF\\yfiance.ps1 " + "'"+  st + "'" ;
             Process powerShellProcess = Runtime.getRuntime().exec(command);
             powerShellProcess.getOutputStream().close();
             try (BufferedReader stdout = new BufferedReader(new InputStreamReader(

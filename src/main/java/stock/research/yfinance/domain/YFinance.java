@@ -13,24 +13,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "quoteSummary"
+    "quoteResponse"
 })
 @Generated("jsonschema2pojo")
 public class YFinance {
 
-    @JsonProperty("quoteSummary")
-    private QuoteSummary quoteSummary;
+    @JsonProperty("quoteResponse")
+    private QuoteResponse quoteResponse;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("quoteSummary")
-    public QuoteSummary getQuoteSummary() {
-        return quoteSummary;
+    @JsonProperty("quoteResponse")
+    public QuoteResponse getQuoteResponse() {
+        return quoteResponse;
     }
 
-    @JsonProperty("quoteSummary")
-    public void setQuoteSummary(QuoteSummary quoteSummary) {
-        this.quoteSummary = quoteSummary;
+    @JsonProperty("quoteResponse")
+    public void setQuoteResponse(QuoteResponse quoteResponse) {
+        this.quoteResponse = quoteResponse;
     }
 
     @JsonAnyGetter
