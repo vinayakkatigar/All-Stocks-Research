@@ -1,6 +1,8 @@
 package stock.research.yfinance.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,14 @@ public class YFStockService {
     public List<GFinanceStockInfo> getYFStockInfoList(List<String> stockCodes) {
         List<GFinanceStockInfo> gFinanceStockInfos = new ArrayList<>();
 
+        List<List<String>> partitionedCodes = Lists.partition(stockCodes, 10);
         System.out.println();
-        stockCodes.forEach(stock -> {
+        partitionedCodes.forEach(stocksCode -> {
             try {
                 String yfFinance = null;
                 int retry =5;
                 while (retry-- > 0 && yfFinance == null){
-                    yfFinance = queryYF(stock);
+                    yfFinance = queryYF(String.join(",", stocksCode));
                 }
                 YFinance yFinance = objectMapper.readValue(yfFinance, YFinance.class) ;
                 GFinanceStockInfo gFinanceStockInfo = transformToGF(yFinance);
@@ -49,6 +52,12 @@ public class YFStockService {
     }
 
     private GFinanceStockInfo transformToGF(YFinance yfFinance) {
+        try {
+            System.out.println("yfFinance");
+            System.out.println(objectMapper.writeValueAsString(yfFinance));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         GFinanceStockInfo gFinanceStockInfo = new GFinanceStockInfo();
         return gFinanceStockInfo;
 
@@ -59,8 +68,8 @@ public class YFStockService {
         String output = null;
 
         try {
-            String st = "MSFT,GOOG,TSLA,IFF,SCHW";
-            String command = "powershell.exe  " + System.getProperty("user.dir") + "\\src\\main\\resources\\YF\\yfiance.ps1 " + "'"+  st + "'" ;
+//            stockCode = "MSFT,GOOG,TSLA,IFF,SCHW";
+            String command = "powershell.exe  " + System.getProperty("user.dir") + "\\src\\main\\resources\\YF\\yfiance.ps1 " + "'"+  stockCode + "'" ;
             Process powerShellProcess = Runtime.getRuntime().exec(command);
             powerShellProcess.getOutputStream().close();
             try (BufferedReader stdout = new BufferedReader(new InputStreamReader(
