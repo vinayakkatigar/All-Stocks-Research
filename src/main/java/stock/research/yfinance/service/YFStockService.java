@@ -17,6 +17,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -119,6 +121,8 @@ public class YFStockService {
                         yFinanceStockInfo.set_52WeekLowPriceDiff(((yFinanceStockInfo.getCurrentMarketPrice().subtract(yFinanceStockInfo.get_52WeekLowPrice()).abs())
                                 .divide(yFinanceStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
+                    yFinanceStockInfo.setStockTS(Timestamp.from(Instant.now()));
+                    yFinanceStockInfo.setTimestamp(Instant.now());
 
                 }catch (Exception e){
                     ERROR_LOGGER.error(stringfy(x) + "Error", e );
