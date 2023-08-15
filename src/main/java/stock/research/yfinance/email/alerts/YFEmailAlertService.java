@@ -9,14 +9,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import stock.research.gfinance.domain.GFinanceStockInfo;
-import stock.research.gfinance.repo.GFinanceStockInfoRepositary;
-import stock.research.gfinance.service.GFinanceStockService;
+import stock.research.yfinance.domain.YFinanceStockInfo;
+import stock.research.yfinance.repo.YFinanceStockInfoRepositary;
 import stock.research.yfinance.service.YFStockService;
+import stock.research.yfinance.utility.YFinanceNyseStockUtility;
 
-import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -25,16 +23,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.util.Arrays.stream;
-import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
-import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 
@@ -52,29 +45,29 @@ public class YFEmailAlertService {
     @Autowired
     private YFStockService yfStockService;
     @Autowired
-    private GFinanceStockInfoRepositary gFinanceStockInfoRepositary;
+    private YFinanceStockInfoRepositary yFinanceStockInfoRepositary;
 
 
 //    @Scheduled(cron = "0 30 0,14,17,20 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Instant instantBefore = now();
-        LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
+        LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
 
 
 
-        final List<GFinanceStockInfo> gFinanceStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/NYSE.json"));
+        final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/NYSE.json"));
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
 */
         final StringBuilder subjectBuffer = new StringBuilder("");
-        generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, subjectBuffer);
-        LOGGER.info(now()+ " <-  Ended kickOffGoogleFinanceNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
+        generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
+        LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
 
-        StringBuilder subject = new StringBuilder("*** GF NYSE Daily Data *** ");
-        generateDailyEmail(gFinanceStockInfoList, subject);
-        writeToDB(gFinanceStockInfoList);
+        StringBuilder subject = new StringBuilder("*** YF NYSE Daily Data *** ");
+        generateDailyEmail(yfStockInfoList, subject);
+        writeToDB(yfStockInfoList);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
     }
 
@@ -86,12 +79,12 @@ public class YFEmailAlertService {
         }
     }
 
-    private void generateAlertEmails(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer) {
+    private void generateAlertEmails(List<YFinanceStockInfo> yFinanceStockInfoList, SIDE side, StringBuilder subjectBuffer) {
         try {
-            System.out.println("Size -> " + populatedFtseList.size());
+            System.out.println("Size -> " + yFinanceStockInfoList.size());
             StringBuilder dataBuffer = new StringBuilder("");
 
-            generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer);
+            generateHTMLContent(yFinanceStockInfoList, side, dataBuffer, subjectBuffer);
             int retry = 3;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
         } catch (Exception e) {
@@ -103,9 +96,9 @@ public class YFEmailAlertService {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            String data = HTML_START;
+            String data = YFinanceNyseStockUtility.HTML_START;
             data += dataBuffer.toString();
-            data += HTML_END;
+            data += YFinanceNyseStockUtility.HTML_END;
 
             if ("".equalsIgnoreCase(dataBuffer.toString()) == false &&
                     "".equalsIgnoreCase(subjectBuffer.toString()) == false){
@@ -131,7 +124,7 @@ public class YFEmailAlertService {
         return true;
     }
 
-    public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
+    public void createTableContents(StringBuilder dataBuffer, YFinanceStockInfo x) {
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
             dataBuffer.append("<tr style=\"background-color:#00ffff\">");
         }else if (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 ){
@@ -156,21 +149,22 @@ public class YFEmailAlertService {
             dataBuffer.append("<td>" + x.getChangePct() + "</td>");
         }
         dataBuffer.append("<td>" + x.getP2e() + "</td>");
+        dataBuffer.append("<td>" + x.getEps() + "</td>");
         dataBuffer.append("</tr>");
     }
 
-    private void writeToDB(List<GFinanceStockInfo> gFinanceStockInfoList) {
+    private void writeToDB(List<YFinanceStockInfo> yFinanceStockInfoList) {
         try {
-            gFinanceStockInfoList.forEach(x -> gFinanceStockInfoRepositary.save(x));
+            yFinanceStockInfoList.forEach(x -> yFinanceStockInfoRepositary.save(x));
         }catch (Exception e){
             ERROR_LOGGER.error("GF DB inserts", e);
         }
     }
 
-    private void generateDailyEmail(List<GFinanceStockInfo> gFinanceStockInfoList, StringBuilder subject) {
+    private void generateDailyEmail(List<YFinanceStockInfo> yFinanceStockInfoList, StringBuilder subject) {
         try {
             final StringBuilder dataBuffer = new StringBuilder("");
-            gFinanceStockInfoList.stream().filter((x -> (x.get_52WeekLowPrice() != null
+            yFinanceStockInfoList.stream().filter((x -> (x.get_52WeekLowPrice() != null
                             && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) != 0 &&
                             x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) != 0 &&
                             x.get_52WeekHighLowPriceDiff() != null &&
@@ -183,11 +177,11 @@ public class YFEmailAlertService {
         }
     }
 
-    private void generateHTMLContent(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
-        if (populatedFtseList != null && populatedFtseList.size() >0){
-            populatedFtseList = populatedFtseList.stream().distinct().collect(Collectors.toList());
+    private void generateHTMLContent(List<YFinanceStockInfo> yFinanceStockInfoList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
+        if (yFinanceStockInfoList != null && yFinanceStockInfoList.size() >0){
+            yFinanceStockInfoList = yFinanceStockInfoList.stream().distinct().collect(Collectors.toList());
 
-            populatedFtseList.stream().distinct().forEach(x -> {
+            yFinanceStockInfoList.stream().distinct().forEach(x -> {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                         x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
@@ -198,7 +192,7 @@ public class YFEmailAlertService {
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0
                             || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Buy Large Cap Alert***");
+                            subjectBuffer.append("*** YF NYSE Buy Large Cap Alert***");
                         }
                         createTableContents(dataBuffer, x);
                     }
@@ -209,7 +203,7 @@ public class YFEmailAlertService {
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0 )
                                     || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5.0)) <= 0)){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Buy Mid Cap Alert ***");
+                            subjectBuffer.append("*** YF NYSE Buy Mid Cap Alert ***");
                         }
                         createTableContents(dataBuffer, x);
                     }
@@ -220,7 +214,7 @@ public class YFEmailAlertService {
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Sell Large Cap Alert***");
+                            subjectBuffer.append("*** YF NYSE Sell Large Cap Alert***");
                         }
                         createTableContents(dataBuffer, x);
                     }
@@ -230,7 +224,7 @@ public class YFEmailAlertService {
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
                                     || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0))){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Sell Mid Cap Alert***");
+                            subjectBuffer.append("*** YF NYSE Sell Mid Cap Alert***");
                         }
                         createTableContents(dataBuffer, x);
                     }

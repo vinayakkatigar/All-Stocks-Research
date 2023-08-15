@@ -43,4 +43,44 @@ public class YFinance {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(YFinance.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("quoteResponse");
+        sb.append('=');
+        sb.append(((this.quoteResponse == null)?"<null>":this.quoteResponse));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = ((result* 31)+((this.quoteResponse == null)? 0 :this.quoteResponse.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if ((other instanceof YFinance) == false) {
+            return false;
+        }
+        YFinance rhs = ((YFinance) other);
+        return (((this.quoteResponse == rhs.quoteResponse)||((this.quoteResponse!= null)&&this.quoteResponse.equals(rhs.quoteResponse)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))));
+    }
+
 }
