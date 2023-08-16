@@ -96,9 +96,9 @@ public class YFStockService {
                     yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(Double.valueOf((x.getMarketCap()))) : "");
                     yFinanceStockInfo.set_52WeekLowPrice(x.getFiftyTwoWeekLow() != null ? valueOf(x.getFiftyTwoWeekLow()) : ZERO);
                     yFinanceStockInfo.set_52WeekHighPrice(x.getFiftyTwoWeekHigh() != null ? valueOf(x.getFiftyTwoWeekHigh()) : ZERO);
-                    yFinanceStockInfo.setP2e(x.getForwardPE() != null ? valueOf(x.getForwardPE()).setScale(2).doubleValue() : 0d);
-                    yFinanceStockInfo.setEps(x.getEpsForward() != null ? valueOf(x.getEpsForward()).setScale(2).doubleValue() : 0d);
-                    yFinanceStockInfo.setChangePct(x.getRegularMarketChangePercent() != null ? valueOf(x.getRegularMarketChangePercent()).setScale(2).doubleValue() : 0d);
+                    yFinanceStockInfo.setP2e(x.getForwardPE() != null ? valueOf(x.getForwardPE()).setScale(2, RoundingMode.HALF_UP).doubleValue() : 0d);
+                    yFinanceStockInfo.setEps(x.getEpsForward() != null ? valueOf(x.getEpsForward()).setScale(2, RoundingMode.HALF_UP).doubleValue() : 0d);
+                    yFinanceStockInfo.setChangePct(x.getRegularMarketChangePercent() != null ? valueOf(x.getRegularMarketChangePercent()).setScale(2, RoundingMode.HALF_UP).doubleValue() : 0d);
 
                     if (yFinanceStockInfo.get_52WeekLowPrice() != null && yFinanceStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                             yFinanceStockInfo.get_52WeekHighPrice() != null && yFinanceStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
