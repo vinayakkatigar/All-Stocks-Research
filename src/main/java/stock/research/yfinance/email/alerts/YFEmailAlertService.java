@@ -76,17 +76,12 @@ public class YFEmailAlertService {
             LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
 
         });
-
-
     }
-
 
     @Scheduled(cron = "0 30 1,15,18,21 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
-
-
 
         final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/NYSE.json"));
 /*
