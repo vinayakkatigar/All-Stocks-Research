@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import stock.research.domain.NyseStockInfo;
-import stock.research.gfinance.domain.GFinanceStockInfo;
 import stock.research.yfinance.domain.Result;
 import stock.research.yfinance.domain.YFinance;
 import stock.research.yfinance.domain.YFinanceStockInfo;
@@ -24,7 +22,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.Double.*;
 import static java.lang.Thread.sleep;
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
@@ -96,12 +93,12 @@ public class YFStockService {
                     yFinanceStockInfo.setCurrentMarketPrice(x.getRegularMarketPrice() != null ? valueOf(x.getRegularMarketPrice()): x.getRegularMarketPrice() != null ? valueOf(x.getRegularMarketPrice()): ZERO);
                     yFinanceStockInfo.setStockName(x.getLongName());
                     yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? Double.valueOf((x.getMarketCap())) : 0d);
-                    yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? truncateNumber(Double.valueOf((x.getMarketCap()))) : "");
+                    yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(Double.valueOf((x.getMarketCap()))) : "");
                     yFinanceStockInfo.set_52WeekLowPrice(x.getFiftyTwoWeekLow() != null ? valueOf(x.getFiftyTwoWeekLow()) : ZERO);
                     yFinanceStockInfo.set_52WeekHighPrice(x.getFiftyTwoWeekHigh() != null ? valueOf(x.getFiftyTwoWeekHigh()) : ZERO);
-                    yFinanceStockInfo.setP2e(x.getForwardPE() != null ? Double.valueOf(x.getForwardPE()): 0d);
-                    yFinanceStockInfo.setEps(x.getEpsForward() != null ? Double.valueOf(x.getEpsForward()): 0d);
-                    yFinanceStockInfo.setChangePct(x.getRegularMarketChangePercent() != null ? Double.valueOf(x.getRegularMarketChangePercent()): 0d);
+                    yFinanceStockInfo.setP2e(x.getForwardPE() != null ? valueOf(x.getForwardPE()).setScale(2).doubleValue() : 0d);
+                    yFinanceStockInfo.setEps(x.getEpsForward() != null ? valueOf(x.getEpsForward()).setScale(2).doubleValue() : 0d);
+                    yFinanceStockInfo.setChangePct(x.getRegularMarketChangePercent() != null ? valueOf(x.getRegularMarketChangePercent()).setScale(2).doubleValue() : 0d);
 
                     if (yFinanceStockInfo.get_52WeekLowPrice() != null && yFinanceStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
                             yFinanceStockInfo.get_52WeekHighPrice() != null && yFinanceStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
@@ -155,7 +152,6 @@ public class YFStockService {
             try (BufferedReader stdout = new BufferedReader(new InputStreamReader(
                     powerShellProcess.getInputStream()))) {
                 while ((output = stdout.readLine()) != null) {
-                    System.out.println("Output -> " + output);
                     return output;
                 }
             }
@@ -165,8 +161,6 @@ public class YFStockService {
                     return null;
                 }
             }
-            System.out.println("Done");
-
 
         }catch (Exception exception){
             ERROR_LOGGER.error("YF Query Error ->", exception);
@@ -176,7 +170,7 @@ public class YFStockService {
         return output;
     }
 
-    private String truncateNumber(double x) {
+    private String friendlyMktCap(double x) {
         return x < MILLION ?  String.valueOf(x) :
                 x < BILLION ?  String.format("%.2f", x / MILLION) + "M" :
                         x < TRILLION ? String.format("%.2f", x / BILLION) + "B" :

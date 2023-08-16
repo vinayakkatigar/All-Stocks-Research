@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.yfinance.domain.YFinanceStockInfo;
 import stock.research.yfinance.repo.YFinanceStockInfoRepositary;
@@ -48,7 +49,7 @@ public class YFEmailAlertService {
     private YFinanceStockInfoRepositary yFinanceStockInfoRepositary;
 
 
-//    @Scheduled(cron = "0 30 0,14,17,20 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 1,15,18,21 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
