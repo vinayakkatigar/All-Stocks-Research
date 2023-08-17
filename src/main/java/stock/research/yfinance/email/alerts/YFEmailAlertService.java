@@ -53,10 +53,10 @@ public class YFEmailAlertService {
 
     @Scheduled(cron = "0 30 1,8,14,20 ? * MON-SAT", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
-        List<String> rowList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
+        List<String> countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
         
-//        List<String> rowList = objectMapper.readValue(new ClassPathResource("Sweden.json").getInputStream(), new TypeReference<List<String>>() { });
-        rowList.forEach( country -> {
+//        List<String> countriesList = objectMapper.readValue(new ClassPathResource("Sweden.json").getInputStream(), new TypeReference<List<String>>() { });
+        countriesList.forEach( country -> {
             Instant instantBefore = now();
             LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts:: country->" + country);
 
@@ -74,7 +74,6 @@ public class YFEmailAlertService {
             generateDailyEmail(yfStockInfoList, subject);
             writeToDB(yfStockInfoList);
             LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
-
         });
     }
 
