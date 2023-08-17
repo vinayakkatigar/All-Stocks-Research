@@ -47,7 +47,7 @@ public class YFStockService {
                 String yfFinance = null;
                 int retry =5;
                 while (retry-- > 0 && yfFinance == null){
-                    yfFinance = queryYF(String.join(",", stocksCode));
+                    yfFinance = queryYF(String.join(",", stocksCode).replaceAll("\\s+",""));
                 }
                 YFinance yFinance = objectMapper.readValue(yfFinance, YFinance.class) ;
 
