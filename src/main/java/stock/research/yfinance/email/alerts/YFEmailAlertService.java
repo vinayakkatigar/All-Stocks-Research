@@ -99,7 +99,7 @@ public class YFEmailAlertService {
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
     }
 
-    @Scheduled(cron = "0 30 3,13,21 ? * MON-SAT", zone = "GMT")
+//    @Scheduled(cron = "0 30 3,13,21 ? * MON-SAT", zone = "GMT")
     public void kickOffYFChinaEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffYFChinaEmailAlerts::kickOffYFChinaEmailAlerts" );
