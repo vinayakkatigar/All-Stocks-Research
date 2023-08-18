@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,6 +97,27 @@ public class YFEmailAlertService {
         generateDailyEmail(yfStockInfoList, subject);
         writeToDB(yfStockInfoList);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
+    }
+
+    @Scheduled(cron = "0 30 3,13,21 ? * MON-SAT", zone = "GMT")
+    public void kickOffYFChinaEmailAlerts() {
+        Instant instantBefore = now();
+        LOGGER.info(now() + " <-  Started kickOffYFChinaEmailAlerts::kickOffYFChinaEmailAlerts" );
+
+        final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/China.json"));
+/*
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
+        });
+*/
+        final StringBuilder subjectBuffer = new StringBuilder("*** YF China Buy Alert *** ");
+        generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
+        LOGGER.info(now()+ " <-  Ended kickOffYFChinaEmailAlerts::kickOffYFChinaEmailAlerts" );
+
+        StringBuilder subject = new StringBuilder("*** YF China Daily Data *** ");
+        generateDailyEmail(yfStockInfoList, subject);
+        writeToDB(yfStockInfoList);
+        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFChinaEmailAlerts" + now() );
     }
 
     private List<String> getStockCode(String file) {
