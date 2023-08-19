@@ -40,7 +40,6 @@ public class YFStockService {
     public List<YFinanceStockInfo> getYFStockInfoList(List<String> stockCodes) {
         List<YFinanceStockInfo> yFinanceStockInfoList = new ArrayList<>();
         List<List<String>> partitionedCodes = Lists.partition(stockCodes, 10);
-        System.out.println();
 
         partitionedCodes.forEach(stocksCode -> {
             try {
@@ -52,13 +51,11 @@ public class YFStockService {
                 YFinance yFinance = objectMapper.readValue(yfFinance, YFinance.class) ;
 
                 yFinanceStockInfoList.addAll(transformToGF(yFinance));
-                System.out.println(yFinance);
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error in getYFStockInfoList", e);
                 e.printStackTrace();
             }
         });
-        System.out.println("YFStockService.getYFStockInfoList::size" + yFinanceStockInfoList.size());
         List<YFinanceStockInfo> yFinanceStockFilteredList = yFinanceStockInfoList.stream().filter(x -> x.getStockName() != null).collect(Collectors.toList());
         yFinanceStockFilteredList = yFinanceStockFilteredList.stream()
                 .filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
@@ -80,12 +77,7 @@ public class YFStockService {
 
     private List<YFinanceStockInfo> transformToGF(YFinance yfFinance) {
         List<YFinanceStockInfo> yFinanceStockInfoList = new ArrayList<>();
-        try {
-            System.out.println("yfFinance");
-            System.out.println(objectMapper.writeValueAsString(yfFinance));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
         if (yfFinance != null && yfFinance.getQuoteResponse() != null){
             yfFinance.getQuoteResponse().getResult().forEach(x -> {
                 YFinanceStockInfo yFinanceStockInfo = new YFinanceStockInfo();

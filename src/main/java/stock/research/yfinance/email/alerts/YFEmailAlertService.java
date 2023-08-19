@@ -130,7 +130,6 @@ public class YFEmailAlertService {
 
     private void generateAlertEmails(List<YFinanceStockInfo> yFinanceStockInfoList, SIDE side, StringBuilder subjectBuffer) {
         try {
-            System.out.println("Size -> " + yFinanceStockInfoList.size());
             StringBuilder dataBuffer = new StringBuilder("");
 
             generateHTMLContent(yFinanceStockInfoList, side, dataBuffer, subjectBuffer);
