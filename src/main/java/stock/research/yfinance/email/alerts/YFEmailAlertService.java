@@ -52,7 +52,7 @@ public class YFEmailAlertService {
     private YFinanceStockInfoRepositary yFinanceStockInfoRepositary;
 
 
-    @Scheduled(cron = "0 30 1,8,14,20 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 1,8,14,23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
         List<String> countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
         
