@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 import stock.research.gfinance.email.alerts.GFinanceEmailAlertService;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 @Order(5)
 @SpringBootApplication
 public class GFinanceStocksCmdRunner implements CommandLineRunner {
@@ -23,6 +26,9 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Instant instantBefore = Instant.now();
+        LOGGER.info(Instant.now() + " <-  Started GFinanceStocksCmdRunner::run" );
+
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
@@ -31,6 +37,7 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
         gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
 
+        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.SECONDS)+ " <- Total time in mins, Ended GFinanceStocksCmdRunner::run" + Instant.now() );
     }
 
 }
