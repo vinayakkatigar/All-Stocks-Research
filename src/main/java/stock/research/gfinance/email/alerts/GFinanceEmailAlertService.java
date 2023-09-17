@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.*;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
@@ -53,6 +54,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> portfolioUrl = new HashMap<>();
     private Map<String, String> ftseUrl = new HashMap<>();
     private Map<String, String> asxUrl = new HashMap<>();
+    private Map<String, String> germanUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -69,6 +71,7 @@ public class GFinanceEmailAlertService {
         ftseUrl.put("Vin-FTSE-1", "1iF_6oxXe2bvyQCNadAUlaLB_3GSkhNrzik9HZyK2iUI");
         ftseUrl.put("Vin-FTSE-2", "1gqq8oNpG35WwhSARwIoFhTQOs2yqVa6UPzTTzLgAdew");
         asxUrl.put("Vin-Australia", "1qijUJ91J-Qzuj2wI9RdWULOoq1XaZQMrAZOpWwbyt3Y");
+        germanUrl.put("Vin-Germany", "1a9tmx2Qx1dx1hH4J4Hr8yLFSaV-i_X4VoNp1VrThMek");
     }
 
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
@@ -80,6 +83,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(nseUrlInfo);
         gFinanceStockService.getGFStockInfoList(ftseUrl);
         gFinanceStockService.getGFStockInfoList(asxUrl);
+        gFinanceStockService.getGFStockInfoList(germanUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
     }
 
@@ -96,6 +100,21 @@ public class GFinanceEmailAlertService {
         writeToDB(stockInfoList);
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFASXEmailAlerts" + now() );
+    }
+
+    @Scheduled(cron = "0 45 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFGermanyEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Instant instantBefore = now();
+        LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
+        final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(germanUrl);
+//        stream(SIDE.values()).forEach(x -> {
+        generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF Germany " + SIDE.BUY + " Alerts ***"));
+//        });
+        generateDailyEmail(stockInfoList, new StringBuilder("*** GF Germany Daily Data *** "));
+        writeToDB(stockInfoList);
+        LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
+        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts" + now() );
     }
 
     @Scheduled(cron = "0 30 3,9,12,15 ? * MON-SAT", zone = "GMT")
