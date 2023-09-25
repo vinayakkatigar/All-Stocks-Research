@@ -55,6 +55,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> ftseUrl = new HashMap<>();
     private Map<String, String> asxUrl = new HashMap<>();
     private Map<String, String> germanUrl = new HashMap<>();
+    private Map<String, String> watchListUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -72,6 +73,8 @@ public class GFinanceEmailAlertService {
         ftseUrl.put("Vin-FTSE-2", "1gqq8oNpG35WwhSARwIoFhTQOs2yqVa6UPzTTzLgAdew");
         asxUrl.put("Vin-Australia", "1qijUJ91J-Qzuj2wI9RdWULOoq1XaZQMrAZOpWwbyt3Y");
         germanUrl.put("Vin-Germany", "1a9tmx2Qx1dx1hH4J4Hr8yLFSaV-i_X4VoNp1VrThMek");
+        watchListUrl.put("Vin-Watchlist", "1V89w-xI5urpoBIcCAHeIoho0J1cJxkFzSQXmG04U85w");
+
     }
 
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
@@ -84,7 +87,23 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(ftseUrl);
         gFinanceStockService.getGFStockInfoList(asxUrl);
         gFinanceStockService.getGFStockInfoList(germanUrl);
+        gFinanceStockService.getGFStockInfoList(watchListUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
+    }
+
+    @Scheduled(cron = "0 40 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFWatchListEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Instant instantBefore = now();
+        LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
+        final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(asxUrl);
+        stockInfoList.sort(Comparator.comparing(x -> {
+            return Math.abs(x.getChangePct());
+        }));
+        generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
+        writeToDB(stockInfoList);
+        LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
     }
 
     @Scheduled(cron = "0 30 0,4,9,18 ? * MON-SAT", zone = "GMT")
