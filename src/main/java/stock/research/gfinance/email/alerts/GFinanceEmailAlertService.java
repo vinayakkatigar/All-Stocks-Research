@@ -100,6 +100,7 @@ public class GFinanceEmailAlertService {
         stockInfoList.sort(Comparator.comparing(x -> {
             return Math.abs(x.getChangePct());
         }));
+        Collections.reverse(stockInfoList);
         generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
         writeToDB(stockInfoList);
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
