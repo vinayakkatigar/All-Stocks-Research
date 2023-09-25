@@ -101,6 +101,8 @@ public class GFinanceEmailAlertService {
             return Math.abs(x.getChangePct());
         }));
         Collections.reverse(stockInfoList);
+        generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF WatchList " + SIDE.BUY + " Alerts ***"));
+
         generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
         writeToDB(stockInfoList);
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
