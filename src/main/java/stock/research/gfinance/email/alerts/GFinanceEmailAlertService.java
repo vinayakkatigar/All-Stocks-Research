@@ -97,11 +97,14 @@ public class GFinanceEmailAlertService {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(watchListUrl);
-        stockInfoList.sort(Comparator.comparing(x -> {
+        List<GFinanceStockInfo> stockInfoPctList = new ArrayList<>(stockInfoList);
+
+        stockInfoPctList.sort(Comparator.comparing(x -> {
             return Math.abs(x.getChangePct());
         }));
-        Collections.reverse(stockInfoList);
-        generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF WatchList " + SIDE.BUY + " Alerts ***"));
+
+        Collections.reverse(stockInfoPctList);
+        generateAlertEmails(stockInfoPctList, SIDE.BUY, new StringBuilder("*** GF WatchList " + SIDE.BUY + " Alerts ***"));
 
         generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
         writeToDB(stockInfoList);
