@@ -57,7 +57,7 @@ public class FtseEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 15 0,10,16 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 15 0,10,16 ? * MON-SAT", zone = "GMT")
     public void kickOffFTSEEmailAlerts() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -68,7 +68,7 @@ public class FtseEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 0 17 ? * MON-FRI", zone = "GMT")
+    //@Scheduled(cron = "0 0 17 ? * MON-FRI", zone = "GMT")
     public void kickOffFTSE250YearlyGainerLoserEmailAlerts() {
         /*
 
@@ -89,7 +89,7 @@ public class FtseEmailAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 0 16 ? * MON-FRI")
+    //@Scheduled(cron = "0 0 16 ? * MON-FRI")
     public void kickOffFTSE100YearlyGainerLoserEmailAlerts() {
 
         LOGGER.info(Instant.now()+ " <-  Started FTSE100 FtseEmailAlertMechanismService::kickOffFTSE100YearlyGainerLoserEmailAlerts" );

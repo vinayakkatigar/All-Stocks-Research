@@ -31,6 +31,7 @@ public class FtseStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+/*
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             LOGGER.info("FtseStocksCmdRunner.run" );
@@ -40,6 +41,8 @@ public class FtseStocksCmdRunner implements CommandLineRunner {
             ftseEmailAlertMechanismService.kickOffFTSE100YearlyGainerLoserEmailAlerts();
         });
         executorService.shutdown();
+*/
+
     }
 
 }
