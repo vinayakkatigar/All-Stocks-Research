@@ -1,3 +1,4 @@
+mvn spring-boot:run -D"spring-boot.run.profiles"=h2db
 
 mvn spring-boot:run -D"spring-boot.run.profiles"=i5db
 
