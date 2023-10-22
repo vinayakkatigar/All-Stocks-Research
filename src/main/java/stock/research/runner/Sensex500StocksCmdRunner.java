@@ -19,7 +19,7 @@ import stock.research.service.SensexStockResearchService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Order(1)
+@Order(6)
 @SpringBootApplication
 public class Sensex500StocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
@@ -53,9 +53,11 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
         });
         executorService.shutdown();
