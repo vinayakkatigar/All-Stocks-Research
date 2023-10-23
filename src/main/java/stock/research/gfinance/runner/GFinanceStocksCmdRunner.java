@@ -12,7 +12,7 @@ import stock.research.gfinance.email.alerts.GFinanceEmailAlertService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-@Order(5)
+@Order(1)
 @SpringBootApplication
 public class GFinanceStocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");

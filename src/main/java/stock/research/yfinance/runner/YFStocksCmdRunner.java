@@ -11,7 +11,7 @@ import stock.research.yfinance.email.alerts.YFEmailAlertService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-@Order(1)
+@Order(5)
 @SpringBootApplication
 public class YFStocksCmdRunner  implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(YFStocksCmdRunner.class);
