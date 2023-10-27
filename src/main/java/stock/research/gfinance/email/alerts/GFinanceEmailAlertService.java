@@ -91,7 +91,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
     }
 
-    @Scheduled(cron = "0 40 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 40 0,4,9,18,22 ? * MON-SAT", zone = "GMT")
     public void kickOffGFWatchListEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
@@ -107,6 +107,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
     }
+
     @Scheduled(cron = "0 30 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFASXEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
@@ -137,7 +138,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts" + now() );
     }
 
-    @Scheduled(cron = "0 30 3,9,12,15 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 3,9,12,15,21 ? * MON-SAT", zone = "GMT")
     public void kickOffGFFTSEEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
@@ -153,7 +154,7 @@ public class GFinanceEmailAlertService {
     }
 
 
-    @Scheduled(cron = "0 0 4,10,16,22 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 0 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
@@ -169,7 +170,7 @@ public class GFinanceEmailAlertService {
     }
 
 
-    @Scheduled(cron = "0 0 5,11,17,23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 0 5,11,17,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFPortfolioEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
@@ -187,7 +188,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
     }
 
-    @Scheduled(cron = "0 30 0,14,17,23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 0,14,17,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGoogleFinanceNYSEEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();

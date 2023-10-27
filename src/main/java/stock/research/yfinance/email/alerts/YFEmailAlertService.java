@@ -78,7 +78,7 @@ public class YFEmailAlertService {
         });
     }
 
-    @Scheduled(cron = "0 30 1,15,18,21 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 1,15,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
