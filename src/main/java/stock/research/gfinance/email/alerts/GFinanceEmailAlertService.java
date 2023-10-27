@@ -96,22 +96,17 @@ public class GFinanceEmailAlertService {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
+
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(watchListUrl);
-        List<GFinanceStockInfo> stockInfoPctList = new ArrayList<>(stockInfoList);
+        List<GFinanceStockInfo> stockInfoPctList = sortByDailyPCTChange(stockInfoList);
 
-        stockInfoPctList.sort(Comparator.comparing(x -> {
-            return Math.abs(x.getChangePct());
-        }));
-
-        Collections.reverse(stockInfoPctList);
         generateAlertEmails(stockInfoPctList, SIDE.BUY, new StringBuilder("*** GF WatchList " + SIDE.BUY + " Alerts ***"));
-
         generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
+
         writeToDB(stockInfoList);
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
     }
-
     @Scheduled(cron = "0 30 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFASXEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
@@ -179,12 +174,15 @@ public class GFinanceEmailAlertService {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
-        final List<GFinanceStockInfo> gfPortfolioList = gFinanceStockService.getGFStockInfoList(portfolioUrl);
+        final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(portfolioUrl));
+
         stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF Portfolio " + x + " Alerts ***"));
         });
+
         generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF Portfolio Daily Data ** "));
         writeToDB(gfPortfolioList);
+
         LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
     }
@@ -306,6 +304,18 @@ public class GFinanceEmailAlertService {
             ERROR_LOGGER.error("GF NYSE Email error -> ", e);
         }
     }
+
+    private List<GFinanceStockInfo> sortByDailyPCTChange(List<GFinanceStockInfo> stockInfoList) {
+        List<GFinanceStockInfo> stockInfoPctList = new ArrayList<>(stockInfoList);
+
+        stockInfoPctList.sort(Comparator.comparing(x -> {
+            return Math.abs(x.getChangePct());
+        }));
+
+        Collections.reverse(stockInfoPctList);
+        return stockInfoPctList;
+    }
+
 
     private void generateHTMLContent(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         if (populatedFtseList != null && populatedFtseList.size() >0){
