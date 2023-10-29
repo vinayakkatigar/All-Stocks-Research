@@ -2,6 +2,8 @@ mvn spring-boot:run -D"spring-boot.run.profiles"=h2db
 
 mvn spring-boot:run -D"spring-boot.run.profiles"=i5db
 
+ git add . ; git commit -am "29102023 Fix";git push;
+
  Set-ExecutionPolicy RemoteSigned
 
 
