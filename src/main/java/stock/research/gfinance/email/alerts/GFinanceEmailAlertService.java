@@ -28,6 +28,7 @@ import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.*;
+import static java.util.stream.Collectors.toList;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
@@ -210,6 +211,17 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
     }
 
+    @Scheduled(cron = "0 45 17,21,23 ? * MON-SAT", zone = "GMT")
+    public void kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Instant instantBefore = now();
+        LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" );
+        final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream().filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> Math.abs(x.getChangePct()) >= 5d).collect(toList());
+
+        generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE Daily Winners & Losers *** "));
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" + now() );
+    }
+
     private void generateAlertEmails(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer) {
         try {
             System.out.println("Size -> " + populatedFtseList.size());
@@ -321,7 +333,7 @@ public class GFinanceEmailAlertService {
 
     private void generateHTMLContent(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         if (populatedFtseList != null && populatedFtseList.size() >0){
-            populatedFtseList = populatedFtseList.stream().distinct().collect(Collectors.toList());
+            populatedFtseList = populatedFtseList.stream().distinct().collect(toList());
 
             populatedFtseList.stream().distinct().forEach(x -> {
                 if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
