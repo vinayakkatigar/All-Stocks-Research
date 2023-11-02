@@ -67,7 +67,7 @@ public class GFinanceStockService {
                 ValueRange response = null;
 
                 while (retry-- >= 0 && response == null){
-                    response = runGFQuery(v, HTTP_TRANSPORT, range, credential);
+                    response = runGFQuery(v, HTTP_TRANSPORT, range, credential, retry);
                 }
 
                 List<List<Object>> values = response.getValues();
@@ -120,7 +120,7 @@ public class GFinanceStockService {
         return gfStockInfoFilteredList;
     }
 
-    private ValueRange runGFQuery(String v, NetHttpTransport HTTP_TRANSPORT, String range, Credential credential) throws IOException {
+    private ValueRange runGFQuery(String v, NetHttpTransport HTTP_TRANSPORT, String range, Credential credential, int retry) throws IOException {
         try{
             Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setTimeout(credential, (60000 * 5)))
                     .setApplicationName(APPLICATION_NAME)
@@ -130,7 +130,9 @@ public class GFinanceStockService {
                     .execute();
             return response;
         }catch (Exception e){
-            ERROR_LOGGER.error("Error in runGFQuery -> ", e);
+            if (retry <= 1){
+                ERROR_LOGGER.error("Error in runGFQuery -> ", e);
+            }
             return null;
         }
     }
