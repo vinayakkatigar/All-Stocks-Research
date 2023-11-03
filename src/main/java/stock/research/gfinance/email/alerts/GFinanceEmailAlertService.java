@@ -211,7 +211,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
     }
 
-    @Scheduled(cron = "0 45 17,21,23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 45 7,17,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
