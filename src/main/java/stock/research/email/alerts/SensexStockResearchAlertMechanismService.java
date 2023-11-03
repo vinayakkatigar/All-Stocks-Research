@@ -66,7 +66,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private List<String> pfStockName = new ArrayList<>();
 
-    @Scheduled(cron = "0 35 0,6,13,19 ? * MON-SAT", zone = "GMT")
+//    @Scheduled(cron = "0 35 0,6,13,19 ? * MON-SAT", zone = "GMT")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
