@@ -31,13 +31,21 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFPortfolioEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFNSEEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFGermanyEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFWatchListEmailAlerts();
+        Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts();
 
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.SECONDS)+ " <- Total time in mins, Ended GFinanceStocksCmdRunner::run" + Instant.now() );

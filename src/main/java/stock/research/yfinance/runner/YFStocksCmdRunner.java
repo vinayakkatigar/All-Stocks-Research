@@ -24,6 +24,8 @@ public class YFStocksCmdRunner  implements CommandLineRunner {
         LOGGER.info(Instant.now() + " <-  Started YFStocksCmdRunner::run" );
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Thread.sleep(360 * 1000);
+
         yfEmailAlertService.kickOffYFNYSEEmailAlerts();
 //        yfEmailAlertService.kickOffYFChinaEmailAlerts();
 //        yfEmailAlertService.kickOffYFROWEmailAlerts();
