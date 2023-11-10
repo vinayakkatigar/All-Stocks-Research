@@ -20,6 +20,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
 import stock.research.gfinance.utility.GFinanceNyseStockUtility;
+import stock.research.utility.StockUtility;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -130,6 +131,7 @@ public class GFinanceStockService {
                     .execute();
             return response;
         }catch (Exception e){
+            StockUtility.goSleep(120);
             if (retry <= 1){
                 ERROR_LOGGER.error("Error in runGFQuery -> ", e);
             }
