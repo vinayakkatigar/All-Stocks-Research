@@ -1,5 +1,6 @@
 package stock.research.yfinance.email.alerts;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
@@ -55,49 +58,73 @@ public class YFEmailAlertService {
 //    @Scheduled(cron = "0 30 1,8,14,23 ? * MON-SAT", zone = "GMT")
     @Scheduled(cron = "0 0 23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
-        List<String> countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
-        
-//        List<String> countriesList = objectMapper.readValue(new ClassPathResource("Sweden.json").getInputStream(), new TypeReference<List<String>>() { });
-        countriesList.forEach( country -> {
-            Instant instantBefore = now();
-            LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts:: country->" + country);
 
-            final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/" + country));
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+            List<String> countriesList = null;
+            try {
+                countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//        List<String> countriesList = objectMapper.readValue(new ClassPathResource("Sweden.json").getInputStream(), new TypeReference<List<String>>() { });
+            countriesList.forEach( country -> {
+                Instant instantBefore = now();
+                LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts:: country->" + country);
+
+                final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/" + country));
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
 */
-            final StringBuilder subjectBuffer = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Buy Alert *** ");
-            generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
-            LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts" );
+                final StringBuilder subjectBuffer = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Buy Alert *** ");
+                generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
+                LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts" );
 
-            StringBuilder subject = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Daily Data *** ");
-            generateDailyEmail(yfStockInfoList, subject);
-            writeToDB(yfStockInfoList);
-            LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
+                StringBuilder subject = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Daily Data *** ");
+                generateDailyEmail(yfStockInfoList, subject);
+                writeToDB(yfStockInfoList);
+                LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
+            });
         });
+        executorService.shutdown();
+
     }
 
     @Scheduled(cron = "0 30 1,15,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
-        Instant instantBefore = now();
-        LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
-        final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/NYSE.json"));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+            Instant instantBefore = now();
+            LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
+
+            final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/NYSE.json"));
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
 */
-        final StringBuilder subjectBuffer = new StringBuilder("");
-        generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
-        LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
+            final StringBuilder subjectBuffer = new StringBuilder("");
+            generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
+            LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
 
-        StringBuilder subject = new StringBuilder("*** YF NYSE Daily Data *** ");
-        generateDailyEmail(yfStockInfoList, subject);
-        writeToDB(yfStockInfoList);
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
+            StringBuilder subject = new StringBuilder("*** YF NYSE Daily Data *** ");
+            generateDailyEmail(yfStockInfoList, subject);
+            writeToDB(yfStockInfoList);
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
+
+        });
+        executorService.shutdown();
     }
 
 //    @Scheduled(cron = "0 30 3,13,21 ? * MON-SAT", zone = "GMT")
