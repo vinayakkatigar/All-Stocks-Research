@@ -170,6 +170,7 @@ public class YFEmailAlertService {
 
     private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         try {
+            Thread.sleep(100 * 1000);
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             String data = YFinanceNyseStockUtility.HTML_START;
