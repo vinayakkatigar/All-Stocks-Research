@@ -202,7 +202,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
             final List<GFinanceStockInfo> gfPortfolioList = gFinanceStockService.getGFStockInfoList(nseUrlInfo);
-            gfPortfolioList.sort(Comparator.comparing(GFinanceStockInfo::getMktCapRealValue));
+            gfPortfolioList.sort(Comparator.comparing(GFinanceStockInfo::getMktCapRealValue).reversed());
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gfPortfolioList, SIDE.BUY, new StringBuilder("*** GF NSE " + SIDE.BUY + " Alerts ***"));
 //        });
