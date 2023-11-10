@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
 import stock.research.gfinance.repo.GFinanceStockInfoRepositary;
 import stock.research.gfinance.service.GFinanceStockService;
+import stock.research.utility.StockUtility;
 
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
@@ -303,9 +304,10 @@ public class GFinanceEmailAlertService {
         }
     }
 
-    private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
+    private synchronized boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         try {
-            Thread.sleep(100 * 1000);
+
+            StockUtility.goSleep(90);
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             String data = HTML_START;
