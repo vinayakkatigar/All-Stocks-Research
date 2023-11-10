@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import stock.research.domain.NyseStockInfo;
 import stock.research.domain.StockInfo;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
+import stock.research.gfinance.email.alerts.GFinanceEmailAlertService;
+import stock.research.gfinance.utility.GFinanceNyseStockUtility;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 import stock.research.utility.NyseStockResearchUtility;
@@ -21,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.math.BigDecimal.ZERO;
+import static stock.research.gfinance.utility.GFinanceNyseStockUtility.*;
 import static stock.research.utility.NyseStockResearchUtility.HTML_END;
 import static stock.research.utility.NyseStockResearchUtility.HTML_START;
 import static stock.research.utility.StockResearchUtility.createTableContents;
@@ -44,6 +47,14 @@ public class NYSEStocksController {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    GFinanceEmailAlertService gFinanceEmailAlertService;
+
+    @RequestMapping("/nyse/WnL")
+    public String WnL() throws Exception {
+        return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.exeWinnerAndLosers().toString() + GFinanceNyseStockUtility.HTML_END;
+    }
 
     @RequestMapping("/kickNyse")
     public String kickNyse() throws Exception {
@@ -70,9 +81,9 @@ public class NYSEStocksController {
                             createTableContents(dataBuffer, x);
                 }
             });
-            String data = HTML_START;
+            String data = NyseStockResearchUtility.HTML_START;
             data += dataBuffer.toString();
-            data += HTML_END;
+            data += NyseStockResearchUtility.HTML_END;
             data += "<title>NYSE Top 100</title>";
             return data;
         } catch (Exception e) {
@@ -98,9 +109,9 @@ public class NYSEStocksController {
                             NyseStockResearchUtility.createTableContents(dataBuffer, x);
                 }
             });
-            String data = HTML_START;
+            String data = NyseStockResearchUtility.HTML_START;
             data += dataBuffer.toString();
-            data += HTML_END;
+            data += NyseStockResearchUtility.HTML_END;
             data += "<title>NYSE Top 100</title>";
             return data;
         } catch (Exception e) {
@@ -126,9 +137,9 @@ public class NYSEStocksController {
 //                    LOGGER.info("$After$" + x);
                 }
             });
-            String data = HTML_START;
+            String data = NyseStockResearchUtility.HTML_START;
             data += dataBuffer.toString();
-            data += HTML_END;
+            data += NyseStockResearchUtility.HTML_END;
             data += "<title>NYSE Top 100</title>";
             return data;
         } catch (Exception e) {
@@ -152,9 +163,9 @@ public class NYSEStocksController {
 //                    LOGGER.info("$After$" + x);
                 }
             });
-            String data = HTML_START;
+            String data = NyseStockResearchUtility.HTML_START;
             data += dataBuffer.toString();
-            data += HTML_END;
+            data += NyseStockResearchUtility.HTML_END;
             data += "<title>NYSE Mid 250</title>";
             return data;
         } catch (Exception e) {
