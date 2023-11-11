@@ -339,7 +339,6 @@ public class GFinanceEmailAlertService {
             }
         }catch (Exception e){
             goSleep(60);
-            ERROR_LOGGER.error("Error::GoogleFinance generating Email", e);
             return false;
         }
         return true;

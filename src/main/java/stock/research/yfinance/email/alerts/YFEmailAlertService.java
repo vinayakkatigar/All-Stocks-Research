@@ -198,7 +198,6 @@ public class YFEmailAlertService {
             }
         }catch (Exception e){
             goSleep(150);
-            ERROR_LOGGER.error("Error::YahooFinance generating Email", e);
             return false;
         }
         return true;
