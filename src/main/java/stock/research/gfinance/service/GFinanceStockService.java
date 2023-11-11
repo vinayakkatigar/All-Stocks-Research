@@ -20,7 +20,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
 import stock.research.gfinance.utility.GFinanceNyseStockUtility;
-import stock.research.utility.StockUtility;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

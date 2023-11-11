@@ -23,9 +23,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.math.BigDecimal.ZERO;
-import static stock.research.gfinance.utility.GFinanceNyseStockUtility.*;
-import static stock.research.utility.NyseStockResearchUtility.HTML_END;
-import static stock.research.utility.NyseStockResearchUtility.HTML_START;
 import static stock.research.utility.StockResearchUtility.createTableContents;
 
 @RestController

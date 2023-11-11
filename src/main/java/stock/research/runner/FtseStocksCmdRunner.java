@@ -10,9 +10,6 @@ import org.springframework.core.annotation.Order;
 import stock.research.email.alerts.FtseEmailAlertMechanismService;
 import stock.research.service.FTSEStockResearchService;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Order(3)
 @SpringBootApplication
 public class FtseStocksCmdRunner implements CommandLineRunner {

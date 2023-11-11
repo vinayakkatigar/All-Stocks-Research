@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static stock.research.utility.NyseStockResearchUtility.createTableContents;
-
 @Service
 public class EuroNextEmailAlertMechanismService {
 

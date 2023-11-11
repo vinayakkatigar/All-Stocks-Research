@@ -1,6 +1,5 @@
 package stock.research.yfinance.email.alerts;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -12,8 +11,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import stock.research.domain.StockInfo;
-import stock.research.utility.StockUtility;
 import stock.research.yfinance.domain.YFinanceStockInfo;
 import stock.research.yfinance.repo.YFinanceStockInfoRepositary;
 import stock.research.yfinance.service.YFStockService;
@@ -27,12 +24,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+import static java.lang.Thread.MAX_PRIORITY;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.SECONDS;
@@ -61,11 +58,11 @@ public class YFEmailAlertService {
     @Scheduled(cron = "0 22 23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
 
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Thread.currentThread().setPriority(MAX_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Thread.currentThread().setPriority(MAX_PRIORITY);
 
             List<String> countriesList = null;
             try {
@@ -101,11 +98,11 @@ public class YFEmailAlertService {
 
     @Scheduled(cron = "0 8 1,15,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Thread.currentThread().setPriority(MAX_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Thread.currentThread().setPriority(MAX_PRIORITY);
 
             Instant instantBefore = now();
             LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );

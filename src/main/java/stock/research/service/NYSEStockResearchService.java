@@ -3,7 +3,6 @@ package stock.research.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.NyseStockInfo;
 import stock.research.utility.NyseStockResearchUtility;
-import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -26,12 +24,10 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
-import static java.time.Instant.now;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;

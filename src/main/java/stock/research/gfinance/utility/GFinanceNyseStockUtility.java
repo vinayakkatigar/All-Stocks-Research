@@ -1,11 +1,6 @@
 package stock.research.gfinance.utility;
 
-import stock.research.domain.FtseStockInfo;
-
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
-import java.util.Map;
 
 public class GFinanceNyseStockUtility {
     public static final String HYPHEN = "-";
