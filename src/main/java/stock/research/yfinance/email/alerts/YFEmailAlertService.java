@@ -58,7 +58,7 @@ public class YFEmailAlertService {
 
 
 //    @Scheduled(cron = "0 30 1,8,14,23 ? * MON-SAT", zone = "GMT")
-    @Scheduled(cron = "0 0 23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 22 23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
@@ -99,7 +99,7 @@ public class YFEmailAlertService {
 
     }
 
-    @Scheduled(cron = "0 30 1,15,18,21,23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 8 1,15,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
