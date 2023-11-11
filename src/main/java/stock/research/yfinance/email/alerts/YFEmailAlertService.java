@@ -163,8 +163,11 @@ public class YFEmailAlertService {
             StringBuilder dataBuffer = new StringBuilder("");
 
             generateHTMLContent(yFinanceStockInfoList, side, dataBuffer, subjectBuffer);
-            int retry = 3;
+            int retry = 5;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+            if (!sendEmail(dataBuffer, subjectBuffer) && --retry <= 0){
+                ERROR_LOGGER.error("Failed to send email error -> ");
+            }
         } catch (Exception e) {
             ERROR_LOGGER.error(now() + "<- , Error ->", e);
         }
@@ -197,6 +200,7 @@ public class YFEmailAlertService {
                 javaMailSender.send(message);
             }
         }catch (Exception e){
+            goSleep(150);
             ERROR_LOGGER.error("Error::YahooFinance generating Email", e);
             return false;
         }
@@ -249,8 +253,11 @@ public class YFEmailAlertService {
                             x.get_52WeekHighLowPriceDiff() != null &&
                             x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
                     .forEach(x ->  createTableContents(dataBuffer, x));
-            int retry = 3;
+            int retry = 5;
             while (!sendEmail(dataBuffer, subject) && --retry >= 0);
+            if (!sendEmail(dataBuffer, subject) && --retry <= 0){
+                ERROR_LOGGER.error("Failed to send email, GF NYSE Email error -> ");
+            }
         }catch (Exception e){
             ERROR_LOGGER.error("GF NYSE Email error -> ", e);
         }
