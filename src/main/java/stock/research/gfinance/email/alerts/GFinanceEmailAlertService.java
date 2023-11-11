@@ -301,7 +301,7 @@ public class GFinanceEmailAlertService {
             StringBuilder dataBuffer = new StringBuilder("");
 
             generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer);
-            int retry = 3;
+            int retry = 5;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
         } catch (Exception e) {
             ERROR_LOGGER.error(now() + "<- , Error ->", e);
@@ -336,6 +336,7 @@ public class GFinanceEmailAlertService {
                 javaMailSender.send(message);
             }
         }catch (Exception e){
+            goSleep(60);
             ERROR_LOGGER.error("Error::GoogleFinance generating Email", e);
             return false;
         }
@@ -387,7 +388,7 @@ public class GFinanceEmailAlertService {
                             x.get_52WeekHighLowPriceDiff() != null &&
                             x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
                     .forEach(x ->  createTableContents(dataBuffer, x));
-            int retry = 3;
+            int retry = 5;
             while (!sendEmail(dataBuffer, subject) && --retry >= 0);
         }catch (Exception e){
             ERROR_LOGGER.error("GF NYSE Email error -> ", e);
