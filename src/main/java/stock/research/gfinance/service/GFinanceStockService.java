@@ -34,6 +34,7 @@ import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.NyseStockResearchUtility.*;
+import static stock.research.utility.StockUtility.goSleep;
 
 @Service
 public class GFinanceStockService {
@@ -131,7 +132,7 @@ public class GFinanceStockService {
                     .execute();
             return response;
         }catch (Exception e){
-            StockUtility.goSleep(120);
+            goSleep(120);
             if (retry <= 1){
                 ERROR_LOGGER.error("Error in runGFQuery -> ", e);
             }

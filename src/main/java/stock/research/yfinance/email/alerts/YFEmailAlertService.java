@@ -38,6 +38,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
+import static stock.research.utility.StockUtility.goSleep;
 
 @Service
 public class YFEmailAlertService {
@@ -171,7 +172,7 @@ public class YFEmailAlertService {
 
     private synchronized boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         try {
-            StockUtility.goSleep(90);
+            goSleep(90);
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             String data = YFinanceNyseStockUtility.HTML_START;
