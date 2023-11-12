@@ -73,6 +73,7 @@ public class YFEmailAlertService {
 
 //        List<String> countriesList = objectMapper.readValue(new ClassPathResource("Sweden.json").getInputStream(), new TypeReference<List<String>>() { });
             countriesList.forEach( country -> {
+                goSleep(90);
                 Instant instantBefore = now();
                 LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts:: country->" + country);
 
