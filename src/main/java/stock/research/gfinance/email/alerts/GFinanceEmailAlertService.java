@@ -302,7 +302,7 @@ public class GFinanceEmailAlertService {
             generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer);
             int retry = 5;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
-            if (!sendEmail(dataBuffer, subjectBuffer) && --retry <= 0){
+            if (--retry <= 0 && !sendEmail(dataBuffer, subjectBuffer)){
                 ERROR_LOGGER.error("Failed to send email, GF NYSE Email error -> ");
             }
         } catch (Exception e) {
@@ -391,7 +391,7 @@ public class GFinanceEmailAlertService {
                     .forEach(x ->  createTableContents(dataBuffer, x));
             int retry = 5;
             while (!sendEmail(dataBuffer, subject) && --retry >= 0);
-            if (!sendEmail(dataBuffer, subject) && --retry <= 0){
+            if (--retry <= 0 && !sendEmail(dataBuffer, subject)){
                 ERROR_LOGGER.error("Failed to send email, GF NYSE Email error -> ");
             }
         }catch (Exception e){
