@@ -2,6 +2,8 @@ package stock.research.yfinance.utility;
 
 import java.math.BigDecimal;
 
+import static stock.research.utility.NyseStockResearchUtility.*;
+
 public class YFinanceNyseStockUtility {
     public static final String HYPHEN = "-";
     public static final String COMMA = ",";
@@ -167,5 +169,12 @@ public class YFinanceNyseStockUtility {
        }
     }
 
+
+    public static String friendlyMktCap(double x) {
+        return x < MILLION ?  String.valueOf(x) :
+                x < BILLION ?  String.format("%.2f", x / MILLION) + "M" :
+                        x < TRILLION ? String.format("%.2f", x / BILLION) + "B" :
+                                String.format("%.2f", x / TRILLION) + "T";
+    }
 
 }

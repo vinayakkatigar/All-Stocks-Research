@@ -36,6 +36,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockUtility.goSleep;
+import static stock.research.yfinance.utility.YFinanceNyseStockUtility.friendlyMktCap;
 
 @Service
 public class YFEmailAlertService {
@@ -78,6 +79,13 @@ public class YFEmailAlertService {
                 LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts:: country->" + country);
 
                 final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/" + country));
+                if(country!= null && country.contains("India")){
+                    yfStockInfoList.forEach(india -> {
+                        //USD INR Conversion
+                        india.setMktCapRealValue(india.getMktCapRealValue() / 85);
+                        india.setMktCapFriendyValue(friendlyMktCap(india.getMktCapRealValue()));
+                    });
+                }
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
