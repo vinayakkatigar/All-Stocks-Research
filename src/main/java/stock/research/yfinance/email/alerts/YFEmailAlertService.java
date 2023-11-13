@@ -156,7 +156,12 @@ public class YFEmailAlertService {
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFChinaEmailAlerts" + now() );
     }
 
-    private List<String> getStockCode(String file) {
+    @Scheduled(cron = "0 35 14 ? * MON-SAT", zone = "GMT")
+    public void kickOffYFNYSEEmailAlertsMktStart() {
+        kickOffYFNYSEEmailAlerts();
+    }
+
+        private List<String> getStockCode(String file) {
         try {
             return objectMapper.readValue(new ClassPathResource(file).getInputStream(), new TypeReference<List<String>>(){});
         } catch (IOException e) {
