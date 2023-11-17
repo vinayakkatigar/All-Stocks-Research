@@ -149,7 +149,6 @@ public class GFinanceEmailAlertService {
         executorService.submit(() -> {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             Instant instantBefore = now();
             LOGGER.info(now() + " <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(germanUrl);
