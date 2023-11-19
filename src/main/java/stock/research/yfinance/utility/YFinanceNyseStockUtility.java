@@ -86,8 +86,8 @@ public class YFinanceNyseStockUtility {
             "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js\" integrity=\"sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg==\" crossorigin=\"anonymous\"></script>\n" +
             "\n <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js\" integrity=\"sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==\" crossorigin=\"anonymous\"></script> \n" +
             "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead>" +
-            "<tr><td>RankIndex</td><td>Name(MktCap)<td>Year Low Diff(%) Buy</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>Year High Diff(%) Sell\n" +
-            "</td><td>Market Price\n" +
+            "<tr><td>RankIndex</td><td>Name(MktCap)<td>Year Low Diff(%) Buy</td><td>52 Week High</td><td>52 Week Low</td>" +
+            "<td>Year H/L Diff(%)</td><td>Year High Diff(%) Sell</td><td>Market Price\n" +
             "</td><td>Change %</td><td>P/E</td><td>EPS</td></tr></thead>\n" +
             "<tbody>";
 
