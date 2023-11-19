@@ -80,18 +80,10 @@ public class YFEmailAlertService {
 
                 final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/" + country));
                 if(country!= null && country.contains("India")){
-                    yfStockInfoList.forEach(india -> {
-                        //USD INR Conversion
-                        india.setMktCapRealValue(india.getMktCapRealValue() / 85);
-                        india.setMktCapFriendyValue(friendlyMktCap(india.getMktCapRealValue()));
-                    });
+                    usdMktCapConversion(yfStockInfoList, 85);
                 }
                 if(country!= null && country.contains("Japan")){
-                    yfStockInfoList.forEach(japan -> {
-                        //USD JPY Conversion
-                        japan.setMktCapRealValue(japan.getMktCapRealValue() / 150);
-                        japan.setMktCapFriendyValue(friendlyMktCap(japan.getMktCapRealValue()));
-                    });
+                    usdMktCapConversion(yfStockInfoList, 150);
                 }
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
@@ -110,6 +102,14 @@ public class YFEmailAlertService {
         });
         executorService.shutdown();
 
+    }
+
+    private static void usdMktCapConversion(List<YFinanceStockInfo> yfStockInfoList, int x) {
+        yfStockInfoList.forEach(stockInfo -> {
+//USD INR Conversion
+            stockInfo.setMktCapRealValue(stockInfo.getMktCapRealValue() / x);
+            stockInfo.setMktCapFriendyValue(friendlyMktCap(stockInfo.getMktCapRealValue()));
+        });
     }
 
     @Scheduled(cron = "0 8 1,15,18,21,23 ? * MON-SAT", zone = "GMT")
