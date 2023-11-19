@@ -85,6 +85,9 @@ public class YFEmailAlertService {
                 if(country!= null && country.contains("Japan")){
                     usdMktCapConversion(yfStockInfoList, 150);
                 }
+                if(country!= null && country.contains("Brazil")){
+                    usdMktCapConversion(yfStockInfoList, 5);
+                }
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
