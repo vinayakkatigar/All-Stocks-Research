@@ -86,6 +86,13 @@ public class YFEmailAlertService {
                         india.setMktCapFriendyValue(friendlyMktCap(india.getMktCapRealValue()));
                     });
                 }
+                if(country!= null && country.contains("Japan")){
+                    yfStockInfoList.forEach(japan -> {
+                        //USD JPY Conversion
+                        japan.setMktCapRealValue(japan.getMktCapRealValue() / 150);
+                        japan.setMktCapFriendyValue(friendlyMktCap(japan.getMktCapRealValue()));
+                    });
+                }
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
