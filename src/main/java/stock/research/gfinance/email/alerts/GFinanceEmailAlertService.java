@@ -27,7 +27,6 @@ import java.util.concurrent.Executors;
 
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
@@ -91,7 +90,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(asxUrl);
         gFinanceStockService.getGFStockInfoList(germanUrl);
         gFinanceStockService.getGFStockInfoList(watchListUrl);
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
     }
 
     @Scheduled(cron = "0 10 0,4,9,18,22 ? * MON-SAT", zone = "GMT")
@@ -112,7 +111,7 @@ public class GFinanceEmailAlertService {
 
             writeToDB(stockInfoList);
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
 
         });
         executorService.shutdown();
@@ -136,7 +135,7 @@ public class GFinanceEmailAlertService {
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF ASX Daily Data *** "));
             writeToDB(stockInfoList);
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFASXEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFASXEmailAlerts" + now() );
         });
         executorService.shutdown();
     }
@@ -158,7 +157,7 @@ public class GFinanceEmailAlertService {
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF Germany Daily Data *** "));
             writeToDB(stockInfoList);
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts" + now() );
         });
         executorService.shutdown();
     }
@@ -181,7 +180,7 @@ public class GFinanceEmailAlertService {
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF FTSE Daily Data *** "));
             writeToDB(stockInfoList);
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFFTSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFFTSEEmailAlerts" + now() );
         });
         executorService.shutdown();
     }
@@ -207,7 +206,7 @@ public class GFinanceEmailAlertService {
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Daily Data *** "));
             writeToDB(gfPortfolioList);
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFNSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEEmailAlerts" + now() );
         });
         executorService.shutdown();
     }
@@ -234,7 +233,7 @@ public class GFinanceEmailAlertService {
             writeToDB(gfPortfolioList);
 
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
         });
         executorService.shutdown();
     }
@@ -263,7 +262,7 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF NYSE Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             writeToDB(gFinanceStockInfoList);
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
         });
         executorService.shutdown();
 
@@ -289,7 +288,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" );
         final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream().filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> Math.abs(x.getChangePct()) >= 5d).collect(toList());
 
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" + now() );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" + now() );
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE Daily Winners & Losers *** "));
     }
 

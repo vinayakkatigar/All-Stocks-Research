@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import static java.lang.Thread.MAX_PRIORITY;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.time.temporal.ChronoUnit.SECONDS;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockUtility.goSleep;
@@ -100,7 +99,7 @@ public class YFEmailAlertService {
                 StringBuilder subject = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Daily Data *** ");
                 generateDailyEmail(yfStockInfoList, subject);
                 writeToDB(yfStockInfoList);
-                LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
+                LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
             });
         });
         executorService.shutdown();
@@ -139,7 +138,7 @@ public class YFEmailAlertService {
             StringBuilder subject = new StringBuilder("*** YF NYSE Daily Data *** ");
             generateDailyEmail(yfStockInfoList, subject);
             writeToDB(yfStockInfoList);
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
 
         });
         executorService.shutdown();
@@ -163,7 +162,7 @@ public class YFEmailAlertService {
         StringBuilder subject = new StringBuilder("*** YF China Daily Data *** ");
         generateDailyEmail(yfStockInfoList, subject);
         writeToDB(yfStockInfoList);
-        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in mins, Ended YFinanceEmailAlertService::kickOffYFChinaEmailAlerts" + now() );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFChinaEmailAlerts" + now() );
     }
 
     @Scheduled(cron = "0 35 14 ? * MON-SAT", zone = "GMT")
