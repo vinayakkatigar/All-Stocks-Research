@@ -66,7 +66,7 @@ public class YFEmailAlertService {
 
             List<String> countriesList = null;
             try {
-                countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
+                countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"HongKong.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -86,6 +86,9 @@ public class YFEmailAlertService {
                 }
                 if(country!= null && country.contains("Brazil")){
                     usdMktCapConversion(yfStockInfoList, 5);
+                }
+                if(country!= null && country.contains("HongKong")){
+                    usdMktCapConversion(yfStockInfoList, 8);
                 }
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {

@@ -8,7 +8,7 @@ public class Delete {
     public static void main(String[] args) throws Exception {
         //String command = "powershell.exe  your command";
         //Getting the version
-        String st = "MSFT,GOOG,TSLA,IFF,SCHW";
+        String st = "1299.HK,0388.HK,0016.HK,0669.HK";
         String command = "powershell.exe  " + System.getProperty("user.dir") + "\\src\\main\\resources\\YF\\yfiance.ps1 " + "'"+  st + "'" ;
         // Executing the command
         Process powerShellProcess = Runtime.getRuntime().exec(command);
