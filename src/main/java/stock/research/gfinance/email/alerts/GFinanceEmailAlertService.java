@@ -58,6 +58,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> asxUrl = new HashMap<>();
     private Map<String, String> germanUrl = new HashMap<>();
     private Map<String, String> watchListUrl = new HashMap<>();
+    private Map<String, String> hongKongUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -76,6 +77,7 @@ public class GFinanceEmailAlertService {
         asxUrl.put("Vin-Australia", "1qijUJ91J-Qzuj2wI9RdWULOoq1XaZQMrAZOpWwbyt3Y");
         germanUrl.put("Vin-Germany", "1a9tmx2Qx1dx1hH4J4Hr8yLFSaV-i_X4VoNp1VrThMek");
         watchListUrl.put("Vin-Watchlist", "1V89w-xI5urpoBIcCAHeIoho0J1cJxkFzSQXmG04U85w");
+        hongKongUrl.put("Vin-HongKong", "1cOJOjVE49DCjFFMq7JFdmDeOFcf3MzwV2hl6K7gyX9g");
 
     }
 
@@ -275,6 +277,34 @@ public class GFinanceEmailAlertService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             exeWinnerAndLosers();
+        });
+        executorService.shutdown();
+
+    }
+
+    @Scheduled(cron = "0 11 3,16 ? * MON-SAT", zone = "GMT")
+    public void kickOffGoogleFinanceHongKongEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Instant instantBefore = now();
+            LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceHongKongEmailAlerts" );
+            final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(hongKongUrl);
+/*
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
+        });
+*/
+
+            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF HongKong " + SIDE.BUY + " Alerts ***"));
+            LOGGER.info(now()+ " <-  Ended kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceHongKongEmailAlerts" );
+
+            StringBuilder subject = new StringBuilder("*** GF HongKong Daily Data *** ");
+            generateDailyEmail(gFinanceStockInfoList, subject);
+            writeToDB(gFinanceStockInfoList);
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceHongKongEmailAlerts" + now() );
         });
         executorService.shutdown();
 
