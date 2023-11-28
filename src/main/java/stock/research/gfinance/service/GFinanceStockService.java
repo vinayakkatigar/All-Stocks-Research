@@ -78,17 +78,18 @@ public class GFinanceStockService {
                     for (List row : values) {
                         if(row != null && row.size() > 9){
                             GFinanceStockInfo gFinanceStockInfo = null;
-                            if (("Vin-Watchlist".equalsIgnoreCase(k)) || ("Vin-portfolio".equalsIgnoreCase(k))){
+                            if (("Vin-Watchlist".equalsIgnoreCase(k)) || ("Vin-portfolio".equalsIgnoreCase(k))
+                                || ("Vin-HongKong".equalsIgnoreCase(k))){
                                 gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0),
-                                        GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)),
-                                        ((String) row.get(10)),
-                                        GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(7)),
-                                        GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)),
-                                        GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)),
-                                        GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)),
-                                        GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)),
-                                        GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)),
-                                        GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
+                                GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)),
+                                ((String) row.get(10)),
+                                GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(7)),
+                                GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)),
+                                GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)),
+                                GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)),
+                                GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)),
+                                GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)),
+                                GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                                 gFinanceStockInfo.setChangePct(getDoubleFromString((String) row.get(2)));
                             }else {
                                 gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
