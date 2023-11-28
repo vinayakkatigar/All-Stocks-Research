@@ -92,6 +92,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(asxUrl);
         gFinanceStockService.getGFStockInfoList(germanUrl);
         gFinanceStockService.getGFStockInfoList(watchListUrl);
+        gFinanceStockService.getGFStockInfoList(hongKongUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
     }
 
