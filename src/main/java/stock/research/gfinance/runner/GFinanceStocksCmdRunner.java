@@ -12,6 +12,8 @@ import stock.research.gfinance.email.alerts.GFinanceEmailAlertService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import static java.lang.Thread.sleep;
+
 @Order(1)
 @SpringBootApplication
 public class GFinanceStocksCmdRunner implements CommandLineRunner {
@@ -31,25 +33,25 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFPortfolioEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFNSEEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFGermanyEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFWatchListEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceHongKongEmailAlerts();
-        Thread.sleep(70 * 1000);
+        sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceSwitzerlandEmailAlerts();
 
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.SECONDS)+ " <- Total time in mins, \nEnded GFinanceStocksCmdRunner::run" + Instant.now() );
