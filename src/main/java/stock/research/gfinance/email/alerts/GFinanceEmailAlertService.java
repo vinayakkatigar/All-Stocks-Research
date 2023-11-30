@@ -59,6 +59,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> germanUrl = new HashMap<>();
     private Map<String, String> watchListUrl = new HashMap<>();
     private Map<String, String> hongKongUrl = new HashMap<>();
+    private Map<String, String> swissUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -78,7 +79,7 @@ public class GFinanceEmailAlertService {
         germanUrl.put("Vin-Germany", "1a9tmx2Qx1dx1hH4J4Hr8yLFSaV-i_X4VoNp1VrThMek");
         watchListUrl.put("Vin-Watchlist", "1V89w-xI5urpoBIcCAHeIoho0J1cJxkFzSQXmG04U85w");
         hongKongUrl.put("Vin-HongKong", "1cOJOjVE49DCjFFMq7JFdmDeOFcf3MzwV2hl6K7gyX9g");
-
+        swissUrl.put("Vin-Switzerland", "1FybDb-TiZ1T10HUDxwVoWvQj2WHAQZG5RWqzQUX2MTI");
     }
 
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
@@ -93,6 +94,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(germanUrl);
         gFinanceStockService.getGFStockInfoList(watchListUrl);
         gFinanceStockService.getGFStockInfoList(hongKongUrl);
+        gFinanceStockService.getGFStockInfoList(swissUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
     }
 
@@ -309,6 +311,32 @@ public class GFinanceEmailAlertService {
         });
         executorService.shutdown();
 
+    }
+
+    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
+    public void kickOffGoogleFinanceSwitzerlandEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Instant instantBefore = now();
+            LOGGER.info(now() + " <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceSwitzerlandEmailAlerts" );
+            final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(swissUrl);
+/*
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
+        });
+*/
+            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF Switzerland " + SIDE.BUY + " Alerts ***"));
+            LOGGER.info(now()+ " <-  Ended kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceSwitzerlandEmailAlerts" );
+
+            StringBuilder subject = new StringBuilder("*** GF Switzerland Daily Data *** ");
+            generateDailyEmail(gFinanceStockInfoList, subject);
+            writeToDB(gFinanceStockInfoList);
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceSwitzerlandEmailAlerts" + now() );
+        });
+        executorService.shutdown();
     }
 
     public StringBuilder exeWinnerAndLosers() {

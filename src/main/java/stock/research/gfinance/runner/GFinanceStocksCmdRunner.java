@@ -49,6 +49,8 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts();
         Thread.sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceHongKongEmailAlerts();
+        Thread.sleep(70 * 1000);
+        gFinanceEmailAlertService.kickOffGoogleFinanceSwitzerlandEmailAlerts();
 
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.SECONDS)+ " <- Total time in mins, Ended GFinanceStocksCmdRunner::run" + Instant.now() );
     }
