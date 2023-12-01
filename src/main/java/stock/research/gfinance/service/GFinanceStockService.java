@@ -87,7 +87,9 @@ public class GFinanceStockService {
                     ERROR_LOGGER.error("No data found.");
                 } else {
                     for (List row : values) {
-                         if(row != null && row.size() > 9){
+                        if(row != null && row.size() > 1 && ("Vin-Currency".equalsIgnoreCase(k))){
+                            gfStockInfoList.add(new GFinanceStockInfo((String) row.get(0),GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2))));
+                        }else if(row != null && row.size() > 9){
                             GFinanceStockInfo gFinanceStockInfo = null;
                             if (("Vin-Watchlist".equalsIgnoreCase(k)) || ("Vin-portfolio".equalsIgnoreCase(k))
                                 || ("Vin-HongKong".equalsIgnoreCase(k))){
@@ -117,6 +119,9 @@ public class GFinanceStockService {
             }
         });
 
+        if (urlInfo != null && urlInfo.size() == 1 && urlInfo.containsKey("Vin-Currency")){
+            return gfStockInfoList;
+        }
         try {
             gfStockInfoFilteredList = gfStockInfoList.stream().filter(q -> (
                             (q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
