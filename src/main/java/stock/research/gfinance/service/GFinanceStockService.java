@@ -88,7 +88,7 @@ public class GFinanceStockService {
                 } else {
                     for (List row : values) {
                         if(row != null && row.size() > 1 && ("Vin-Currency".equalsIgnoreCase(k))){
-                            gfStockInfoList.add(new GFinanceStockInfo((String) row.get(0),GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2))));
+                            gfStockInfoList.add(new GFinanceStockInfo((String) row.get(0),GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1))));
                         }else if(row != null && row.size() > 9){
                             GFinanceStockInfo gFinanceStockInfo = null;
                             if (("Vin-Watchlist".equalsIgnoreCase(k)) || ("Vin-portfolio".equalsIgnoreCase(k))
