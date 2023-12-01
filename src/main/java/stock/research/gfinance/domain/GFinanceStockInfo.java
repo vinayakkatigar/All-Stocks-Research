@@ -31,6 +31,10 @@ public class GFinanceStockInfo {
         this.stockTS = stockTS;
     }
 
+    public GFinanceStockInfo(String stockName, BigDecimal currentMarketPrice) {
+        this.stockName = stockName;
+        this.currentMarketPrice = currentMarketPrice;
+    }
     @Column(name = "STOCK_NAME")
     private String stockName;
 
@@ -45,6 +49,9 @@ public class GFinanceStockInfo {
 
     @Transient
     private Double changePct;
+
+    @Transient
+    private String ccy;
 
     @Column(name = "CURRENT_MARKET_PRICE")
     private BigDecimal currentMarketPrice =  BigDecimal.ZERO;
@@ -201,6 +208,14 @@ public class GFinanceStockInfo {
         return Objects.hash(stockName);
     }
 
+    public String getCcy() {
+        return ccy;
+    }
+
+    public void setCcy(String ccy) {
+        this.ccy = ccy;
+    }
+
     @Override
     public String toString() {
         return "GFinanceNYSEStockInfo{" +
@@ -214,6 +229,7 @@ public class GFinanceStockInfo {
                 ", _52WeekHighPrice=" + _52WeekHighPrice +
                 ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
                 ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
+                ", ccy=" + ccy +
                 ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
                 ", p2e=" + p2e +
                 ", timestamp=" + timestamp +

@@ -21,10 +21,12 @@ import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
 import stock.research.gfinance.utility.GFinanceNyseStockUtility;
 
+import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
@@ -48,7 +50,16 @@ public class GFinanceStockService {
             Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "gfinance/credentials.json";
 
+    private final Map<String, BigDecimal> ccyValues = new HashMap<>();
 
+    @PostConstruct
+    public void setUpCurrency(){
+        Map<String, String> ccyInfo = new HashMap<>();
+        ccyInfo.put("Vin-Currency", "1tvpQUskzu9YHAANu8v9D_RyGqtsok7SZ3XVZ3GM_vj8");
+        List<GFinanceStockInfo>  gFinanceStockInfos = getGFStockInfoList(ccyInfo);
+        gFinanceStockInfos.forEach(x -> ccyValues.put(x.getStockName(), x.getCurrentMarketPrice()));
+        System.out.println(ccyValues);
+    }
     public List<GFinanceStockInfo> getGFStockInfoList(Map<String, String> urlInfo) {
         final List<GFinanceStockInfo> gfStockInfoList = new ArrayList<>();
         List<GFinanceStockInfo> gfStockInfoFilteredList = null;
@@ -76,7 +87,7 @@ public class GFinanceStockService {
                     ERROR_LOGGER.error("No data found.");
                 } else {
                     for (List row : values) {
-                        if(row != null && row.size() > 9){
+                         if(row != null && row.size() > 9){
                             GFinanceStockInfo gFinanceStockInfo = null;
                             if (("Vin-Watchlist".equalsIgnoreCase(k)) || ("Vin-portfolio".equalsIgnoreCase(k))
                                 || ("Vin-HongKong".equalsIgnoreCase(k))){
@@ -94,6 +105,7 @@ public class GFinanceStockService {
                             }else {
                                 gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                                 gFinanceStockInfo.setChangePct(getDoubleFromString((String) row.get(7)));
+                                gFinanceStockInfo.setCcy(((String) row.get(11)));
                             }
                             gfStockInfoList.add(gFinanceStockInfo);
                         }
@@ -186,4 +198,9 @@ public class GFinanceStockService {
             request.setConnectTimeout(timeout);
         };
     }
+
+    public Map<String, BigDecimal> getCcyValues() {
+        return ccyValues;
+    }
+
 }
