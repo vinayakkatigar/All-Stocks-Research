@@ -66,7 +66,7 @@ public class YFEmailAlertService {
 
             List<String> countriesList = null;
             try {
-                countriesList = objectMapper.readValue("[\"Australia.json\",\"Austria.json\",\"World1000.json\",\"HongKong.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
+                countriesList = objectMapper.readValue("[\"World1000.json\",\"Austria.json\",\"Australia.json\",\"HongKong.json\",\"Belgium.json\",\"Brazil.json\",\"Canada.json\",\"Denmark.json\",\"Euro.json\",\"Finland.json\",\"France.json\",\"Germany.json\",\"India.json\",\"Italy.json\",\"Japan.json\",\"Netherlands.json\",\"Norway.json\",\"Singapore.json\",\"SouthKorea.json\",\"Spain.json\",\"Sweden.json\",\"Swiss.json\"]", new TypeReference<List<String>>() { });
             } catch (Exception e) {
                 e.printStackTrace();
             }
