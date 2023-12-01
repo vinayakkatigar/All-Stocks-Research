@@ -89,8 +89,8 @@ public class YFStockService {
                     yFinanceStockInfo.setStockName(x.getLongName());
                     if (x.getCurrency() != null && gFinanceStockService.getCcyValues() != null
                             && gFinanceStockService.getCcyValues().get(x.getCurrency()) != null){
-                        yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? (gFinanceStockService.getCcyValues().get(x.getCurrency()).multiply(BigDecimal.valueOf(x.getMarketCap()))).doubleValue() : 0d);
-                        yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(((gFinanceStockService.getCcyValues().get(x.getCurrency()).multiply(BigDecimal.valueOf(x.getMarketCap())))).doubleValue()) : "");
+                        yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? (gFinanceStockService.getCcyValues().get(x.getCurrency()).multiply(valueOf(x.getMarketCap()))).doubleValue() : 0d);
+                        yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(((gFinanceStockService.getCcyValues().get(x.getCurrency()).multiply(valueOf(x.getMarketCap())))).doubleValue()) : "");
                     }else {
                         yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? Double.valueOf((x.getMarketCap())) : 0d);
                         yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(Double.valueOf((x.getMarketCap()))) : "");
