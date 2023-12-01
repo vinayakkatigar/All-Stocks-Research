@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import stock.research.gfinance.service.GFinanceStockService;
 import stock.research.yfinance.domain.Result;
 import stock.research.yfinance.domain.YFinance;
 import stock.research.yfinance.domain.YFinanceStockInfo;
@@ -36,6 +37,8 @@ public class YFStockService {
     private static final Logger LOGGER = LoggerFactory.getLogger(YFStockService.class);
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private GFinanceStockService gFinanceStockService;
 
     public List<YFinanceStockInfo> getYFStockInfoList(List<String> stockCodes) {
         List<YFinanceStockInfo> yFinanceStockInfoList = new ArrayList<>();
@@ -84,8 +87,15 @@ public class YFStockService {
                 try {
                     yFinanceStockInfo.setCurrentMarketPrice(x.getRegularMarketPrice() != null ? valueOf(x.getRegularMarketPrice()): x.getRegularMarketPrice() != null ? valueOf(x.getRegularMarketPrice()): ZERO);
                     yFinanceStockInfo.setStockName(x.getLongName());
-                    yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? Double.valueOf((x.getMarketCap())) : 0d);
-                    yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(Double.valueOf((x.getMarketCap()))) : "");
+                    if (x.getCurrency() != null && gFinanceStockService.getCcyValues() != null
+                            && gFinanceStockService.getCcyValues().get(x.getCurrency()) != null){
+                        yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? (gFinanceStockService.getCcyValues().get(x.getCurrency()).multiply(BigDecimal.valueOf(x.getMarketCap()))).doubleValue() : 0d);
+                        yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(((gFinanceStockService.getCcyValues().get(x.getCurrency()).multiply(BigDecimal.valueOf(x.getMarketCap())))).doubleValue()) : "");
+                    }else {
+                        yFinanceStockInfo.setMktCapRealValue((x.getMarketCap()) != null ? Double.valueOf((x.getMarketCap())) : 0d);
+                        yFinanceStockInfo.setMktCapFriendyValue(x.getMarketCap() != null ? friendlyMktCap(Double.valueOf((x.getMarketCap()))) : "");
+                    }
+
                     yFinanceStockInfo.set_52WeekLowPrice(x.getFiftyTwoWeekLow() != null ? valueOf(x.getFiftyTwoWeekLow()) : ZERO);
                     yFinanceStockInfo.set_52WeekHighPrice(x.getFiftyTwoWeekHigh() != null ? valueOf(x.getFiftyTwoWeekHigh()) : ZERO);
                     yFinanceStockInfo.setP2e(x.getForwardPE() != null ? valueOf(x.getForwardPE()).setScale(2, RoundingMode.HALF_UP).doubleValue() : 0d);
