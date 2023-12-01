@@ -78,18 +78,6 @@ public class YFEmailAlertService {
                 LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts:: country->" + country);
 
                 final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/" + country));
-                if(country!= null && country.contains("India")){
-                    usdMktCapConversion(yfStockInfoList, 85);
-                }
-                if(country!= null && country.contains("Japan")){
-                    usdMktCapConversion(yfStockInfoList, 150);
-                }
-                if(country!= null && country.contains("Brazil")){
-                    usdMktCapConversion(yfStockInfoList, 5);
-                }
-                if(country!= null && country.contains("HongKong")){
-                    usdMktCapConversion(yfStockInfoList, 8);
-                }
 /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
