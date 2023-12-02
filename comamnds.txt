@@ -1,6 +1,6 @@
-mvn spring-boot:run -D"spring-boot.run.profiles"=h2db
+mvn clean spring-boot:run -D"spring-boot.run.profiles"=h2db
 
-mvn spring-boot:run -D"spring-boot.run.profiles"=i5db
+mvn clean spring-boot:run -D"spring-boot.run.profiles"=i5db
 
 -Dspring-boot.run.profiles=h2db
 -Dspring.profiles.active=h2db
