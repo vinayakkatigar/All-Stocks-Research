@@ -29,7 +29,7 @@ import static java.math.BigDecimal.valueOf;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
-import static stock.research.utility.NyseStockResearchUtility.*;
+import static stock.research.yfinance.utility.YFinanceNyseStockUtility.friendlyMktCap;
 
 @Service
 public class YFStockService {
@@ -172,12 +172,6 @@ public class YFStockService {
         return output;
     }
 
-    private String friendlyMktCap(double x) {
-        return x < MILLION ?  String.valueOf(x) :
-                x < BILLION ?  String.format("%.2f", x / MILLION) + "M" :
-                        x < TRILLION ? String.format("%.2f", x / BILLION) + "B" :
-                                String.format("%.2f", x / TRILLION) + "T";
-    }
     private void goSleep(int x) {
         try { sleep(1000 * x);} catch (Exception e) { }
     }

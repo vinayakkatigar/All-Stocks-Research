@@ -31,11 +31,14 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.NyseStockResearchUtility.*;
 import static stock.research.utility.StockUtility.goSleep;
+import static stock.research.yfinance.utility.YFinanceNyseStockUtility.friendlyMktCap;
 
 @Service
 public class GFinanceStockService {
@@ -105,10 +108,15 @@ public class GFinanceStockService {
                                 GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)),
                                 GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                                 gFinanceStockInfo.setChangePct(getDoubleFromString((String) row.get(2)));
+                                if(row != null && row.size() > 11){
+                                    gFinanceStockInfo.setCcy(((String) row.get(11)));
+                                }
                             }else {
                                 gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(1)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(2)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(3)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(6)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(5)), GFinanceNyseStockUtility.getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), Instant.now(), Timestamp.from(Instant.now()));
                                 gFinanceStockInfo.setChangePct(getDoubleFromString((String) row.get(7)));
-                                gFinanceStockInfo.setCcy(((String) row.get(11)));
+                                if(row != null && row.size() > 11){
+                                    gFinanceStockInfo.setCcy(((String) row.get(11)));
+                                }
                             }
                             gfStockInfoList.add(gFinanceStockInfo);
                         }
@@ -117,6 +125,16 @@ public class GFinanceStockService {
 
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error Google Finance", e);
+            }
+        });
+
+        //Apply currency conversion
+        gfStockInfoList.forEach(x -> {
+            if (x.getCcy() != null && getCcyValues() != null
+                    && getCcyValues().get(x.getCcy()) != null
+                    && getCcyValues().get(x.getCcy()).compareTo(ZERO) > 0){
+                x.setMktCapRealValue((x.getMktCapRealValue()) != null ? (getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue()))).doubleValue() : 0d);
+                x.setMktCapFriendyValue(x.getMktCapRealValue() != null ? friendlyMktCap(((getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue())))).doubleValue()) : "");
             }
         });
 
@@ -143,9 +161,9 @@ public class GFinanceStockService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("gfStockInfoFilteredList::Size -> " + gfStockInfoFilteredList.size());
 
-        LOGGER.info("gfStockInfoList::Size -> " + gfStockInfoList.size());
+        LOGGER.info(urlInfo.keySet() + " <- Keys, gfStockInfoFilteredList::Size -> " + gfStockInfoFilteredList.size());
+        LOGGER.info(urlInfo.keySet() + " <- Keys, gfStockInfoList::Size -> " + gfStockInfoList.size());
 
         return gfStockInfoFilteredList;
     }
