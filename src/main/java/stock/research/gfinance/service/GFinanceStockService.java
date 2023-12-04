@@ -130,8 +130,8 @@ public class GFinanceStockService {
 
         //Apply currency conversion
         gfStockInfoList.forEach(x -> {
-            if (x.getCcy() != null && getCcyValues() != null
-                    && getCcyValues().get(x.getCcy()) != null
+            if (x.getCcy() != null && x.getCcy().equalsIgnoreCase("INR")
+                    && getCcyValues() != null && getCcyValues().get(x.getCcy()) != null
                     && getCcyValues().get(x.getCcy()).compareTo(ZERO) > 0){
                 x.setMktCapRealValue((x.getMktCapRealValue()) != null ? (getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue()))).doubleValue() : 0d);
                 x.setMktCapFriendyValue(x.getMktCapRealValue() != null ? friendlyMktCap(((getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue())))).doubleValue()) : "");
