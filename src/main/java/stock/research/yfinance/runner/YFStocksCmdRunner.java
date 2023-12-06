@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
-import stock.research.utility.StockUtility;
 import stock.research.yfinance.email.alerts.YFEmailAlertService;
 
 import java.time.Instant;
@@ -28,6 +27,8 @@ public class YFStocksCmdRunner  implements CommandLineRunner {
         LOGGER.info(Instant.now() + " <-  Started YFStocksCmdRunner::run" );
 
         currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        yfEmailAlertService.kickOffYFWorld1000EmailAlerts();
 
         goSleep(360);
         yfEmailAlertService.kickOffYFNYSEEmailAlerts();

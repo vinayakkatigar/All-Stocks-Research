@@ -135,6 +135,32 @@ public class YFEmailAlertService {
         executorService.shutdown();
     }
 
+    @Scheduled(cron = "0 8 1,15,18,22 ? * MON-SAT", zone = "GMT")
+    public void kickOffYFWorld1000EmailAlerts() {
+        Thread.currentThread().setPriority(MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(MAX_PRIORITY);
+
+            Instant instantBefore = now();
+            LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFWorld1000EmailAlerts" );
+
+            final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/World1000.json"));
+
+            final StringBuilder subjectBuffer = new StringBuilder("*** YF ROW World1000 Buy Alert *** ");
+            generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
+            LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFWorld1000EmailAlerts" );
+
+            StringBuilder subject = new StringBuilder("*** YF ROW World1000 Daily Data *** ");
+            generateDailyEmail(yfStockInfoList, subject);
+            writeToDB(yfStockInfoList);
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFWorld1000EmailAlerts" + now() );
+
+        });
+        executorService.shutdown();
+    }
+
 //    @Scheduled(cron = "0 30 3,13,21 ? * MON-SAT", zone = "GMT")
     public void kickOffYFChinaEmailAlerts() {
         Instant instantBefore = now();
