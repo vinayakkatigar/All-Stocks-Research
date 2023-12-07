@@ -44,6 +44,12 @@ public class YFinanceStockInfo {
     private String mktCapFriendyValue;
 
     @Transient
+    private String ccy;
+
+    @Transient
+    private String stockCode;
+
+    @Transient
     private Double changePct;
 
     @Column(name = "CURRENT_MARKET_PRICE")
@@ -240,5 +246,21 @@ public class YFinanceStockInfo {
 
     public void setEps(Double eps) {
         this.eps = eps;
+    }
+
+    public String getCcy() {
+        return ccy;
+    }
+
+    public void setCcy(String ccy) {
+        this.ccy = ccy;
+    }
+
+    public String getStockCode() {
+        return stockCode;
+    }
+
+    public void setStockCode(String stockCode) {
+        this.stockCode = stockCode;
     }
 }

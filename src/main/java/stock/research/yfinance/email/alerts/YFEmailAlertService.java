@@ -253,7 +253,7 @@ public class YFEmailAlertService {
         }
         dataBuffer.append("<td>" + x.getStockRankIndex() + "</td>");
         dataBuffer.append("<td>" + x.getStockName() +
-                START_BRACKET + x.getMktCapFriendyValue() + END_BRACKET + "</a></td>");
+                START_BRACKET + x.getMktCapFriendyValue() + END_BRACKET + "\n" + START_BRACKET + x.getStockCode() + " - " + x.getCcy() + END_BRACKET + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekHighPrice() + "</td>");
         dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");

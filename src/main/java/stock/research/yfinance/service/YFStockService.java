@@ -120,8 +120,15 @@ public class YFStockService {
                         yFinanceStockInfo.set_52WeekLowPriceDiff(((yFinanceStockInfo.getCurrentMarketPrice().subtract(yFinanceStockInfo.get_52WeekLowPrice()).abs())
                                 .divide(yFinanceStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                     }
+
                     yFinanceStockInfo.setStockTS(Timestamp.from(Instant.now()));
                     yFinanceStockInfo.setTimestamp(Instant.now());
+                    if (x.getCurrency() != null){
+                        yFinanceStockInfo.setCcy(x.getCurrency());
+                    }
+                    if (x.getSymbol() != null){
+                        yFinanceStockInfo.setStockCode(x.getSymbol());
+                    }
 
                 }catch (Exception e){
                     ERROR_LOGGER.error(stringfy(x) + "Error", e );
