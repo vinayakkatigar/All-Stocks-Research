@@ -129,6 +129,9 @@ public class YFStockService {
                     if (x.getSymbol() != null){
                         yFinanceStockInfo.setStockCode(x.getSymbol());
                     }
+                    if (x.getDividendRate() != null){
+                        yFinanceStockInfo.setDividendRate(x.getDividendRate());
+                    }
 
                 }catch (Exception e){
                     ERROR_LOGGER.error(stringfy(x) + "Error", e );

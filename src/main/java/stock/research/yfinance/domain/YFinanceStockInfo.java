@@ -47,6 +47,9 @@ public class YFinanceStockInfo {
     private String ccy;
 
     @Transient
+    private Double dividendRate;
+
+    @Transient
     private String stockCode;
 
     @Transient
@@ -262,5 +265,13 @@ public class YFinanceStockInfo {
 
     public void setStockCode(String stockCode) {
         this.stockCode = stockCode;
+    }
+
+    public Double getDividendRate() {
+        return dividendRate;
+    }
+
+    public void setDividendRate(Double dividendRate) {
+        this.dividendRate = dividendRate;
     }
 }
