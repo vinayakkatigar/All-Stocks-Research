@@ -443,6 +443,7 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffDeadlockedThreads() {
+        LOGGER.info("started kickOffDeadlockedThreads");
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         long ids[] = bean.findDeadlockedThreads();
         StringBuilder deadLocked = new StringBuilder();
@@ -458,6 +459,7 @@ public class GFinanceEmailAlertService {
             }
             int retry = 5;
             while (!sendEmail(deadLocked, new StringBuilder("Deadlocked Threads")) && --retry >= 0);
+            LOGGER.info("Ended kickOffDeadlockedThreads");
         }
     }
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
