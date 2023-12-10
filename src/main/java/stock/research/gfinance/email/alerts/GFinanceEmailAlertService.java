@@ -447,7 +447,7 @@ public class GFinanceEmailAlertService {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         long ids[] = bean.findDeadlockedThreads();
         StringBuilder deadLocked = new StringBuilder();
-        if(ids != null) {
+        if(ids != null && ids.length > 0) {
             ThreadInfo threadInfo[] = bean.getThreadInfo(ids);
 
             for (ThreadInfo threadInfo1 : threadInfo) {
