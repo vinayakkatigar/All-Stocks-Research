@@ -1,5 +1,6 @@
 package stock.research.yfinance.email.alerts;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockUtility.goSleep;
+import static stock.research.utility.StockUtility.writeToFile;
 import static stock.research.yfinance.utility.YFinanceNyseStockUtility.friendlyMktCap;
 
 @Service
@@ -90,6 +92,11 @@ public class YFEmailAlertService {
                 StringBuilder subject = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Daily Data *** ");
                 generateDailyEmail(yfStockInfoList, subject);
                 writeToDB(yfStockInfoList);
+
+                try {
+                    writeToFile(country.replaceAll(".json", ""), objectMapper.writeValueAsString(yfStockInfoList));
+                } catch (Exception e) {}
+
                 LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFROWEmailAlerts" + now() );
             });
         });
@@ -129,6 +136,11 @@ public class YFEmailAlertService {
             StringBuilder subject = new StringBuilder("*** YF NYSE Daily Data *** ");
             generateDailyEmail(yfStockInfoList, subject);
             writeToDB(yfStockInfoList);
+
+            try {
+                writeToFile("NYSE", objectMapper.writeValueAsString(yfStockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFNYSEEmailAlerts" + now() );
 
         });
@@ -155,6 +167,11 @@ public class YFEmailAlertService {
             StringBuilder subject = new StringBuilder("*** YF ROW World1000 Daily Data *** ");
             generateDailyEmail(yfStockInfoList, subject);
             writeToDB(yfStockInfoList);
+
+            try {
+                writeToFile("World1000", objectMapper.writeValueAsString(yfStockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFWorld1000EmailAlerts" + now() );
 
         });
@@ -179,6 +196,11 @@ public class YFEmailAlertService {
         StringBuilder subject = new StringBuilder("*** YF China Daily Data *** ");
         generateDailyEmail(yfStockInfoList, subject);
         writeToDB(yfStockInfoList);
+
+        try {
+            writeToFile("China", objectMapper.writeValueAsString(yfStockInfoList));
+        } catch (Exception e) {}
+
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFChinaEmailAlerts" + now() );
     }
 

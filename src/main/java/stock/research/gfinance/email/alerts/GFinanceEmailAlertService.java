@@ -34,6 +34,7 @@ import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_STAR
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockUtility.goSleep;
+import static stock.research.utility.StockUtility.writeToFile;
 
 @Service
 public class GFinanceEmailAlertService {
@@ -115,6 +116,11 @@ public class GFinanceEmailAlertService {
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
 
             writeToDB(stockInfoList);
+
+            try {
+                writeToFile("GF-WatchList", objectMapper.writeValueAsString(stockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
 
@@ -139,6 +145,11 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF ASX Daily Data *** "));
             writeToDB(stockInfoList);
+
+            try {
+                writeToFile("GF-ASX", objectMapper.writeValueAsString(stockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFASXEmailAlerts" + now() );
         });
@@ -161,6 +172,10 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF Germany Daily Data *** "));
             writeToDB(stockInfoList);
+            try {
+                writeToFile("GF-Germany", objectMapper.writeValueAsString(stockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts" + now() );
         });
@@ -184,6 +199,10 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF FTSE Daily Data *** "));
             writeToDB(stockInfoList);
+            try {
+                writeToFile("GF-FTSE", objectMapper.writeValueAsString(stockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFFTSEEmailAlerts" + now() );
         });
@@ -210,6 +229,10 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Daily Data *** "));
             writeToDB(gfPortfolioList);
+            try {
+                writeToFile("GF-NSE", objectMapper.writeValueAsString(gfPortfolioList));
+            } catch (Exception e) {}
+
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEEmailAlerts" + now() );
         });
@@ -236,6 +259,9 @@ public class GFinanceEmailAlertService {
 
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF Portfolio Daily Data ** "));
             writeToDB(gfPortfolioList);
+            try {
+                writeToFile("GF-Portfolio", objectMapper.writeValueAsString(gfPortfolioList));
+            } catch (Exception e) {}
 
             LOGGER.info(now()+ " <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
@@ -267,6 +293,10 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF NYSE Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             writeToDB(gFinanceStockInfoList);
+            try {
+                writeToFile("GF-NYSE", objectMapper.writeValueAsString(gFinanceStockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
         });
         executorService.shutdown();
@@ -307,6 +337,10 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF HongKong Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             writeToDB(gFinanceStockInfoList);
+            try {
+                writeToFile("GF-HongKong", objectMapper.writeValueAsString(gFinanceStockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceHongKongEmailAlerts" + now() );
         });
         executorService.shutdown();
@@ -334,6 +368,10 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF Switzerland Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             writeToDB(gFinanceStockInfoList);
+            try {
+                writeToFile("GF-Switzerland", objectMapper.writeValueAsString(gFinanceStockInfoList));
+            } catch (Exception e) {}
+
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceSwitzerlandEmailAlerts" + now() );
         });
         executorService.shutdown();
