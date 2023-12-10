@@ -15,6 +15,9 @@ import stock.research.gfinance.service.GFinanceStockService;
 
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -82,7 +85,6 @@ public class GFinanceEmailAlertService {
         hongKongUrl.put("Vin-HongKong", "1cOJOjVE49DCjFFMq7JFdmDeOFcf3MzwV2hl6K7gyX9g");
         swissUrl.put("Vin-Switzerland", "1FybDb-TiZ1T10HUDxwVoWvQj2WHAQZG5RWqzQUX2MTI");
     }
-
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
@@ -439,6 +441,25 @@ public class GFinanceEmailAlertService {
         return true;
     }
 
+    @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
+    public void kickOffDeadlockedThreads() {
+        ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+        long ids[] = bean.findMonitorDeadlockedThreads();
+        StringBuilder deadLocked = new StringBuilder();
+        if(ids != null) {
+            ThreadInfo threadInfo[] = bean.getThreadInfo(ids);
+
+            for (ThreadInfo threadInfo1 : threadInfo) {
+                deadLocked.append("\nThreadId :" +threadInfo1.getThreadId());    //Prints the ID of deadlocked thread
+                deadLocked.append("\nThreadName :" +threadInfo1.getThreadName());    //Prints the ID of deadlocked thread
+                deadLocked.append("\nLockName :" +threadInfo1.getLockName());    //Prints the ID of deadlocked thread
+                deadLocked.append("\nLockOwnerId :" +threadInfo1.getLockOwnerId());    //Prints the ID of deadlocked thread
+                deadLocked.append("\nLockOwnerName :" +threadInfo1.getLockOwnerName());    //Prints the ID of deadlocked thread
+            }
+            int retry = 5;
+            while (!sendEmail(deadLocked, new StringBuilder("Deadlocked Threads")) && --retry >= 0);
+        }
+    }
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
             dataBuffer.append("<tr style=\"background-color:#00ffff\">");
