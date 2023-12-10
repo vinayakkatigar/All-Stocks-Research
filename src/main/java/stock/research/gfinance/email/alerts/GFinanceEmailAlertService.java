@@ -459,8 +459,8 @@ public class GFinanceEmailAlertService {
             }
             int retry = 5;
             while (!sendEmail(deadLocked, new StringBuilder("Deadlocked Threads")) && --retry >= 0);
-            LOGGER.info("Ended kickOffDeadlockedThreads");
         }
+        LOGGER.info("Ended kickOffDeadlockedThreads");
     }
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
         if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
