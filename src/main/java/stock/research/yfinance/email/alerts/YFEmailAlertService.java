@@ -104,14 +104,6 @@ public class YFEmailAlertService {
 
     }
 
-    private static void usdMktCapConversion(List<YFinanceStockInfo> yfStockInfoList, int x) {
-        yfStockInfoList.forEach(stockInfo -> {
-//USD INR Conversion
-            stockInfo.setMktCapRealValue(stockInfo.getMktCapRealValue() / x);
-            stockInfo.setMktCapFriendyValue(friendlyMktCap(stockInfo.getMktCapRealValue()));
-        });
-    }
-
     @Scheduled(cron = "0 8 1,15,18,21,23 ? * MON-SUN", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Thread.currentThread().setPriority(MAX_PRIORITY);
