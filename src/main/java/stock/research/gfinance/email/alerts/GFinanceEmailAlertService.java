@@ -444,7 +444,7 @@ public class GFinanceEmailAlertService {
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffDeadlockedThreads() {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-        long ids[] = bean.findMonitorDeadlockedThreads();
+        long ids[] = bean.findDeadlockedThreads();
         StringBuilder deadLocked = new StringBuilder();
         if(ids != null) {
             ThreadInfo threadInfo[] = bean.getThreadInfo(ids);
