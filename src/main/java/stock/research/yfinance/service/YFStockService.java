@@ -124,7 +124,7 @@ public class YFStockService {
                     yFinanceStockInfo.setStockTS(Timestamp.from(Instant.now()));
                     yFinanceStockInfo.setTimestamp(Instant.now());
                     if (x.getCurrency() != null){
-                        yFinanceStockInfo.setCcy(x.getCurrency());
+                        yFinanceStockInfo.setCcy(x.getCurrency().toUpperCase());
                     }
                     if (x.getSymbol() != null){
                         yFinanceStockInfo.setStockCode(x.getSymbol());
