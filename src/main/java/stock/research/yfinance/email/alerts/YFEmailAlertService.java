@@ -57,7 +57,7 @@ public class YFEmailAlertService {
 
 
 //    @Scheduled(cron = "0 30 1,8,14,23 ? * *", zone = "GMT")
-    @Scheduled(cron = "0 22 23 ? * *", zone = "GMT")
+    @Scheduled(cron = "0 22 6,14,23 ? * *", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
 
         Thread.currentThread().setPriority(MAX_PRIORITY);
