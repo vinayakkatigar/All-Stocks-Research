@@ -1,6 +1,5 @@
 package stock.research.yfinance.email.alerts;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -37,7 +36,6 @@ import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockUtility.goSleep;
 import static stock.research.utility.StockUtility.writeToFile;
-import static stock.research.yfinance.utility.YFinanceNyseStockUtility.friendlyMktCap;
 
 @Service
 public class YFEmailAlertService {
@@ -85,6 +83,7 @@ public class YFEmailAlertService {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
 */
+                LOGGER.info(now() + " <-  YF Results kickOffYFROWEmailAlerts::yfStockInfoList" + yfStockInfoList);
                 final StringBuilder subjectBuffer = new StringBuilder("*** YF ROW "+ country.replaceAll(".json", "") + " Buy Alert *** ");
                 generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
                 LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFROWEmailAlerts" );
@@ -121,6 +120,8 @@ public class YFEmailAlertService {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
 */
+            LOGGER.info(now() + " <-  YF Results kickOffYFNYSEEmailAlerts::yfStockInfoList" + yfStockInfoList);
+
             final StringBuilder subjectBuffer = new StringBuilder("");
             generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
             LOGGER.info(now()+ " <-  Ended kickOffYFNYSEEmailAlerts::kickOffYFNYSEEmailAlerts" );
@@ -151,6 +152,7 @@ public class YFEmailAlertService {
             LOGGER.info(now() + " <-  Started kickOffYFNYSEEmailAlerts::kickOffYFWorld1000EmailAlerts" );
 
             final List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/World1000.json"));
+            LOGGER.info(now() + " <-  YF Results kickOffYFWorld1000EmailAlerts::yfStockInfoList" + yfStockInfoList);
 
             final StringBuilder subjectBuffer = new StringBuilder("*** YF ROW World1000 Buy Alert *** ");
             generateAlertEmails(yfStockInfoList, SIDE.BUY, subjectBuffer);
