@@ -224,6 +224,9 @@ public class GFinanceStockService {
     }
 
     public Map<String, BigDecimal> getCcyValues() {
+        if (this.ccyValues == null || ccyValues.size() < 1){
+            setUpCurrency();
+        }
         return ccyValues;
     }
 
