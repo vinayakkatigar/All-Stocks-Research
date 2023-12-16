@@ -3,7 +3,6 @@ package stock.research.gfinance.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +15,7 @@ public class GFinanceStockInfo {
     @SequenceGenerator(sequenceName = "GFINANCE_NYSE_STOCK_INFO_ID_SEQ", allocationSize = 1, name = "GFINANCE_NYSE_STOCK_INFO_ID_SEQ")
     Long id;
 
-    public GFinanceStockInfo(String stockName, Double mktCapRealValue, String mktCapFriendyValue, BigDecimal currentMarketPrice, BigDecimal _52WeekLowPrice, BigDecimal _52WeekHighPrice, BigDecimal _52WeekHighLowPriceDiff, BigDecimal _52WeekHighPriceDiff, BigDecimal _52WeekLowPriceDiff, Double p2e, Instant timestamp, Timestamp stockTS) {
+    public GFinanceStockInfo(String stockName, Double mktCapRealValue, String mktCapFriendyValue, BigDecimal currentMarketPrice, BigDecimal _52WeekLowPrice, BigDecimal _52WeekHighPrice, BigDecimal _52WeekHighLowPriceDiff, BigDecimal _52WeekHighPriceDiff, BigDecimal _52WeekLowPriceDiff, Double p2e, String timestamp, Timestamp stockTS) {
         this.stockName = stockName;
         this.mktCapRealValue = mktCapRealValue;
         this.mktCapFriendyValue = mktCapFriendyValue;
@@ -75,7 +74,7 @@ public class GFinanceStockInfo {
     private Double p2e;
 
     @Column(name = "QUOTETS")
-    private Instant timestamp;
+    private String timestamp;
 
     @Column(name = "STOCKTS")
     Timestamp stockTS;
@@ -171,11 +170,11 @@ public class GFinanceStockInfo {
         this.p2e = p2e;
     }
 
-    public Instant getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
