@@ -25,12 +25,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
@@ -369,10 +369,13 @@ public class GFinanceEmailAlertService {
             Timestamp stockTS = x.getStockTS();
             long difInMS = from(now()).getTime() - stockTS.getTime();
             Long diffDays = difInMS / (1000  * 60 * 60 * 24);
-            if (diffDays <= 7)
+            if (diffDays <= 7){
                 return x;
-            else return null;
-        }).filter(Objects::nonNull).collect(Collectors.groupingBy(GFinanceStockInfo::getStockName));
+            }
+            else {
+                return null;
+            }
+        }).filter(Objects::nonNull).collect(groupingBy(GFinanceStockInfo::getStockName));
 
         System.out.println(postsPerType);
         GFinanceStockInfo gFinanceStockInfoMax = gFinanceStockInfoWeeklyList.stream().
