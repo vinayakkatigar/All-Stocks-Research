@@ -58,7 +58,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-//            sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
+            sensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts();
         });
         executorService.shutdown();
 /*
