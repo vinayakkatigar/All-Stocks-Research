@@ -19,12 +19,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
+import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Arrays.stream;
@@ -344,6 +347,39 @@ public class GFinanceEmailAlertService {
         });
         executorService.shutdown();
 
+    }
+
+    @Scheduled(cron = "0 31 21,23 ? * FRI-SAT", zone = "GMT")
+    public void kickOffGoogleFinanceWeeklyPnLEmailAlerts() {
+        List<GFinanceStockInfo> gFinanceStockInfoList = new ArrayList<>();
+
+        gFinanceStockInfoRepositary.findAll().forEach(gFinanceStockInfoList::add);
+
+        List<GFinanceStockInfo> gFinanceStockInfoWeeklyList = gFinanceStockInfoList.stream().filter(x -> {
+            long difInMS = from(now()).getTime() - x.getStockTS().getTime();
+            Long diffDays = difInMS / (1000  * 60 * 60 * 24);
+            if (diffDays <= 7){
+                return true;
+            }else {
+                return false;
+            }
+        }).collect(toList());
+
+        Map<String, List<GFinanceStockInfo>> postsPerType = gFinanceStockInfoList.stream().map(x -> {
+            Timestamp stockTS = x.getStockTS();
+            long difInMS = from(now()).getTime() - stockTS.getTime();
+            Long diffDays = difInMS / (1000  * 60 * 60 * 24);
+            if (diffDays <= 7)
+                return x;
+            else return null;
+        }).filter(Objects::nonNull).collect(Collectors.groupingBy(GFinanceStockInfo::getStockName));
+
+        System.out.println(postsPerType);
+        GFinanceStockInfo gFinanceStockInfoMax = gFinanceStockInfoWeeklyList.stream().
+                                                    max(Comparator.comparing(GFinanceStockInfo::getCurrentMarketPrice)).get();
+
+        GFinanceStockInfo gFinanceStockInfoMin = gFinanceStockInfoWeeklyList.stream().
+                                                    min(Comparator.comparing(GFinanceStockInfo::getCurrentMarketPrice)).get();
     }
 
     @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
