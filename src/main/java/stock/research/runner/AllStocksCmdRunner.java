@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 import stock.research.email.alerts.AllStocksEmailAlertMechanismService;
+import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
+
 @Order(5)
 @SpringBootApplication
 public class AllStocksCmdRunner implements CommandLineRunner {
@@ -16,11 +18,16 @@ public class AllStocksCmdRunner implements CommandLineRunner {
 
     @Autowired
     private AllStocksEmailAlertMechanismService allStocksEmailAlertMechanismService;
+
+    @Autowired
+    private SensexStockResearchAlertMechanismService SensexStockResearchAlertMechanismService;
     @Autowired
     private ObjectMapper objectMapper;
 
     @Override
     public void run(String... args) throws Exception {
+        SensexStockResearchAlertMechanismService.kickOffScreenerWeeklyPnLEmailAlerts();
+
 /*
             long start = System.currentTimeMillis();
             LOGGER.info("##AllStocksCmdRunner.run::started##" );
