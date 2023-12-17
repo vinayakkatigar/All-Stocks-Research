@@ -66,7 +66,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private List<String> pfStockName = new ArrayList<>();
 
-    @Scheduled(cron = "0 35 0,9 ? * *", zone = "GMT")
+    @Scheduled(cron = "0 35 1,6 ? * *", zone = "GMT")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -78,7 +78,7 @@ public class SensexStockResearchAlertMechanismService {
         executorService.shutdown();
     }
 
-    public void kickOffScreenerEmailAlerts() {
+    private void kickOffScreenerEmailAlerts() {
 
         Instant instantBefore = Instant.now();
         LOGGER.info(Instant.now() + " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
@@ -107,60 +107,7 @@ public class SensexStockResearchAlertMechanismService {
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
     }
 
-    public void kickOffEmailAlerts() {
 
-            Instant instantBefore = Instant.now();
-            LOGGER.info(Instant.now()+ " <- Started SensexStockResearchAlertMechanismService::kickOffEmailAlerts");
-//                List<SensexStockInfo> populatedSensexList = objectMapper.readValue(new ClassPathResource("SensexStock-1000-MktCap-detailedInfo.json").getInputStream(), new TypeReference<List<SensexStockInfo>>(){});
-        try{
-                List<SensexStockInfo> populatedSensexList = get500StocksAttributes();
-                Arrays.stream(StockCategory.values()).forEach(x -> {
-                    generateAlertEmails(populatedSensexList,x, SIDE.SELL);
-                    generateAlertEmails(populatedSensexList, x, SIDE.BUY);
-                });
-                Map<PortfolioInfo, SensexStockInfo> portfolioInfoMap = new LinkedHashMap<>();
-                try {
-                    StringBuilder dataBuffer = new StringBuilder("");
-                    sensexStockResearchService.getPortfolioInfoList().forEach(portfolioInfo -> {
-                        //ToDo
-                    });
-
-                    LOGGER.info("SensexStockResearchAlertMechanismService.portfolioInfoMap");
-                    LOGGER.info(portfolioInfoMap.toString());
-                    if (portfolioInfoMap != null && portfolioInfoMap.size() > 0){
-                        portfolioInfoMap.forEach((k,v) -> generateTableContents(dataBuffer, k ,v));
-                    }
-
-                    int retry = 3;
-//                    while (!sendEmail(dataBuffer, new StringBuilder("** Portfolio Sensex Daily Data ** "), true) && --retry >= 0);
-                }catch (Exception e){
-                    LOGGER.error("Error - ",e);
-                }
-
-            }catch (Exception e){
-            LOGGER.error("Error - ",e);
-        }
-
-            try {
-                StringBuilder dataBuffer = new StringBuilder("");
-                sensexStockResearchService.getCacheSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
-                int retry = 3;
-                while (!sendEmail(dataBuffer, new StringBuilder("** Sensex Daily Data ** "), false) && --retry >= 0);
-            }catch (Exception e){ }
-
-            LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended SensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
-    }
-
-    private List<SensexStockInfo>  get500StocksAttributes() {
-        List<SensexStockInfo> populatedSensexList = new ArrayList<>();
-        try {
-            LOGGER.info("SensexStockResearchAlertMechanismService::get500StocksAttributes");
-            populatedSensexList = sensexStockResearchService.populateStocksAttributes();
-        } catch (Exception e) {
-            ERROR_LOGGER.error(Instant.now() + "<- , Error ->", e);
-        }
-        return populatedSensexList;
-    }
     private void generateAlertEmails(List<SensexStockInfo> populatedSensexList, StockCategory stockCategory, SIDE side) {
         try {
             LOGGER.info("<- Started SensexStockResearchAlertMechanismService::generateAlertEmails");
