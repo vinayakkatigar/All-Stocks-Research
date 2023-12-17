@@ -149,7 +149,6 @@ public class SensexStockResearchAlertMechanismService {
         }
     }
 
-
     private void kickOffScreenerEmailAlerts() {
         Instant instantBefore = Instant.now();
         LOGGER.info(Instant.now() + " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
