@@ -114,7 +114,7 @@ public class SensexStockResearchAlertMechanismService {
 
             Map<String, SensexStockInfo> sensexStockDetailsWeeklyMap = new HashMap<>();
 
-            sensexStockInfoWeeklyMap.forEach((key,val) ->{
+            sensexStockInfoWeeklyMap.forEach((key,val) -> {
                 SensexStockInfo sensexStockInfoMax = val.stream().
                         max(comparing(SensexStockInfo::getCurrentMarketPrice)).get();
                 SensexStockInfo sensexStockInfoMin = val.stream().
