@@ -9,7 +9,6 @@ import java.util.Objects;
 @Table(name = "SENSEX_STOCK_INFO")
 public class SensexStockInfo {
 
-
     @Column(name = "SENSEX_STOCK_INFO_ID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SENSEX_STOCK_INFO_ID_SEQ")
@@ -269,4 +268,13 @@ public class SensexStockInfo {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

@@ -138,13 +138,19 @@ public class SensexStockResearchAlertMechanismService {
                 while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Daily Data ** "), false) && --retry >= 0);
             }catch (Exception e){ }
 
-            writeSensexInfoListToDB((List<SensexStockInfo>) sensexStockDetailsWeeklyMap.values());
+
+            List<SensexStockInfo> sensexStockDBInfoList = new ArrayList<>();
+            sensexStockDetailsWeeklyMap.forEach((key,val) -> {
+                val.setId(null);
+                sensexStockDBInfoList.add(val);
+            });
+
+            writeSensexInfoListToDB(sensexStockDBInfoList);
         }
     }
 
 
     private void kickOffScreenerEmailAlerts() {
-
         Instant instantBefore = Instant.now();
         LOGGER.info(Instant.now() + " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
         try{
