@@ -61,28 +61,6 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
             sensexStockResearchAlertMechanismService.kickOffEmailAlerts_Cron();
         });
         executorService.shutdown();
-/*
-        List<NyseStockInfo> stockInfoList = objectMapper.readValue(new ClassPathResource("NYSE--detailedInfo.json").getInputStream(), new TypeReference<List<NyseStockInfo>>(){});
-
-        stockInfoList = stockInfoList.stream()
-                .filter(q -> ((q.getCurrentMarketPrice() != null && q.getCurrentMarketPrice().intValue() > 0)
-                        && (q.get_52WeekLowPrice() != null && q.get_52WeekLowPrice().intValue() > 0)
-                        && (q.get_52WeekHighPrice() != null && q.get_52WeekHighPrice().intValue() > 0)
-                        && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList());
-        Map<String, String> stringMap = new LinkedHashMap<>();
-        stockInfoList.stream().forEach(x -> stringMap.put(x.getStockCode(), x.getStockURL()));
-        System.out.println(objectMapper.writeValueAsString(stringMap));
-*/
-
-
-        ExecutorService _executorService = Executors.newSingleThreadExecutor();
-        _executorService.submit(() -> {
-            LOGGER.info("Started Sensex500StocksCmdRunner::run" );
-//            sensexStockResearchAlertMechanismService.kickOffEmailAlerts();
-            LOGGER.info("End Sensex500StocksCmdRunner::run" );
-        });
-        _executorService.shutdown();
-//        startUpNYSEStockResearchService.kickOffEmailAlerts();
     }
 
 }
