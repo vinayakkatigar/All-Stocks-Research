@@ -129,6 +129,7 @@ public class SensexStockResearchAlertMechanismService {
                             .divide(sensexStockInfoMin.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
                 }
                 if (sensexStockInfoMax.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(20l)) >= 0){
+                    sensexStockInfoMax.setCurrentMarketPrice(val.get(0).getCurrentMarketPrice());
                     sensexStockDetailsWeeklyMap.put(key, sensexStockInfoMax);
                 }
             });
