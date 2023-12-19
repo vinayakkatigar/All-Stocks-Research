@@ -427,8 +427,8 @@ public class SensexStockResearchAlertMechanismService {
     private void writeSensexInfoListToDB(List<SensexStockInfo> sensexStockInfoList) {
         sensexStockInfoList.forEach(sensexStockInfo -> {
             try {
+                sensexStockInfo.setId(null);
                 sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
-                LOGGER.info("writeSensexInfoToDB::sensexStockInfo -> " + sensexStockInfo);
                 sensexStockInfoRepositary.save(sensexStockInfo);
             } catch (Exception e) {
                 LOGGER.error("Failed to write Sensex Stock Info", e);
