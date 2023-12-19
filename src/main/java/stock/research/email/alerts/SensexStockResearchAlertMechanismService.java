@@ -20,7 +20,6 @@ import stock.research.entity.dto.SensexStockDetails;
 import stock.research.entity.repo.SensexStockDetailsRepositary;
 import stock.research.entity.repo.SensexStockInfoRepositary;
 import stock.research.service.ScreenerSensexStockResearchService;
-import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
 import javax.annotation.PostConstruct;
@@ -57,8 +56,6 @@ public class SensexStockResearchAlertMechanismService {
     private JavaMailSender javaMailSender;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private SensexStockResearchService sensexStockResearchService;
 
     @Autowired
     private ScreenerSensexStockResearchService screenerSensexStockResearchService;

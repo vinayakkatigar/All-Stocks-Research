@@ -1,6 +1,5 @@
 package stock.research.email.alerts;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -17,9 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
-import stock.research.domain.StockInfo;
 import stock.research.service.ScreenerSensexStockResearchService;
-import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
 import javax.annotation.PostConstruct;

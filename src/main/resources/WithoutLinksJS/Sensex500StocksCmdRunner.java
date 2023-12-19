@@ -14,7 +14,6 @@ import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
 import stock.research.service.InteractiveInvestorsResearchService;
 import stock.research.service.ScreenerSensexStockResearchService;
-import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
 import java.io.InputStream;

@@ -12,9 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
 import stock.research.entity.repo.SensexStockDetailsRepositary;
-import stock.research.service.InteractiveInvestorsResearchService;
 import stock.research.service.ScreenerSensexStockResearchService;
-import stock.research.service.SensexStockResearchService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,14 +23,6 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     private static final Logger LOGGER = LoggerFactory.getLogger(Sensex500StocksCmdRunner.class);
 
-    @Autowired
-    private NyseEmailAlertMechanismService nyseEmailAlertMechanismService;
-
-    @Autowired
-    private SensexStockResearchService sensexStockResearchService;
-
-    @Autowired
-    private InteractiveInvestorsResearchService interactiveInvestorsResearchService;
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired

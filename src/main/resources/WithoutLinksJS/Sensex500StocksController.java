@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.SensexStockInfo;
-import stock.research.service.SensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
 
 import java.io.InputStream;
