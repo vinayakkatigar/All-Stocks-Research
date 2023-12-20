@@ -84,19 +84,13 @@ public class ScreenerSensexStockResearchService {
                         }catch (Exception e){
                             e.printStackTrace();
                         }try{
-                            Elements tablelements = doc.getElementsByClass("data-table");
-                            if (tablelements != null && tablelements.size() > 5 && tablelements.get(tablelements.size() - 1) != null){
-                                Elements trelements = tablelements.get(tablelements.size() - 1).getElementsByTag("tr");
-                                if (trelements != null && trelements.size() > 2 && trelements.get(2) != null){
-                                    Elements tdelements = trelements.get(2).getElementsByTag("td");
-                                        if (tdelements != null && tdelements.size() > 11 && tdelements.get(tdelements.size() - 1 ) != null){
-                                            sensexStockInfo.setFiiPct(getDoubleFromString(tdelements.get(tdelements.size() - 1 ).text()));
-                                        }
-                                    }
-                                }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                            Element divElement = doc.getElementById("quarterly-shp");
+                            Element tabElement = divElement.getElementsByClass("data-table").get(0);
+                            Elements tdElementList = tabElement.getElementsByTag("tr").get(1).getElementsByTag("td");
+                            if (tdElementList != null && tdElementList.size() > 0){
+                                sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
+                            }
+                        }catch (Exception e){}
                         try {
                             Elements companyInfoElements = doc.getElementsByClass("company-ratios");
                             if (companyInfoElements != null && companyInfoElements.size() > 0){

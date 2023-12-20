@@ -46,7 +46,7 @@ public class SensexStockInfo {
     private BigDecimal _52WeekLowPriceDiff =  BigDecimal.ZERO;
 
     @Column(name = "FII_PCT")
-    private Double fiiPct;
+    private Double fiiPct = 0d;
 
     @Transient
     private BigDecimal dailyPCTChange = BigDecimal.ZERO;
