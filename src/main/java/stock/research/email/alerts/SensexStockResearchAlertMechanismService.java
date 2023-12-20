@@ -39,8 +39,7 @@ import java.util.concurrent.Executors;
 
 import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.nullsLast;
+import static java.util.Comparator.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -134,9 +133,18 @@ public class SensexStockResearchAlertMechanismService {
 
             try {
                 List<SensexStockInfo> resultStockInfoList = new ArrayList<>(sensexStockDetailsWeeklyMap.values());
-                resultStockInfoList.sort(comparing(SensexStockInfo::get_52WeekHighLowPriceDiff).reversed());
+
+
+                resultStockInfoList.stream().filter(x -> x.getDailyPCTChange() == null).forEach(x -> x.setDailyPCTChange(BigDecimal.ZERO));
+                resultStockInfoList.sort(comparing(x -> {
+                    return Math.abs(x.getDailyPCTChange().doubleValue());
+                }, nullsLast(naturalOrder())));
+
+                Collections.reverse(resultStockInfoList);
+
                 StringBuilder dataBuffer = new StringBuilder("");
-                resultStockInfoList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+                resultStockInfoList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
+                        .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Daily Data ** "), false) && --retry >= 0);
             }catch (Exception e){
@@ -182,7 +190,7 @@ public class SensexStockResearchAlertMechanismService {
 
         try {
             StringBuilder dataBuffer = new StringBuilder("");
-            resultSensexList.sort(comparing(SensexStockInfo::getDailyPCTChange, nullsLast(Comparator.naturalOrder())).reversed());
+            resultSensexList.sort(comparing(SensexStockInfo::getDailyPCTChange, nullsLast(naturalOrder())).reversed());
             resultSensexList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);

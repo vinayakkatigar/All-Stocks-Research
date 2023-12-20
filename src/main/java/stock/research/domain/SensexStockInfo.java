@@ -49,7 +49,7 @@ public class SensexStockInfo {
     private Double fiiPct;
 
     @Transient
-    private BigDecimal dailyPCTChange;
+    private BigDecimal dailyPCTChange = BigDecimal.ZERO;
 
     @Column(name = "EPS")
     private Double eps;
