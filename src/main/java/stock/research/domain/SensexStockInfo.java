@@ -48,6 +48,9 @@ public class SensexStockInfo {
     @Column(name = "FII_PCT")
     private Double fiiPct;
 
+    @Transient
+    private BigDecimal dailyPCTChange;
+
     @Column(name = "EPS")
     private Double eps;
 
@@ -277,4 +280,11 @@ public class SensexStockInfo {
         this.id = id;
     }
 
+    public BigDecimal getDailyPCTChange() {
+        return dailyPCTChange;
+    }
+
+    public void setDailyPCTChange(BigDecimal dailyPCTChange) {
+        this.dailyPCTChange = dailyPCTChange;
+    }
 }

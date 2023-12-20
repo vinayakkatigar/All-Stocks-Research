@@ -40,6 +40,7 @@ import java.util.concurrent.Executors;
 import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
@@ -132,12 +133,15 @@ public class SensexStockResearchAlertMechanismService {
             });
 
             try {
+                List<SensexStockInfo> resultStockInfoList = new ArrayList<>(sensexStockDetailsWeeklyMap.values());
+                resultStockInfoList.sort(comparing(SensexStockInfo::get_52WeekHighLowPriceDiff).reversed());
                 StringBuilder dataBuffer = new StringBuilder("");
-                sensexStockDetailsWeeklyMap.values().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+                resultStockInfoList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Daily Data ** "), false) && --retry >= 0);
-            }catch (Exception e){ }
-
+            }catch (Exception e){
+                ERROR_LOGGER.error("Error -> ",e);
+            }
 
             List<SensexStockInfo> sensexStockDBInfoList = new ArrayList<>();
             sensexStockDetailsWeeklyMap.forEach((key,val) -> {
@@ -152,27 +156,40 @@ public class SensexStockResearchAlertMechanismService {
     private void kickOffScreenerEmailAlerts() {
         Instant instantBefore = Instant.now();
         LOGGER.info(Instant.now() + " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+        List<SensexStockInfo> resultSensexList = new ArrayList<>();
         try{
             List<SensexStockInfo> populatedSensexList = screenerSensexStockResearchService.populateStocksAttributes();
             Arrays.stream(StockCategory.values()).forEach(x -> {
                 generateAlertEmails(populatedSensexList,x, SIDE.SELL);
                 generateAlertEmails(populatedSensexList, x, SIDE.BUY);
             });
-
+            resultSensexList.addAll(populatedSensexList);
         }catch (Exception e){
             LOGGER.error("Error - ",e);
         }
 
         try {
             StringBuilder dataBuffer = new StringBuilder("");
-            screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+            resultSensexList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
-        }catch (Exception e){ }
+        }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
 
         writeSensexPayload();
 
         writeSensexInfoToDB();
+
+        try {
+            StringBuilder dataBuffer = new StringBuilder("");
+            resultSensexList.sort(comparing(SensexStockInfo::getDailyPCTChange, nullsLast(Comparator.naturalOrder())).reversed());
+            resultSensexList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
+        }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
 
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
     }

@@ -78,6 +78,9 @@ public class ScreenerSensexStockResearchService {
                         try{
                             Element topDiv = doc.getElementById("top");
                             sensexStockInfo.setStockName(topDiv.getElementsByTag("h1").get(0).text());
+                            String dailyPct = topDiv.getElementsByClass("font-size-12 down margin-left-4").get(0).text();
+                            dailyPct = dailyPct.replaceAll("%", "");
+                            sensexStockInfo.setDailyPCTChange(getBigDecimalFromString(dailyPct));
                         }catch (Exception e){
                             e.printStackTrace();
                         }try{
