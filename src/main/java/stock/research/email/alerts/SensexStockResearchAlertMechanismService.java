@@ -189,9 +189,16 @@ public class SensexStockResearchAlertMechanismService {
         writeSensexInfoToDB();
 
         try {
+            resultSensexList.stream().filter(x -> x.getDailyPCTChange() == null).forEach(x -> x.setDailyPCTChange(BigDecimal.ZERO));
+            resultSensexList.sort(comparing(x -> {
+                return Math.abs(x.getDailyPCTChange().doubleValue());
+            }, nullsLast(naturalOrder())));
+
+            Collections.reverse(resultSensexList);
+
             StringBuilder dataBuffer = new StringBuilder("");
-            resultSensexList.sort(comparing(SensexStockInfo::getDailyPCTChange, nullsLast(naturalOrder())).reversed());
-            resultSensexList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+            resultSensexList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
+                    .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
         }catch (Exception e){
