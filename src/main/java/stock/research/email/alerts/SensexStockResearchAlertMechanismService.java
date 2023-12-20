@@ -155,7 +155,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private void kickOffScreenerEmailAlerts() {
         Instant instantBefore = Instant.now();
-        LOGGER.info(Instant.now() + " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+        LOGGER.info( " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
         List<SensexStockInfo> resultSensexList = new ArrayList<>();
         try{
             List<SensexStockInfo> populatedSensexList = screenerSensexStockResearchService.populateStocksAttributes();
@@ -178,7 +178,6 @@ public class SensexStockResearchAlertMechanismService {
         }
 
         writeSensexPayload();
-
         writeSensexInfoToDB();
 
         try {
@@ -193,7 +192,6 @@ public class SensexStockResearchAlertMechanismService {
 
         LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
     }
-
 
     private void generateAlertEmails(List<SensexStockInfo> populatedSensexList, StockCategory stockCategory, SIDE side) {
         try {
@@ -251,7 +249,7 @@ public class SensexStockResearchAlertMechanismService {
             }
             LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::generateAlertEmails");
         } catch (Exception e) {
-            ERROR_LOGGER.error(Instant.now() + "<- , Error ->", e);
+            ERROR_LOGGER.error( "<- , Error ->", e);
         }
     }
 
@@ -411,7 +409,7 @@ public class SensexStockResearchAlertMechanismService {
                 });
             }
         } catch(Exception e) {
-            ERROR_LOGGER.error(Instant.now() + ", Error -> ", e);
+            ERROR_LOGGER.error( ", Error -> ", e);
             e.printStackTrace();
         }
     }
