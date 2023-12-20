@@ -100,7 +100,7 @@ public class SensexStockResearchUtility {
 
             "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead><tr><td>RankIndex</td><td>Name-Code(MktCap)<td>Market Price</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>FII(%)</td><td>Year Low Diff(%)\n" +
             " Buy</td><td>Year High Diff(%)\n" +
-            " Sell</td><td>P/E(EPS)</td><td>Book(P/B)</td></tr></thead>\n" +
+            " Sell</td><td>P/E(EPS)</td><td>Book(P/B)</td><td>% Change</td></tr></thead>\n" +
             "<tbody>";
 
     public static final String HTML_PORTFOLIO_START = "<html><head>\n"
@@ -390,6 +390,11 @@ public class SensexStockResearchUtility {
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.getP2eps() + SensexStockResearchUtility.START_BRACKET + x.getEps() + SensexStockResearchUtility.END_BRACKET + "</td>");
         dataBuffer.append("<td>" + x.getBv() + SensexStockResearchUtility.START_BRACKET + x.getP2bv() + SensexStockResearchUtility.END_BRACKET + "</td>");
+        if (x.getDailyPCTChange() != null && x.getDailyPCTChange().compareTo(BigDecimal.ZERO) < 0){
+            dataBuffer.append("<td style=\"background-color:#FFBA75\">" + x.getDailyPCTChange() + "</td>");
+        }else {
+            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getDailyPCTChange() + "</td>");
+        }
         dataBuffer.append("</tr>");
     }
 
