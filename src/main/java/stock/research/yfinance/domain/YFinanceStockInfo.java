@@ -52,9 +52,6 @@ public class YFinanceStockInfo {
     @Transient
     private String stockCode;
 
-    @Transient
-    private Double changePct;
-
     @Column(name = "CURRENT_MARKET_PRICE")
     private BigDecimal currentMarketPrice =  BigDecimal.ZERO;
 
@@ -115,7 +112,6 @@ public class YFinanceStockInfo {
     public Integer getStockRankIndex() {
         return stockRankIndex;
     }
-
     public void setStockRankIndex(Integer stockRankIndex) {
         this.stockRankIndex = stockRankIndex;
     }
@@ -222,35 +218,6 @@ public class YFinanceStockInfo {
         return Objects.hash(stockName);
     }
 
-    @Override
-    public String toString() {
-        return "GFinanceNYSEStockInfo{" +
-                "id=" + id +
-                ", stockName='" + stockName + '\'' +
-                ", stockRankIndex=" + stockRankIndex +
-                ", mktCapRealValue=" + mktCapRealValue +
-                ", mktCapFriendyValue='" + mktCapFriendyValue + '\'' +
-                ", currentMarketPrice=" + currentMarketPrice +
-                ", _52WeekLowPrice=" + _52WeekLowPrice +
-                ", _52WeekHighPrice=" + _52WeekHighPrice +
-                ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
-                ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
-                ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
-                ", p2e=" + p2e +
-                ", timestamp=" + timestamp +
-                ", stockTS=" + stockTS +
-                ", changePct=" + changePct +
-                '}';
-    }
-
-    public Double getChangePct() {
-        return changePct;
-    }
-
-    public void setChangePct(Double changePct) {
-        this.changePct = changePct;
-    }
-
     public Double getEps() {
         return eps;
     }
@@ -307,4 +274,30 @@ public class YFinanceStockInfo {
         this.dailyLowPrice = dailyLowPrice;
     }
 
+    @Override
+    public String toString() {
+        return "YFinanceStockInfo{" +
+                "id=" + id +
+                ", stockName='" + stockName + '\'' +
+                ", stockRankIndex=" + stockRankIndex +
+                ", mktCapRealValue=" + mktCapRealValue +
+                ", mktCapFriendyValue='" + mktCapFriendyValue + '\'' +
+                ", ccy='" + ccy + '\'' +
+                ", dividendRate=" + dividendRate +
+                ", stockCode='" + stockCode + '\'' +
+                ", currentMarketPrice=" + currentMarketPrice +
+                ", _52WeekLowPrice=" + _52WeekLowPrice +
+                ", _52WeekHighPrice=" + _52WeekHighPrice +
+                ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
+                ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
+                ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
+                ", p2e=" + p2e +
+                ", eps=" + eps +
+                ", timestamp=" + timestamp +
+                ", stockTS=" + stockTS +
+                ", dailyPctChange=" + dailyPctChange +
+                ", dailyHighPrice=" + dailyHighPrice +
+                ", dailyLowPrice=" + dailyLowPrice +
+                '}';
+    }
 }

@@ -309,12 +309,12 @@ public class YFEmailAlertService {
         dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
-        if (Double.compare(x.getChangePct().doubleValue() , 5d) >= 0){
-            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getChangePct()  + "</td>");
-        } else if (Double.compare(x.getChangePct().doubleValue() , -5d) <= 0){
-            dataBuffer.append("<td style=\"background-color:#cc0000\">" + x.getChangePct()  + "</td>");
+        if (Double.compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
+            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getDailyPctChange()  + "</td>");
+        } else if (Double.compare(x.getDailyPctChange().doubleValue() , -5d) <= 0){
+            dataBuffer.append("<td style=\"background-color:#cc0000\">" + x.getDailyPctChange()  + "</td>");
         }else {
-            dataBuffer.append("<td>" + x.getChangePct() + "</td>");
+            dataBuffer.append("<td>" + x.getDailyPctChange() + "</td>");
         }
         dataBuffer.append("<td>" + x.getP2e() + "</td>");
         dataBuffer.append("<td>" + x.getEps() + "</td>");
