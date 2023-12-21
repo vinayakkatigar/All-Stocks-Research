@@ -390,10 +390,14 @@ public class SensexStockResearchUtility {
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.getP2eps() + SensexStockResearchUtility.START_BRACKET + x.getEps() + SensexStockResearchUtility.END_BRACKET + "</td>");
         dataBuffer.append("<td>" + x.getBv() + SensexStockResearchUtility.START_BRACKET + x.getP2bv() + SensexStockResearchUtility.END_BRACKET + "</td>");
-        if (x.getDailyPCTChange() != null && x.getDailyPCTChange().compareTo(BigDecimal.ZERO) < 0){
-            dataBuffer.append("<td style=\"background-color:#FFBA75\">" + x.getDailyPCTChange() + "</td>");
+        if (x.getDailyPCTChange() != null && Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d){
+            if (x.getDailyPCTChange() != null && x.getDailyPCTChange().compareTo(BigDecimal.ZERO) < 0){
+                dataBuffer.append("<td style=\"background-color:#FFBA75\">" + x.getDailyPCTChange() + "</td>");
+            }else {
+                dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getDailyPCTChange() + "</td>");
+            }
         }else {
-            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getDailyPCTChange() + "</td>");
+            dataBuffer.append("<td>" + x.getDailyPCTChange() + "</td>");
         }
         dataBuffer.append("</tr>");
     }
