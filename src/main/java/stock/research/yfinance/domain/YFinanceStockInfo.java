@@ -85,6 +85,14 @@ public class YFinanceStockInfo {
     @Column(name = "STOCKTS")
     Timestamp stockTS;
 
+    @Transient
+    private BigDecimal dailyPctChange =  BigDecimal.ZERO;
+    @Transient
+    private BigDecimal dailyHighPrice =  BigDecimal.ZERO;
+
+    @Transient
+    private BigDecimal dailyLowPrice =  BigDecimal.ZERO;
+
     public YFinanceStockInfo() {
     }
 
@@ -274,4 +282,29 @@ public class YFinanceStockInfo {
     public void setDividendRate(Double dividendRate) {
         this.dividendRate = dividendRate;
     }
+
+    public BigDecimal getDailyPctChange() {
+        return dailyPctChange;
+    }
+
+    public void setDailyPctChange(BigDecimal dailyPctChange) {
+        this.dailyPctChange = dailyPctChange;
+    }
+
+    public BigDecimal getDailyHighPrice() {
+        return dailyHighPrice;
+    }
+
+    public void setDailyHighPrice(BigDecimal dailyHighPrice) {
+        this.dailyHighPrice = dailyHighPrice;
+    }
+
+    public BigDecimal getDailyLowPrice() {
+        return dailyLowPrice;
+    }
+
+    public void setDailyLowPrice(BigDecimal dailyLowPrice) {
+        this.dailyLowPrice = dailyLowPrice;
+    }
+
 }

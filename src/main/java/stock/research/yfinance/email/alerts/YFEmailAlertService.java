@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 import static java.lang.Thread.MAX_PRIORITY;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.util.Comparator.*;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockUtility.goSleep;
@@ -137,6 +139,44 @@ public class YFEmailAlertService {
         });
         executorService.shutdown();
     }
+
+
+    @Scheduled(cron = "0 5 7,23 ? * *", zone = "GMT")
+    public void kickOffYFNYSEPnlDailyEmailAlerts() {
+        Thread.currentThread().setPriority(MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(MAX_PRIORITY);
+
+            Instant instantBefore = now();
+            LOGGER.info(" <-  Started kickOffYFNYSEPnlDailyEmailAlerts" );
+
+            List<YFinanceStockInfo> yfStockInfoList = yfStockService.getYFStockInfoList(getStockCode("YF/NYSE.json"));
+
+            try {
+                writeToDB(yfStockInfoList);
+                writeToFile("NYSEDailyPnL", objectMapper.writeValueAsString(yfStockInfoList));
+            }catch (Exception e){}
+
+            yfStockInfoList.stream().filter(x -> x.getDailyPctChange() == null).forEach(x -> x.setDailyPctChange(BigDecimal.ZERO));
+            yfStockInfoList.sort(comparing(x -> {
+                return Math.abs(x.getDailyPctChange().doubleValue());
+            }, nullsLast(naturalOrder())));
+
+            Collections.reverse(yfStockInfoList);
+
+            yfStockInfoList = yfStockInfoList.stream().filter(x -> Math.abs(x.getDailyPctChange().doubleValue()) > 5d).collect(Collectors.toList());
+
+            StringBuilder subject = new StringBuilder("*** YF NYSE PnL Daily Data *** ");
+            generateDailyEmail(yfStockInfoList, subject);
+
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded YFinanceEmailAlertService::kickOffYFNYSEPnlDailyEmailAlerts"  );
+
+        });
+        executorService.shutdown();
+    }
+
 
     @Scheduled(cron = "0 8 1,15,18,22 ? * *", zone = "GMT")
     public void kickOffYFWorld1000EmailAlerts() {

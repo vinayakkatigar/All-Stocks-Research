@@ -34,6 +34,9 @@ public class YFStocksCmdRunner  implements CommandLineRunner {
         yfEmailAlertService.kickOffYFNYSEEmailAlerts();
 
         goSleep(120);
+        yfEmailAlertService.kickOffYFNYSEPnlDailyEmailAlerts();
+
+        goSleep(120);
         yfEmailAlertService.kickOffYFROWEmailAlerts();
 //        yfEmailAlertService.kickOffYFChinaEmailAlerts();
 

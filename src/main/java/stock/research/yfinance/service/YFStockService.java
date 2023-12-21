@@ -42,7 +42,7 @@ public class YFStockService {
 
     public List<YFinanceStockInfo> getYFStockInfoList(List<String> stockCodes) {
         List<YFinanceStockInfo> yFinanceStockInfoList = new ArrayList<>();
-        List<List<String>> partitionedCodes = Lists.partition(stockCodes, 10);
+        List<List<String>> partitionedCodes = Lists.partition(stockCodes, 40);
 
         partitionedCodes.forEach(stocksCode -> {
             try {
@@ -132,7 +132,17 @@ public class YFStockService {
                     if (x.getDividendRate() != null){
                         yFinanceStockInfo.setDividendRate(x.getDividendRate());
                     }
-
+                    if (x.getRegularMarketDayHigh() != null  && BigDecimal.valueOf(x.getRegularMarketDayHigh()).compareTo(BigDecimal.ZERO) > 0){
+                        yFinanceStockInfo.setDailyHighPrice(BigDecimal.valueOf(x.getRegularMarketDayHigh()));
+                    }
+                    if (x.getRegularMarketDayLow() != null  && BigDecimal.valueOf(x.getRegularMarketDayLow()).compareTo(BigDecimal.ZERO) > 0){
+                        yFinanceStockInfo.setDailyLowPrice(BigDecimal.valueOf(x.getRegularMarketDayLow()));
+                    }
+                    if (yFinanceStockInfo.getDailyHighPrice() != null && yFinanceStockInfo.getDailyHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                            yFinanceStockInfo.getDailyLowPrice() != null && ((yFinanceStockInfo.getDailyLowPrice())).compareTo(BigDecimal.ZERO) > 0){
+                        yFinanceStockInfo.setDailyPctChange(((yFinanceStockInfo.getDailyHighPrice().subtract(yFinanceStockInfo.getDailyLowPrice()).abs())
+                                .divide(yFinanceStockInfo.getDailyLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
+                    }
                 }catch (Exception e){
                     ERROR_LOGGER.error(stringfy(x) + "Error", e );
                 }
