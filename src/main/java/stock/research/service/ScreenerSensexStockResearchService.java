@@ -86,7 +86,13 @@ public class ScreenerSensexStockResearchService {
                         }try{
                             Element divElement = doc.getElementById("quarterly-shp");
                             Element tabElement = divElement.getElementsByClass("data-table").get(0);
-                            Elements tdElementList = tabElement.getElementsByTag("tr").get(1).getElementsByTag("td");
+                            Element trElement = null;
+                            for (Element ele : tabElement.getElementsByTag("tr")){
+                                if (ele.text().contains("FIIs")){
+                                    trElement = ele;
+                                }
+                            }
+                            Elements tdElementList = trElement.getElementsByTag("td");
                             if (tdElementList != null && tdElementList.size() > 0){
                                 sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
                             }
