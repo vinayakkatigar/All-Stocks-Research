@@ -26,6 +26,9 @@ timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1qijUJ91J-Qzuj2wI9RdWULOoq1XaZQMrAZOpWwbyt3Y/edit#gid=0
 timeout /t 30 /nobreak > NUL
 
+start chrome https://docs.google.com/spreadsheets/d/1V89w-xI5urpoBIcCAHeIoho0J1cJxkFzSQXmG04U85w/edit#gid=0
+timeout /t 30 /nobreak > NUL
+
 
 timeout /t 600 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
