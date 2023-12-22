@@ -147,6 +147,7 @@ public class SensexStockResearchAlertMechanismService {
                         .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Daily Data ** "), false) && --retry >= 0);
+                writeToFile("SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultStockInfoList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
             }catch (Exception e){
                 ERROR_LOGGER.error("Error -> ",e);
             }
