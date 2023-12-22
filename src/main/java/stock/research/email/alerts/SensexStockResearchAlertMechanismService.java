@@ -76,8 +76,6 @@ public class SensexStockResearchAlertMechanismService {
         executorService.submit(() -> {
 //            kickOffEmailAlerts();
             kickOffScreenerEmailAlerts();
-            writeSensexPayload();
-            writeSensexInfoToDB();
         });
         executorService.shutdown();
     }
@@ -165,7 +163,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private void kickOffScreenerEmailAlerts() {
         Instant instantBefore = Instant.now();
-        LOGGER.info( " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts");
+        LOGGER.info( " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts");
         List<SensexStockInfo> resultSensexList = new ArrayList<>();
         try{
             List<SensexStockInfo> populatedSensexList = screenerSensexStockResearchService.populateStocksAttributes();
@@ -213,7 +211,7 @@ public class SensexStockResearchAlertMechanismService {
             LOGGER.error("Error - ",e);
         }
 
-        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , Ended ScreenerSensexStockResearchAlertMechanismService::kickOffEmailAlerts" + Instant.now());
+        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , \nEnded ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts" );
     }
 
     private void generateAlertEmails(List<SensexStockInfo> populatedSensexList, StockCategory stockCategory, SIDE side) {
