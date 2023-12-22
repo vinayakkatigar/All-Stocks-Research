@@ -77,6 +77,7 @@ public class ScreenerSensexStockResearchService {
                         Document doc = Jsoup.parse(response.getBody());
                         try{
                             Element topDiv = doc.getElementById("top");
+                            sensexStockInfo.setStockName(topDiv.getElementsByTag("h1").get(0).text());
                             String dailyPct = null;
                             if (topDiv.getElementsByClass("font-size-12 down margin-left-4") != null
                                     && topDiv.getElementsByClass("font-size-12 down margin-left-4").size() > 0){
