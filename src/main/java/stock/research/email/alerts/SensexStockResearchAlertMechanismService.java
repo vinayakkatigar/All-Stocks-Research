@@ -192,7 +192,7 @@ public class SensexStockResearchAlertMechanismService {
         try {
             writeSensexPayload();
             writeSensexInfoToDB();
-            writeToFile("SCREENER_SENSEX", objectMapper.writeValueAsString(resultSensexList));
+            writeToFile("SCREENER_SENSEX_DAILY", objectMapper.writeValueAsString(resultSensexList));
         } catch (Exception e) {
             LOGGER.error("Error - ",e);
         }
