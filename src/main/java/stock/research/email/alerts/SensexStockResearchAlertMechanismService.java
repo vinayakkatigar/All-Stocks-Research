@@ -156,16 +156,8 @@ public class SensexStockResearchAlertMechanismService {
         sensexStockInfoWeeklyList = sensexStockInfoWeeklyList.stream().sorted(comparing(SensexStockInfo::getStockTS).reversed()).collect(toList());
 
         if (sensexStockInfoWeeklyList != null && sensexStockInfoWeeklyList.size() > 0){
-            Map<String, List<SensexStockInfo>> sensexStockInfoWeeklyMap = sensexStockInfoWeeklyList.stream().map(x -> {
-                Timestamp stockTS = x.getStockTS();
-                long difInMS = from(now()).getTime() - stockTS.getTime();
-                Long diffDays = difInMS / (1000  * 60 * 60 * 24);
-                if (diffDays <= 7){
-                    return x;
-                } else {
-                    return null;
-                }
-            }).filter(Objects::nonNull).collect(groupingBy(SensexStockInfo::getStockName));
+            Map<String, List<SensexStockInfo>> sensexStockInfoWeeklyMap = sensexStockInfoWeeklyList.stream().filter(Objects::nonNull)
+                    .filter(x -> x.getStockName() != null).collect(groupingBy(SensexStockInfo::getStockName));
 
             Map<String, SensexStockInfo> sensexStockDetailsWeeklyMap = new HashMap<>();
 
