@@ -454,6 +454,8 @@ public class SensexStockResearchAlertMechanismService {
             try {
                 sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
                 sensexStockInfo.setId(null);
+                LOGGER.info("writeSensexInfoToDB::About to write Sensex Stock Info ->" + sensexStockInfo);
+
                 sensexStockInfoRepositary.save(sensexStockInfo);
             }catch (Exception e){
                 LOGGER.error("Failed to write Sensex Stock Info", e);
@@ -467,6 +469,8 @@ public class SensexStockResearchAlertMechanismService {
             try {
                 sensexStockInfo.setId(null);
                 sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
+                LOGGER.info("writeSensexInfoListToDB::About to write Sensex Stock Info ->" + sensexStockInfo);
+
                 sensexStockInfoRepositary.save(sensexStockInfo);
             } catch (Exception e) {
                 LOGGER.error("Failed to write Sensex Stock Info", e);
