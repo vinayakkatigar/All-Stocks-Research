@@ -43,6 +43,8 @@ import static java.util.Comparator.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.*;
+import static stock.research.utility.StockUtility.goSleep;
+import static stock.research.utility.StockUtility.writeToFile;
 
 @Service
 public class SensexStockResearchAlertMechanismService {
@@ -185,10 +187,16 @@ public class SensexStockResearchAlertMechanismService {
             LOGGER.error("Error - ",e);
         }
 
-        writeSensexPayload();
-        writeSensexInfoToDB();
+        try {
+            writeSensexPayload();
+            writeSensexInfoToDB();
+            writeToFile("SCREENER_SENSEX", objectMapper.writeValueAsString(resultSensexList));
+        } catch (Exception e) {
+            LOGGER.error("Error - ",e);
+        }
 
         try {
+            goSleep(90);
             resultSensexList.stream().filter(x -> x.getDailyPCTChange() == null).forEach(x -> x.setDailyPCTChange(BigDecimal.ZERO));
             resultSensexList.sort(comparing(x -> {
                 return Math.abs(x.getDailyPCTChange().doubleValue());
