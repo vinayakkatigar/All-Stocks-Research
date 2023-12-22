@@ -48,7 +48,7 @@ public class SensexStockInfo {
     @Column(name = "FII_PCT")
     private Double fiiPct = 0d;
 
-    @Transient
+    @Column(name = "DAILY_PCT_CHANGE")
     private BigDecimal dailyPCTChange = BigDecimal.ZERO;
 
     @Column(name = "EPS")
