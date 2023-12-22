@@ -133,21 +133,24 @@ public class SensexStockResearchAlertMechanismService {
 
             try {
                 List<SensexStockInfo> resultStockInfoList = new ArrayList<>(sensexStockDetailsWeeklyMap.values());
-
-
                 resultStockInfoList.stream().filter(x -> x.getDailyPCTChange() == null).forEach(x -> x.setDailyPCTChange(BigDecimal.ZERO));
+                resultStockInfoList.stream().filter(x -> x.get_52WeekHighLowPriceDiff() == null).forEach(x -> x.set_52WeekHighLowPriceDiff(BigDecimal.ZERO));
                 resultStockInfoList.sort(comparing(x -> {
-                    return Math.abs(x.getDailyPCTChange().doubleValue());
+                    return Math.abs(x.get_52WeekHighLowPriceDiff().doubleValue());
                 }, nullsLast(naturalOrder())));
 
                 Collections.reverse(resultStockInfoList);
 
                 StringBuilder dataBuffer = new StringBuilder("");
-                resultStockInfoList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
+                resultStockInfoList.stream().filter(x -> Math.abs(x.get_52WeekHighLowPriceDiff().doubleValue()) >= 20d)
                         .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
-                while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Daily Data ** "), false) && --retry >= 0);
-                writeToFile("SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultStockInfoList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
+                while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Data **"), false) && --retry >= 0);
+                try {
+                    writeToFile("SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(resultStockInfoList.stream().filter(x -> Math.abs(x.get_52WeekHighLowPriceDiff().doubleValue()) >= 20d)));
+                }catch (Exception e){
+                    ERROR_LOGGER.error("Error -> ",e);
+                }
             }catch (Exception e){
                 ERROR_LOGGER.error("Error -> ",e);
             }
@@ -208,6 +211,10 @@ public class SensexStockResearchAlertMechanismService {
                     .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
+            try {
+                writeToFile("SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultSensexList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
+            }catch (Exception e){ }
+
         }catch (Exception e){
             LOGGER.error("Error - ",e);
         }
