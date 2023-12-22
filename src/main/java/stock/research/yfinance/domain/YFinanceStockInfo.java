@@ -80,18 +80,18 @@ public class YFinanceStockInfo {
     private Instant timestamp;
 
     @Column(name = "STOCKTS")
-    Timestamp stockTS;
+    private Timestamp stockTS;
 
-    @Transient
+    @Column(name = "DAILY_PCT_CHANGE")
     private BigDecimal dailyPctChange =  BigDecimal.ZERO;
-    @Transient
+
+    @Column(name = "DAILY_HIGH_PRICE")
     private BigDecimal dailyHighPrice =  BigDecimal.ZERO;
 
-    @Transient
+    @Column(name = "DAILY_LOW_PRICE")
     private BigDecimal dailyLowPrice =  BigDecimal.ZERO;
 
-    public YFinanceStockInfo() {
-    }
+    public YFinanceStockInfo() { }
 
     public Long getId() {
         return id;
