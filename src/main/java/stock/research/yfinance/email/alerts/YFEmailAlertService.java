@@ -56,8 +56,8 @@ public class YFEmailAlertService {
     private YFinanceStockInfoRepositary yFinanceStockInfoRepositary;
 
 
-//    @Scheduled(cron = "0 30 1,8,14,23 ? * *", zone = "GMT")
-    @Scheduled(cron = "0 22 6,14,23 ? * *", zone = "GMT")
+//    //@Scheduled(cron = "0 30 1,8,14,23 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 22 6,14,23 ? * *", zone = "GMT")
     public void kickOffYFROWEmailAlerts() throws Exception {
 
         Thread.currentThread().setPriority(MAX_PRIORITY);
@@ -104,7 +104,7 @@ public class YFEmailAlertService {
 
     }
 
-    @Scheduled(cron = "0 8 1,15,18,21,23 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 8 1,15,18,21,23 ? * *", zone = "GMT")
     public void kickOffYFNYSEEmailAlerts() {
         Thread.currentThread().setPriority(MAX_PRIORITY);
 
@@ -136,7 +136,7 @@ public class YFEmailAlertService {
     }
 
 
-    @Scheduled(cron = "0 5 7,23 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 5 7,23 ? * *", zone = "GMT")
     public void kickOffYFNYSEPnlDailyEmailAlerts() {
         Thread.currentThread().setPriority(MAX_PRIORITY);
 
@@ -176,7 +176,7 @@ public class YFEmailAlertService {
     }
 
 
-    @Scheduled(cron = "0 8 1,15,18,22 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 8 1,15,18,22 ? * *", zone = "GMT")
     public void kickOffYFWorld1000EmailAlerts() {
         Thread.currentThread().setPriority(MAX_PRIORITY);
 
@@ -208,7 +208,7 @@ public class YFEmailAlertService {
         executorService.shutdown();
     }
 
-//    @Scheduled(cron = "0 30 3,13,21 ? * *", zone = "GMT")
+//    //@Scheduled(cron = "0 30 3,13,21 ? * *", zone = "GMT")
     public void kickOffYFChinaEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info(now() + " <-  Started kickOffYFChinaEmailAlerts::kickOffYFChinaEmailAlerts" );
