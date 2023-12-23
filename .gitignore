@@ -7,3 +7,5 @@ logs/*
 logs/
 genFiles/*
 genFiles/
+genHtml/*
+genHtml/
