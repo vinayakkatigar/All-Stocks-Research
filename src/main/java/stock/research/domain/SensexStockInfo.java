@@ -100,6 +100,7 @@ public class SensexStockInfo {
                 ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
                 ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
                 ", fiiPct=" + fiiPct +
+                ", dailyPCTChange=" + dailyPCTChange +
                 ", eps=" + eps +
                 ", p2eps=" + p2eps +
                 ", bv=" + bv +
