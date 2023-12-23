@@ -66,6 +66,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> watchListUrl = new HashMap<>();
     private Map<String, String> hongKongUrl = new HashMap<>();
     private Map<String, String> swissUrl = new HashMap<>();
+    private Map<String, String> euroUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -86,6 +87,7 @@ public class GFinanceEmailAlertService {
         watchListUrl.put("Vin-Watchlist", "1V89w-xI5urpoBIcCAHeIoho0J1cJxkFzSQXmG04U85w");
         hongKongUrl.put("Vin-HongKong", "1cOJOjVE49DCjFFMq7JFdmDeOFcf3MzwV2hl6K7gyX9g");
         swissUrl.put("Vin-Switzerland", "1FybDb-TiZ1T10HUDxwVoWvQj2WHAQZG5RWqzQUX2MTI");
+        euroUrl.put("Vin-Euro", "1q4PG03AHihCXg1wGHO6bKYaczyOxqW-T0BgUjJ4axJo");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
@@ -100,7 +102,8 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(watchListUrl);
         gFinanceStockService.getGFStockInfoList(hongKongUrl);
         gFinanceStockService.getGFStockInfoList(swissUrl);
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh" + now() );
+        gFinanceStockService.getGFStockInfoList(euroUrl);
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh"  );
     }
 
     @Scheduled(cron = "0 10 0,4,9,18,22 ? * MON-SAT", zone = "GMT")
@@ -126,7 +129,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {}
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts"  );
 
         });
         executorService.shutdown();
@@ -155,7 +158,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {}
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFASXEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFASXEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -181,7 +184,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {}
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -208,7 +211,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {}
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFFTSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFFTSEEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -238,7 +241,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {}
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -268,7 +271,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {}
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -301,7 +304,7 @@ public class GFinanceEmailAlertService {
                 writeToFile("GF-NYSE", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {}
 
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts"  );
         });
         executorService.shutdown();
 
@@ -345,7 +348,7 @@ public class GFinanceEmailAlertService {
                 writeToFile("GF-HongKong", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {}
 
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceHongKongEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceHongKongEmailAlerts"  );
         });
         executorService.shutdown();
 
@@ -378,7 +381,39 @@ public class GFinanceEmailAlertService {
                 ERROR_LOGGER.error("Error -", e);
             }
 
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceSwitzerlandEmailAlerts" + now() );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceSwitzerlandEmailAlerts"  );
+        });
+        executorService.shutdown();
+    }
+
+    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
+    public void kickOffGoogleFinanceEUROEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Instant instantBefore = now();
+            LOGGER.info(" <-  Started kickOffGoogleFinanceEUROEmailAlerts::kickOffGoogleFinanceEUROEmailAlerts" );
+            final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(euroUrl);
+/*
+        Arrays.stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
+        });
+*/
+            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF EURO " + SIDE.BUY + " Alerts ***"));
+            LOGGER.info(" <-  Ended kickOffGoogleFinanceEUROEmailAlerts::kickOffGoogleFinanceEUROEmailAlerts" );
+
+            StringBuilder subject = new StringBuilder("*** GF EURO Daily Data *** ");
+            generateDailyEmail(gFinanceStockInfoList, subject);
+            try {
+                writeToDB(gFinanceStockInfoList);
+                writeToFile("GF-EURO", objectMapper.writeValueAsString(gFinanceStockInfoList));
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
+
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceEUROEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -390,7 +425,7 @@ public class GFinanceEmailAlertService {
         LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" );
         final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream().filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> Math.abs(x.getChangePct()) >= 5d).collect(toList());
 
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" + now() );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE Daily Winners & Losers *** "));
     }
 
