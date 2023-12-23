@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 import static java.math.BigDecimal.ZERO;
@@ -39,8 +37,8 @@ import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.NyseStockResearchUtility.*;
+import static stock.research.utility.StockResearchUtility.friendlyMktCap;
 import static stock.research.utility.StockUtility.goSleep;
-import static stock.research.yfinance.utility.YFinanceNyseStockUtility.friendlyMktCap;
 
 @Service
 public class GFinanceStockService {
