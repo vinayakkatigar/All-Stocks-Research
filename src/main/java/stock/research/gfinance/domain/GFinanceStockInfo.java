@@ -77,7 +77,7 @@ public class GFinanceStockInfo {
     private String timestamp;
 
     @Column(name = "STOCKTS")
-    Timestamp stockTS;
+    private Timestamp stockTS;
 
     @Column(name = "DAILY_PCT_CHANGE")
     private BigDecimal dailyPctChange =  BigDecimal.ZERO;
@@ -87,7 +87,6 @@ public class GFinanceStockInfo {
 
     @Column(name = "DAILY_LOW_PRICE")
     private BigDecimal dailyLowPrice =  BigDecimal.ZERO;
-
 
     public GFinanceStockInfo() {
     }
