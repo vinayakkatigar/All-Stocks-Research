@@ -553,7 +553,7 @@ public class GFinanceEmailAlertService {
         try {
             googleFinanceStockDetailsRepositary.save(new GoogleFinanceStockDetails(Timestamp.from(Instant.now()), objectMapper.writeValueAsString(gFinanceStockInfoList), ""+Instant.now(), country));
         }catch (Exception e){
-            ERROR_LOGGER.error("GF DB inserts", e);
+            ERROR_LOGGER.error("GF DB Payload inserts", e);
         }
     }
 
