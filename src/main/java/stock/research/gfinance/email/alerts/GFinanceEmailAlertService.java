@@ -539,7 +539,7 @@ public class GFinanceEmailAlertService {
         List<GFinanceStockInfo> stockInfoPctList = new ArrayList<>(stockInfoList);
 
         stockInfoPctList.sort(Comparator.comparing(x -> {
-            return Math.abs(x.getChangePct());
+            return Math.abs(x.getDailyPctChange().doubleValue());
         }));
 
         reverse(stockInfoPctList);
