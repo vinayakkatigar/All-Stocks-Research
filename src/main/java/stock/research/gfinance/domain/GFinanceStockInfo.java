@@ -85,6 +85,9 @@ public class GFinanceStockInfo {
     @Column(name = "DAILY_LOW_PRICE")
     private BigDecimal dailyLowPrice =  BigDecimal.ZERO;
 
+    @Column(name = "COUNTRY")
+    private String country;
+
     public GFinanceStockInfo() {
     }
 
@@ -242,6 +245,7 @@ public class GFinanceStockInfo {
                 ", dailyPctChange=" + dailyPctChange +
                 ", dailyHighPrice=" + dailyHighPrice +
                 ", dailyLowPrice=" + dailyLowPrice +
+                ", country='" + country + '\'' +
                 '}';
     }
 
@@ -269,4 +273,11 @@ public class GFinanceStockInfo {
         this.dailyLowPrice = dailyLowPrice;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 }

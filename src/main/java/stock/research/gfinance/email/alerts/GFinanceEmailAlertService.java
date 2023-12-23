@@ -114,6 +114,7 @@ public class GFinanceEmailAlertService {
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
 
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(watchListUrl);
+            stockInfoList.stream().forEach(x -> x.setCountry("GF-WATCHLIST"));
             List<GFinanceStockInfo> stockInfoPctList = sortByDailyPCTChange(stockInfoList);
 
             generateAlertEmails(stockInfoPctList, SIDE.BUY, new StringBuilder("*** GF WatchList " + SIDE.BUY + " Alerts ***"));
@@ -144,6 +145,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(asxUrl);
+            stockInfoList.stream().forEach(x -> x.setCountry("GF-AUSTRALIA"));
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF ASX " + SIDE.BUY + " Alerts ***"));
 //        });
@@ -171,6 +173,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(germanUrl);
+            stockInfoList.stream().forEach(x -> x.setCountry("GF-GERMANY"));
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF Germany " + SIDE.BUY + " Alerts ***"));
 //        });
@@ -198,6 +201,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(ftseUrl);
+            stockInfoList.stream().forEach(x -> x.setCountry("GF-FTSE"));
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF FTSE " + SIDE.BUY + " Alerts ***"));
 //        });
@@ -227,6 +231,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
             final List<GFinanceStockInfo> gfPortfolioList = gFinanceStockService.getGFStockInfoList(nseUrlInfo);
+            gfPortfolioList.stream().forEach(x -> x.setCountry("GF-NSE"));
             gfPortfolioList.sort(Comparator.comparing(GFinanceStockInfo::getMktCapRealValue).reversed());
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gfPortfolioList, SIDE.BUY, new StringBuilder("*** GF NSE " + SIDE.BUY + " Alerts ***"));
@@ -256,7 +261,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
             final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(portfolioUrl));
-
+            gfPortfolioList.stream().forEach(x -> x.setCountry("GF-PORTFOLIO"));
             stream(SIDE.values()).forEach(x -> {
                 generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF Portfolio " + x + " Alerts ***"));
             });
@@ -285,7 +290,8 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceNYSEEmailAlerts" );
             final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
-/*
+            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-NYSE"));
+            /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
@@ -329,7 +335,8 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceHongKongEmailAlerts" );
             final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(hongKongUrl);
-/*
+            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-HONGKONG"));
+            /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
@@ -361,7 +368,8 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceSwitzerlandEmailAlerts" );
             final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(swissUrl);
-/*
+            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-SWITZERLAND"));
+            /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
@@ -393,7 +401,8 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGoogleFinanceEUROEmailAlerts::kickOffGoogleFinanceEUROEmailAlerts" );
             final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(euroUrl);
-/*
+            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-EURO"));
+            /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
         });
@@ -421,7 +430,7 @@ public class GFinanceEmailAlertService {
         Instant instantBefore = now();
         LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" );
         final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream().filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> Math.abs(x.getDailyPctChange().doubleValue()) >= 5d).collect(toList());
-
+        gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-NYSE"));
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE Daily Winners & Losers *** "));
     }
