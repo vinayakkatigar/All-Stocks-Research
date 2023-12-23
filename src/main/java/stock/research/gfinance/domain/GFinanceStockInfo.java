@@ -79,6 +79,16 @@ public class GFinanceStockInfo {
     @Column(name = "STOCKTS")
     Timestamp stockTS;
 
+    @Column(name = "DAILY_PCT_CHANGE")
+    private BigDecimal dailyPctChange =  BigDecimal.ZERO;
+
+    @Column(name = "DAILY_HIGH_PRICE")
+    private BigDecimal dailyHighPrice =  BigDecimal.ZERO;
+
+    @Column(name = "DAILY_LOW_PRICE")
+    private BigDecimal dailyLowPrice =  BigDecimal.ZERO;
+
+
     public GFinanceStockInfo() {
     }
 
@@ -217,23 +227,26 @@ public class GFinanceStockInfo {
 
     @Override
     public String toString() {
-        return "GFinanceNYSEStockInfo{" +
+        return "GFinanceStockInfo{" +
                 "id=" + id +
                 ", stockName='" + stockName + '\'' +
                 ", stockRankIndex=" + stockRankIndex +
                 ", mktCapRealValue=" + mktCapRealValue +
                 ", mktCapFriendyValue='" + mktCapFriendyValue + '\'' +
+                ", changePct=" + changePct +
+                ", ccy='" + ccy + '\'' +
                 ", currentMarketPrice=" + currentMarketPrice +
                 ", _52WeekLowPrice=" + _52WeekLowPrice +
                 ", _52WeekHighPrice=" + _52WeekHighPrice +
                 ", _52WeekHighLowPriceDiff=" + _52WeekHighLowPriceDiff +
                 ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
-                ", ccy=" + ccy +
                 ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
                 ", p2e=" + p2e +
-                ", timestamp=" + timestamp +
+                ", timestamp='" + timestamp + '\'' +
                 ", stockTS=" + stockTS +
-                ", changePct=" + changePct +
+                ", dailyPctChange=" + dailyPctChange +
+                ", dailyHighPrice=" + dailyHighPrice +
+                ", dailyLowPrice=" + dailyLowPrice +
                 '}';
     }
 
@@ -244,4 +257,29 @@ public class GFinanceStockInfo {
     public void setChangePct(Double changePct) {
         this.changePct = changePct;
     }
+
+    public BigDecimal getDailyPctChange() {
+        return dailyPctChange;
+    }
+
+    public void setDailyPctChange(BigDecimal dailyPctChange) {
+        this.dailyPctChange = dailyPctChange;
+    }
+
+    public BigDecimal getDailyHighPrice() {
+        return dailyHighPrice;
+    }
+
+    public void setDailyHighPrice(BigDecimal dailyHighPrice) {
+        this.dailyHighPrice = dailyHighPrice;
+    }
+
+    public BigDecimal getDailyLowPrice() {
+        return dailyLowPrice;
+    }
+
+    public void setDailyLowPrice(BigDecimal dailyLowPrice) {
+        this.dailyLowPrice = dailyLowPrice;
+    }
+
 }
