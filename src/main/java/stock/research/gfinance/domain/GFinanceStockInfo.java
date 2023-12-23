@@ -47,9 +47,6 @@ public class GFinanceStockInfo {
     private String mktCapFriendyValue;
 
     @Transient
-    private Double changePct;
-
-    @Transient
     private String ccy;
 
     @Column(name = "CURRENT_MARKET_PRICE")
@@ -232,7 +229,6 @@ public class GFinanceStockInfo {
                 ", stockRankIndex=" + stockRankIndex +
                 ", mktCapRealValue=" + mktCapRealValue +
                 ", mktCapFriendyValue='" + mktCapFriendyValue + '\'' +
-                ", changePct=" + changePct +
                 ", ccy='" + ccy + '\'' +
                 ", currentMarketPrice=" + currentMarketPrice +
                 ", _52WeekLowPrice=" + _52WeekLowPrice +
@@ -247,14 +243,6 @@ public class GFinanceStockInfo {
                 ", dailyHighPrice=" + dailyHighPrice +
                 ", dailyLowPrice=" + dailyLowPrice +
                 '}';
-    }
-
-    public Double getChangePct() {
-        return changePct;
-    }
-
-    public void setChangePct(Double changePct) {
-        this.changePct = changePct;
     }
 
     public BigDecimal getDailyPctChange() {
