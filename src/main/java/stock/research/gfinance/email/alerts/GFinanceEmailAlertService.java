@@ -122,9 +122,9 @@ public class GFinanceEmailAlertService {
             generateAlertEmails(stockInfoPctList, SIDE.BUY, new StringBuilder("*** GF WatchList " + SIDE.BUY + " Alerts ***"));
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF WatchList Daily Data *** "));
 
-            writeToDB(stockInfoList);
 
             try {
+                writeToDB(stockInfoList);
                 writeToFile("GF-WatchList", objectMapper.writeValueAsString(stockInfoList));
             } catch (Exception e) {}
 
@@ -151,9 +151,9 @@ public class GFinanceEmailAlertService {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF ASX " + SIDE.BUY + " Alerts ***"));
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF ASX Daily Data *** "));
-            writeToDB(stockInfoList);
 
             try {
+                writeToDB(stockInfoList);
                 writeToFile("GF-ASX", objectMapper.writeValueAsString(stockInfoList));
             } catch (Exception e) {}
 
@@ -178,8 +178,8 @@ public class GFinanceEmailAlertService {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF Germany " + SIDE.BUY + " Alerts ***"));
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF Germany Daily Data *** "));
-            writeToDB(stockInfoList);
             try {
+                writeToDB(stockInfoList);
                 writeToFile("GF-Germany", objectMapper.writeValueAsString(stockInfoList));
             } catch (Exception e) {}
 
@@ -205,8 +205,8 @@ public class GFinanceEmailAlertService {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF FTSE " + SIDE.BUY + " Alerts ***"));
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF FTSE Daily Data *** "));
-            writeToDB(stockInfoList);
             try {
+                writeToDB(stockInfoList);
                 writeToFile("GF-FTSE", objectMapper.writeValueAsString(stockInfoList));
             } catch (Exception e) {}
 
@@ -235,8 +235,8 @@ public class GFinanceEmailAlertService {
             generateAlertEmails(gfPortfolioList, SIDE.BUY, new StringBuilder("*** GF NSE " + SIDE.BUY + " Alerts ***"));
 //        });
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Daily Data *** "));
-            writeToDB(gfPortfolioList);
             try {
+                writeToDB(gfPortfolioList);
                 writeToFile("GF-NSE", objectMapper.writeValueAsString(gfPortfolioList));
             } catch (Exception e) {}
 
@@ -265,8 +265,8 @@ public class GFinanceEmailAlertService {
             });
 
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF Portfolio Daily Data ** "));
-            writeToDB(gfPortfolioList);
             try {
+                writeToDB(gfPortfolioList);
                 writeToFile("GF-Portfolio", objectMapper.writeValueAsString(gfPortfolioList));
             } catch (Exception e) {}
 
@@ -299,8 +299,8 @@ public class GFinanceEmailAlertService {
 
             StringBuilder subject = new StringBuilder("*** GF NYSE Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
-            writeToDB(gFinanceStockInfoList);
             try {
+                writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-NYSE", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {}
 
@@ -343,8 +343,8 @@ public class GFinanceEmailAlertService {
 
             StringBuilder subject = new StringBuilder("*** GF HongKong Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
-            writeToDB(gFinanceStockInfoList);
             try {
+                writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-HongKong", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {}
 
@@ -374,8 +374,8 @@ public class GFinanceEmailAlertService {
 
             StringBuilder subject = new StringBuilder("*** GF Switzerland Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
-            writeToDB(gFinanceStockInfoList);
             try {
+                writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-Switzerland", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
@@ -496,12 +496,12 @@ public class GFinanceEmailAlertService {
         dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, RoundingMode.HALF_UP) + "</td>");
         dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
-        if (compare(x.getChangePct().doubleValue() , 5d) >= 0){
-            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getChangePct()  + "</td>");
-        } else if (compare(x.getChangePct().doubleValue() , -5d) <= 0){
-            dataBuffer.append("<td style=\"background-color:#cc0000\">" + x.getChangePct()  + "</td>");
+        if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
+            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getDailyPctChange()  + "</td>");
+        } else if (compare(x.getDailyPctChange().doubleValue() , -5d) <= 0){
+            dataBuffer.append("<td style=\"background-color:#cc0000\">" + x.getDailyPctChange()  + "</td>");
         }else {
-            dataBuffer.append("<td>" + x.getChangePct() + "</td>");
+            dataBuffer.append("<td>" + x.getDailyPctChange() + "</td>");
         }
         dataBuffer.append("<td>" + x.getP2e() + "</td>");
         dataBuffer.append("</tr>");
