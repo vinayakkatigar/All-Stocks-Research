@@ -90,7 +90,7 @@ public class GFinanceStockInfo {
     private String country;
 
     @Transient
-    private Instant stockInstane;
+    private Instant stockInstant;
 
     public GFinanceStockInfo() {
     }
@@ -285,11 +285,11 @@ public class GFinanceStockInfo {
         this.country = country;
     }
 
-    public Instant getStockInstane() {
-        return stockInstane;
+    public Instant getStockInstant() {
+        return stockInstant;
     }
 
-    public void setStockInstane(Instant stockInstane) {
-        this.stockInstane = stockInstane;
+    public void setStockInstant(Instant stockInstant) {
+        this.stockInstant = stockInstant;
     }
 }
