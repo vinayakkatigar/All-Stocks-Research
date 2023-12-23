@@ -10,7 +10,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
+import stock.research.gfinance.domain.GoogleFinanceStockDetails;
 import stock.research.gfinance.repo.GFinanceStockInfoRepositary;
+import stock.research.gfinance.repo.GoogleFinanceStockDetailsRepositary;
 import stock.research.gfinance.service.GFinanceStockService;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +21,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -53,6 +56,8 @@ public class GFinanceEmailAlertService {
     private GFinanceStockService gFinanceStockService;
     @Autowired
     private GFinanceStockInfoRepositary gFinanceStockInfoRepositary;
+    @Autowired
+    private GoogleFinanceStockDetailsRepositary googleFinanceStockDetailsRepositary;
 
     private Map<String, String> nyseUrlInfo = new HashMap<>();
     private Map<String, String> nseUrlInfo = new HashMap<>();
@@ -122,9 +127,12 @@ public class GFinanceEmailAlertService {
 
 
             try {
+                writeGFPayloadToDB(stockInfoList, "GF-WATCHLIST");
                 writeToDB(stockInfoList);
                 writeToFile("GF-WatchList", objectMapper.writeValueAsString(stockInfoList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFWatchListEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFWatchListEmailAlerts"  );
@@ -152,9 +160,12 @@ public class GFinanceEmailAlertService {
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF ASX Daily Data *** "));
 
             try {
+                writeGFPayloadToDB(stockInfoList, "GF-AUSTRALIA");
                 writeToDB(stockInfoList);
                 writeToFile("GF-ASX", objectMapper.writeValueAsString(stockInfoList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFASXEmailAlerts"  );
@@ -179,9 +190,12 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF Germany Daily Data *** "));
             try {
+                writeGFPayloadToDB(stockInfoList, "GF-GERMANY");
                 writeToDB(stockInfoList);
                 writeToFile("GF-Germany", objectMapper.writeValueAsString(stockInfoList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts"  );
@@ -207,9 +221,12 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(stockInfoList, new StringBuilder("*** GF FTSE Daily Data *** "));
             try {
+                writeGFPayloadToDB(stockInfoList, "GF-FTSE");
                 writeToDB(stockInfoList);
                 writeToFile("GF-FTSE", objectMapper.writeValueAsString(stockInfoList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFFTSEEmailAlerts"  );
@@ -238,9 +255,12 @@ public class GFinanceEmailAlertService {
 //        });
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Daily Data *** "));
             try {
+                writeGFPayloadToDB(gfPortfolioList, "GF-NSE");
                 writeToDB(gfPortfolioList);
                 writeToFile("GF-NSE", objectMapper.writeValueAsString(gfPortfolioList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEEmailAlerts"  );
@@ -268,9 +288,12 @@ public class GFinanceEmailAlertService {
 
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF Portfolio Daily Data ** "));
             try {
+                writeGFPayloadToDB(gfPortfolioList, "GF-PORTFOLIO");
                 writeToDB(gfPortfolioList);
                 writeToFile("GF-Portfolio", objectMapper.writeValueAsString(gfPortfolioList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFPortfolioEmailAlerts" );
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFPortfolioEmailAlerts"  );
@@ -303,15 +326,16 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF NYSE Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             try {
+                writeGFPayloadToDB(gFinanceStockInfoList, "GF-NYSE");
                 writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-NYSE", objectMapper.writeValueAsString(gFinanceStockInfoList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts"  );
         });
         executorService.shutdown();
-
-
     }
 
     @Scheduled(cron = "0 25 7,17,21,23 ? * MON-SAT", zone = "GMT")
@@ -348,9 +372,12 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF HongKong Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             try {
+                writeGFPayloadToDB(gFinanceStockInfoList, "GF-HONGKONG");
                 writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-HongKong", objectMapper.writeValueAsString(gFinanceStockInfoList));
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
 
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceHongKongEmailAlerts"  );
         });
@@ -380,6 +407,7 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF Switzerland Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             try {
+                writeGFPayloadToDB(gFinanceStockInfoList, "GF-SWITZERLAND");
                 writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-Switzerland", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
@@ -413,6 +441,7 @@ public class GFinanceEmailAlertService {
             StringBuilder subject = new StringBuilder("*** GF EURO Daily Data *** ");
             generateDailyEmail(gFinanceStockInfoList, subject);
             try {
+                writeGFPayloadToDB(gFinanceStockInfoList, "GF-EURO");
                 writeToDB(gFinanceStockInfoList);
                 writeToFile("GF-EURO", objectMapper.writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
@@ -516,6 +545,13 @@ public class GFinanceEmailAlertService {
     private void writeToDB(List<GFinanceStockInfo> gFinanceStockInfoList) {
         try {
             gFinanceStockInfoList.forEach(x -> gFinanceStockInfoRepositary.save(x));
+        }catch (Exception e){
+            ERROR_LOGGER.error("GF DB inserts", e);
+        }
+    }
+    private void writeGFPayloadToDB(List<GFinanceStockInfo> gFinanceStockInfoList, String country) {
+        try {
+            googleFinanceStockDetailsRepositary.save(new GoogleFinanceStockDetails(Timestamp.from(Instant.now()), objectMapper.writeValueAsString(gFinanceStockInfoList), ""+Instant.now(), country));
         }catch (Exception e){
             ERROR_LOGGER.error("GF DB inserts", e);
         }
