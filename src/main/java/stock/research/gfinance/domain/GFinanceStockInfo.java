@@ -3,6 +3,7 @@ package stock.research.gfinance.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -87,6 +88,9 @@ public class GFinanceStockInfo {
 
     @Column(name = "COUNTRY")
     private String country;
+
+    @Transient
+    private Instant stockInstane;
 
     public GFinanceStockInfo() {
     }
@@ -279,5 +283,13 @@ public class GFinanceStockInfo {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Instant getStockInstane() {
+        return stockInstane;
+    }
+
+    public void setStockInstane(Instant stockInstane) {
+        this.stockInstane = stockInstane;
     }
 }
