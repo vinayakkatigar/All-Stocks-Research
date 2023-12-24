@@ -32,6 +32,9 @@ public class GoogleFinanceStockDetails {
         this.country = country;
     }
 
+    public GoogleFinanceStockDetails() {
+    }
+
     @Override
     public String toString() {
         return "GoogleFinanceStockDetails{" +
