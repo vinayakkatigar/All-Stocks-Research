@@ -170,7 +170,7 @@ public class ScreenerSensexStockResearchService {
                             sensexStockInfo.setFiiPct(0.0);
                         }
 
-                        sensexStockInfo.setQuoteTS(Instant.now().toString());
+                        sensexStockInfo.setQuoteInstant(Instant.now().toString());
                         sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
 
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
@@ -195,7 +195,7 @@ public class ScreenerSensexStockResearchService {
             int i =1;
             for (SensexStockInfo x : resultSensexStockInfosList){
                 x.setStockTS(Timestamp.from(Instant.now()));
-                x.setQuoteTS("" + Instant.now());
+                x.setQuoteInstant("" + Instant.now());
                 x.setStockRankIndex(i++);
             }
 
