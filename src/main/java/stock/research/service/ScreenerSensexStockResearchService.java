@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -168,9 +169,9 @@ public class ScreenerSensexStockResearchService {
                         if (sensexStockInfo.getFiiPct() == null){
                             sensexStockInfo.setFiiPct(0.0);
                         }
-                        System.out.println(" @@@@@@ "+sensexStockInfo);
 
-                        sensexStockInfo.setTimestamp(Instant.now().toString());
+                        sensexStockInfo.setQuoteTS(Instant.now().toString());
+                        sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
 
                         if (isException == false) populatedSensexStockInfosList.add(sensexStockInfo);
                         LOGGER.info(populatedSensexStockInfosList.size() + " <- Size::" + sensexStockInfo.toString());
@@ -193,6 +194,8 @@ public class ScreenerSensexStockResearchService {
 
             int i =1;
             for (SensexStockInfo x : resultSensexStockInfosList){
+                x.setStockTS(Timestamp.from(Instant.now()));
+                x.setQuoteTS("" + Instant.now());
                 x.setStockRankIndex(i++);
             }
 

@@ -64,7 +64,7 @@ public class SensexStockInfo {
     private Double p2bv;
 
     @Column(name = "QUOTETS")
-    private String timestamp;
+    private String quoteTS;
 
     @Column(name = "STOCKTS")
     Timestamp stockTS;
@@ -105,7 +105,7 @@ public class SensexStockInfo {
                 ", p2eps=" + p2eps +
                 ", bv=" + bv +
                 ", p2bv=" + p2bv +
-                ", timestamp='" + timestamp + '\'' +
+                ", timestamp='" + quoteTS + '\'' +
                 ", stockTS=" + stockTS +
                 '}';
     }
@@ -138,12 +138,12 @@ public class SensexStockInfo {
                 Objects.equals(getP2eps(), that.getP2eps()) &&
                 Objects.equals(getBv(), that.getBv()) &&
                 Objects.equals(getP2bv(), that.getP2bv()) &&
-                Objects.equals(getTimestamp(), that.getTimestamp());
+                Objects.equals(getQuoteTS(), that.getQuoteTS());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStockName(), getStockURL(), getStockRankIndex(), getStockMktCap(), getCurrentMarketPrice(), get_52WeekLowPrice(), get_52WeekHighPrice(), get_52WeekHighLowPriceDiff(), get_52WeekHighPriceDiff(), get_52WeekLowPriceDiff(), getFiiPct(), getEps(), getP2eps(), getBv(), getP2bv(), getTimestamp());
+        return Objects.hash(getStockName(), getStockURL(), getStockRankIndex(), getStockMktCap(), getCurrentMarketPrice(), get_52WeekLowPrice(), get_52WeekHighPrice(), get_52WeekHighLowPriceDiff(), get_52WeekHighPriceDiff(), get_52WeekLowPriceDiff(), getFiiPct(), getEps(), getP2eps(), getBv(), getP2bv(), getQuoteTS());
     }
 
     public String getStockName() {
@@ -265,12 +265,12 @@ public class SensexStockInfo {
         this.p2bv = p2bv;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getQuoteTS() {
+        return quoteTS;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setQuoteTS(String quoteTS) {
+        this.quoteTS = quoteTS;
     }
 
     public Long getId() {
