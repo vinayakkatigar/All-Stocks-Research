@@ -3,6 +3,7 @@ package stock.research.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -68,6 +69,9 @@ public class SensexStockInfo {
 
     @Column(name = "STOCKTS")
     Timestamp stockTS;
+
+    @Transient
+    private Instant stockInstant;
 
     public SensexStockInfo(String stockName, String stockURL, Integer stockRankIndex, Double stockMktCap) {
         this.stockName = stockName;
@@ -287,5 +291,13 @@ public class SensexStockInfo {
 
     public void setDailyPCTChange(BigDecimal dailyPCTChange) {
         this.dailyPCTChange = dailyPCTChange;
+    }
+
+    public Instant getStockInstant() {
+        return stockInstant;
+    }
+
+    public void setStockInstant(Instant stockInstant) {
+        this.stockInstant = stockInstant;
     }
 }
