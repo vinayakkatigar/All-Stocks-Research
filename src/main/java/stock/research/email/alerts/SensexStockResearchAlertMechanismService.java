@@ -75,6 +75,23 @@ public class SensexStockResearchAlertMechanismService {
 
     private List<String> pfStockName = new ArrayList<>();
 
+
+    @PostConstruct
+    public void setUp(){
+        try {
+            CsvMapper csvMapper = new CsvMapper();
+            CsvSchema schema = csvMapper.typedSchemaFor(PortfolioInfo.class).withHeader();
+            MappingIterator<PortfolioInfo  > portfolioInfoMappingIterator = csvMapper.readerFor(PortfolioInfo.class).with(schema)
+                    .readValues(new ClassPathResource("SensexPortFolioEqtSummary.csv").getFile());
+
+            portfolioInfoList = portfolioInfoMappingIterator.readAll();
+            portfolioInfoList.stream().filter(x -> x.getUnrealizedProfitNLoss() < 0).forEach(x -> x.setUnrealizedProfitNLossPct(-1 * x.getUnrealizedProfitNLossPct()));
+            portfolioInfoList.sort(Comparator.comparing(PortfolioInfo::getUnrealizedProfitNLoss).reversed());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Scheduled(cron = "0 35 1,9,16,23 ? * *", zone = "GMT")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();

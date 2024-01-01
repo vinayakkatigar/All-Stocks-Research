@@ -1,10 +1,7 @@
 package stock.research.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -43,8 +39,6 @@ public class ScreenerSensexStockResearchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScreenerSensexStockResearchService.class);
     @Autowired
     private ObjectMapper objectMapper;
-
-    private static List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
     public static List<SensexStockInfo> getCacheScreenerSensexStockInfosList() {
         return cacheScreenerSensexStockInfosList;
@@ -295,22 +289,6 @@ public class ScreenerSensexStockResearchService {
         }
 
         return response;
-    }
-
-    @PostConstruct
-    public void setUp(){
-        try {
-            CsvMapper csvMapper = new CsvMapper();
-            CsvSchema schema = csvMapper.typedSchemaFor(PortfolioInfo.class).withHeader();
-            MappingIterator<PortfolioInfo  > portfolioInfoMappingIterator = csvMapper.readerFor(PortfolioInfo.class).with(schema)
-                    .readValues(new ClassPathResource("SensexPortFolioEqtSummary.csv").getFile());
-
-            portfolioInfoList = portfolioInfoMappingIterator.readAll();
-            portfolioInfoList.stream().filter(x -> x.getUnrealizedProfitNLoss() < 0).forEach(x -> x.setUnrealizedProfitNLossPct(-1 * x.getUnrealizedProfitNLossPct()));
-            portfolioInfoList.sort(Comparator.comparing(PortfolioInfo::getUnrealizedProfitNLoss).reversed());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
 }
