@@ -460,6 +460,11 @@ public class SensexStockResearchAlertMechanismService {
 
     private void writeSensexPayload() {
         try {
+            screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().stream().forEach(x -> {
+                x.setStockTS(Timestamp.from(Instant.now()));
+                x.setQuoteInstant("" + Instant.now());
+                x.setId(null);
+            });
             SensexStockDetails sensexStockDetails = new SensexStockDetails();
             sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
             sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
@@ -474,6 +479,7 @@ public class SensexStockResearchAlertMechanismService {
         screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach( sensexStockInfo -> {
             try {
                 sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
+                sensexStockInfo.setQuoteInstant("" + (Instant.now()));
                 sensexStockInfo.setId(null);
                 sensexStockInfoRepositary.save(sensexStockInfo);
             }catch (Exception e){
