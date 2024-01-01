@@ -164,6 +164,7 @@ public class SensexStockResearchAlertMechanismService {
 
             final List<SensexStockInfo> sensexStockList = new CopyOnWriteArrayList<>();
             final List<SensexStockInfo> weeklyStockAlertList = new CopyOnWriteArrayList<>();
+            List<SensexStockInfo> sortedWeeklyStockAlertList = new ArrayList<>();
             sensexStockInfoWeeklyList.stream().forEach(x ->{
                 try {
                     x.setSensexStocksPayload(x.getSensexStocksPayload().replaceAll("timestamp", "quoteInstant"));
@@ -215,6 +216,7 @@ public class SensexStockResearchAlertMechanismService {
                 });
 
                 try {
+                    sortedWeeklyStockAlertList = weeklyStockAlertList.stream().sorted(comparing(SensexStockInfo::getStockRankIndex)).collect(toList());
                     StockUtility.writeToFile(Instant.now().toEpochMilli() + "SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -223,7 +225,7 @@ public class SensexStockResearchAlertMechanismService {
 
             try {
                 StringBuilder dataBuffer = new StringBuilder("");
-                weeklyStockAlertList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+                sortedWeeklyStockAlertList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
                 while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Weekly PNL Data ** "), false) && --retry >= 0);
             }catch (Exception e){
