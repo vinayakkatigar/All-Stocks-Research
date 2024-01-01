@@ -15,7 +15,7 @@ public class StockUtility {
 
     public static void writeToFile(String fileName, String fileContent){
         try {
-            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\" + fileName  + ".json"), fileContent.getBytes());
+            Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\" + Instant.now().toEpochMilli() + fileName  + ".json"), fileContent.getBytes());
         } catch (Exception e) { }
     }
 }

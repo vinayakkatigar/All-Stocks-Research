@@ -111,7 +111,7 @@ public class SensexStockResearchAlertMechanismService {
         try {
             writeSensexPayload();
             writeSensexInfoToDB();
-            writeToFile(Instant.now().toEpochMilli() + "SCREENER_SENSEX_DAILY", objectMapper.writeValueAsString(resultSensexList));
+            writeToFile( "SCREENER_SENSEX_DAILY", objectMapper.writeValueAsString(resultSensexList));
         } catch (Exception e) {
             LOGGER.error("Error - ",e);
         }
@@ -131,7 +131,7 @@ public class SensexStockResearchAlertMechanismService {
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
             try {
-                writeToFile(Instant.now().toEpochMilli() + "SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultSensexList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
+                writeToFile( "SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultSensexList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
             }catch (Exception e){ }
 
         }catch (Exception e){
@@ -216,7 +216,7 @@ public class SensexStockResearchAlertMechanismService {
 
                 try {
                     sortedWeeklyStockAlertList = weeklyStockAlertList.stream().sorted(comparing(SensexStockInfo::getStockRankIndex)).collect(toList());
-                    StockUtility.writeToFile(Instant.now().toEpochMilli() + "SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
+                    StockUtility.writeToFile( "SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
