@@ -76,22 +76,6 @@ public class SensexStockResearchAlertMechanismService {
     private List<String> pfStockName = new ArrayList<>();
 
 
-    @PostConstruct
-    public void setUp(){
-        try {
-            CsvMapper csvMapper = new CsvMapper();
-            CsvSchema schema = csvMapper.typedSchemaFor(PortfolioInfo.class).withHeader();
-            MappingIterator<PortfolioInfo  > portfolioInfoMappingIterator = csvMapper.readerFor(PortfolioInfo.class).with(schema)
-                    .readValues(new ClassPathResource("SensexPortFolioEqtSummary.csv").getFile());
-
-            portfolioInfoList = portfolioInfoMappingIterator.readAll();
-            portfolioInfoList.stream().filter(x -> x.getUnrealizedProfitNLoss() < 0).forEach(x -> x.setUnrealizedProfitNLossPct(-1 * x.getUnrealizedProfitNLossPct()));
-            portfolioInfoList.sort(Comparator.comparing(PortfolioInfo::getUnrealizedProfitNLoss).reversed());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     @Scheduled(cron = "0 35 1,9,16,23 ? * *", zone = "GMT")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -364,9 +348,7 @@ public class SensexStockResearchAlertMechanismService {
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Large Cap Alert**");
                             }
-                            if ((checkPortfolioSizeAndQty(x.getStockName()))){
-                                generateTableContents(dataBuffer, x);
-                            }
+                            generateTableContents(dataBuffer, x);
                         }
                     }
                     if (stockCategory == StockCategory.MID_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
@@ -376,9 +358,7 @@ public class SensexStockResearchAlertMechanismService {
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Mid Cap Alert**");
                             }
-                            if ((checkPortfolioSizeAndQty(x.getStockName()))){
-                                generateTableContents(dataBuffer, x);
-                            }
+                            generateTableContents(dataBuffer, x);
                         }
                     }
                     if (stockCategory == StockCategory.SMALL_CAP && side == SIDE.SELL && x.get_52WeekHighPriceDiff() != null
@@ -388,9 +368,7 @@ public class SensexStockResearchAlertMechanismService {
                             if ("".equalsIgnoreCase(subjectBuffer.toString())){
                                 subjectBuffer.append("** Sensex Sell Small Cap Alert**");
                             }
-                            if ((checkPortfolioSizeAndQty(x.getStockName()))){
-                                generateTableContents(dataBuffer, x);
-                            }
+                            generateTableContents(dataBuffer, x);
                         }
                     }
                 }
@@ -512,30 +490,15 @@ public class SensexStockResearchAlertMechanismService {
 
     }
 
-    private void writeSensexInfoListToDB(List<SensexStockInfo> sensexStockInfoList) {
-        sensexStockInfoList.forEach(sensexStockInfo -> {
-            try {
-                sensexStockInfo.setId(null);
-                sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
-                sensexStockInfoRepositary.save(sensexStockInfo);
-            } catch (Exception e) {
-                LOGGER.error("Failed to write Sensex Stock Info", e);
-            }
-        });
-    }
-
-
-    private SensexStockInfo addAndRemoveSpecifiedDates(List<SensexStockInfo> weeklyPnlSensexStockList,  Instant instant, int i) {
+    private SensexStockInfo addAndRemoveSpecifiedDates(List<SensexStockInfo> weeklyPnlSensexStockList, Instant instant, int i) {
 
         Map<String, List<SensexStockInfo>> stockDates = new LinkedHashMap<>();
         List<SensexStockInfo> dates = new CopyOnWriteArrayList<>();
         List<SensexStockInfo> dups = new CopyOnWriteArrayList<>();
         aa:
         for (SensexStockInfo x : weeklyPnlSensexStockList) {
-//            System.out.println("checking for ->" +x.getStockInstant());
             if ((Duration.between(x.getStockInstant(), instant).toDays() == i)) {
                 if (dates.size() ==0){
-//                    System.out.println("ADDED for ->" +x.getStockInstant());
                     dates.add(x);
                     dups.add(x);
                     return x;
