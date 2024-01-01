@@ -35,6 +35,7 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -109,7 +110,10 @@ public class SensexStockResearchAlertMechanismService {
         }
 
         try {
-            writeSensexPayload();
+            LocalDateTime ldt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+            if (ldt.getHour() <= 4 && ldt.getHour() > 11){
+                writeSensexPayload();
+            }
             writeSensexInfoToDB();
             writeToFile( "SCREENER_SENSEX_DAILY", objectMapper.writeValueAsString(resultSensexList));
         } catch (Exception e) {
