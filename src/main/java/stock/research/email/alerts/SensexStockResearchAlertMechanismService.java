@@ -1,5 +1,7 @@
 package stock.research.email.alerts;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -21,19 +23,21 @@ import stock.research.entity.repo.SensexStockDetailsRepositary;
 import stock.research.entity.repo.SensexStockInfoRepositary;
 import stock.research.service.ScreenerSensexStockResearchService;
 import stock.research.utility.SensexStockResearchUtility;
+import stock.research.utility.StockUtility;
 
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -63,7 +67,7 @@ public class SensexStockResearchAlertMechanismService {
     private ScreenerSensexStockResearchService screenerSensexStockResearchService;
 
     @Autowired
-    private SensexStockDetailsRepositary sensexStockRepositary;
+    private SensexStockDetailsRepositary sensexStockDetailsRepositary;
 
     @Autowired
     private SensexStockInfoRepositary sensexStockInfoRepositary;
@@ -138,81 +142,97 @@ public class SensexStockResearchAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 35 1,6 ? * *", zone = "GMT")
-    public void kickOffScreenerWeeklyPnLEmailAlerts() {
-        List<SensexStockInfo> sensexStockInfoList = new ArrayList<>();
-        sensexStockInfoRepositary.findAll().forEach(sensexStockInfoList::add);
+    @Scheduled(cron = "0 35 1,20 ? * *", zone = "GMT")
+    public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
 
-        List<SensexStockInfo> sensexStockInfoWeeklyList = sensexStockInfoList.stream().filter(x -> {
-            long difInMS = from(now()).getTime() - x.getStockTS().getTime();
-            Long diffDays = difInMS / (1000  * 60 * 60 * 24);
-            if (diffDays  <= 7){
-                return true;
-            }else {
-                return false;
-            }
-        }).collect(toList());
+            List<SensexStockDetails> sensexStockInfoList = new CopyOnWriteArrayList<>();
+            sensexStockDetailsRepositary.findAll().forEach(sensexStockInfoList::add);
 
-        sensexStockInfoWeeklyList = sensexStockInfoWeeklyList.stream().sorted(comparing(SensexStockInfo::getStockTS).reversed()).collect(toList());
-
-        if (sensexStockInfoWeeklyList != null && sensexStockInfoWeeklyList.size() > 0){
-            Map<String, List<SensexStockInfo>> sensexStockInfoWeeklyMap = sensexStockInfoWeeklyList.stream().filter(Objects::nonNull)
-                    .filter(x -> x.getStockName() != null).collect(groupingBy(SensexStockInfo::getStockName));
-
-            Map<String, SensexStockInfo> sensexStockDetailsWeeklyMap = new HashMap<>();
-
-            sensexStockInfoWeeklyMap.forEach((key,val) -> {
-                SensexStockInfo sensexStockInfoMax = val.stream().
-                        max(comparing(SensexStockInfo::getCurrentMarketPrice)).get();
-                SensexStockInfo sensexStockInfoMin = val.stream().
-                        min(comparing(SensexStockInfo::getCurrentMarketPrice)).get();
-
-                if (sensexStockInfoMax.getCurrentMarketPrice() != null && sensexStockInfoMax.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        sensexStockInfoMin.getCurrentMarketPrice() != null && sensexStockInfoMin.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0){
-
-                    sensexStockInfoMax.set_52WeekHighPrice(sensexStockInfoMax.getCurrentMarketPrice());
-                    sensexStockInfoMax.set_52WeekLowPrice(sensexStockInfoMin.getCurrentMarketPrice());
-                    sensexStockInfoMax.set_52WeekHighLowPriceDiff(((sensexStockInfoMax.getCurrentMarketPrice().subtract(sensexStockInfoMin.getCurrentMarketPrice()))
-                            .divide(sensexStockInfoMin.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
+            List<SensexStockDetails> sensexStockInfoWeeklyList = sensexStockInfoList.stream().filter(x -> {
+                long difInMS = from(now()).getTime() - x.getStockTS().getTime();
+                Long diffDays = difInMS / (1000  * 60 * 60 * 24);
+                if (diffDays  <= 7){
+                    return true;
+                }else {
+                    return false;
                 }
-                if (sensexStockInfoMax.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.valueOf(20l)) >= 0){
-                    sensexStockInfoMax.setCurrentMarketPrice(val.get(0).getCurrentMarketPrice());
-                    sensexStockDetailsWeeklyMap.put(key, sensexStockInfoMax);
+            }).collect(toList());
+
+            sensexStockInfoWeeklyList.stream().sorted(comparing(SensexStockDetails::getStockTS).reversed());
+
+            final List<SensexStockInfo> sensexStockList = new CopyOnWriteArrayList<>();
+            final List<SensexStockInfo> weeklyStockAlertList = new CopyOnWriteArrayList<>();
+            sensexStockInfoWeeklyList.stream().forEach(x ->{
+                try {
+                    x.setSensexStocksPayload(x.getSensexStocksPayload().replaceAll("timestamp", "quoteInstant"));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    sensexStockList.addAll( objectMapper.readValue(x.getSensexStocksPayload(), new TypeReference<List<SensexStockInfo>>(){}));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
+
+            List<SensexStockInfo> resultSensexStockList = new CopyOnWriteArrayList<>(sensexStockList);
+            resultSensexStockList.forEach(x -> {
+                x.setStockInstant(Instant.parse(x.getQuoteInstant()));
+            });
+
+            resultSensexStockList = resultSensexStockList.stream().sorted(comparing(SensexStockInfo::getStockInstant).reversed()).collect(toList());
+
+            if (resultSensexStockList != null && resultSensexStockList.size() > 0) {
+                Map<String, List<SensexStockInfo>> sensexStockInfoWeeklyMap = resultSensexStockList.stream().filter(Objects::nonNull)
+                        .filter(x -> x.getStockName() != null).collect(groupingBy(SensexStockInfo::getStockName));
+
+                sensexStockInfoWeeklyMap.forEach((key, weeklyPnlSensexStockList) -> {
+                    weeklyPnlSensexStockList.stream().sorted(comparing(SensexStockInfo::getStockInstant).reversed());
+                    weeklyPnlSensexStockList = weeklyPnlSensexStockList.stream().sorted(comparing(SensexStockInfo::getStockInstant).reversed()).collect(toList());
+
+                    List<SensexStockInfo> weeklyPnl = new CopyOnWriteArrayList<>();
+                    Instant instant = Instant.now();
+
+                    for (int i = 1; i < 8; i++) {
+                        weeklyPnl.add(  addAndRemoveSpecifiedDates(weeklyPnlSensexStockList, instant, i));
+                    }
+
+                    final BigDecimal[] pct = {BigDecimal.ZERO};
+                    weeklyPnl.stream().filter(Objects::nonNull).forEach(x -> {
+                        System.out.println(x.getDailyPCTChange());
+                        pct[0] = pct[0].add(x.getDailyPCTChange());
+                    });
+
+                    weeklyPnl = weeklyPnl.stream().filter(Objects::nonNull).sorted(comparing(SensexStockInfo::getStockInstant).reversed()).collect(toList());
+
+                    if (pct[0].compareTo(BigDecimal.valueOf(20l)) >= 0){
+                        weeklyPnl.get(0).setDailyPCTChange(pct[0]);
+                        weeklyStockAlertList.add(weeklyPnl.get(0));
+                    }
+
+                });
+
+                try {
+                    StockUtility.writeToFile("SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             try {
-                List<SensexStockInfo> resultStockInfoList = new ArrayList<>(sensexStockDetailsWeeklyMap.values());
-                resultStockInfoList.stream().filter(x -> x.getDailyPCTChange() == null).forEach(x -> x.setDailyPCTChange(BigDecimal.ZERO));
-                resultStockInfoList.stream().filter(x -> x.get_52WeekHighLowPriceDiff() == null).forEach(x -> x.set_52WeekHighLowPriceDiff(BigDecimal.ZERO));
-                resultStockInfoList.sort(comparing(x -> {
-                    return Math.abs(x.get_52WeekHighLowPriceDiff().doubleValue());
-                }, nullsLast(naturalOrder())));
-
-                Collections.reverse(resultStockInfoList);
-
                 StringBuilder dataBuffer = new StringBuilder("");
-                resultStockInfoList.stream().filter(x -> Math.abs(x.get_52WeekHighLowPriceDiff().doubleValue()) >= 20d)
-                        .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+                weeklyStockAlertList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
                 int retry = 3;
-                while (!sendEmail(dataBuffer, new StringBuilder("** Screener Weekly PnL Data **"), false) && --retry >= 0);
-                try {
-                    writeToFile("SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(resultStockInfoList.stream().filter(x -> Math.abs(x.get_52WeekHighLowPriceDiff().doubleValue()) >= 20d)));
-                }catch (Exception e){
-                    ERROR_LOGGER.error("Error -> ",e);
-                }
+                while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Weekly PNL Data ** "), false) && --retry >= 0);
             }catch (Exception e){
-                ERROR_LOGGER.error("Error -> ",e);
+                LOGGER.error("Error - ",e);
             }
 
-            List<SensexStockInfo> sensexStockDBInfoList = new ArrayList<>();
-            sensexStockDetailsWeeklyMap.forEach((key,val) -> {
-                val.setId(null);
-                sensexStockDBInfoList.add(val);
-            });
+        });
+        executorService.shutdown();
 
-            writeSensexInfoListToDB(sensexStockDBInfoList);
-        }
     }
 
     private void generateAlertEmails(List<SensexStockInfo> populatedSensexList, StockCategory stockCategory, SIDE side) {
@@ -442,7 +462,7 @@ public class SensexStockResearchAlertMechanismService {
             SensexStockDetails sensexStockDetails = new SensexStockDetails();
             sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
             sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
-            sensexStockRepositary.save(sensexStockDetails);
+            sensexStockDetailsRepositary.save(sensexStockDetails);
         }catch (Exception e){
             LOGGER.error("Failed to write Sensex Stock Details", e);
         }
@@ -472,6 +492,37 @@ public class SensexStockResearchAlertMechanismService {
                 LOGGER.error("Failed to write Sensex Stock Info", e);
             }
         });
+    }
+
+
+    private SensexStockInfo addAndRemoveSpecifiedDates(List<SensexStockInfo> weeklyPnlSensexStockList,  Instant instant, int i) {
+
+        Map<String, List<SensexStockInfo>> stockDates = new LinkedHashMap<>();
+        List<SensexStockInfo> dates = new CopyOnWriteArrayList<>();
+        List<SensexStockInfo> dups = new CopyOnWriteArrayList<>();
+        aa:
+        for (SensexStockInfo x : weeklyPnlSensexStockList) {
+//            System.out.println("checking for ->" +x.getStockInstant());
+            if ((Duration.between(x.getStockInstant(), instant).toDays() == i)) {
+                if (dates.size() ==0){
+//                    System.out.println("ADDED for ->" +x.getStockInstant());
+                    dates.add(x);
+                    dups.add(x);
+                    return x;
+                }else {
+                    dups.add(x);
+                }
+            }
+        }
+
+        weeklyPnlSensexStockList.removeAll(dups);
+        if (dates.size() > 1){
+            weeklyPnlSensexStockList.add(dates.get(1));
+        }
+        if (dates.size() > 0)
+            return dates.get(0);
+
+        return null;
     }
 
 }
