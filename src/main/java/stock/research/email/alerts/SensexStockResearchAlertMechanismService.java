@@ -202,7 +202,6 @@ public class SensexStockResearchAlertMechanismService {
 
                     final BigDecimal[] pct = {BigDecimal.ZERO};
                     weeklyPnl.stream().filter(Objects::nonNull).forEach(x -> {
-                        System.out.println(x.getDailyPCTChange());
                         pct[0] = pct[0].add(x.getDailyPCTChange());
                     });
 
