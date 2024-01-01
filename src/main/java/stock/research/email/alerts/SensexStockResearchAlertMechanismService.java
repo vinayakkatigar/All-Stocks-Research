@@ -232,7 +232,6 @@ public class SensexStockResearchAlertMechanismService {
 
         });
         executorService.shutdown();
-
     }
 
     private void generateAlertEmails(List<SensexStockInfo> populatedSensexList, StockCategory stockCategory, SIDE side) {
