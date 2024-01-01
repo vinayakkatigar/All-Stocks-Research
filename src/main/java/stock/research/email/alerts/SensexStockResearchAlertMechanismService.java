@@ -204,8 +204,10 @@ public class SensexStockResearchAlertMechanismService {
                         weeklyPnl.add(  addAndRemoveSpecifiedDates(weeklyPnlSensexStockList, instant, i));
                     }
 
+                    StringBuffer changePct = new StringBuffer("");
                     final BigDecimal[] pct = {BigDecimal.ZERO};
                     weeklyPnl.stream().filter(Objects::nonNull).forEach(x -> {
+                        changePct.append(" - " + x.getDailyPCTChange() );
                         pct[0] = pct[0].add(x.getDailyPCTChange());
                     });
 
@@ -213,6 +215,7 @@ public class SensexStockResearchAlertMechanismService {
 
                     if ((Math.abs(pct[0].doubleValue()) >= 20 )){
                         weeklyPnl.get(0).setDailyPCTChange(pct[0]);
+                        weeklyPnl.get(0).setStockName(weeklyPnl.get(0).getStockName() + changePct.toString());
                         weeklyStockAlertList.add(weeklyPnl.get(0));
                     }
 
