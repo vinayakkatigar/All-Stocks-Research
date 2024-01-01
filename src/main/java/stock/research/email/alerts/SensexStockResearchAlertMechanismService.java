@@ -207,7 +207,7 @@ public class SensexStockResearchAlertMechanismService {
 
                     weeklyPnl = weeklyPnl.stream().filter(Objects::nonNull).sorted(comparing(SensexStockInfo::getStockInstant).reversed()).collect(toList());
 
-                    if (pct[0].compareTo(BigDecimal.valueOf(20l)) >= 0){
+                    if ((Math.abs(pct[0].doubleValue()) >= 20 )){
                         weeklyPnl.get(0).setDailyPCTChange(pct[0]);
                         weeklyStockAlertList.add(weeklyPnl.get(0));
                     }
