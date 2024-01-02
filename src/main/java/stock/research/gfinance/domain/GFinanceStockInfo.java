@@ -16,7 +16,7 @@ public class GFinanceStockInfo {
     @SequenceGenerator(sequenceName = "GFINANCE_NYSE_STOCK_INFO_ID_SEQ", allocationSize = 1, name = "GFINANCE_NYSE_STOCK_INFO_ID_SEQ")
     Long id;
 
-    public GFinanceStockInfo(String stockName, Double mktCapRealValue, String mktCapFriendyValue, BigDecimal currentMarketPrice, BigDecimal _52WeekLowPrice, BigDecimal _52WeekHighPrice, BigDecimal _52WeekHighLowPriceDiff, BigDecimal _52WeekHighPriceDiff, BigDecimal _52WeekLowPriceDiff, Double p2e, String timestamp, Timestamp stockTS) {
+    public GFinanceStockInfo(String stockName, Double mktCapRealValue, String mktCapFriendyValue, BigDecimal currentMarketPrice, BigDecimal _52WeekLowPrice, BigDecimal _52WeekHighPrice, BigDecimal _52WeekHighLowPriceDiff, BigDecimal _52WeekHighPriceDiff, BigDecimal _52WeekLowPriceDiff, Double p2e, String quoteInstant, Timestamp stockTS) {
         this.stockName = stockName;
         this.mktCapRealValue = mktCapRealValue;
         this.mktCapFriendyValue = mktCapFriendyValue;
@@ -27,7 +27,7 @@ public class GFinanceStockInfo {
         this._52WeekHighPriceDiff = _52WeekHighPriceDiff;
         this._52WeekLowPriceDiff = _52WeekLowPriceDiff;
         this.p2e = p2e;
-        this.timestamp = timestamp;
+        this.quoteInstant = quoteInstant;
         this.stockTS = stockTS;
     }
 
@@ -72,7 +72,7 @@ public class GFinanceStockInfo {
     private Double p2e;
 
     @Column(name = "QUOTETS")
-    private String timestamp;
+    private String quoteInstant;
 
     @Column(name = "STOCKTS")
     private Timestamp stockTS;
@@ -183,12 +183,12 @@ public class GFinanceStockInfo {
         this.p2e = p2e;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getQuoteInstant() {
+        return quoteInstant;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setQuoteInstant(String quoteInstant) {
+        this.quoteInstant = quoteInstant;
     }
 
     public Timestamp getStockTS() {
@@ -244,7 +244,7 @@ public class GFinanceStockInfo {
                 ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
                 ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
                 ", p2e=" + p2e +
-                ", timestamp='" + timestamp + '\'' +
+                ", timestamp='" + quoteInstant + '\'' +
                 ", stockTS=" + stockTS +
                 ", dailyPctChange=" + dailyPctChange +
                 ", dailyHighPrice=" + dailyHighPrice +
