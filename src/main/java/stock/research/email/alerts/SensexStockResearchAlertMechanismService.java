@@ -321,7 +321,7 @@ public class SensexStockResearchAlertMechanismService {
                 ));
             } else if(stockNameArr != null && stockNameArr.length >= 3) {
                 for (int i = 0; i < 3; i++) {
-                    if (!s.contains(stockNameArr[i])){
+                    if (!s.toLowerCase().contains(stockNameArr[i].toLowerCase())){
                         return false;
                     }
                     return
