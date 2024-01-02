@@ -96,7 +96,7 @@ public class GFinanceStockService {
                         }else if(row != null && row.size() > 9){
                             GFinanceStockInfo gFinanceStockInfo = null;
                             if (("Vin-Watchlist".equalsIgnoreCase(k)) || ("Vin-portfolio".equalsIgnoreCase(k))
-                                || ("Vin-HongKong".equalsIgnoreCase(k))){
+                                    || ("Vin-Euro".equalsIgnoreCase(k)) || ("Vin-HongKong".equalsIgnoreCase(k))){
                                 gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0),
                                 GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)),
                                 ((String) row.get(10)),
