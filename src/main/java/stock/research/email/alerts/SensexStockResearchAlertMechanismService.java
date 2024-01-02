@@ -247,6 +247,7 @@ public class SensexStockResearchAlertMechanismService {
         try {
             LOGGER.info("<- Started SensexStockResearchAlertMechanismService::generateAlertEmails");
             LOGGER.info("stockCategory = " + stockCategory + ", side = " + side);
+            List<SensexStockInfo> originalSensexList = new ArrayList<>(populatedSensexList);
             List<SensexStockInfo> populatedLargeCapSensexList = null;
             List<SensexStockInfo> populatedMidCapSensexList = null;
             List<SensexStockInfo> populatedSmallCapSensexList = null;
@@ -262,7 +263,11 @@ public class SensexStockResearchAlertMechanismService {
                 StringBuilder dataBuffer = new StringBuilder("");
                 final StringBuilder subjectBuffer = new StringBuilder("");
 
-                generateHTMLContent(populatedLargeCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                if (side == SIDE.SELL){
+                    generateHTMLContent(originalSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                }else {
+                    generateHTMLContent(populatedLargeCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                }
                 int retry = 3;
                 while (!sendEmail(dataBuffer, subjectBuffer, false) && --retry >= 0);
             } if (stockCategory == StockCategory.MID_CAP){
@@ -277,7 +282,11 @@ public class SensexStockResearchAlertMechanismService {
                 StringBuilder dataBuffer = new StringBuilder("");
                 final StringBuilder subjectBuffer = new StringBuilder("");
 
-                generateHTMLContent(populatedMidCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                if (side == SIDE.SELL){
+                    generateHTMLContent(originalSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                }else {
+                    generateHTMLContent(populatedLargeCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                }
                 int retry = 3;
                 while (!sendEmail(dataBuffer, subjectBuffer, false) && --retry >= 0);
             }
@@ -293,7 +302,11 @@ public class SensexStockResearchAlertMechanismService {
                 StringBuilder dataBuffer = new StringBuilder("");
                 final StringBuilder subjectBuffer = new StringBuilder("");
 
-                generateHTMLContent(populatedSmallCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                if (side == SIDE.SELL){
+                    generateHTMLContent(originalSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                }else {
+                    generateHTMLContent(populatedLargeCapSensexList, stockCategory, side, dataBuffer, subjectBuffer);
+                }
                 int retry = 3;
                 while (!sendEmail(dataBuffer, subjectBuffer, false) && --retry >= 0);
             }
