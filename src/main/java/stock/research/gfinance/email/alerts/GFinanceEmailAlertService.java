@@ -43,6 +43,13 @@ import static stock.research.utility.StockUtility.writeToFile;
 
 @Service
 public class GFinanceEmailAlertService {
+    public Map<String, String> getNsePortfolioUrl() {
+        return nsePortfolioUrl;
+    }
+
+    public void setNsePortfolioUrl(Map<String, String> nsePortfolioUrl) {
+        this.nsePortfolioUrl = nsePortfolioUrl;
+    }
 //    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
 
     enum SIDE{BUY, SELL};
@@ -69,6 +76,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> hongKongUrl = new HashMap<>();
     private Map<String, String> swissUrl = new HashMap<>();
     private Map<String, String> euroUrl = new HashMap<>();
+    private Map<String, String> nsePortfolioUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -90,6 +98,7 @@ public class GFinanceEmailAlertService {
         hongKongUrl.put("Vin-HongKong", "1cOJOjVE49DCjFFMq7JFdmDeOFcf3MzwV2hl6K7gyX9g");
         swissUrl.put("Vin-Switzerland", "1FybDb-TiZ1T10HUDxwVoWvQj2WHAQZG5RWqzQUX2MTI");
         euroUrl.put("Vin-Euro", "1q4PG03AHihCXg1wGHO6bKYaczyOxqW-T0BgUjJ4axJo");
+        nsePortfolioUrl.put("Vin-NSE-portfolio", "1uZAxfSwuGJONmcB7DsKMJTC5c_MHQDzofKqI4lsYR0w");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
@@ -105,6 +114,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(hongKongUrl);
         gFinanceStockService.getGFStockInfoList(swissUrl);
         gFinanceStockService.getGFStockInfoList(euroUrl);
+        gFinanceStockService.getGFStockInfoList(nsePortfolioUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh"  );
     }
 
@@ -334,6 +344,40 @@ public class GFinanceEmailAlertService {
             }
 
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts"  );
+        });
+        executorService.shutdown();
+    }
+
+
+
+    @Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFNSEPortfolioEmailAlerts() {
+
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Instant instantBefore = now();
+            LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEPortfolioEmailAlerts" );
+            final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(portfolioUrl));
+            gfPortfolioList.stream().forEach(x -> x.setCountry("GF-NSE-PORTFOLIO"));
+            stream(SIDE.values()).forEach(x -> {
+                generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF NSE Portfolio " + x + " Alerts ***"));
+            });
+
+            generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Portfolio Daily Data ** "));
+            try {
+                writeGFPayloadToDB(gfPortfolioList, "GF-NSE-PORTFOLIO");
+                writeToDB(gfPortfolioList);
+                writeToFile("GF-NSE-PORTFOLIO", objectMapper.writeValueAsString(gfPortfolioList));
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
+
+            LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEPortfolioEmailAlerts" );
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEPortfolioEmailAlerts"  );
         });
         executorService.shutdown();
     }
