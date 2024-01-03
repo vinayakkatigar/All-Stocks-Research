@@ -400,6 +400,8 @@ public class SensexStockResearchAlertMechanismService {
 
     @PostConstruct
     public void setUpPortfolioData(){
+        List<PortfolioInfo> lowValuePortfolioInfoList = new ArrayList<>();
+
         try {
             CsvMapper csvMapper = new CsvMapper();
             CsvSchema schema = CsvSchema.emptySchema().withHeader();
@@ -408,6 +410,14 @@ public class SensexStockResearchAlertMechanismService {
                 MappingIterator<PortfolioInfo> mi = oReader.readValues(inputStream);
                 portfolioInfoList = mi.readAll();
             }
+            portfolioInfoList.stream().forEach(x -> {
+               if (x.getValueAtMarketPrice() != null && getDoubleFromString(x.getValueAtMarketPrice()) <= 300000){
+                   lowValuePortfolioInfoList.add(x);
+               }
+            });
+
+            portfolioInfoList.removeAll(lowValuePortfolioInfoList);
+
             if (portfolioInfoList != null && portfolioInfoList.size() > 0){
                 portfolioInfoList.parallelStream().forEach(x -> {
                     pfStockName.add(x.getCompany());
