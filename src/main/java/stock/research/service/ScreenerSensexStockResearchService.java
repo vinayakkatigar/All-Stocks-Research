@@ -188,7 +188,7 @@ public class ScreenerSensexStockResearchService {
                     && x.get_52WeekHighLowPriceDiff() != null
                     && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO)  > 0
                     && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  > 0
-                    &&  x.getStockMktCap() > 4999).collect(toList());
+                    &&  x.getStockMktCap() > 1999).collect(toList());
 
             resultSensexStockInfosList.sort(Comparator.comparing(SensexStockInfo::getStockMktCap,
                                                                         Comparator.nullsLast(Comparator.naturalOrder())).reversed());
