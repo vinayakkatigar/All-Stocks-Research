@@ -361,7 +361,7 @@ public class GFinanceEmailAlertService {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEPortfolioEmailAlerts" );
-            final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(portfolioUrl));
+            final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nsePortfolioUrl));
             gfPortfolioList.stream().forEach(x -> x.setCountry("GF-NSE-PORTFOLIO"));
             stream(SIDE.values()).forEach(x -> {
                 generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF NSE Portfolio " + x + " Alerts ***"));
