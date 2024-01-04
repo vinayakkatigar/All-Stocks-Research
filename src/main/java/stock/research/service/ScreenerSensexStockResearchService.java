@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import stock.research.domain.PortfolioInfo;
 import stock.research.domain.SensexStockInfo;
 
 import java.math.BigDecimal;
@@ -188,7 +187,7 @@ public class ScreenerSensexStockResearchService {
                     && x.get_52WeekHighLowPriceDiff() != null
                     && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO)  > 0
                     && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  > 0
-                    &&  x.getStockMktCap() > 1999).collect(toList());
+                    &&  x.getStockMktCap() > 1999).distinct().collect(toList());
 
             resultSensexStockInfosList.sort(Comparator.comparing(SensexStockInfo::getStockMktCap,
                                                                         Comparator.nullsLast(Comparator.naturalOrder())).reversed());

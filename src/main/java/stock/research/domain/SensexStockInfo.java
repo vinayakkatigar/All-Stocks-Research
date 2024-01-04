@@ -128,26 +128,12 @@ public class SensexStockInfo {
         if (o == null || getClass() != o.getClass()) return false;
         SensexStockInfo that = (SensexStockInfo) o;
         return Objects.equals(getStockName(), that.getStockName()) &&
-                Objects.equals(getStockURL(), that.getStockURL()) &&
-                Objects.equals(getStockRankIndex(), that.getStockRankIndex()) &&
-                Objects.equals(getStockMktCap(), that.getStockMktCap()) &&
-                Objects.equals(getCurrentMarketPrice(), that.getCurrentMarketPrice()) &&
-                Objects.equals(get_52WeekLowPrice(), that.get_52WeekLowPrice()) &&
-                Objects.equals(get_52WeekHighPrice(), that.get_52WeekHighPrice()) &&
-                Objects.equals(get_52WeekHighLowPriceDiff(), that.get_52WeekHighLowPriceDiff()) &&
-                Objects.equals(get_52WeekHighPriceDiff(), that.get_52WeekHighPriceDiff()) &&
-                Objects.equals(get_52WeekLowPriceDiff(), that.get_52WeekLowPriceDiff()) &&
-                Objects.equals(getFiiPct(), that.getFiiPct()) &&
-                Objects.equals(getEps(), that.getEps()) &&
-                Objects.equals(getP2eps(), that.getP2eps()) &&
-                Objects.equals(getBv(), that.getBv()) &&
-                Objects.equals(getP2bv(), that.getP2bv()) &&
-                Objects.equals(getQuoteInstant(), that.getQuoteInstant());
+                Objects.equals(getStockURL(), that.getStockURL());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStockName(), getStockURL(), getStockRankIndex(), getStockMktCap(), getCurrentMarketPrice(), get_52WeekLowPrice(), get_52WeekHighPrice(), get_52WeekHighLowPriceDiff(), get_52WeekHighPriceDiff(), get_52WeekLowPriceDiff(), getFiiPct(), getEps(), getP2eps(), getBv(), getP2bv(), getQuoteInstant());
+        return Objects.hash(getStockName(), getStockURL());
     }
 
     public String getStockName() {
