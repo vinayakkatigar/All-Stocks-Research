@@ -224,7 +224,6 @@ public class SensexStockResearchAlertMechanismService {
                         weeklyPnl.get(0).setStockName(weeklyPnl.get(0).getStockName() + changePct.toString());
                         weeklyStockAlertList.add(weeklyPnl.get(0));
                     }
-
                 });
 
                 try {
