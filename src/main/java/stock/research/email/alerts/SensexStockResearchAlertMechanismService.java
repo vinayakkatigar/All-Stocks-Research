@@ -231,7 +231,7 @@ public class SensexStockResearchAlertMechanismService {
                     sortedWeeklyStockAlertList = weeklyStockAlertList.stream().sorted(comparing(SensexStockInfo::getStockRankIndex)).collect(toList());
                     writeToFile( "SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error - ",e);
                 }
             }
 
@@ -399,7 +399,7 @@ public class SensexStockResearchAlertMechanismService {
             }
             LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::sendEmail");
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.error("Error - ",e);
             return false;
         }
         return true;
