@@ -111,10 +111,7 @@ public class SensexStockResearchAlertMechanismService {
         }
 
         try {
-            LocalDateTime ldt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-            if (ldt.getHour() <= 4 && ldt.getHour() > 11){
-                writeSensexPayload();
-            }
+            writeSensexPayload();
             writeSensexInfoToDB();
             writeToFile( "SCREENER_SENSEX_DAILY", objectMapper.writeValueAsString(resultSensexList));
         } catch (Exception e) {
