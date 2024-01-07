@@ -30,7 +30,7 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.getBigDecimalFromString;
-import static stock.research.utility.SensexStockResearchUtility.getDoubleFromString;
+import static stock.research.utility.StockResearchUtility.getDoubleFromString;
 
 @Service
 public class ScreenerSensexStockResearchService {
