@@ -153,7 +153,7 @@ public class SensexStockResearchAlertMechanismService {
                 long difInMS = from(now()).getTime() - x.getStockTS().getTime();
                 Long diffDays = difInMS / (1000  * 60 * 60 * 24);
                 if (diffDays  <= 7 && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
-                            && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek()!= DayOfWeek.SUNDAY){
+                            && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SUNDAY){
                         return true;
                 }else {
                     return false;
