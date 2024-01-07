@@ -42,6 +42,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static java.lang.Math.abs;
 import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
 import static java.util.Comparator.*;
@@ -124,18 +125,18 @@ public class SensexStockResearchAlertMechanismService {
             goSleep(90);
             resultSensexList.stream().filter(x -> x.getDailyPCTChange() == null).forEach(x -> x.setDailyPCTChange(BigDecimal.ZERO));
             resultSensexList.sort(comparing(x -> {
-                return Math.abs(x.getDailyPCTChange().doubleValue());
+                return abs(x.getDailyPCTChange().doubleValue());
             }, nullsLast(naturalOrder())));
 
             Collections.reverse(resultSensexList);
 
             StringBuilder dataBuffer = new StringBuilder("");
-            resultSensexList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
+            resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
                     .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
             try {
-                writeToFile( "SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultSensexList.stream().filter(x -> Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
+                writeToFile( "SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
             }catch (Exception e){ }
 
         }catch (Exception e){
@@ -219,7 +220,7 @@ public class SensexStockResearchAlertMechanismService {
 
                     weeklyPnl.stream().filter(Objects::nonNull).sorted(comparing(SensexStockInfo::getStockInstant).reversed());
 
-                    if ((Math.abs(pct[0].doubleValue()) >= 20 )){
+                    if ((abs(pct[0].doubleValue()) >= 20 )){
                         weeklyPnl.get(0).setDailyPCTChange(pct[0]);
                         weeklyPnl.get(0).setStockName(weeklyPnl.get(0).getStockName() + changePct.toString());
                         weeklyStockAlertList.add(weeklyPnl.get(0));
