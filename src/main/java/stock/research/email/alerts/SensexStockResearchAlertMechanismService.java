@@ -31,10 +31,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -155,8 +152,9 @@ public class SensexStockResearchAlertMechanismService {
             List<SensexStockDetails> sensexStockInfoWeeklyList = sensexStockInfoList.stream().filter(x -> {
                 long difInMS = from(now()).getTime() - x.getStockTS().getTime();
                 Long diffDays = difInMS / (1000  * 60 * 60 * 24);
-                if (diffDays  <= 7){
-                    return true;
+                if (diffDays  <= 7 && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                            && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek()!= DayOfWeek.SUNDAY){
+                        return true;
                 }else {
                     return false;
                 }
@@ -465,18 +463,20 @@ public class SensexStockResearchAlertMechanismService {
     }
 
     private void addAndRemoveSpecifiedDates(List<SensexStockInfo> weeklyPnlSensexStockList,
-                                                       Instant instant, int i, Map<String, SensexStockInfo> sensexStockInfoMap) {
-
+                                            Instant instant, int i, Map<String, SensexStockInfo> sensexStockInfoMap) {
         for (SensexStockInfo x : weeklyPnlSensexStockList) {
             if ((Duration.between(x.getStockInstant(), instant).toDays() >= i)
                     && (Duration.between(x.getStockInstant(), instant).toDays() < (i + 1))) {
-                String key = dateTimeFormatter.format(x.getStockInstant());
-                if (!sensexStockInfoMap.containsKey(key)){
-                    sensexStockInfoMap.put(key, x);
-                }else {
-                    SensexStockInfo current = sensexStockInfoMap.get(key);
-                    if (current != null && x.getStockInstant().isAfter(current.getStockInstant())){
+                if(LocalDateTime.ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                        && LocalDateTime.ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek()!= DayOfWeek.SUNDAY){
+                    String key = dateTimeFormatter.format(x.getStockInstant());
+                    if (!sensexStockInfoMap.containsKey(key)){
                         sensexStockInfoMap.put(key, x);
+                    }else {
+                        SensexStockInfo current = sensexStockInfoMap.get(key);
+                        if (current != null && x.getStockInstant().isAfter(current.getStockInstant())){
+                            sensexStockInfoMap.put(key, x);
+                        }
                     }
                 }
             }
