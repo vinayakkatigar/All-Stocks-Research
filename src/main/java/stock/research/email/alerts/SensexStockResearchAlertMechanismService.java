@@ -45,7 +45,9 @@ import static java.time.Instant.now;
 import static java.util.Comparator.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static stock.research.utility.SensexStockResearchUtility.*;
+import static stock.research.utility.SensexStockResearchUtility.HTML_PORTFOLIO_END;
+import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
+import static stock.research.utility.StockResearchUtility.*;
 import static stock.research.utility.StockUtility.goSleep;
 import static stock.research.utility.StockUtility.writeToFile;
 
@@ -432,6 +434,9 @@ public class SensexStockResearchAlertMechanismService {
     }
 
     private void writeSensexPayload() {
+        if (checkIfWeekend()){
+            return;
+        }
         try {
             screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().stream().forEach(x -> {
                 x.setStockTS(Timestamp.from(Instant.now()));
@@ -447,8 +452,10 @@ public class SensexStockResearchAlertMechanismService {
         }
     }
 
-
     private void writeSensexInfoToDB() {
+        if (checkIfWeekend()){
+            return;
+        }
         screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach( sensexStockInfo -> {
             try {
                 sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));

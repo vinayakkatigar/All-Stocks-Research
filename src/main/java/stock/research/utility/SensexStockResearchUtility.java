@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static stock.research.utility.StockResearchUtility.getDoubleFromString;
+
 public class SensexStockResearchUtility {
 
     public static final String HYPHEN = "-";
@@ -301,23 +303,6 @@ public class SensexStockResearchUtility {
 
     public static SensexStockResearchUtility getInstance(){
         return StockResearchUtilityHelper.INSTANCE;
-    }
-
-    public static Double getDoubleFromString(String input){
-       try {
-           input = input.trim();
-           input = input.replace(",", "");
-           String rupee = "\u20B9";
-           byte[] utf8 = rupee.getBytes("UTF-8");
-
-           rupee = new String(utf8, "UTF-8");
-           input = input.replace(rupee, "");
-           input = input.replace("%", "");
-           input = input.replace("Cr.", "");
-           return Double.valueOf(input);
-       }catch (Exception e){
-           return new Double(0);
-       }
     }
 
     public static BigDecimal getBigDecimalFromString(String input){

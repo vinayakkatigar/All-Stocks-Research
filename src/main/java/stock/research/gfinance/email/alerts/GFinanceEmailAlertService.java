@@ -38,6 +38,7 @@ import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
+import static stock.research.utility.StockResearchUtility.checkIfWeekend;
 import static stock.research.utility.StockUtility.goSleep;
 import static stock.research.utility.StockUtility.writeToFile;
 
@@ -577,6 +578,9 @@ public class GFinanceEmailAlertService {
     }
 
     private void writeToDB(List<GFinanceStockInfo> gFinanceStockInfoList) {
+        if (checkIfWeekend()){
+            return;
+        }
         try {
             gFinanceStockInfoList.forEach(x -> gFinanceStockInfoRepositary.save(x));
         }catch (Exception e){
@@ -584,6 +588,9 @@ public class GFinanceEmailAlertService {
         }
     }
     private void writeGFPayloadToDB(List<GFinanceStockInfo> gFinanceStockInfoList, String country) {
+        if (checkIfWeekend()){
+            return;
+        }
         try {
             googleFinanceStockDetailsRepositary.save(new GoogleFinanceStockDetails(Timestamp.from(Instant.now()), objectMapper.writeValueAsString(gFinanceStockInfoList), ""+Instant.now(), country));
         }catch (Exception e){

@@ -11,6 +11,10 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -243,18 +247,25 @@ public class StockResearchUtility {
     }
 
     public static Double getDoubleFromString(String input){
-       try {
-           if (input != null && input.trim() != null){
-               input = input.trim();
-               input = input.replace(",", "");
-               input = input.replace("$", "");
-               input = input.replace("£","");
-               input = input.replace("€","");
-           }
-           return new Double(input);
-       }catch (Exception e){
-           return new Double(0);
-       }
+        try {
+            input = input.trim();
+            input = input.replace(",", "");
+            String rupee = "\u20B9";
+            byte[] utf8 = rupee.getBytes("UTF-8");
+
+            rupee = new String(utf8, "UTF-8");
+            input = input.replace(rupee, "");
+            input = input.replace("%", "");
+            input = input.replace("Cr.", "");
+            input = input.trim();
+            input = input.replace(",", "");
+            input = input.replace("$", "");
+            input = input.replace("£","");
+            input = input.replace("€","");
+            return Double.valueOf(input);
+        }catch (Exception e){
+            return Double.valueOf(0);
+        }
     }
 
     public static BigDecimal getBigDecimalFromString(String input){
@@ -339,6 +350,13 @@ public class StockResearchUtility {
     }
 
 
+    public static boolean checkIfWeekend() {
+        if (LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                && LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SUNDAY){
+            return true;
+        }
+        return false;
+    }
     public static String friendlyMktCap(double x) {
         return x < MILLION ?  String.valueOf(x) :
                 x < BILLION ?  String.format("%.2f", x / MILLION) + "M" :
