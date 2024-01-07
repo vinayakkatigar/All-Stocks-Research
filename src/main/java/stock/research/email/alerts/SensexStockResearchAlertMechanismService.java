@@ -174,12 +174,12 @@ public class SensexStockResearchAlertMechanismService {
                 try {
                     x.setSensexStocksPayload(x.getSensexStocksPayload().replaceAll("timestamp", "quoteInstant"));
                 }catch (Exception e){
-                    e.printStackTrace();
+                    LOGGER.error("Error - ",e);
                 }
                 try {
                     sensexStockList.addAll( objectMapper.readValue(x.getSensexStocksPayload(), new TypeReference<List<SensexStockInfo>>(){}));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error - ",e);
                 }
             });
 
@@ -473,7 +473,6 @@ public class SensexStockResearchAlertMechanismService {
         for (SensexStockInfo x : weeklyPnlSensexStockList) {
             if ((Duration.between(x.getStockInstant(), instant).toDays() >= i)
                     && (Duration.between(x.getStockInstant(), instant).toDays() < (i + 1))) {
-                System.out.println(dateTimeFormatter.format(Instant.now()));
                 String key = dateTimeFormatter.format(x.getStockInstant());
                 if (!sensexStockInfoMap.containsKey(key)){
                     sensexStockInfoMap.put(key, x);
