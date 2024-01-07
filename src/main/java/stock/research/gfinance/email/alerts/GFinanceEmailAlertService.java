@@ -43,13 +43,6 @@ import static stock.research.utility.StockUtility.writeToFile;
 
 @Service
 public class GFinanceEmailAlertService {
-    public Map<String, String> getNsePortfolioUrl() {
-        return nsePortfolioUrl;
-    }
-
-    public void setNsePortfolioUrl(Map<String, String> nsePortfolioUrl) {
-        this.nsePortfolioUrl = nsePortfolioUrl;
-    }
 //    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
 
     enum SIDE{BUY, SELL};
@@ -252,8 +245,6 @@ public class GFinanceEmailAlertService {
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEEmailAlerts" );
@@ -510,7 +501,6 @@ public class GFinanceEmailAlertService {
 
     private void generateAlertEmails(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer) {
         try {
-            System.out.println("Size -> " + populatedFtseList.size());
             StringBuilder dataBuffer = new StringBuilder("");
 
             generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer);
@@ -632,6 +622,13 @@ public class GFinanceEmailAlertService {
         return stockInfoPctList;
     }
 
+    public Map<String, String> getNsePortfolioUrl() {
+        return nsePortfolioUrl;
+    }
+
+    public void setNsePortfolioUrl(Map<String, String> nsePortfolioUrl) {
+        this.nsePortfolioUrl = nsePortfolioUrl;
+    }
 
     private void generateHTMLContent(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         if (populatedFtseList != null && populatedFtseList.size() >0){
@@ -648,7 +645,7 @@ public class GFinanceEmailAlertService {
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0
                             || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Buy Large Cap Alert***");
+                            subjectBuffer.append("*** GF NYSE Buy Alert***");
                         }
                         createTableContents(dataBuffer, x);
                     }
@@ -659,7 +656,7 @@ public class GFinanceEmailAlertService {
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice())  <= 0 )
                                     || x.get_52WeekLowPriceDiff().compareTo(new BigDecimal(5.0)) <= 0)){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Buy Mid Cap Alert ***");
+                            subjectBuffer.append("*** GF NYSE Buy Alert ***");
                         }
                         createTableContents(dataBuffer, x);
                     }
@@ -670,7 +667,7 @@ public class GFinanceEmailAlertService {
                             && (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
                             || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0)){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Sell Large Cap Alert***");
+                            subjectBuffer.append("*** GF NYSE Sell Alert***");
                         }
                         createTableContents(dataBuffer, x);
                     }
@@ -680,7 +677,7 @@ public class GFinanceEmailAlertService {
                             ((x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0
                                     || x.get_52WeekHighPriceDiff().compareTo(new BigDecimal(5)) <= 0))){
                         if ("".equalsIgnoreCase(subjectBuffer.toString())){
-                            subjectBuffer.append("*** GF NYSE Sell Mid Cap Alert***");
+                            subjectBuffer.append("*** GF NYSE Sell Alert***");
                         }
                         createTableContents(dataBuffer, x);
                     }
