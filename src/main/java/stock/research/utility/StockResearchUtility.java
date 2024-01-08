@@ -351,8 +351,8 @@ public class StockResearchUtility {
 
 
     public static boolean checkIfWeekend() {
-        if (LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
-                && LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SUNDAY){
+        if (LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() == DayOfWeek.SATURDAY
+                || LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() == DayOfWeek.SUNDAY){
             return true;
         }
         return false;
