@@ -550,9 +550,11 @@ public class GFinanceEmailAlertService {
     }
 
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
-        if (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0){
+        if ((x.get_52WeekLowPriceDiff().doubleValue() <= 1d)
+                || (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0 )){
             dataBuffer.append("<tr style=\"background-color:#00ffff\">");
-        }else if (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 ){
+        }else if ((x.get_52WeekHighPriceDiff().doubleValue() <= 1d)
+                || (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 )){
             dataBuffer.append("<tr style=\"background-color:#A7D971\">");
         }else {
             dataBuffer.append("<tr>");
