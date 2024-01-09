@@ -100,8 +100,8 @@ public class SensexStockResearchUtility {
             "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js\" integrity=\"sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg==\" crossorigin=\"anonymous\"></script>\n" +
             "\n <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js\" integrity=\"sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==\" crossorigin=\"anonymous\"></script>\n" +
 
-            "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead><tr><td>RankIndex</td><td>Name-Code(MktCap)<td>Year Low Diff(%) Buy</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>FII(%)</td><td>Market Price</td>\n" +
-            "<td>Year High Diff(%) Sell</td><td>P/E(EPS)</td><td>Book(P/B)</td><td>% Change</td></tr></thead>\n" +
+            "</head><body><table id=\"myTable\"  border=\"1\" class=\"tablesorter hover-highlight\"><thead><tr><td>RankIndex</td><td>Name-Code(MktCap)<td>Year Low Diff(%) Buy</td><td>% Change</td><td>52 Week High</td><td>52 Week Low</td><td>Year H/L Diff(%)</td><td>FII(%)</td><td>Market Price</td>\n" +
+            "<td>Year High Diff(%) Sell</td><td>P/E(EPS)</td><td>Book(P/B)</td></tr></thead>\n" +
             "<tbody>";
 
     public static final String HTML_PORTFOLIO_START = "<html><head>\n"
@@ -366,14 +366,6 @@ public class SensexStockResearchUtility {
                 + SensexStockResearchUtility.START_BRACKET + x.getStockMktCap()
                 + SensexStockResearchUtility.END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.get_52WeekHighPrice() + "</td>");
-        dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
-        dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, RoundingMode.HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.getFiiPct() + "</td>");
-        dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
-        dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.getP2eps() + SensexStockResearchUtility.START_BRACKET + x.getEps() + SensexStockResearchUtility.END_BRACKET + "</td>");
-        dataBuffer.append("<td>" + x.getBv() + SensexStockResearchUtility.START_BRACKET + x.getP2bv() + SensexStockResearchUtility.END_BRACKET + "</td>");
         if (x.getDailyPCTChange() != null && Math.abs(x.getDailyPCTChange().doubleValue()) > 7.5d){
             if (x.getDailyPCTChange() != null && x.getDailyPCTChange().compareTo(BigDecimal.ZERO) < 0){
                 dataBuffer.append("<td style=\"background-color:#FFBA75\">" + x.getDailyPCTChange() + "</td>");
@@ -383,6 +375,14 @@ public class SensexStockResearchUtility {
         }else {
             dataBuffer.append("<td>" + x.getDailyPCTChange() + "</td>");
         }
+        dataBuffer.append("<td>" + x.get_52WeekHighPrice() + "</td>");
+        dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
+        dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, RoundingMode.HALF_UP) + "</td>");
+        dataBuffer.append("<td>" + x.getFiiPct() + "</td>");
+        dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
+        dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, RoundingMode.HALF_UP) + "</td>");
+        dataBuffer.append("<td>" + x.getP2eps() + SensexStockResearchUtility.START_BRACKET + x.getEps() + SensexStockResearchUtility.END_BRACKET + "</td>");
+        dataBuffer.append("<td>" + x.getBv() + SensexStockResearchUtility.START_BRACKET + x.getP2bv() + SensexStockResearchUtility.END_BRACKET + "</td>");
         dataBuffer.append("</tr>");
     }
 

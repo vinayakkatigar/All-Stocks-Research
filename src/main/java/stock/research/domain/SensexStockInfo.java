@@ -127,7 +127,7 @@ public class SensexStockInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensexStockInfo that = (SensexStockInfo) o;
-        return Objects.equals(getStockName(), that.getStockName()) &&
+        return Objects.equals(getStockName(), that.getStockName()) ||
                 Objects.equals(getStockURL(), that.getStockURL());
     }
 
