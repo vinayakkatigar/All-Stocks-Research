@@ -186,6 +186,7 @@ public class SensexStockResearchAlertMechanismService {
             });
 
             resultSensexStockList = resultSensexStockList.stream().sorted(comparing(SensexStockInfo::getStockInstant).reversed()).collect(toList());
+            final List<SensexStockInfo> weeklyAllStocksData = new CopyOnWriteArrayList<>();
 
             if (resultSensexStockList != null && resultSensexStockList.size() > 0) {
                 Map<String, List<SensexStockInfo>> sensexStockInfoWeeklyMap = resultSensexStockList
@@ -206,6 +207,7 @@ public class SensexStockResearchAlertMechanismService {
                     }
                     sensexStockInfoMap.forEach((k,v) -> {
                         weeklyPnl.add(v);
+                        weeklyAllStocksData.add(v);
                     });
 
                     StringBuffer changePct = new StringBuffer("");
@@ -216,6 +218,7 @@ public class SensexStockResearchAlertMechanismService {
                     });
 
                     weeklyPnl.stream().filter(Objects::nonNull).sorted(comparing(SensexStockInfo::getStockInstant).reversed());
+                    weeklyAllStocksData.stream().filter(Objects::nonNull).sorted(comparing(SensexStockInfo::getStockInstant).reversed());
 
                     if ((abs(pct[0].doubleValue()) >= 20 )){
                         weeklyPnl.get(0).setDailyPCTChange(pct[0]);
@@ -227,6 +230,7 @@ public class SensexStockResearchAlertMechanismService {
                 try {
                     sortedWeeklyStockAlertList = weeklyStockAlertList.stream().sorted(comparing(SensexStockInfo::getStockRankIndex)).collect(toList());
                     writeToFile( "SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
+                    writeToFile( "SCREENER_PNL_WEEKLY_ALL_STOCKS_DATA", objectMapper.writeValueAsString(weeklyAllStocksData));
                 } catch (Exception e) {
                     LOGGER.error("Error - ",e);
                 }
