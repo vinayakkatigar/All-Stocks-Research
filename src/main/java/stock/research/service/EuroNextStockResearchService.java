@@ -133,7 +133,7 @@ public class EuroNextStockResearchService {
 
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\" + fileName + HYPHEN
                             + "EuroNext" + HYPHEN  + "ALLDetailedInfo.json"),
-                    objectMapper.writeValueAsString(populateEuroNextStockDetailedInfoList).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populateEuroNextStockDetailedInfoList).getBytes());
             cacheEuroNextStockDetailedInfoList = populateEuroNextStockDetailedInfoList;
             try {
                 if (webDriver != null) webDriver.close();webDriver = null;

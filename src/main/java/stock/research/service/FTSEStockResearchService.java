@@ -142,7 +142,7 @@ public class FTSEStockResearchService {
                     fileName = fileName.replace(":","-");
                     fileName = fileName + "top"+  HYPHEN + ftseStockDetailedInfoList.get(0).getStockRankIndex()+  HYPHEN + ftseStockDetailedInfoList.get(ftseStockDetailedInfoList.size() - 1).getStockRankIndex() +  HYPHEN;
                     Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ fileName + "detailedInfo.json"),
-                            objectMapper.writeValueAsString(ftseStockDetailedInfoList).getBytes());
+                            objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ftseStockDetailedInfoList).getBytes());
                 }
                 if (webDriver != null) webDriver.close();
             }catch (Exception e){
@@ -460,11 +460,11 @@ public class FTSEStockResearchService {
 
             if (cnt == FTSE_250_CNT){
                 Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\ftse250Info.json"),
-                        objectMapper.writeValueAsString(ftseStockInfoList).getBytes());
+                        objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ftseStockInfoList).getBytes());
             }
             if (cnt == FTSE_100_CNT){
                 Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\ftse100Info.json"),
-                        objectMapper.writeValueAsString(ftseStockInfoList).getBytes());
+                        objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ftseStockInfoList).getBytes());
             }
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Error ->", e);

@@ -60,7 +60,7 @@ public class EuroNextStockUrlExtractor {
 
                 try {
                     Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ stocksUrlMap.size() +"allEuroUriInfo"+".json"),
-                            objectMapper.writeValueAsString(stocksUrlMap).getBytes());
+                            objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stocksUrlMap).getBytes());
                 } catch (IOException e) { }
             }
 

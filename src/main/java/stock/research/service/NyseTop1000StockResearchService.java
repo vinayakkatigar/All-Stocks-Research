@@ -68,7 +68,7 @@ public class NyseTop1000StockResearchService {
         stockInfoList = allStockResearchService.getDetailedInfo("NYSE_1000", stockInfoList);
         try {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ component + ".json"),
-                    objectMapper.writeValueAsString(stockInfoList).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList).getBytes());
         }catch (Exception e){
             ERROR_LOGGER.error(Instant.now() + ", Outer Error ->", e);
             e.printStackTrace();

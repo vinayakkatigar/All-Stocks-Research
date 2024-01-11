@@ -63,7 +63,7 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
                         && (q.getStockMktCap() != null || q.getMktCapRealValue() != null))).collect(toList());
         Map<String, String> stringMap = new LinkedHashMap<>();
         stockInfoList.stream().forEach(x -> stringMap.put(x.getStockCode(), x.getStockURL()));
-        System.out.println(objectMapper.writeValueAsString(stringMap));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stringMap));
 */
         LOGGER.info("Started Sensex500StocksCmdRunner::run" );
 //        sensexStockResearchAlertMechanismService.kickOffEmailAlerts();

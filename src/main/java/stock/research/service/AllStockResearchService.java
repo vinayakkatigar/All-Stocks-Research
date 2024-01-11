@@ -240,7 +240,7 @@ public class AllStockResearchService {
             }
 
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\"+ component + "detailedInfo.json"),
-                    objectMapper.writeValueAsString(stockInfoList).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList).getBytes());
             setCacheForComponent(component, stockInfoList);
             return stockInfoList;
         }catch (Exception e){

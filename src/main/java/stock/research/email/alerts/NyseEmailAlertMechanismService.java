@@ -249,7 +249,7 @@ public class NyseEmailAlertMechanismService {
                     nyseStockResearchService.getCacheNYSEStockDetailedInfoList().size() > 0){
                 NyseStockDetails nyseStockDetails = new NyseStockDetails();
                 nyseStockDetails.setStockTS(Timestamp.from(Instant.now()));
-                nyseStockDetails.setNyseStocksPayload(objectMapper.writeValueAsString(nyseStockResearchService.getCacheNYSEStockDetailedInfoList()));
+                nyseStockDetails.setNyseStocksPayload(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(nyseStockResearchService.getCacheNYSEStockDetailedInfoList()));
                 nyseStockPayloadRepositary.save(nyseStockDetails);
             }
         }catch (Exception e){

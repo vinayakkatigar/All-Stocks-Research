@@ -105,7 +105,7 @@ public class StartUpNYSEStockResearchService {
             String fileName =  LocalDateTime.now() + NyseStockResearchUtility.HYPHEN  ;
             fileName = fileName.replace(":","-");
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\NYSE-" + fileName + "detailedInfo.json"),
-                    objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             cacheNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList;
             try {
                 if (webDriver != null) webDriver.close();
@@ -496,13 +496,13 @@ public class StartUpNYSEStockResearchService {
                     }
 
                     Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\NYSEALLstocksUrlMap_22.json"),
-                            objectMapper.writeValueAsString(stocksUrlMap).getBytes());
+                            objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stocksUrlMap).getBytes());
 
                 }
             }
 
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles" + "\\NYSEALLstocksUrlMap.json"),
-                    objectMapper.writeValueAsString(stocksUrlMap).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stocksUrlMap).getBytes());
             return stocksUrlMap;
         }catch (WebDriverException e) {
             restartWebDriver();

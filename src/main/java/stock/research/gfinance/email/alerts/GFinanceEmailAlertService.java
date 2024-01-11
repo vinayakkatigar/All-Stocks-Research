@@ -133,7 +133,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(stockInfoList, "GF-WATCHLIST");
                 writeToDB(stockInfoList);
-                writeToFile("GF-WatchList", objectMapper.writeValueAsString(stockInfoList));
+                writeToFile("GF-WatchList", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -166,7 +166,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(stockInfoList, "GF-AUSTRALIA");
                 writeToDB(stockInfoList);
-                writeToFile("GF-ASX", objectMapper.writeValueAsString(stockInfoList));
+                writeToFile("GF-ASX", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -196,7 +196,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(stockInfoList, "GF-GERMANY");
                 writeToDB(stockInfoList);
-                writeToFile("GF-Germany", objectMapper.writeValueAsString(stockInfoList));
+                writeToFile("GF-Germany", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -227,7 +227,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(stockInfoList, "GF-FTSE");
                 writeToDB(stockInfoList);
-                writeToFile("GF-FTSE", objectMapper.writeValueAsString(stockInfoList));
+                writeToFile("GF-FTSE", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -259,7 +259,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gfPortfolioList, "GF-NSE");
                 writeToDB(gfPortfolioList);
-                writeToFile("GF-NSE", objectMapper.writeValueAsString(gfPortfolioList));
+                writeToFile("GF-NSE", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gfPortfolioList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -292,7 +292,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gfPortfolioList, "GF-PORTFOLIO");
                 writeToDB(gfPortfolioList);
-                writeToFile("GF-Portfolio", objectMapper.writeValueAsString(gfPortfolioList));
+                writeToFile("GF-Portfolio", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gfPortfolioList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -330,7 +330,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gFinanceStockInfoList, "GF-NYSE");
                 writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-NYSE", objectMapper.writeValueAsString(gFinanceStockInfoList));
+                writeToFile("GF-NYSE", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -363,7 +363,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gfPortfolioList, "GF-NSE-PORTFOLIO");
                 writeToDB(gfPortfolioList);
-                writeToFile("GF-NSE-PORTFOLIO", objectMapper.writeValueAsString(gfPortfolioList));
+                writeToFile("GF-NSE-PORTFOLIO", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gfPortfolioList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -410,7 +410,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gFinanceStockInfoList, "GF-HONGKONG");
                 writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-HongKong", objectMapper.writeValueAsString(gFinanceStockInfoList));
+                writeToFile("GF-HongKong", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -445,7 +445,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gFinanceStockInfoList, "GF-SWITZERLAND");
                 writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-Switzerland", objectMapper.writeValueAsString(gFinanceStockInfoList));
+                writeToFile("GF-Switzerland", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -479,7 +479,7 @@ public class GFinanceEmailAlertService {
             try {
                 writeGFPayloadToDB(gFinanceStockInfoList, "GF-EURO");
                 writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-EURO", objectMapper.writeValueAsString(gFinanceStockInfoList));
+                writeToFile("GF-EURO", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
@@ -594,7 +594,7 @@ public class GFinanceEmailAlertService {
             return;
         }
         try {
-            googleFinanceStockDetailsRepositary.save(new GoogleFinanceStockDetails(Timestamp.from(Instant.now()), objectMapper.writeValueAsString(gFinanceStockInfoList), ""+Instant.now(), country));
+            googleFinanceStockDetailsRepositary.save(new GoogleFinanceStockDetails(Timestamp.from(Instant.now()), objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList), ""+Instant.now(), country));
         }catch (Exception e){
             ERROR_LOGGER.error("GF DB Payload inserts", e);
         }

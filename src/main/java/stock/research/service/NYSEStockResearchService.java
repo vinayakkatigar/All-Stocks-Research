@@ -92,7 +92,7 @@ public class NYSEStockResearchService {
                 String fileName =  LocalDateTime.now() + NyseStockResearchUtility.HYPHEN  ;
                 fileName = fileName.replace(":","-");
                 Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\NYSE-ALL-STOCKS-" + fileName + "detailedInfo.json"),
-                        objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
+                        objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             }catch (Exception e){}
 
             populateNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList.stream().filter(q -> (
@@ -115,7 +115,7 @@ public class NYSEStockResearchService {
             String fileName =  LocalDateTime.now() + NyseStockResearchUtility.HYPHEN  ;
             fileName = fileName.replace(":","-");
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\NYSE-" + fileName + "detailedInfo.json"),
-                    objectMapper.writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populateNYSEStockDetailedInfoList).getBytes());
             cacheNYSEStockDetailedInfoList = populateNYSEStockDetailedInfoList;
             isRunningFlag = false;
 

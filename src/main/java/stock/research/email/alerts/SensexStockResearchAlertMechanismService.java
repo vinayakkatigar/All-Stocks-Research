@@ -112,7 +112,7 @@ public class SensexStockResearchAlertMechanismService {
         try {
             writeSensexPayload();
             writeSensexInfoToDB();
-            writeToFile( "SCREENER_SENSEX_DAILY", objectMapper.writeValueAsString(resultSensexList));
+            writeToFile( "SCREENER_SENSEX_DAILY", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexList));
         } catch (Exception e) {
             LOGGER.error("Error - ",e);
         }
@@ -132,7 +132,7 @@ public class SensexStockResearchAlertMechanismService {
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
             try {
-                writeToFile( "SCREENER_PNL_DAILY", objectMapper.writeValueAsString(resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
+                writeToFile( "SCREENER_PNL_DAILY", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
             }catch (Exception e){ }
 
         }catch (Exception e){
@@ -228,8 +228,8 @@ public class SensexStockResearchAlertMechanismService {
 
                 try {
                     sortedWeeklyStockAlertList = weeklyStockAlertList.stream().sorted(comparing(SensexStockInfo::getStockRankIndex)).collect(toList());
-                    writeToFile( "SCREENER_PNL_WEEKLY", objectMapper.writeValueAsString(weeklyStockAlertList));
-                    writeToFile( "SCREENER_PNL_WEEKLY_ALL_STOCKS_DATA", objectMapper.writeValueAsString(weeklyAllStocksData));
+                    writeToFile( "SCREENER_PNL_WEEKLY", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(weeklyStockAlertList));
+                    writeToFile( "SCREENER_PNL_WEEKLY_ALL_STOCKS_DATA", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(weeklyAllStocksData));
                 } catch (Exception e) {
                     LOGGER.error("Error - ",e);
                 }
@@ -448,7 +448,7 @@ public class SensexStockResearchAlertMechanismService {
             });
             SensexStockDetails sensexStockDetails = new SensexStockDetails();
             sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
-            sensexStockDetails.setSensexStocksPayload(objectMapper.writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
+            sensexStockDetails.setSensexStocksPayload(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
             sensexStockDetailsRepositary.save(sensexStockDetails);
         }catch (Exception e){
             LOGGER.error("Failed to write Sensex Stock Details", e);
