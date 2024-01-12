@@ -129,7 +129,7 @@ public class GFinanceStockService {
             }
         });
 
-        if (!(gfStockInfoList.stream().filter(x -> x.getCcy() != null).anyMatch(x -> x.getCcy().equalsIgnoreCase("INR") || x.getCcy().equalsIgnoreCase("HKD")))){
+        if ((gfStockInfoList.stream().filter(x -> x.getCcy() != null).noneMatch(x -> x.getCcy().equalsIgnoreCase("INR") || x.getCcy().equalsIgnoreCase("HKD")))){
             //Apply currency conversion
             gfStockInfoList.forEach(x -> {
                 if (x.getCcy() != null &&  getCcyValues() != null && getCcyValues().get(x.getCcy()) != null
