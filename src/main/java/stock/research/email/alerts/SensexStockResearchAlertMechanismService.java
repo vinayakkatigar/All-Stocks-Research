@@ -221,7 +221,13 @@ public class SensexStockResearchAlertMechanismService {
                     weeklyAllStocksData.stream().filter(Objects::nonNull).sorted(comparing(SensexStockInfo::getStockInstant).reversed());
 
                     if ((abs(pct[0].doubleValue()) >= 20 )){
-                        weeklyPnl.get(0).setStockName(weeklyPnl.get(0).getStockName() + changePct.toString());
+                        if (pct[0].doubleValue() < 0d){
+                            weeklyPnl.get(0).setStockName(weeklyPnl.get(0).getStockName() + changePct.toString() +
+                                    "( <h1 style=\"background-color:#990033;\">" + pct[0] +"</h1> )");
+                        }else {
+                            weeklyPnl.get(0).setStockName(weeklyPnl.get(0).getStockName() + changePct.toString() +
+                                    "( <h1 style=\"background-color:#00e6e6;\">" + pct[0] +"</h1> )");
+                        }
                         weeklyStockAlertList.add(weeklyPnl.get(0));
                     }
                 });
