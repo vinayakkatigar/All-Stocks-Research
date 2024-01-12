@@ -129,16 +129,16 @@ public class GFinanceStockService {
             }
         });
 
-        //Apply currency conversion
-        gfStockInfoList.forEach(x -> {
-            if (x.getCcy() != null && (!(x.getCcy().equalsIgnoreCase("INR"))
-                    || !(x.getCcy().equalsIgnoreCase("HKD")))
-                    && getCcyValues() != null && getCcyValues().get(x.getCcy()) != null
-                    && getCcyValues().get(x.getCcy()).compareTo(ZERO) > 0){
-                x.setMktCapRealValue((x.getMktCapRealValue()) != null ? (getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue()))).doubleValue() : 0d);
-                x.setMktCapFriendyValue(x.getMktCapRealValue() != null ? friendlyMktCap(((getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue())))).doubleValue()) : "");
-            }
-        });
+        if (!(gfStockInfoList.stream().filter(x -> x.getCcy() != null).anyMatch(x -> x.getCcy().equalsIgnoreCase("INR") || x.getCcy().equalsIgnoreCase("HKD")))){
+            //Apply currency conversion
+            gfStockInfoList.forEach(x -> {
+                if (x.getCcy() != null &&  getCcyValues() != null && getCcyValues().get(x.getCcy()) != null
+                        && getCcyValues().get(x.getCcy()).compareTo(ZERO) > 0){
+                    x.setMktCapRealValue((x.getMktCapRealValue()) != null ? (getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue()))).doubleValue() : 0d);
+                    x.setMktCapFriendyValue(x.getMktCapRealValue() != null ? friendlyMktCap(((getCcyValues().get(x.getCcy()).multiply(valueOf(x.getMktCapRealValue())))).doubleValue()) : "");
+                }
+            });
+        }
 
         if (urlInfo != null && urlInfo.size() == 1 && urlInfo.containsKey("Vin-Currency")){
             return gfStockInfoList;
