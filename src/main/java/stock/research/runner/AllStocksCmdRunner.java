@@ -27,6 +27,8 @@ public class AllStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         SensexStockResearchAlertMechanismService.kickOffScreenerWeeklyPnLEmailAlerts();
+        SensexStockResearchAlertMechanismService.kickOffScreenerBiWeeklyPnLEmailAlerts();
+        SensexStockResearchAlertMechanismService.kickOffScreenerMONTHLYWeeklyPnLEmailAlerts();
 
 /*
             long start = System.currentTimeMillis();
