@@ -246,10 +246,10 @@ public class SensexStockResearchAlertMechanismService {
                 if ((abs(pct[0].doubleValue()) >= cutOffPct )){
                     if (pct[0].doubleValue() < 0d){
                         pnlForDays.get(0).setStockName(pnlForDays.get(0).getStockName() + changePct.toString() +
-                                "( <h4 style=\"background-color:#990033;\">" + pct[0] +"</h4> )");
+                                "( <h4 style=\"background-color:#990033;display:inline;\">" + pct[0] +"</h4> )");
                     }else {
                         pnlForDays.get(0).setStockName(pnlForDays.get(0).getStockName() + changePct.toString() +
-                                "( <h4 style=\"background-color:#00e6e6;\">" + pct[0] +"</h4> )");
+                                "( <h4 style=\"background-color:#00e6e6;display:inline;\">" + pct[0] +"</h4> )");
                     }
                     stockAlertList.add(pnlForDays.get(0));
                 }
