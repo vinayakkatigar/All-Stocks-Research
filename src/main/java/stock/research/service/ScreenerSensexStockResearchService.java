@@ -92,7 +92,7 @@ public class ScreenerSensexStockResearchService {
                             }
                             sensexStockInfo.setDailyPCTChange(getBigDecimalFromString(dailyPct));
                         }catch (Exception e){
-                            e.printStackTrace();
+                            printError(e);
                         }try{
                             Element divElement = doc.getElementById("quarterly-shp");
                             Element tabElement = divElement.getElementsByClass("data-table").get(0);
@@ -106,7 +106,9 @@ public class ScreenerSensexStockResearchService {
                             if (tdElementList != null && tdElementList.size() > 0){
                                 sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
                             }
-                        }catch (Exception e){}
+                        }catch (Exception e){
+                            printError(e);
+                        }
                         try {
                             Elements companyInfoElements = doc.getElementsByClass("company-ratios");
                             if (companyInfoElements != null && companyInfoElements.size() > 0){
@@ -146,6 +148,7 @@ public class ScreenerSensexStockResearchService {
                             }
 
                         }catch (Exception e){
+                            printError(e);
                         }
                         try {
                             if (sensexStockInfo.getBv()!= null && (sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)) > 0
@@ -177,7 +180,7 @@ public class ScreenerSensexStockResearchService {
                         LOGGER.info(populatedSensexStockInfosList.size() + " <- Size::" + sensexStockInfo.toString());
                     }
                 }catch (Exception e) {
-                    e.printStackTrace();
+                    printError(e);
                 }
             });
 
@@ -206,10 +209,15 @@ public class ScreenerSensexStockResearchService {
             cacheScreenerSensexStockInfosList = resultSensexStockInfosList;
             return (resultSensexStockInfosList);
         }catch (Exception e) {
-            e.printStackTrace();
+            printError(e);
         }
         cacheScreenerSensexStockInfosList = resultSensexStockInfosList;
         return (resultSensexStockInfosList);
+    }
+
+    private void printError(Exception e) {
+        e.printStackTrace();
+        ERROR_LOGGER.error("Error -", e);
     }
 
     private void goSleep(int x) {
@@ -222,7 +230,9 @@ public class ScreenerSensexStockResearchService {
             byte[] utf8 = rupee.getBytes("UTF-8");
             rupee = new String(utf8, "UTF-8");
             return input.replace(rupee,"").trim();
-        }catch (Exception e){}
+        }catch (Exception e){
+            printError(e);
+        }
         return null;
     }
 
@@ -282,6 +292,7 @@ public class ScreenerSensexStockResearchService {
                 return null;
             }
         }catch (Exception e){
+            printError(e);
             return null;
         }finally {
             goSleep(2);
