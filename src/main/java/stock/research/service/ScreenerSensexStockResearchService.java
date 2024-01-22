@@ -95,16 +95,19 @@ public class ScreenerSensexStockResearchService {
                             printError(e);
                         }try{
                             Element divElement = doc.getElementById("quarterly-shp");
-                            Element tabElement = divElement.getElementsByClass("data-table").get(0);
-                            Element trElement = null;
-                            for (Element ele : tabElement.getElementsByTag("tr")){
-                                if (ele.text().contains("FIIs")){
-                                    trElement = ele;
+                            if (divElement != null && divElement.getElementsByClass("data-table") != null
+                                    && divElement.getElementsByClass("data-table").size() > 0){
+                                Element tabElement = divElement.getElementsByClass("data-table").get(0);
+                                Element trElement = null;
+                                for (Element ele : tabElement.getElementsByTag("tr")){
+                                    if (ele.text().contains("FIIs")){
+                                        trElement = ele;
+                                    }
                                 }
-                            }
-                            Elements tdElementList = trElement.getElementsByTag("td");
-                            if (tdElementList != null && tdElementList.size() > 0){
-                                sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
+                                Elements tdElementList = trElement.getElementsByTag("td");
+                                if (tdElementList != null && tdElementList.size() > 0){
+                                    sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
+                                }
                             }
                         }catch (Exception e){
                             printError(e);
