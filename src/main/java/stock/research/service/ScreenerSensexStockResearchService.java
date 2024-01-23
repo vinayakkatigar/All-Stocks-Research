@@ -104,7 +104,7 @@ public class ScreenerSensexStockResearchService {
                                         trElement = ele;
                                     }
                                 }
-                                Elements tdElementList = trElement.getElementsByTag("td");
+                                Elements tdElementList = trElement != null ? trElement.getElementsByTag("td") : null;
                                 if (tdElementList != null && tdElementList.size() > 0){
                                     sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
                                 }
