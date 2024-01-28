@@ -5,7 +5,9 @@ mvn clean spring-boot:run -D"spring-boot.run.profiles"=i5db
 -Dspring-boot.run.profiles=h2db
 -Dspring.profiles.active=h2db
 
- git add . ; git commit -am "29102023 Fix";git push;
+git reset --hard HEAD;git pull;git reset --hard HEAD;git pull; git reset --hard HEAD;git pull;git reset --hard HEAD;git pull;exit
+
+git add . ; git commit -am "29102023 Fix";git push;
 
  Set-ExecutionPolicy RemoteSigned
 
