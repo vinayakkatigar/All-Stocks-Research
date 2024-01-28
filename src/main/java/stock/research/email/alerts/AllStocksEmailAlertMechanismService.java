@@ -56,12 +56,7 @@ public class AllStocksEmailAlertMechanismService {
 
     private List<PortfolioInfo> portfolioInfoList = new ArrayList<>();
 
-    @Scheduled(cron = "0 0 0 ? * MON-FRI", zone = "GMT")
-    public void kickKillZombie_4() {
-        killProcess("chrome", null);
-    }
-
-//    @Scheduled(cron = "0 14 00 ? * MON-FRI")
+    @Scheduled(cron = "0 0 02 ? * *")
     public void kickOffSingaporeEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSingaporeEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Singapore", SNGR_URL, SNGR_CNT);
@@ -72,7 +67,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSingaporeEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 0 01 ? * MON-FRI")
+//    @Scheduled(cron = "0 0 01 ? * *")
     public void kickOffIndiaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffIndiaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("India", INDIA_URL, INDIA_CNT);
@@ -83,7 +78,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffIndiaEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 45 00 ? * MON-FRI")
+    @Scheduled(cron = "0 45 01 ? * *")
     public void kickOffHongKongEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffHongKongEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("HongKong", HK_URL, HK_CNT);
@@ -94,7 +89,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffHongKongEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 15 01 ? * MON-FRI")
+    @Scheduled(cron = "0 15 01 ? * *")
     public void kickOffSouthKoreaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSouthKoreaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("SouthKorea", SWTHKRW_URL, SWTHKRW_CNT);
@@ -105,7 +100,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSouthKoreaEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 15 15 ? * MON-FRI")
+    @Scheduled(cron = "0 15 0 ? * *")
     public void kickOffAustraliaEmailAlerts() {
         try{
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustraliaEmailAlerts" );
@@ -120,7 +115,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-//    @Scheduled(cron = "0 0 5 ? * MON-FRI")
+    @Scheduled(cron = "0 10 0 ? * *")
     public void kickOffJapanEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffJapanEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Japan", JAPAN_URL, JAPAN_CNT);
@@ -132,7 +127,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-//    @Scheduled(cron = "0 0 1 ? * MON-FRI")
+    @Scheduled(cron = "0 20 2 ? * *")
     public void kickOffSpainEmailAlerts() {
 
         try{
@@ -150,7 +145,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-//    @Scheduled(cron = "0 20 1 ? * MON-FRI")
+    @Scheduled(cron = "0 40 2 ? * *")
     public void kickOffItalyEmailAlerts() {
 
         try {
@@ -168,7 +163,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-//    @Scheduled(cron = "0 0 2 ? * MON-FRI")
+    @Scheduled(cron = "0 0 3 ? * *")
     public void kickOffSwissEmailAlerts() {
 
         try {
@@ -186,7 +181,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-//    @Scheduled(cron = "0 15 2 ? * MON-FRI")
+    @Scheduled(cron = "0 15 3 ? * *")
     public void kickOffAustriaEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffAustriaEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Austria", AUSTRIA_URL, AUSTRIA_CNT);
@@ -197,7 +192,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffAustriaEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 30 2 ? * MON-FRI")
+    @Scheduled(cron = "0 30 3 ? * *")
     public void kickOffEUROEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffEUROEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Euro", EURO_URL, EURO_CNT);
@@ -208,7 +203,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffEUROEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 0 3 ? * MON-FRI")
+    @Scheduled(cron = "0 45 3 ? * *")
     public void kickOffDenmarkEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffDenmarkEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Denmark", DENMARK_URL, DENMARK_CNT);
@@ -219,7 +214,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffDenmarkEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 15 3 ? * MON-FRI")
+    @Scheduled(cron = "0 0 4 ? * *")
     public void kickOffFinlandEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffFinlandEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Finland", FINLAND_URL, FINLAND_CNT);
@@ -230,7 +225,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffFinlandEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 30 3 ? * MON-FRI")
+    @Scheduled(cron = "0 15 4 ? * *")
     public void kickOffGermanyEmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffGermanyEmailAlerts" );
@@ -246,7 +241,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-//    @Scheduled(cron = "0 0 4 ? * MON-FRI")
+    @Scheduled(cron = "0 30 4 ? * *")
     public void kickOffNetherlandsEmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNetherlandsEmailAlerts" );
@@ -262,7 +257,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-//    @Scheduled(cron = "0 30 4 ? * MON-FRI")
+    @Scheduled(cron = "0 45 4 ? * *")
     public void kickOffNorwayEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffNorwayEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Norway", NORWAY_URL, NORWAY_CNT);
@@ -273,7 +268,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffNorwayEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 45 4 ? * MON-FRI")
+    @Scheduled(cron = "0 05 5 ? * *")
     public void kickOffSwedenEmailAlerts() {
         LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffSwedenEmailAlerts" );
         final List<StockInfo> stockInfoList = allStockResearchService.populateStockDetailedInfo("Sweden", SWEDEN_URL, SWEDEN_CNT);
@@ -284,7 +279,7 @@ public class AllStocksEmailAlertMechanismService {
         LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::kickOffSwedenEmailAlerts" );
     }
 
-//    @Scheduled(cron = "0 5 5 ? * MON-FRI")
+    @Scheduled(cron = "0 15 5 ? * *")
     public void kickOffFranceEmailAlerts() {
         try{
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffFranceEmailAlerts" );
@@ -301,7 +296,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-//    @Scheduled(cron = "0 35 5 ? * MON-FRI")
+    @Scheduled(cron = "0 35 5 ? * *")
     public void kickOffBelgiumEmailAlerts() {
         try{
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffBelgiumEmailAlerts" );
@@ -318,7 +313,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-//    @Scheduled(cron = "0 0 6 ? * MON-FRI")
+    @Scheduled(cron = "0 0 6 ? * *")
     public void kickOffNyseTop1000() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started NYSE::kickOffNyseTop1000" );
@@ -338,7 +333,7 @@ public class AllStocksEmailAlertMechanismService {
     }
 
 
-//    @Scheduled(cron = "0 30 6 ? * MON-FRI")
+    @Scheduled(cron = "0 45 5 ? * *")
     public void kickOffWorld1000EmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffWorld1000EmailAlerts" );
@@ -354,15 +349,7 @@ public class AllStocksEmailAlertMechanismService {
 
     }
 
-    @Scheduled(cron = "0 2 0 ? * MON-FRI", zone = "GMT")
-    public void killChrome() {
-        LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::killChrome" );
-        killProcess("chrome", null);
-        killProcess("chromedriver", null);
-        LOGGER.info(Instant.now()+ " <-  Ended  AllStocksEmailAlertMechanismService::killChrome" );
-    }
-
-//    @Scheduled(cron = "0 0 7 ? * MON-FRI")
+    @Scheduled(cron = "0 0 7 ? * *")
     public void kickOffCanadaEmailAlerts() {
         try {
             LOGGER.info(Instant.now()+ " <-  Started  AllStocksEmailAlertMechanismService::kickOffCanadaEmailAlerts" );
