@@ -509,6 +509,15 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
+    @Scheduled(cron = "0 47 2,20 ? * *", zone = "GMT")
+    public void kickOffScreenerMonthlyPnLEmailAlerts() throws JsonProcessingException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            runPnlLogicForSpecifiedDays(30, 30d, "GF-NYSE_PNL_MONTHLY" , "** GF NYSE Monthly PNL Data ** ");
+        });
+        executorService.shutdown();
+    }
+
 
 
     private void runPnlLogicForSpecifiedDays(int noOfDays, double cutOffPct, String fileName, String emailSubject) {
