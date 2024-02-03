@@ -35,6 +35,7 @@ import static java.lang.Double.compare;
 import static java.lang.Math.abs;
 import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
+import static java.time.LocalDateTime.ofInstant;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Arrays.stream;
 import static java.util.Collections.reverse;
@@ -527,8 +528,8 @@ public class GFinanceEmailAlertService {
         List<GoogleFinanceStockDetails> gfNYSEStockInfoWeeklyList = gfNYSEStockInfoList.stream().filter(x -> {
             long difInMS = from(now()).getTime() - x.getStockTS().getTime();
             Long diffDays = difInMS / (1000  * 60 * 60 * 24);
-            if (diffDays  <= noOfDays && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
-                    && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SUNDAY){
+            if (diffDays  <= noOfDays && ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                    && ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SUNDAY){
                 return true;
             }else {
                 return false;
@@ -630,8 +631,8 @@ public class GFinanceEmailAlertService {
         for (GFinanceStockInfo x : weeklyPnlGFNyseStockList) {
             if ((Duration.between(x.getStockInstant(), instant).toDays() >= i)
                     && (Duration.between(x.getStockInstant(), instant).toDays() < (i + 1))) {
-                if(LocalDateTime.ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
-                        && LocalDateTime.ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek()!= DayOfWeek.SUNDAY){
+                if(ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                        && ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek()!= DayOfWeek.SUNDAY){
                     String key = dateTimeFormatter.format(x.getStockInstant());
                     if (!gfNyseStockInfoMap.containsKey(key)){
                         gfNyseStockInfoMap.put(key, x);
