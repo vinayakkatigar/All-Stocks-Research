@@ -1,5 +1,7 @@
 package stock.research.gfinance.email.alerts;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +24,22 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.Double.compare;
+import static java.lang.Math.abs;
+import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Arrays.stream;
 import static java.util.Collections.reverse;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
@@ -44,7 +51,10 @@ import static stock.research.utility.StockUtility.writeToFile;
 
 @Service
 public class GFinanceEmailAlertService {
-//    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd").withZone( ZoneId.systemDefault() );
+
+    public static final String GF_NYSE = "GF-NYSE";
+    //    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
 
     enum SIDE{BUY, SELL};
     private static final Logger LOGGER = LoggerFactory.getLogger(GFinanceEmailAlertService.class);
@@ -315,7 +325,7 @@ public class GFinanceEmailAlertService {
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceNYSEEmailAlerts" );
             final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
-            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-NYSE"));
+            gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_NYSE));
             /*
         Arrays.stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
@@ -487,6 +497,144 @@ public class GFinanceEmailAlertService {
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceEUROEmailAlerts"  );
         });
         executorService.shutdown();
+    }
+
+
+    @Scheduled(cron = "0 17 1,20 ? * *", zone = "GMT")
+    public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            runPnlLogicForSpecifiedDays(7, 20d, "GF-NYSE_PNL_WEEKLY" , "** GF NYSE Weekly PNL Data ** ");
+        });
+        executorService.shutdown();
+    }
+
+
+
+    private void runPnlLogicForSpecifiedDays(int noOfDays, double cutOffPct, String fileName, String emailSubject) {
+        List<GoogleFinanceStockDetails> gfNYSEStockInfoList = new CopyOnWriteArrayList<>();
+        googleFinanceStockDetailsRepositary.findByCountryIgnoreCase(GF_NYSE).forEach(gfNYSEStockInfoList::add);
+
+        List<GoogleFinanceStockDetails> gfNYSEStockInfoWeeklyList = gfNYSEStockInfoList.stream().filter(x -> {
+            long difInMS = from(now()).getTime() - x.getStockTS().getTime();
+            Long diffDays = difInMS / (1000  * 60 * 60 * 24);
+            if (diffDays  <= noOfDays && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                    && LocalDateTime.ofInstant(x.getStockTS().toInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SUNDAY){
+                return true;
+            }else {
+                return false;
+            }
+        }).collect(toList());
+
+        gfNYSEStockInfoWeeklyList.stream().sorted(comparing(GoogleFinanceStockDetails::getStockTS).reversed());
+
+        final List<GFinanceStockInfo> gfNYSEStockList = new CopyOnWriteArrayList<>();
+        final List<GFinanceStockInfo> gfNYSEAlertList = new CopyOnWriteArrayList<>();
+        List<GFinanceStockInfo> sortedGFNYSEStockAlertList = new ArrayList<>();
+        gfNYSEStockInfoWeeklyList.stream().forEach(x ->{
+            try {
+                x.setGoogleFinanceStocksPayload(x.getGoogleFinanceStocksPayload().replaceAll("timestamp", "quoteInstant"));
+            }catch (Exception e){
+                LOGGER.error("Error - ",e);
+            }
+            try {
+                gfNYSEStockList.addAll( objectMapper.readValue(x.getGoogleFinanceStocksPayload(), new TypeReference<List<GFinanceStockInfo>>(){}) );
+            } catch (Exception e) {
+                LOGGER.error("Error - ",e);
+            }
+        });
+
+        List<GFinanceStockInfo> resultGFNYSEStockList = new CopyOnWriteArrayList<>(gfNYSEStockList);
+        resultGFNYSEStockList.forEach(x -> {
+            x.setStockInstant(Instant.parse(x.getQuoteInstant()));
+        });
+
+        resultGFNYSEStockList = resultGFNYSEStockList.stream().sorted(comparing(GFinanceStockInfo::getStockInstant).reversed()).collect(toList());
+        final List<GFinanceStockInfo> pnlForDaysData = new CopyOnWriteArrayList<>();
+
+        if (resultGFNYSEStockList != null && resultGFNYSEStockList.size() > 0) {
+            Map<String, List<GFinanceStockInfo>> gfNyseStockInfoWeeklyMap = resultGFNYSEStockList.stream().filter(Objects::nonNull)
+                    .filter(x -> x.getStockName() != null)
+                    .collect(groupingBy(GFinanceStockInfo::getStockName));
+
+            gfNyseStockInfoWeeklyMap.forEach((key, weeklyPnlGFNyseStockList) -> {
+                weeklyPnlGFNyseStockList.stream().sorted(comparing(GFinanceStockInfo::getStockInstant).reversed());
+                weeklyPnlGFNyseStockList = weeklyPnlGFNyseStockList.stream().sorted(comparing(GFinanceStockInfo::getStockInstant).reversed()).collect(toList());
+
+                final List<GFinanceStockInfo> pnlForDays = new CopyOnWriteArrayList<>();
+                Instant instant = Instant.now();
+
+                Map<String, GFinanceStockInfo> gfNyseStockInfoMap = new LinkedHashMap<>();
+
+                for (int i = 0; i < noOfDays; i++) {
+                    addAndRemoveSpecifiedDates(weeklyPnlGFNyseStockList, instant, i, gfNyseStockInfoMap);
+                }
+                gfNyseStockInfoMap.forEach((k,v) -> {
+                    pnlForDays.add(v);
+                    pnlForDaysData.add(v);
+                });
+
+                StringBuffer changePct = new StringBuffer("");
+                final BigDecimal[] pct = {BigDecimal.ZERO};
+                pnlForDays.stream().filter(Objects::nonNull).forEach(x -> {
+                    changePct.append(" , " + x.getDailyPctChange() );
+                    pct[0] = pct[0].add(x.getDailyPctChange());
+                });
+
+                pnlForDays.stream().filter(Objects::nonNull).sorted(comparing(GFinanceStockInfo::getStockInstant).reversed());
+                pnlForDaysData.stream().filter(Objects::nonNull).sorted(comparing(GFinanceStockInfo::getStockInstant).reversed());
+
+                if ((abs(pct[0].doubleValue()) >= cutOffPct )){
+                    if (pct[0].doubleValue() < 0d){
+                        pnlForDays.get(0).setStockName(pnlForDays.get(0).getStockName() + changePct.toString() +
+                                "( <h4 style=\"background-color:#990033;display:inline;\">" + pct[0] +"</h4> )");
+                    }else {
+                        pnlForDays.get(0).setStockName(pnlForDays.get(0).getStockName() + changePct.toString() +
+                                "( <h4 style=\"background-color:#00e6e6;display:inline;\">" + pct[0] +"</h4> )");
+                    }
+                    gfNYSEAlertList.add(pnlForDays.get(0));
+                }
+            });
+
+            try {
+                sortedGFNYSEStockAlertList = gfNYSEAlertList.stream().sorted(comparing(GFinanceStockInfo::getStockRankIndex)).collect(toList());
+                writeToFile( fileName, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gfNYSEAlertList));
+                writeToFile( fileName + "_ALL_STOCKS_DATA", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(pnlForDaysData));
+            } catch (Exception e) {
+                LOGGER.error("Error - ",e);
+            }
+        }
+
+        try {
+            StringBuilder dataBuffer = new StringBuilder("");
+            sortedGFNYSEStockAlertList.forEach(gfNyse ->  createTableContents(dataBuffer, gfNyse));
+            int retry = 3;
+            while (!sendEmail(dataBuffer, new StringBuilder(emailSubject)) && --retry >= 0);
+        }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
+    }
+
+
+    private void addAndRemoveSpecifiedDates(List<GFinanceStockInfo> weeklyPnlGFNyseStockList,
+                                            Instant instant, int i, Map<String, GFinanceStockInfo> gfNyseStockInfoMap) {
+        for (GFinanceStockInfo x : weeklyPnlGFNyseStockList) {
+            if ((Duration.between(x.getStockInstant(), instant).toDays() >= i)
+                    && (Duration.between(x.getStockInstant(), instant).toDays() < (i + 1))) {
+                if(LocalDateTime.ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.SATURDAY
+                        && LocalDateTime.ofInstant(x.getStockInstant(), ZoneId.systemDefault()).getDayOfWeek()!= DayOfWeek.SUNDAY){
+                    String key = dateTimeFormatter.format(x.getStockInstant());
+                    if (!gfNyseStockInfoMap.containsKey(key)){
+                        gfNyseStockInfoMap.put(key, x);
+                    }else {
+                        GFinanceStockInfo current = gfNyseStockInfoMap.get(key);
+                        if (current != null && x.getStockInstant().isAfter(current.getStockInstant())){
+                            gfNyseStockInfoMap.put(key, x);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public StringBuilder exeWinnerAndLosers() {

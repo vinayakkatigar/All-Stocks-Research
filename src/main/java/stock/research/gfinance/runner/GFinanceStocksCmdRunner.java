@@ -29,11 +29,16 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Instant instantBefore = Instant.now();
-        LOGGER.info(Instant.now() + " <-  Started GFinanceStocksCmdRunner::run" );
+        LOGGER.info(" <-  Started GFinanceStocksCmdRunner::run" );
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        gFinanceEmailAlertService.kickOffScreenerWeeklyPnLEmailAlerts();
+        sleep(70 * 1000);
+
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
         sleep(70 * 1000);
+
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFPortfolioEmailAlerts();
