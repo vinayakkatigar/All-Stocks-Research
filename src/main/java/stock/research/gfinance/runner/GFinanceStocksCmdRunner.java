@@ -33,12 +33,6 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
-        gFinanceEmailAlertService.kickOffScreenerWeeklyPnLEmailAlerts();
-        sleep(70 * 1000);
-
-        gFinanceEmailAlertService.kickOffScreenerMonthlyPnLEmailAlerts();
-        sleep(70 * 1000);
-
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
         sleep(70 * 1000);
 
@@ -50,6 +44,13 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
         sleep(70 * 1000);
+
+        gFinanceEmailAlertService.kickOffScreenerWeeklyPnLEmailAlerts();
+        sleep(70 * 1000);
+
+        gFinanceEmailAlertService.kickOffScreenerMonthlyPnLEmailAlerts();
+        sleep(70 * 1000);
+
         gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFGermanyEmailAlerts();
