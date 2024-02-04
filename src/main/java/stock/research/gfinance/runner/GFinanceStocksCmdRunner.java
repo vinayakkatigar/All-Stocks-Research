@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import static java.lang.Thread.sleep;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Order(1)
 @SpringBootApplication
@@ -38,6 +39,10 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
         sleep(70 * 1000);
+
+        gFinanceEmailAlertService.kickOffGFWatchListEmailAlerts();
+        sleep(70 * 1000);
+
         gFinanceEmailAlertService.kickOffGFPortfolioEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFNSEEmailAlerts();
@@ -51,23 +56,27 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffScreenerMonthlyPnLEmailAlerts();
         sleep(70 * 1000);
 
-        gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
+        gFinanceEmailAlertService.kickOffGoogleFinanceEUROEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFGermanyEmailAlerts();
         sleep(70 * 1000);
-        gFinanceEmailAlertService.kickOffGFWatchListEmailAlerts();
-        sleep(70 * 1000);
+
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts();
+        sleep(70 * 1000);
+        gFinanceEmailAlertService.kickOffGFWatchListWeeklyPnLEmailAlerts();
+        sleep(70 * 1000);
+        gFinanceEmailAlertService.kickOffGFPortfolioWeeklyPnLEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceHongKongEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceSwitzerlandEmailAlerts();
         sleep(70 * 1000);
-        gFinanceEmailAlertService.kickOffGoogleFinanceEUROEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFNSEPortfolioEmailAlerts();
 
-        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.SECONDS)+ " <- Total time in mins, \nEnded GFinanceStocksCmdRunner::run" + Instant.now() );
+        LOGGER.info(instantBefore.until(Instant.now(), SECONDS)+ " <- Total time in mins, " +
+                "\nEnded GFinanceStocksCmdRunner::run" + Instant.now() );
     }
 
 }
