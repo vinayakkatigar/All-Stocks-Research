@@ -143,7 +143,7 @@ public class SensexStockResearchAlertMechanismService {
     }
 
 
-    @Scheduled(cron = "0 35 1,20 ? * *", zone = "GMT")
+    @Scheduled(cron = "0 40 9,15 ? * *", zone = "IST")
     public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -152,7 +152,7 @@ public class SensexStockResearchAlertMechanismService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 35 2,19 ? * *", zone = "GMT")
+    @Scheduled(cron = "0 45 9,15 ? * *", zone = "IST")
     public void kickOffScreenerBiWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -161,7 +161,7 @@ public class SensexStockResearchAlertMechanismService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 35 3,10 ? * *", zone = "GMT")
+    @Scheduled(cron = "0 30 9,15 ? * *", zone = "IST")
     public void kickOffScreenerMONTHLYWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
