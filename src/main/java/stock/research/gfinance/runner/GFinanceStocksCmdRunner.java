@@ -50,12 +50,6 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
         sleep(70 * 1000);
 
-        gFinanceEmailAlertService.kickOffScreenerWeeklyPnLEmailAlerts();
-        sleep(70 * 1000);
-
-        gFinanceEmailAlertService.kickOffScreenerMonthlyPnLEmailAlerts();
-        sleep(70 * 1000);
-
         gFinanceEmailAlertService.kickOffGoogleFinanceEUROEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFGermanyEmailAlerts();
@@ -63,10 +57,7 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
 
         gFinanceEmailAlertService.kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts();
         sleep(70 * 1000);
-        gFinanceEmailAlertService.kickOffGFWatchListWeeklyPnLEmailAlerts();
-        sleep(70 * 1000);
-        gFinanceEmailAlertService.kickOffGFPortfolioWeeklyPnLEmailAlerts();
-        sleep(70 * 1000);
+
         gFinanceEmailAlertService.kickOffGoogleFinanceHongKongEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGoogleFinanceSwitzerlandEmailAlerts();
