@@ -43,11 +43,11 @@ public class Sensex500StocksCmdRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             sensexStockResearchAlertMechanismService.kickOffEmailAlerts_Cron();
         });
         executorService.shutdown();
