@@ -356,8 +356,6 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-
-
     @Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEPortfolioEmailAlerts() {
 
@@ -505,7 +503,6 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-
     @Scheduled(cron = "0 07 0,21 ? * *", zone = "GMT")
     public void kickOffGFWatchListWeeklyPnLEmailAlerts() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -544,8 +541,6 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-
-
     private void runPnlLogicForSpecifiedDays(int noOfDays, double cutOffPct, String fileName, String emailSubject, String country) {
         List<GFinanceStockInfo> sortedGFNYSEStockAlertList = new CopyOnWriteArrayList<>();
 
@@ -566,7 +561,6 @@ public class GFinanceEmailAlertService {
             LOGGER.error("Error - ",e);
         }
     }
-
 
     public StringBuilder exeWinnerAndLosers() {
 
@@ -596,7 +590,6 @@ public class GFinanceEmailAlertService {
 
     private synchronized boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         try {
-
             goSleep(90);
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
