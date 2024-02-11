@@ -27,13 +27,14 @@ public class AllStocksCmdRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        SensexStockResearchAlertMechanismService.kickOffScreenerWeeklyPnLEmailAlerts();
+        SensexStockResearchAlertMechanismService.kickOffScreenerBiWeeklyPnLEmailAlerts();
+        SensexStockResearchAlertMechanismService.kickOffScreenerMONTHLYWeeklyPnLEmailAlerts();
+
 /*
 
             long start = System.currentTimeMillis();
             LOGGER.info("##AllStocksCmdRunner.run::started##" );
-        SensexStockResearchAlertMechanismService.kickOffScreenerWeeklyPnLEmailAlerts();
-        SensexStockResearchAlertMechanismService.kickOffScreenerBiWeeklyPnLEmailAlerts();
-        SensexStockResearchAlertMechanismService.kickOffScreenerMONTHLYWeeklyPnLEmailAlerts();
 
             allStocksEmailAlertMechanismService.kickOffNyseTop1000();
             allStocksEmailAlertMechanismService.kickOffIndiaEmailAlerts();
