@@ -319,7 +319,7 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 15 0,15,17,22,23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 15 15,19,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGoogleFinanceNYSEEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
