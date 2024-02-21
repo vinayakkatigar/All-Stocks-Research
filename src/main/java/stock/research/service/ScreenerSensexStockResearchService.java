@@ -289,16 +289,17 @@ public class ScreenerSensexStockResearchService {
     public ResponseEntity<String> makeRestCall(String url) {
         ResponseEntity<String> response = null;
         try {
-            sleep(10);
+            goSleep(20);
             response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
             if (response == null || response.getStatusCode() != HttpStatus.OK){
                 return null;
             }
         }catch (Exception e){
             printError(e);
+            goSleep(70);
             return null;
         }finally {
-            goSleep(2);
+            goSleep(20);
         }
 
         return response;
