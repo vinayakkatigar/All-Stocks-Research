@@ -218,9 +218,9 @@ public class ScreenerSensexStockResearchService {
         return (resultSensexStockInfosList);
     }
 
-    private void printError(Exception e) {
+    private void printError(Exception e, String ... info) {
         e.printStackTrace();
-        ERROR_LOGGER.error("Error -", e);
+        ERROR_LOGGER.error(info + "Error -", e);
     }
 
     private void goSleep(int x) {
@@ -295,7 +295,7 @@ public class ScreenerSensexStockResearchService {
                 return null;
             }
         }catch (Exception e){
-            printError(e);
+            printError(e, url);
             goSleep(70);
             return null;
         }finally {
