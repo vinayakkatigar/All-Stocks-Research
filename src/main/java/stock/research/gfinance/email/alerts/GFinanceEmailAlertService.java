@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 
 import static java.lang.Double.compare;
 import static java.lang.Math.abs;
+import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_UP;
 import static java.sql.Timestamp.from;
@@ -252,10 +253,11 @@ public class GFinanceEmailAlertService {
 
             stockInfoList.stream().forEach(ftse -> {
                 BigDecimal pnlDailyPct = BigDecimal.ONE;
-                if (ftse.getDailyPctChange().compareTo(BigDecimal.ZERO) < 0){
+                if (ftse.getDailyPctChange().compareTo(BigDecimal.ZERO) < 0
+                        && ftse.getDailyHighPrice().compareTo(ZERO) > 0){
                     pnlDailyPct = ((ftse.getDailyHighPrice().subtract(ftse.getDailyLowPrice()))
                             .divide(ftse.getDailyHighPrice(),2, HALF_UP).multiply(valueOf(100d)));
-                }else {
+                }else if (ftse.getDailyLowPrice().compareTo(ZERO) > 0){
                     pnlDailyPct = ((ftse.getDailyHighPrice().subtract(ftse.getDailyLowPrice()))
                             .divide(ftse.getDailyLowPrice(),2, HALF_UP).multiply(valueOf(100d)));
                 }
