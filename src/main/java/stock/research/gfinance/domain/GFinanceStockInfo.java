@@ -92,6 +92,10 @@ public class GFinanceStockInfo {
     @Transient
     private Instant stockInstant;
 
+
+    @Transient
+    private BigDecimal dailyPctPnLChange =  BigDecimal.ZERO;
+
     public GFinanceStockInfo() {
     }
 
@@ -291,5 +295,13 @@ public class GFinanceStockInfo {
 
     public void setStockInstant(Instant stockInstant) {
         this.stockInstant = stockInstant;
+    }
+
+    public BigDecimal getDailyPctPnLChange() {
+        return dailyPctPnLChange;
+    }
+
+    public void setDailyPctPnLChange(BigDecimal dailyPctPnLChange) {
+        this.dailyPctPnLChange = dailyPctPnLChange;
     }
 }

@@ -264,10 +264,15 @@ public class GFinanceEmailAlertService {
 
                 if (Math.abs(pnlDailyPct.doubleValue()) >= 5d){
                     if (ftse.getDailyPctChange().compareTo(BigDecimal.ZERO) < 0){
-                        ftse.setDailyPctChange(valueOf(-1 * Math.abs(pnlDailyPct.doubleValue())));
+                        ftse.setDailyPctPnLChange(valueOf(-1 * Math.abs(pnlDailyPct.doubleValue())));
                     }else {
-                        ftse.setDailyPctChange(valueOf(Math.abs(pnlDailyPct.doubleValue())));
+                        ftse.setDailyPctPnLChange(valueOf(Math.abs(pnlDailyPct.doubleValue())));
                     }
+                }
+            });
+            stockInfoList.stream().forEach(ftse -> {
+                if (ftse.getDailyPctPnLChange().compareTo(ZERO) > 0){
+                    ftse.setDailyPctChange(ftse.getDailyPctPnLChange());
                 }
             });
 
