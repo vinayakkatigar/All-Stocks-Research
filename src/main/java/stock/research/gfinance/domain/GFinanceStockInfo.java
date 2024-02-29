@@ -248,12 +248,14 @@ public class GFinanceStockInfo {
                 ", _52WeekHighPriceDiff=" + _52WeekHighPriceDiff +
                 ", _52WeekLowPriceDiff=" + _52WeekLowPriceDiff +
                 ", p2e=" + p2e +
-                ", timestamp='" + quoteInstant + '\'' +
+                ", quoteInstant='" + quoteInstant + '\'' +
                 ", stockTS=" + stockTS +
                 ", dailyPctChange=" + dailyPctChange +
                 ", dailyHighPrice=" + dailyHighPrice +
                 ", dailyLowPrice=" + dailyLowPrice +
                 ", country='" + country + '\'' +
+                ", stockInstant=" + stockInstant +
+                ", dailyPctPnLChange=" + dailyPctPnLChange +
                 '}';
     }
 
