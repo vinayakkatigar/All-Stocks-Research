@@ -271,12 +271,12 @@ public class GFinanceEmailAlertService {
                 }
             });
 
-            generateDailyEmail(stockInfoList.stream().filter(x -> {
+            generateDailyEmail(sortByDailyPCTChange(stockInfoList.stream().filter(x -> {
                 if (Math.abs(x.getDailyPctChange().doubleValue()) >= 5d){
                     return true;
                 }
                 return false;
-                }).collect(toList()),
+                }).collect(toList())),
                     new StringBuilder("*** GF FTSE PNL Daily Data *** "));
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFFTSEEmailAlerts" );
