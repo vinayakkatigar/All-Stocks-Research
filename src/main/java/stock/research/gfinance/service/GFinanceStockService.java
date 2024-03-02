@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import stock.research.gfinance.domain.GFinanceStockInfo;
-import stock.research.gfinance.utility.GFinanceNyseStockUtility;
 
 import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
@@ -99,7 +98,7 @@ public class GFinanceStockService {
                                     || ("Vin-NSE-portfolio".equalsIgnoreCase(k))  || ("Vin-Euro".equalsIgnoreCase(k))
                                     || ("Vin-HongKong".equalsIgnoreCase(k))){
                                 gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0),
-                                GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)),
+                                getDoubleFromString((String) row.get(9)),
                                 ((String) row.get(10)),
                                 getBigDecimalFromString((String) row.get(7)),
                                 getBigDecimalFromString((String) row.get(3)),
@@ -107,10 +106,10 @@ public class GFinanceStockService {
                                 getBigDecimalFromString((String) row.get(6)),
                                 getBigDecimalFromString((String) row.get(5)),
                                 getBigDecimalFromString((String) row.get(1)),
-                                GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), "" + now(), from(now()));
+                                getDoubleFromString((String) row.get(8)), "" + now(), from(now()));
                                 gFinanceStockInfo.setDailyPctChange(getBigDecimalFromString((String) row.get(2)));
                             }else {
-                                gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(9)), ((String) row.get(10)), getBigDecimalFromString((String) row.get(1)), getBigDecimalFromString((String) row.get(2)), getBigDecimalFromString((String) row.get(3)), getBigDecimalFromString((String) row.get(6)), getBigDecimalFromString((String) row.get(5)), getBigDecimalFromString((String) row.get(4)), GFinanceNyseStockUtility.getDoubleFromString((String) row.get(8)), "" + now(), from(now()));
+                                gFinanceStockInfo = new GFinanceStockInfo((String) row.get(0), getDoubleFromString((String) row.get(9)), ((String) row.get(10)), getBigDecimalFromString((String) row.get(1)), getBigDecimalFromString((String) row.get(2)), getBigDecimalFromString((String) row.get(3)), getBigDecimalFromString((String) row.get(6)), getBigDecimalFromString((String) row.get(5)), getBigDecimalFromString((String) row.get(4)), getDoubleFromString((String) row.get(8)), "" + now(), from(now()));
                                 gFinanceStockInfo.setDailyPctChange(getBigDecimalFromString((String) row.get(7)));
                             }
                             if(row != null && row.size() > 11){

@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 import stock.research.gfinance.email.alerts.GFinanceEmailAlertService;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 import static java.lang.Thread.sleep;
 import static java.time.temporal.ChronoUnit.SECONDS;
