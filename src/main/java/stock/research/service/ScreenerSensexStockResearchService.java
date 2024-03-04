@@ -220,7 +220,7 @@ public class ScreenerSensexStockResearchService {
 
     private void printError(Exception e, String ... info) {
         e.printStackTrace();
-        ERROR_LOGGER.error(info + "Error -", e);
+        ERROR_LOGGER.error(info != null && info.length > 0 ? info[0] : "" + "Error -", e);
     }
 
     private void goSleep(int x) {
