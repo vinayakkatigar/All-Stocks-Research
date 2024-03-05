@@ -350,6 +350,7 @@ public class GFinanceEmailAlertService {
             } catch (Exception e) {
                 ERROR_LOGGER.error("Error -", e);
             }
+            generateDailyPnLEmail(gFinanceStockInfoList, "*** GF NYSE PnL Daily Data *** ");
 
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEEmailAlerts"  );
         });
