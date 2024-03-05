@@ -678,10 +678,10 @@ public class GFinanceEmailAlertService {
         final StringBuilder dataBuffer = new StringBuilder("");
         try {
             gFinanceStockInfoList.stream().filter((x -> (x.get_52WeekLowPrice() != null
-                            && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) != 0 &&
-                            x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) != 0 &&
+                            && x.get_52WeekLowPrice().compareTo(ZERO) != 0 &&
+                            x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO) != 0 &&
                             x.get_52WeekHighLowPriceDiff() != null &&
-                            x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO) != 0) ))
+                            x.get_52WeekHighLowPriceDiff().compareTo(ZERO) != 0) ))
                     .forEach(x ->  createTableContents(dataBuffer, x));
             int retry = 5;
             while (!sendEmail(dataBuffer, subject) && --retry >= 0);
@@ -718,9 +718,9 @@ public class GFinanceEmailAlertService {
             populatedFtseList = populatedFtseList.stream().distinct().collect(toList());
 
             populatedFtseList.stream().distinct().forEach(x -> {
-                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
+                if (x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
+                        x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO) > 0 &&
                         x.get_52WeekHighLowPriceDiff() != null) {
                     if (x.getStockRankIndex() != null && x.getStockRankIndex() <= 150
                             && x.get_52WeekHighLowPriceDiff().compareTo(new BigDecimal(44)) > 0
@@ -770,38 +770,38 @@ public class GFinanceEmailAlertService {
     }
 
     private void generateDailyPnLEmail(List<GFinanceStockInfo> stockInfoList, String emailSubject) {
-        stockInfoList.stream().forEach(ftse -> {
+        stockInfoList.stream().forEach(gfStock -> {
             BigDecimal pnlDailyPct = BigDecimal.ONE;
-            if (ftse.getDailyPctChange().compareTo(BigDecimal.ZERO) < 0
-                    && ftse.getDailyHighPrice().compareTo(ZERO) > 0){
-                pnlDailyPct = ((ftse.getDailyHighPrice().subtract(ftse.getDailyLowPrice()))
-                        .divide(ftse.getDailyHighPrice(),2, HALF_UP).multiply(valueOf(100d)));
-            }else if (ftse.getDailyLowPrice().compareTo(ZERO) > 0){
-                pnlDailyPct = ((ftse.getDailyHighPrice().subtract(ftse.getDailyLowPrice()))
-                        .divide(ftse.getDailyLowPrice(),2, HALF_UP).multiply(valueOf(100d)));
+            if (gfStock.getDailyPctChange().compareTo(ZERO) < 0
+                    && gfStock.getDailyHighPrice().compareTo(ZERO) > 0){
+                pnlDailyPct = ((gfStock.getDailyHighPrice().subtract(gfStock.getDailyLowPrice()))
+                        .divide(gfStock.getDailyHighPrice(),2, HALF_UP).multiply(valueOf(100d)));
+            }else if (gfStock.getDailyLowPrice().compareTo(ZERO) > 0){
+                pnlDailyPct = ((gfStock.getDailyHighPrice().subtract(gfStock.getDailyLowPrice()))
+                        .divide(gfStock.getDailyLowPrice(),2, HALF_UP).multiply(valueOf(100d)));
             }
 
             if (abs(pnlDailyPct.doubleValue()) >= 5d){
-                if (ftse.getDailyPctChange().compareTo(BigDecimal.ZERO) < 0){
-                    ftse.setDailyPctPnLChange(valueOf(-1 * abs(pnlDailyPct.doubleValue())));
+                if (gfStock.getDailyPctChange().compareTo(ZERO) < 0){
+                    gfStock.setDailyPctPnLChange(valueOf(-1 * abs(pnlDailyPct.doubleValue())));
                 }else {
-                    ftse.setDailyPctPnLChange(valueOf(abs(pnlDailyPct.doubleValue())));
+                    gfStock.setDailyPctPnLChange(valueOf(abs(pnlDailyPct.doubleValue())));
                 }
             }
         });
-        stockInfoList.stream().forEach(ftse -> {
-            if (ftse.getDailyPctPnLChange().compareTo(ZERO) > 0){
-                ftse.setDailyPctChange(ftse.getDailyPctPnLChange());
+        stockInfoList.stream().forEach(stock -> {
+            if (stock.getDailyPctPnLChange().compareTo(ZERO) > 0){
+                stock.setDailyPctChange(stock.getDailyPctPnLChange());
             }
         });
 
         generateDailyEmail(sortByDailyPCTChange(stockInfoList.stream().filter(x -> {
-                    if (abs(x.getDailyPctChange().doubleValue()) >= 5d){
-                        return true;
-                    }
-                    return false;
-                }).collect(toList())),
-                new StringBuilder(emailSubject));
+            if (abs(x.getDailyPctChange().doubleValue()) >= 5d){
+                return true;
+            }
+            return false;
+        }).collect(toList())),
+        new StringBuilder(emailSubject));
     }
 
 }
