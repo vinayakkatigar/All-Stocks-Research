@@ -499,6 +499,7 @@ public class GFinanceEmailAlertService {
                 ERROR_LOGGER.error("Error -", e);
             }
 
+            generateDailyPnLEmail(gFinanceStockInfoList, "*** GF EURO PnL Daily Data *** ");
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceEUROEmailAlerts"  );
         });
         executorService.shutdown();
