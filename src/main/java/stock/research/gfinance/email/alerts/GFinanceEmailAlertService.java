@@ -165,33 +165,7 @@ public class GFinanceEmailAlertService {
     @Scheduled(cron = "0 20 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFASXEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Instant instantBefore = now();
-            LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
-            final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(asxUrl);
-            stockInfoList.stream().forEach(x -> x.setCountry("GF-AUSTRALIA"));
-//        stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF ASX " + SIDE.BUY + " Alerts ***"));
-//        });
-            generateDailyEmail(stockInfoList, new StringBuilder("*** GF ASX Daily Data *** "));
-
-            try {
-                writeGFPayloadToDB(stockInfoList, "GF-AUSTRALIA");
-                writeToDB(stockInfoList);
-                writeToFile("GF-ASX", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
-            } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
-            }
-
-            LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFASXEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFASXEmailAlerts"  );
-        });
-        executorService.shutdown();
+        kickOffGF("GF-AUSTRALIA", "ASX ", asxUrl);
     }
 
     @Scheduled(cron = "0 35 0,4,9,18 ? * MON-SAT", zone = "GMT")
