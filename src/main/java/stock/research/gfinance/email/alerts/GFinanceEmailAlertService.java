@@ -85,6 +85,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> swissUrl = new HashMap<>();
     private Map<String, String> euroUrl = new HashMap<>();
     private Map<String, String> nsePortfolioUrl = new HashMap<>();
+    private Map<String, String> skwUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -107,6 +108,7 @@ public class GFinanceEmailAlertService {
         swissUrl.put("Vin-Switzerland", "1FybDb-TiZ1T10HUDxwVoWvQj2WHAQZG5RWqzQUX2MTI");
         euroUrl.put("Vin-Euro", "1q4PG03AHihCXg1wGHO6bKYaczyOxqW-T0BgUjJ4axJo");
         nsePortfolioUrl.put("Vin-NSE-portfolio", "1uZAxfSwuGJONmcB7DsKMJTC5c_MHQDzofKqI4lsYR0w");
+        skwUrl.put("Vin-Southkorea", "14uokCiL9lYv4eRYbJbi8QRsgkGi4d2nUwqQP-bTZ3fI");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
@@ -123,6 +125,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(swissUrl);
         gFinanceStockService.getGFStockInfoList(euroUrl);
         gFinanceStockService.getGFStockInfoList(nsePortfolioUrl);
+        gFinanceStockService.getGFStockInfoList(skwUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh"  );
     }
 
@@ -194,31 +197,13 @@ public class GFinanceEmailAlertService {
     @Scheduled(cron = "0 35 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFGermanyEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        kickOffGF("GF-GERMANY", "Germany ", germanUrl);
+    }
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
-            Instant instantBefore = now();
-            LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
-            final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(germanUrl);
-            stockInfoList.stream().forEach(x -> x.setCountry("GF-GERMANY"));
-//        stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF Germany " + SIDE.BUY + " Alerts ***"));
-//        });
-            generateDailyEmail(stockInfoList, new StringBuilder("*** GF Germany Daily Data *** "));
-            try {
-                writeGFPayloadToDB(stockInfoList, "GF-GERMANY");
-                writeToDB(stockInfoList);
-                writeToFile("GF-Germany", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
-            } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
-            }
-
-            LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFGermanyEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFGermanyEmailAlerts"  );
-        });
-        executorService.shutdown();
+    @Scheduled(cron = "0 55 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFSKWEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        kickOffGF("GF-SKW", "SouthKorea ", skwUrl);
     }
 
     @Scheduled(cron = "0 40 3,9,12,15,21 ? * MON-SAT", zone = "GMT")
@@ -802,6 +787,33 @@ public class GFinanceEmailAlertService {
             return false;
         }).collect(toList())),
         new StringBuilder(emailSubject));
+    }
+
+    private void kickOffGF(String country, String emailSubject, Map<String, String> gfUrl) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+            Instant instantBefore = now();
+            LOGGER.info(" <-  Started " + this.getClass().getName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+            final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
+            stockInfoList.stream().forEach(x -> x.setCountry(country));
+//        stream(SIDE.values()).forEach(x -> {
+            generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"));
+//        });
+            generateDailyEmail(stockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "));
+            try {
+                writeGFPayloadToDB(stockInfoList, country);
+                writeToDB(stockInfoList);
+                writeToFile(country, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
+            } catch (Exception e) {
+                ERROR_LOGGER.error("Error -", e);
+            }
+            LOGGER.info(" <-  Ended " + this.getClass().getName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
+                    this.getClass().getName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+        });
+        executorService.shutdown();
     }
 
 }
