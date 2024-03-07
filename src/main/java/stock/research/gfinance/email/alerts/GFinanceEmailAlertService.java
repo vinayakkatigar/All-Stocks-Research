@@ -327,7 +327,7 @@ public class GFinanceEmailAlertService {
             int retry = 5;
             while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
             if (--retry <= 0 && !sendEmail(dataBuffer, subjectBuffer)){
-                ERROR_LOGGER.error("Failed to send email, GF NYSE Email error -> ");
+                ERROR_LOGGER.error("Failed to send email, GF Email error -> ");
             }
         } catch (Exception e) {
             ERROR_LOGGER.error( "<- , Error ->", e);
