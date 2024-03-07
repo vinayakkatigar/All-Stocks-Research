@@ -441,7 +441,7 @@ public class GFinanceEmailAlertService {
     private List<GFinanceStockInfo> sortByDailyPCTChange(List<GFinanceStockInfo> stockInfoList) {
         List<GFinanceStockInfo> stockInfoPctList = new ArrayList<>(stockInfoList);
 
-        stockInfoPctList.sort(Comparator.comparing(x -> {
+        stockInfoPctList.sort(comparing(x -> {
             return abs(x.getDailyPctChange().doubleValue());
         }));
 
