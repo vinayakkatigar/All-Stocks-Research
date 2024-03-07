@@ -447,7 +447,6 @@ public class GFinanceEmailAlertService {
             return abs(x.getDailyPctChange().doubleValue());
         }));
 
-        reverse(stockInfoPctList);
         return stockInfoPctList;
     }
 
