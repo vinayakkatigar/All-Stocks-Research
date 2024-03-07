@@ -36,7 +36,7 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffGFinanceRefresh();
         sleep(70 * 1000);
 
-        gFinanceEmailAlertService.kickOffGoogleFinanceNYSEEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFNYSEEmailAlerts();
         sleep(70 * 1000);
 
         gFinanceEmailAlertService.kickOffGFWatchListEmailAlerts();
@@ -49,17 +49,17 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
         sleep(70 * 1000);
 
-        gFinanceEmailAlertService.kickOffGoogleFinanceEUROEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFEUROEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFGermanyEmailAlerts();
         sleep(70 * 1000);
 
-        gFinanceEmailAlertService.kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFNYSEDailyPnLEmailAlerts();
         sleep(70 * 1000);
 
-        gFinanceEmailAlertService.kickOffGoogleFinanceHongKongEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFHongKongEmailAlerts();
         sleep(70 * 1000);
-        gFinanceEmailAlertService.kickOffGoogleFinanceSwitzerlandEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFSwitzerlandEmailAlerts();
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFASXEmailAlerts();
         sleep(70 * 1000);
@@ -75,6 +75,12 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         sleep(70 * 1000);
 
         gFinanceEmailAlertService.kickOffScreenerMonthlyPnLEmailAlerts();
+        sleep(70 * 1000);
+
+        gFinanceEmailAlertService.kickOffGFSouthKoreaEmailAlerts();
+        sleep(70 * 1000);
+
+        gFinanceEmailAlertService.kickOffGFIndonesiaEmailAlerts();
         sleep(70 * 1000);
 
         LOGGER.info(instantBefore.until(Instant.now(), SECONDS)+ " <- Total time in mins, " +

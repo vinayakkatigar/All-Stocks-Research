@@ -86,6 +86,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> euroUrl = new HashMap<>();
     private Map<String, String> nsePortfolioUrl = new HashMap<>();
     private Map<String, String> skwUrl = new HashMap<>();
+    private Map<String, String> indonesiaUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -109,6 +110,7 @@ public class GFinanceEmailAlertService {
         euroUrl.put("Vin-Euro", "1q4PG03AHihCXg1wGHO6bKYaczyOxqW-T0BgUjJ4axJo");
         nsePortfolioUrl.put("Vin-NSE-portfolio", "1uZAxfSwuGJONmcB7DsKMJTC5c_MHQDzofKqI4lsYR0w");
         skwUrl.put("Vin-Southkorea", "14uokCiL9lYv4eRYbJbi8QRsgkGi4d2nUwqQP-bTZ3fI");
+        indonesiaUrl.put("Vin-Indsia", "1FD1CJ6rJhmTfIgAzK8pE-_JPfdUn9PpI0Y3fIUEDj6c");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
@@ -126,6 +128,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(euroUrl);
         gFinanceStockService.getGFStockInfoList(nsePortfolioUrl);
         gFinanceStockService.getGFStockInfoList(skwUrl);
+        gFinanceStockService.getGFStockInfoList(indonesiaUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh"  );
     }
 
@@ -148,7 +151,7 @@ public class GFinanceEmailAlertService {
     }
 
     @Scheduled(cron = "0 55 0,4,9,18 ? * MON-SAT", zone = "GMT")
-    public void kickOffGFSKWEmailAlerts() {
+    public void kickOffGFSouthKoreaEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-SKW", "SouthKorea ", skwUrl, false);
     }
@@ -169,15 +172,20 @@ public class GFinanceEmailAlertService {
 
     @Scheduled(cron = "0 5 5,11,17,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFPortfolioEmailAlerts() {
-
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF(GF_PORTFOLIO, "Portfolio ", portfolioUrl, false);
     }
 
     @Scheduled(cron = "0 15 15,19,23 ? * MON-SAT", zone = "GMT")
-    public void kickOffGoogleFinanceNYSEEmailAlerts() {
+    public void kickOffGFNYSEEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF(GF_NYSE, "NYSE ", nyseUrlInfo, true);
+    }
+
+    @Scheduled(cron = "0 35 15,19,23 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFIndonesiaEmailAlerts() {
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        kickOffGF("GF-INDONESIA", "Indonesia ", indonesiaUrl, false);
     }
 
     @Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
@@ -213,7 +221,7 @@ public class GFinanceEmailAlertService {
     }
 
     @Scheduled(cron = "0 25 7,17,21,23 ? * MON-SAT", zone = "GMT")
-    public void kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts() {
+    public void kickOffGFNYSEDailyPnLEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -224,7 +232,7 @@ public class GFinanceEmailAlertService {
     }
 
     @Scheduled(cron = "0 11 3,16 ? * MON-SAT", zone = "GMT")
-    public void kickOffGoogleFinanceHongKongEmailAlerts() {
+    public void kickOffGFHongKongEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -260,7 +268,7 @@ public class GFinanceEmailAlertService {
     }
 
     @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
-    public void kickOffGoogleFinanceSwitzerlandEmailAlerts() {
+    public void kickOffGFSwitzerlandEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -294,7 +302,7 @@ public class GFinanceEmailAlertService {
     }
 
     @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
-    public void kickOffGoogleFinanceEUROEmailAlerts() {
+    public void kickOffGFEUROEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
