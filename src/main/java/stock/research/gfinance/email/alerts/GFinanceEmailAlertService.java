@@ -450,14 +450,6 @@ public class GFinanceEmailAlertService {
         return stockInfoPctList;
     }
 
-    public Map<String, String> getNsePortfolioUrl() {
-        return nsePortfolioUrl;
-    }
-
-    public void setNsePortfolioUrl(Map<String, String> nsePortfolioUrl) {
-        this.nsePortfolioUrl = nsePortfolioUrl;
-    }
-
     private void generateHTMLContent(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder dataBuffer, StringBuilder subjectBuffer) {
         if (populatedFtseList != null && populatedFtseList.size() >0){
             populatedFtseList = populatedFtseList.stream().distinct().collect(toList());
