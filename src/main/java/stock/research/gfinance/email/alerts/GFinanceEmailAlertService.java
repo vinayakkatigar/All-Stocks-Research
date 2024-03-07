@@ -234,106 +234,19 @@ public class GFinanceEmailAlertService {
     @Scheduled(cron = "0 11 3,16 ? * MON-SAT", zone = "GMT")
     public void kickOffGFHongKongEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Instant instantBefore = now();
-            LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceHongKongEmailAlerts" );
-            final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(hongKongUrl);
-            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-HONGKONG"));
-            /*
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
-        });
-*/
-
-            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF HongKong " + SIDE.BUY + " Alerts ***"));
-            LOGGER.info(" <-  Ended kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceHongKongEmailAlerts" );
-
-            StringBuilder subject = new StringBuilder("*** GF HongKong Daily Data *** ");
-            generateDailyEmail(gFinanceStockInfoList, subject);
-            try {
-                writeGFPayloadToDB(gFinanceStockInfoList, "GF-HONGKONG");
-                writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-HongKong", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
-            } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
-            }
-
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceHongKongEmailAlerts"  );
-        });
-        executorService.shutdown();
-
+        kickOffGF("GF-HONGKONG", "HongKong ", hongKongUrl, false);
     }
 
     @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
     public void kickOffGFSwitzerlandEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Instant instantBefore = now();
-            LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceSwitzerlandEmailAlerts" );
-            final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(swissUrl);
-            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-SWITZERLAND"));
-            /*
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
-        });
-*/
-            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF Switzerland " + SIDE.BUY + " Alerts ***"));
-            LOGGER.info(" <-  Ended kickOffGoogleFinanceNYSEEmailAlerts::kickOffGoogleFinanceSwitzerlandEmailAlerts" );
-
-            StringBuilder subject = new StringBuilder("*** GF Switzerland Daily Data *** ");
-            generateDailyEmail(gFinanceStockInfoList, subject);
-            try {
-                writeGFPayloadToDB(gFinanceStockInfoList, "GF-SWITZERLAND");
-                writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-Switzerland", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
-            } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
-            }
-
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceSwitzerlandEmailAlerts"  );
-        });
-        executorService.shutdown();
+        kickOffGF("GF-SWITZERLAND", "Switzerland ", swissUrl, false);
     }
 
     @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
     public void kickOffGFEUROEmailAlerts() {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(() -> {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Instant instantBefore = now();
-            LOGGER.info(" <-  Started kickOffGoogleFinanceEUROEmailAlerts::kickOffGoogleFinanceEUROEmailAlerts" );
-            final List<GFinanceStockInfo> gFinanceStockInfoList = gFinanceStockService.getGFStockInfoList(euroUrl);
-            gFinanceStockInfoList.stream().forEach(x -> x.setCountry("GF-EURO"));
-            /*
-        Arrays.stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(gFinanceNYSEStockInfoList,x, StockCategory.LARGE_CAP);
-        });
-*/
-            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF EURO " + SIDE.BUY + " Alerts ***"));
-            LOGGER.info(" <-  Ended kickOffGoogleFinanceEUROEmailAlerts::kickOffGoogleFinanceEUROEmailAlerts" );
-
-            StringBuilder subject = new StringBuilder("*** GF EURO Daily Data *** ");
-            generateDailyEmail(gFinanceStockInfoList, subject);
-            try {
-                writeGFPayloadToDB(gFinanceStockInfoList, "GF-EURO");
-                writeToDB(gFinanceStockInfoList);
-                writeToFile("GF-EURO", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList));
-            } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
-            }
-
-            generateDailyPnLEmail(gFinanceStockInfoList, "*** GF EURO PnL Daily Data *** ");
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceEUROEmailAlerts"  );
-        });
-        executorService.shutdown();
+        kickOffGF("GF-EURO", "EURO ", euroUrl, false);
     }
 
     @Scheduled(cron = "0 07 0,21 ? * *", zone = "GMT")
