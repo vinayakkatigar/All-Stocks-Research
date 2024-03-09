@@ -93,6 +93,7 @@ public class GFinanceEmailAlertService {
     private Map<String, String> spainUrl = new HashMap<>();
     private Map<String, String> italyUrl = new HashMap<>();
     private Map<String, String> brazilUrl = new HashMap<>();
+    private Map<String, String> canadaUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -120,6 +121,7 @@ public class GFinanceEmailAlertService {
         spainUrl.put("Vin-Spain", "1n29f0K-GSclaF8asxBLZEdw-3_QwAP6B3l7noi6qAdE");
         italyUrl.put("Vin-Italy", "119vPfJwhY584ooSbf_3viOYYEPaTNLLW0UW60cSog8w");
         brazilUrl.put("Vin-Brazil", "1ki_vTyELjBXvtfrJphpdkHmeqx-FCSQKrwYPwDXVvEE");
+        canadaUrl.put("Vin-Canada", "1ki_vTyELjBXvtfrJphpdkHmeqx-FCSQKrwYPwDXVvEE");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
@@ -141,8 +143,15 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(spainUrl);
         gFinanceStockService.getGFStockInfoList(italyUrl);
         gFinanceStockService.getGFStockInfoList(brazilUrl);
+        gFinanceStockService.getGFStockInfoList(canadaUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
                 this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+    }
+
+    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
+    public void kickOffGFCanadaEmailAlerts() {
+        currentThread().setPriority(Thread.MAX_PRIORITY);
+        kickOffGF("GF-CANADA", "Canada ", canadaUrl, false);
     }
 
     @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
