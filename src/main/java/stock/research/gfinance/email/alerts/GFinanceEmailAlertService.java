@@ -141,7 +141,8 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(spainUrl);
         gFinanceStockService.getGFStockInfoList(italyUrl);
         gFinanceStockService.getGFStockInfoList(brazilUrl);
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh"  );
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
+                this.getClass().getName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
     }
 
     @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
