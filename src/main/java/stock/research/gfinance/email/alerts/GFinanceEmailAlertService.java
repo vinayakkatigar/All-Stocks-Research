@@ -121,7 +121,7 @@ public class GFinanceEmailAlertService {
         spainUrl.put("Vin-Spain", "1n29f0K-GSclaF8asxBLZEdw-3_QwAP6B3l7noi6qAdE");
         italyUrl.put("Vin-Italy", "119vPfJwhY584ooSbf_3viOYYEPaTNLLW0UW60cSog8w");
         brazilUrl.put("Vin-Brazil", "1ki_vTyELjBXvtfrJphpdkHmeqx-FCSQKrwYPwDXVvEE");
-        canadaUrl.put("Vin-Canada", "1ki_vTyELjBXvtfrJphpdkHmeqx-FCSQKrwYPwDXVvEE");
+        canadaUrl.put("Vin-Canada", "1l534qt4O3WPSRWyH0OnNaq9ymMRmL_An2jKQJ5C7geI");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
