@@ -40,6 +40,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Arrays.stream;
 import static java.util.Collections.reverse;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.reverseOrder;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.stream.Collectors.toList;
 import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
@@ -315,7 +316,8 @@ public class GFinanceEmailAlertService {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
         LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" );
-        final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream().filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 5d).collect(toList());
+        final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream()
+                .filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 5d).collect(toList());
         gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_NYSE));
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE PnL Daily *** "));
@@ -445,7 +447,7 @@ public class GFinanceEmailAlertService {
 
         stockInfoPctList.sort(comparing(x -> {
             return abs(x.getDailyPctChange().doubleValue());
-        }));
+        },reverseOrder()));
 
         return stockInfoPctList;
     }
