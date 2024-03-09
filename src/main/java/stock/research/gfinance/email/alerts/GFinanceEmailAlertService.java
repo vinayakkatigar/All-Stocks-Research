@@ -90,6 +90,8 @@ public class GFinanceEmailAlertService {
     private Map<String, String> nsePortfolioUrl = new HashMap<>();
     private Map<String, String> skwUrl = new HashMap<>();
     private Map<String, String> indonesiaUrl = new HashMap<>();
+    private Map<String, String> spainUrl = new HashMap<>();
+    private Map<String, String> italyUrl = new HashMap<>();
 
     @PostConstruct
     public void setUp(){
@@ -114,6 +116,8 @@ public class GFinanceEmailAlertService {
         nsePortfolioUrl.put("Vin-NSE-portfolio", "1uZAxfSwuGJONmcB7DsKMJTC5c_MHQDzofKqI4lsYR0w");
         skwUrl.put("Vin-Southkorea", "14uokCiL9lYv4eRYbJbi8QRsgkGi4d2nUwqQP-bTZ3fI");
         indonesiaUrl.put("Vin-Indsia", "1FD1CJ6rJhmTfIgAzK8pE-_JPfdUn9PpI0Y3fIUEDj6c");
+        spainUrl.put("Vin-Spain", "1n29f0K-GSclaF8asxBLZEdw-3_QwAP6B3l7noi6qAdE");
+        italyUrl.put("Vin-Italy", "119vPfJwhY584ooSbf_3viOYYEPaTNLLW0UW60cSog8w");
     }
     @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
@@ -132,6 +136,8 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(nsePortfolioUrl);
         gFinanceStockService.getGFStockInfoList(skwUrl);
         gFinanceStockService.getGFStockInfoList(indonesiaUrl);
+        gFinanceStockService.getGFStockInfoList(spainUrl);
+        gFinanceStockService.getGFStockInfoList(italyUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceNYSEEmailAlertService::kickOffGFinanceRefresh"  );
     }
 
