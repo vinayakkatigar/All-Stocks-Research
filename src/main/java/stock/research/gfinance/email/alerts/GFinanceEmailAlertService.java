@@ -142,7 +142,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(italyUrl);
         gFinanceStockService.getGFStockInfoList(brazilUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
-                this.getClass().getName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+                this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
     }
 
     @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
@@ -565,7 +565,7 @@ public class GFinanceEmailAlertService {
             currentThread().setPriority(Thread.MAX_PRIORITY);
 
             Instant instantBefore = now();
-            LOGGER.info(" <-  Started " + this.getClass().getName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+            LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
             stockInfoList.stream().forEach(x -> x.setCountry(country));
 //        stream(SIDE.values()).forEach(x -> {
@@ -582,9 +582,9 @@ public class GFinanceEmailAlertService {
             if (pnlGenerate){
                 generateDailyPnLEmail(stockInfoList, "*** GF " + emailSubject + " PNL Daily Data *** ");
             }
-            LOGGER.info(" <-  Ended " + this.getClass().getName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+            LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
-                    this.getClass().getName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+                    this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
         });
         executorService.shutdown();
     }
