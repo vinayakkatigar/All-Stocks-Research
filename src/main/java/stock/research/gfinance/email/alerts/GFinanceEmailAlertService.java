@@ -578,10 +578,11 @@ public class GFinanceEmailAlertService {
             LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
             stockInfoList.stream().forEach(x -> x.setCountry(country));
+            final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"));
 //        });
-            generateDailyEmail(stockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "));
+            generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "));
             try {
                 writeGFPayloadToDB(stockInfoList, country);
                 writeToDB(stockInfoList);
