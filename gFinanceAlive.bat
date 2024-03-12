@@ -1,5 +1,5 @@
 :again
-start chrome https://docs.google.com/spreadsheets/d/1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao/edit#gid=0
+start chrome --new-window https://docs.google.com/spreadsheets/d/1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao/edit#gid=0
 timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1DdkJYnXIR0UCLeB7cjB8G4LGzZMXHKQ_dGpXGO8CU8I/edit#gid=0
 timeout /t 30 /nobreak > NUL
@@ -13,7 +13,7 @@ start chrome https://docs.google.com/spreadsheets/d/1wjfxknOyQ5TghGwoFOt-LTz2E-A
 timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1j6QRSY9A9b8hYWBEidkl5B4X6FaiVByS2tUc4aU4b6M/edit#gid=0
 timeout /t 30 /nobreak > NUL
-start chrome https://docs.google.com/spreadsheets/d/1Hvw1BJH1eJWbtJwReD3n96DGeHarFVXeR93B3-0tKPE/edit#gid=0
+start chrome --new-window https://docs.google.com/spreadsheets/d/1Hvw1BJH1eJWbtJwReD3n96DGeHarFVXeR93B3-0tKPE/edit#gid=0
 timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1WSVRVhqU6vUdatoic49kwdAUSoBUaOlqZscyTVzX8CE/edit#gid=0
 timeout /t 30 /nobreak > NUL
@@ -38,7 +38,7 @@ timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1q4PG03AHihCXg1wGHO6bKYaczyOxqW-T0BgUjJ4axJo/edit#gid=0
 timeout /t 30 /nobreak > NUL
 
-start chrome https://docs.google.com/spreadsheets/d/14uokCiL9lYv4eRYbJbi8QRsgkGi4d2nUwqQP-bTZ3fI/edit#gid=0
+start chrome --new-window https://docs.google.com/spreadsheets/d/14uokCiL9lYv4eRYbJbi8QRsgkGi4d2nUwqQP-bTZ3fI/edit#gid=0
 timeout /t 30 /nobreak > NUL
 
 start chrome https://docs.google.com/spreadsheets/d/1FD1CJ6rJhmTfIgAzK8pE-_JPfdUn9PpI0Y3fIUEDj6c/edit#gid=0
