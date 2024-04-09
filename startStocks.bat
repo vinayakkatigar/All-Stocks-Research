@@ -1,3 +1,6 @@
+del /S /F /Q C:\Code\All-Stocks-Research\genHtml\*
+del /S /F /Q C:\Code\All-Stocks-Research\genFiles\*
+
 rmdir /S /Q %temp%
 
 cd C:\Code\All-Stocks-Research
@@ -17,6 +20,5 @@ git reset --hard HEAD
 git pull
 git reset --hard HEAD
 git pull
-
 
 mvn clean spring-boot:run
