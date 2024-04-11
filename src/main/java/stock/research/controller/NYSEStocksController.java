@@ -53,6 +53,11 @@ public class NYSEStocksController {
         return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.exeWinnerAndLosers(false).toString() + GFinanceNyseStockUtility.HTML_END;
     }
 
+    @RequestMapping("/nyse/daily")
+    public String nyseDaily() throws Exception {
+        return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.kickOffNYSEGFDaily() + GFinanceNyseStockUtility.HTML_END;
+    }
+
     @RequestMapping("/kickNyse")
     public String kickNyse() throws Exception {
 

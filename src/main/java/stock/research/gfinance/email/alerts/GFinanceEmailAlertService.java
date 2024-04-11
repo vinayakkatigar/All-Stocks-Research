@@ -569,6 +569,18 @@ public class GFinanceEmailAlertService {
         new StringBuilder(emailSubject), true);
     }
 
+    public String kickOffNYSEGFDaily() {
+        Instant instantBefore = now();
+        LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
+        stockInfoList.stream().forEach(x -> x.setCountry("NYSE"));
+        final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
+        StringBuilder resultBuilder = generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF NYSE  Daily Data ***"), false);
+        LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
+                this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+        return resultBuilder.toString();
+    }
     private void kickOffGF(String country, String emailSubject, Map<String, String> gfUrl, boolean pnlGenerate) {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
