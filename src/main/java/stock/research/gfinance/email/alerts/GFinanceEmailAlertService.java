@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -232,7 +233,7 @@ public class GFinanceEmailAlertService {
             final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nsePortfolioUrl));
             gfPortfolioList.stream().forEach(x -> x.setCountry("GF-NSE-PORTFOLIO"));
             stream(SIDE.values()).forEach(x -> {
-                generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF NSE Portfolio " + x + " Alerts ***"));
+                generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF NSE Portfolio " + x + " Alerts ***"), true);
             });
 
             generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Portfolio Daily Data ** "), true);
@@ -350,19 +351,20 @@ public class GFinanceEmailAlertService {
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE PnL Daily *** "), generateEmail);
     }
 
-    private void generateAlertEmails(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer) {
+    private String generateAlertEmails(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer, boolean generateEmail) {
+        StringBuilder dataBuffer = new StringBuilder("");
         try {
-            StringBuilder dataBuffer = new StringBuilder("");
 
             generateHTMLContent(populatedFtseList, side, dataBuffer, subjectBuffer);
             int retry = 5;
-            while (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0);
+            while ((generateEmail) && (!sendEmail(dataBuffer, subjectBuffer) && --retry >= 0));
             if (--retry <= 0 && !sendEmail(dataBuffer, subjectBuffer)){
                 ERROR_LOGGER.error("Failed to send email, GF Email error -> ");
             }
         } catch (Exception e) {
             ERROR_LOGGER.error( "<- , Error ->", e);
         }
+        return dataBuffer.toString();
     }
 
     private synchronized boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) {
@@ -570,6 +572,19 @@ public class GFinanceEmailAlertService {
         new StringBuilder(emailSubject), true);
     }
 
+    public String kickOffNYSEGFDailyAlerts() {
+        Instant instantBefore = now();
+        LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
+        stockInfoList.stream().forEach(x -> x.setCountry("NYSE"));
+        final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
+        String result = generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF NYSE "  + SIDE.BUY + " Alerts ***"), false);
+        LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
+                this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+        return result;
+    }
+
     public String kickOffNYSEGFDaily() {
         Instant instantBefore = now();
         LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -582,6 +597,7 @@ public class GFinanceEmailAlertService {
                 this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
         return resultBuilder.toString();
     }
+
     private void kickOffGF(String country, String emailSubject, Map<String, String> gfUrl, boolean pnlGenerate) {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -592,9 +608,9 @@ public class GFinanceEmailAlertService {
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
             stockInfoList.stream().forEach(x -> x.setCountry(country));
             final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
-//        stream(SIDE.values()).forEach(x -> {
-            generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"));
-//        });
+
+            generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"), true);
+
             generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "), true);
             try {
                 writeGFPayloadToDB(stockInfoList, country);
