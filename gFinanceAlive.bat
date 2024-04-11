@@ -1,9 +1,10 @@
 :again
 
+timeout /t 180 /nobreak > NUL
 start chrome --new-window http://localhost:9090/nyse/WnL
-timeout /t 180 /nobreak > NUL
+timeout /t 120 /nobreak > NUL
 start chrome http://localhost:9090/nyse/daily
-timeout /t 180 /nobreak > NUL
+timeout /t 120 /nobreak > NUL
 start chrome http://localhost:9090/nyse/alerts
 timeout /t 180 /nobreak > NUL
 
