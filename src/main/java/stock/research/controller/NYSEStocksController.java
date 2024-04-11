@@ -50,7 +50,7 @@ public class NYSEStocksController {
 
     @RequestMapping("/nyse/WnL")
     public String WnL() throws Exception {
-        return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.exeWinnerAndLosers().toString() + GFinanceNyseStockUtility.HTML_END;
+        return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.exeWinnerAndLosers(false).toString() + GFinanceNyseStockUtility.HTML_END;
     }
 
     @RequestMapping("/kickNyse")

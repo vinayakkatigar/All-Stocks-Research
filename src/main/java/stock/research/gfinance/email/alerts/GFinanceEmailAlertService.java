@@ -234,7 +234,7 @@ public class GFinanceEmailAlertService {
                 generateAlertEmails(gfPortfolioList, x, new StringBuilder("*** GF NSE Portfolio " + x + " Alerts ***"));
             });
 
-            generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Portfolio Daily Data ** "));
+            generateDailyEmail(gfPortfolioList, new StringBuilder("*** GF NSE Portfolio Daily Data ** "), true);
             try {
                 writeGFPayloadToDB(gfPortfolioList, "GF-NSE-PORTFOLIO");
                 writeToDB(gfPortfolioList);
@@ -254,7 +254,7 @@ public class GFinanceEmailAlertService {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
-            exeWinnerAndLosers();
+            exeWinnerAndLosers(true);
         });
         executorService.shutdown();
 
@@ -337,7 +337,7 @@ public class GFinanceEmailAlertService {
         }
     }
 
-    public StringBuilder exeWinnerAndLosers() {
+    public StringBuilder exeWinnerAndLosers(boolean generateEmail) {
 
         currentThread().setPriority(Thread.MAX_PRIORITY);
         Instant instantBefore = now();
@@ -346,7 +346,7 @@ public class GFinanceEmailAlertService {
                 .filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 5d).collect(toList());
         gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_NYSE));
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
-        return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE PnL Daily *** "));
+        return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE PnL Daily *** "), generateEmail);
     }
 
     private void generateAlertEmails(List<GFinanceStockInfo> populatedFtseList, SIDE side, StringBuilder subjectBuffer) {
@@ -448,7 +448,7 @@ public class GFinanceEmailAlertService {
         }
     }
 
-    private StringBuilder generateDailyEmail(List<GFinanceStockInfo> gFinanceStockInfoList, StringBuilder subject) {
+    private StringBuilder generateDailyEmail(List<GFinanceStockInfo> gFinanceStockInfoList, StringBuilder subject, boolean generateEmail) {
         final StringBuilder dataBuffer = new StringBuilder("");
         try {
             gFinanceStockInfoList.stream().filter((x -> (x.get_52WeekLowPrice() != null
@@ -458,7 +458,7 @@ public class GFinanceEmailAlertService {
                             x.get_52WeekHighLowPriceDiff().compareTo(ZERO) != 0) ))
                     .forEach(x ->  createTableContents(dataBuffer, x));
             int retry = 5;
-            while (!sendEmail(dataBuffer, subject) && --retry >= 0);
+            while ((generateEmail == true) && (!sendEmail(dataBuffer, subject) && --retry >= 0));
             if (--retry <= 0 && !sendEmail(dataBuffer, subject)){
                 ERROR_LOGGER.error("Failed to send email, GF NYSE Email error -> ");
             }
@@ -566,7 +566,7 @@ public class GFinanceEmailAlertService {
             }
             return false;
         }).collect(toList())),
-        new StringBuilder(emailSubject));
+        new StringBuilder(emailSubject), true);
     }
 
     private void kickOffGF(String country, String emailSubject, Map<String, String> gfUrl, boolean pnlGenerate) {
@@ -582,7 +582,7 @@ public class GFinanceEmailAlertService {
 //        stream(SIDE.values()).forEach(x -> {
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"));
 //        });
-            generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "));
+            generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "), true);
             try {
                 writeGFPayloadToDB(stockInfoList, country);
                 writeToDB(stockInfoList);
