@@ -39,6 +39,7 @@ import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_UP;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
@@ -577,7 +578,7 @@ public class GFinanceEmailAlertService {
         final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
         StringBuilder resultBuilder = generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF NYSE  Daily Data ***"), false);
         LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
+        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
                 this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
         return resultBuilder.toString();
     }
