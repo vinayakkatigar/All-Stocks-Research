@@ -403,10 +403,10 @@ public class GFinanceEmailAlertService {
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
         if ((x.get_52WeekLowPriceDiff().doubleValue() <= 1d)
                 || (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0 )){
-            dataBuffer.append("<tr style=\"background-color:#00ffff\">");
+            dataBuffer.append("<tr style=\"background-color:#b3ffff\">");
         }else if ((x.get_52WeekHighPriceDiff().doubleValue() <= 1d)
                 || (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 )){
-            dataBuffer.append("<tr style=\"background-color:#A7D971\">");
+            dataBuffer.append("<tr style=\"background-color:#d9efc3\">");
         }else {
             dataBuffer.append("<tr>");
         }
@@ -420,9 +420,9 @@ public class GFinanceEmailAlertService {
         dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
         dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, HALF_UP) + "</td>");
         if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
-            dataBuffer.append("<td style=\"background-color:#A7D971\">" + x.getDailyPctChange()  + "</td>");
+            dataBuffer.append("<td style=\"background-color:#d9efc3\">" + x.getDailyPctChange()  + "</td>");
         } else if (compare(x.getDailyPctChange().doubleValue() , -5d) <= 0){
-            dataBuffer.append("<td style=\"background-color:#cc0000\">" + x.getDailyPctChange()  + "</td>");
+            dataBuffer.append("<td style=\"background-color:#ffb3b3\">" + x.getDailyPctChange()  + "</td>");
         }else {
             dataBuffer.append("<td>" + x.getDailyPctChange() + "</td>");
         }
