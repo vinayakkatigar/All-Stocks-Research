@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static java.time.LocalDateTime.ofInstant;
+
 public class StockResearchUtility {
     @Value("${component}")
     private static String component;
@@ -351,8 +353,8 @@ public class StockResearchUtility {
 
 
     public static boolean checkIfWeekend() {
-        if (LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() == DayOfWeek.SATURDAY
-                || LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() == DayOfWeek.SUNDAY){
+        if (ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() == DayOfWeek.SATURDAY
+                || ofInstant(Instant.now(), ZoneId.systemDefault()).getDayOfWeek() == DayOfWeek.SUNDAY){
             return true;
         }
         return false;
