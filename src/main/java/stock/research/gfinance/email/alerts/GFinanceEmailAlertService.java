@@ -148,7 +148,12 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(brazilUrl);
         gFinanceStockService.getGFStockInfoList(canadaUrl);
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
-                this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+                getClassName() + "::" + getMethodName());
+    }
+
+    private static String getMethodName() {
+        return new Object() {
+        }.getClass().getEnclosingMethod().getName();
     }
 
     @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
@@ -242,7 +247,7 @@ public class GFinanceEmailAlertService {
                 writeToDB(gfPortfolioList);
                 writeToFile("GF-NSE-PORTFOLIO", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gfPortfolioList));
             } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
+                ERROR_LOGGER.error(getClassName() + "::" + getMethodName()+ ", Error -> ",e);
             }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEPortfolioEmailAlerts" );
@@ -326,7 +331,7 @@ public class GFinanceEmailAlertService {
                         .stream().sorted(comparing(GFinanceStockInfo::getStockRankIndex)).collect(toList());
                 writeToFile( fileName, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(sortedGFNYSEStockAlertList));
             } catch (Exception e) {
-                LOGGER.error("Error - ",e);
+                ERROR_LOGGER.error(getClassName() + "::" + getMethodName()+ ", Error -> ",e);
             }
 
         try {
@@ -335,7 +340,7 @@ public class GFinanceEmailAlertService {
             int retry = 3;
             while (!sendEmail(dataBuffer, new StringBuilder(emailSubject)) && --retry >= 0);
         }catch (Exception e){
-            LOGGER.error("Error - ",e);
+            LOGGER.error(getClassName() + "::" + getMethodName()+ ", Error - ",e);
         }
     }
 
@@ -362,7 +367,7 @@ public class GFinanceEmailAlertService {
                 ERROR_LOGGER.error("Failed to send email, GF Email error -> ");
             }
         } catch (Exception e) {
-            ERROR_LOGGER.error( "<- , Error ->", e);
+            LOGGER.error(getClassName() + "::" + getMethodName()+ ", Error - ",e);
         }
         return dataBuffer.toString();
     }
@@ -437,7 +442,7 @@ public class GFinanceEmailAlertService {
         try {
             gFinanceStockInfoList.forEach(x -> gFinanceStockInfoRepositary.save(x));
         }catch (Exception e){
-            ERROR_LOGGER.error("GF DB inserts", e);
+            ERROR_LOGGER.error(getClassName() + "::" + getMethodName()+ ", GF DB inserts - ",e);
         }
     }
     private void writeGFPayloadToDB(List<GFinanceStockInfo> gFinanceStockInfoList, String country) {
@@ -447,7 +452,7 @@ public class GFinanceEmailAlertService {
         try {
             googleFinanceStockDetailsRepositary.save(new GoogleFinanceStockDetails(Timestamp.from(Instant.now()), objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(gFinanceStockInfoList), ""+Instant.now(), country));
         }catch (Exception e){
-            ERROR_LOGGER.error("GF DB Payload inserts", e);
+            ERROR_LOGGER.error(getClassName() + "::" + getMethodName()+ ", GF DB Payload inserts - ",e);
         }
     }
 
@@ -463,10 +468,10 @@ public class GFinanceEmailAlertService {
             int retry = 5;
             while ((generateEmail == true) && (!sendEmail(dataBuffer, subject) && --retry >= 0));
             if (--retry <= 0 && !sendEmail(dataBuffer, subject)){
-                ERROR_LOGGER.error("Failed to send email, GF NYSE Email error -> ");
+                ERROR_LOGGER.error(getClassName() + "::" + getMethodName() + "Failed to send email, GF NYSE Email error -> ");
             }
         }catch (Exception e){
-            ERROR_LOGGER.error("GF NYSE Email error -> ", e);
+            ERROR_LOGGER.error(getClassName() + "::" + getMethodName() + ", GF NYSE Email error -> ",e);
         }
         return dataBuffer;
     }
@@ -574,27 +579,27 @@ public class GFinanceEmailAlertService {
 
     public String kickOffNYSEGFDailyAlerts() {
         Instant instantBefore = now();
-        LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info(" <-  Started " + getClassName() + "::" + getMethodName());
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
         stockInfoList.stream().forEach(x -> x.setCountry("NYSE"));
         final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
         String result = generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF NYSE "  + SIDE.BUY + " Alerts ***"), false);
-        LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info(" <-  Ended " + getClassName() + "::" + getMethodName());
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
-                this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+                getClassName() + "::" + getMethodName());
         return result;
     }
 
     public String kickOffNYSEGFDaily() {
         Instant instantBefore = now();
-        LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info(" <-  Started " + getClassName() + "::" + getMethodName());
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
         stockInfoList.stream().forEach(x -> x.setCountry("NYSE"));
         final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
         StringBuilder resultBuilder = generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF NYSE  Daily Data ***"), false);
-        LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info(" <-  Ended " + getClassName() + "::" + getMethodName());
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
-                this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+                getClassName() + "::" + getMethodName());
         return resultBuilder.toString();
     }
 
@@ -604,7 +609,7 @@ public class GFinanceEmailAlertService {
             currentThread().setPriority(Thread.MAX_PRIORITY);
 
             Instant instantBefore = now();
-            LOGGER.info(" <-  Started " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+            LOGGER.info(" <-  Started " + getClassName() + "::" + getMethodName());
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
             stockInfoList.stream().forEach(x -> x.setCountry(country));
             final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
@@ -617,16 +622,20 @@ public class GFinanceEmailAlertService {
                 writeToDB(stockInfoList);
                 writeToFile(country, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
             } catch (Exception e) {
-                ERROR_LOGGER.error("Error -", e);
+                ERROR_LOGGER.error(getClassName() + "::" + getMethodName()+ ", Error -> ",e);
             }
             if (pnlGenerate){
                 generateDailyPnLEmail(stockInfoList, "*** GF " + emailSubject + " PNL Daily Data *** ");
             }
-            LOGGER.info(" <-  Ended " + this.getClass().getSimpleName() + "::" + new Object(){}.getClass().getEnclosingMethod().getName());
+            LOGGER.info(" <-  Ended " + getClassName() + "::" + getMethodName());
             LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
-                    this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+                    getClassName() + "::" + getMethodName());
         });
         executorService.shutdown();
+    }
+
+    private String getClassName() {
+        return this.getClass().getSimpleName();
     }
 
 }
