@@ -403,7 +403,7 @@ public class GFinanceEmailAlertService {
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
         if ((x.get_52WeekLowPriceDiff().doubleValue() <= 1d)
                 || (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0 )){
-            dataBuffer.append("<tr style=\"background-color:#b3ffff\">");
+            dataBuffer.append("<tr style=\"background-color:#ccffff\">");
         }else if ((x.get_52WeekHighPriceDiff().doubleValue() <= 1d)
                 || (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 )){
             dataBuffer.append("<tr style=\"background-color:#d9efc3\">");
