@@ -1,4 +1,4 @@
-package stock.research.controller;
+package stock.research.gfinance.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -27,9 +27,9 @@ import static java.math.BigDecimal.ZERO;
 import static stock.research.utility.StockResearchUtility.createTableContents;
 
 @RestController
-public class NYSEStocksController {
+public class GFController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NYSEStocksController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GFController.class);
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
     @Autowired
     private JavaMailSender javaMailSender;
