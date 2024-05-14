@@ -1,11 +1,11 @@
 :again
 
 timeout /t 180 /nobreak > NUL
-start chrome --new-window http://localhost:9090/nyse/WnL
+start chrome --new-window http://localhost:9090/gf/nyse/wnl
 timeout /t 120 /nobreak > NUL
-start chrome http://localhost:9090/nyse/daily
+start chrome http://localhost:9090/gf/nyse/daily
 timeout /t 120 /nobreak > NUL
-start chrome http://localhost:9090/nyse/alerts
+start chrome http://localhost:9090/gf/nyse/alerts
 timeout /t 180 /nobreak > NUL
 
 start chrome --new-window  https://docs.google.com/spreadsheets/d/1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao/edit#gid=0
@@ -65,11 +65,11 @@ timeout /t 60 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1l534qt4O3WPSRWyH0OnNaq9ymMRmL_An2jKQJ5C7geI/edit#gid=0
 timeout /t 60 /nobreak > NUL
 
-start chrome --new-window http://localhost:9090/nyse/WnL
+start chrome --new-window http://localhost:9090/gf/nyse/wnl
 timeout /t 180 /nobreak > NUL
-start chrome http://localhost:9090/nyse/daily
+start chrome http://localhost:9090/gf/nyse/daily
 timeout /t 180 /nobreak > NUL
-start chrome http://localhost:9090/nyse/alerts
+start chrome http://localhost:9090/gf/nyse/alerts
 timeout /t 180 /nobreak > NUL
 
 timeout /t 600 /nobreak > NUL

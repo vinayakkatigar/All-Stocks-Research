@@ -49,16 +49,16 @@ public class GFController {
     @Autowired
     GFinanceEmailAlertService gFinanceEmailAlertService;
 
-    @GetMapping("/nyse/WnL")
+    @GetMapping("/gf/nyse/wnl")
     public String WnL() throws Exception {
         return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.exeWinnerAndLosers(false).toString() + GFinanceNyseStockUtility.HTML_END;
     }
 
-    @GetMapping("/nyse/daily")
+    @GetMapping("/gf/nyse/daily")
     public String nyseDaily() throws Exception {
         return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.kickOffNYSEGFDaily() + GFinanceNyseStockUtility.HTML_END;
     }
-    @GetMapping("/nyse/alerts")
+    @GetMapping("/gf/nyse/alerts")
     public String nyseAlerts() throws Exception {
         return GFinanceNyseStockUtility.HTML_START + gFinanceEmailAlertService.kickOffNYSEGFDailyAlerts() + GFinanceNyseStockUtility.HTML_END;
     }
