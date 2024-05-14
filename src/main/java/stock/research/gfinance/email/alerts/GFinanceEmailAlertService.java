@@ -578,7 +578,7 @@ public class GFinanceEmailAlertService {
         final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(nyseUrlInfo);
         stockInfoList.stream().forEach(x -> x.setCountry("NYSE"));
         final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
-        String result = generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF NYSE "  + SIDE.BUY + " Alerts ***"), false);
+        String result = generateAlertEmails(sortedStockInfoList, SIDE.BUY, new StringBuilder("*** GF NYSE "  + SIDE.BUY + " Alerts ***"), false);
         LOGGER.info(" <-  Ended " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
                 getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
