@@ -1,3 +1,5 @@
+"C:\Program Files\Notepad++\notepad++.exe"
+C:\Program Files\Notepad++\notepad++.exe
 del /S /F /Q C:\Code\All-Stocks-Research\genHtml\*
 del /S /F /Q C:\Code\All-Stocks-Research\genFiles\*
 
