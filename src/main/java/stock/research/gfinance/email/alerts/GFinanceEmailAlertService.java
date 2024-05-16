@@ -345,7 +345,7 @@ public class GFinanceEmailAlertService {
         Instant instantBefore = now();
         LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts" );
         final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream()
-                .filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 5d).collect(toList());
+                .filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 6.5d).collect(toList());
         gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_NYSE));
         LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE PnL Daily *** "), generateEmail);
@@ -414,11 +414,7 @@ public class GFinanceEmailAlertService {
         dataBuffer.append("<td>" + x.getStockName() +
                 START_BRACKET + x.getMktCapFriendyValue() + END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.get_52WeekHighPrice() + "</td>");
-        dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
-        dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, HALF_UP) + "</td>");
-        dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
-        dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, HALF_UP) + "</td>");
+
         if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
             dataBuffer.append("<td style=\"background-color:#d9efc3\">" + x.getDailyPctChange()  + "</td>");
         } else if (compare(x.getDailyPctChange().doubleValue() , -5d) <= 0){
@@ -426,6 +422,13 @@ public class GFinanceEmailAlertService {
         }else {
             dataBuffer.append("<td>" + x.getDailyPctChange() + "</td>");
         }
+
+        dataBuffer.append("<td>" + x.get_52WeekLowPrice() + "</td>");
+        dataBuffer.append("<td>" + x.get_52WeekHighLowPriceDiff().setScale(2, HALF_UP) + "</td>");
+        dataBuffer.append("<td>" + x.getCurrentMarketPrice() + "</td>");
+        dataBuffer.append("<td>" + (x.get_52WeekHighPriceDiff()).setScale(2, HALF_UP) + "</td>");
+        dataBuffer.append("<td>" + x.get_52WeekHighPrice() + "</td>");
+
         dataBuffer.append("<td>" + x.getP2e() + "</td>");
         dataBuffer.append("</tr>");
     }
