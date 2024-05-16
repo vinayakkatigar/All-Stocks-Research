@@ -22,7 +22,7 @@ public class SensexStockResearchUtility {
             "<tbody>";
 
     public static final String HTML_PORTFOLIO_START = "<html><head>\n"
-            + "<style>\n" +
+            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"https://freepngimg.com/download/vacation/6-2-vacation-free-download-png.png\">\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
             "table.hover-highlight td:before {\n" +
             "  background: #ffffff;\n" +
