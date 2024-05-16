@@ -46,7 +46,7 @@ public class GFinanceStocksCmdRunner implements CommandLineRunner {
         sleep(70 * 1000);
         gFinanceEmailAlertService.kickOffGFNSEEmailAlerts();
         sleep(70 * 1000);
-        gFinanceEmailAlertService.kickOffGFFTSEEmailAlerts();
+        gFinanceEmailAlertService.kickOffGFFTSEEUROEmailAlerts();
         sleep(70 * 1000);
 
         gFinanceEmailAlertService.kickOffGFEUROEmailAlerts();

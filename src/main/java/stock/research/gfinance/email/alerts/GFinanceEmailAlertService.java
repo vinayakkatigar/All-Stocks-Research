@@ -147,7 +147,7 @@ public class GFinanceEmailAlertService {
         gFinanceStockService.getGFStockInfoList(italyUrl);
         gFinanceStockService.getGFStockInfoList(brazilUrl);
         gFinanceStockService.getGFStockInfoList(canadaUrl);
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
+        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
                 getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
     }
 
@@ -175,11 +175,23 @@ public class GFinanceEmailAlertService {
         kickOffGF("GF-AUSTRALIA", "ASX ", asxUrl, false);
     }
 
+/*
     @Scheduled(cron = "0 35 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFGermanyEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-GERMANY", "Germany ", germanUrl, false);
     }
+    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFEUROEmailAlerts() {
+        currentThread().setPriority(Thread.MAX_PRIORITY);
+        kickOffGF("GF-EURO", "EURO ", euroUrl, false);
+    }
+    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFSwitzerlandEmailAlerts() {
+        currentThread().setPriority(Thread.MAX_PRIORITY);
+        kickOffGF("GF-SWITZERLAND", "Switzerland ", swissUrl, false);
+    }
+*/
 
     @Scheduled(cron = "0 55 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFSouthKoreaEmailAlerts() {
@@ -188,18 +200,19 @@ public class GFinanceEmailAlertService {
     }
 
     @Scheduled(cron = "0 40 3,9,12,15,21 ? * MON-SAT", zone = "GMT")
-    public void kickOffGFFTSEEmailAlerts() {
+    public void kickOffGFFTSEEUROEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
-        kickOffGF("GF-FTSE", "FTSE ", ftseUrl, true);
+        ftseUrl.putAll(euroUrl);
+        ftseUrl.putAll(germanUrl);
+        ftseUrl.putAll(swissUrl);
+        kickOffGF("GF-FTSE-EURO", "FTSE-EURO ", ftseUrl, true);
     }
-
 
     @Scheduled(cron = "0 50 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-NSE", "NSE ", nseUrlInfo, false);
     }
-
 
     @Scheduled(cron = "0 5 5,11,17,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFPortfolioEmailAlerts() {
@@ -246,7 +259,7 @@ public class GFinanceEmailAlertService {
             }
 
             LOGGER.info(" <-  Ended kickOffGFPortfolioEmailAlerts::kickOffGFNSEPortfolioEmailAlerts" );
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGFNSEPortfolioEmailAlerts"  );
+            LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded GFinanceEmailAlertService::kickOffGFNSEPortfolioEmailAlerts"  );
         });
         executorService.shutdown();
     }
@@ -266,18 +279,6 @@ public class GFinanceEmailAlertService {
     public void kickOffGFHongKongEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-HONGKONG", "HongKong ", hongKongUrl, false);
-    }
-
-    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
-    public void kickOffGFSwitzerlandEmailAlerts() {
-        currentThread().setPriority(Thread.MAX_PRIORITY);
-        kickOffGF("GF-SWITZERLAND", "Switzerland ", swissUrl, false);
-    }
-
-    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
-    public void kickOffGFEUROEmailAlerts() {
-        currentThread().setPriority(Thread.MAX_PRIORITY);
-        kickOffGF("GF-EURO", "EURO ", euroUrl, false);
     }
 
     @Scheduled(cron = "0 07 0,21 ? * *", zone = "GMT")
@@ -347,7 +348,7 @@ public class GFinanceEmailAlertService {
         final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nyseUrlInfo).stream()
                 .filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 6.5d).collect(toList());
         gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_NYSE));
-        LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
+        LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded GFinanceEmailAlertService::kickOffGoogleFinanceNYSEDailyWinnersLosersEmailAlerts"  );
         return generateDailyEmail(gFinanceStockInfoList, new StringBuilder("*** GF NYSE PnL Daily *** "), generateEmail);
     }
 
@@ -618,7 +619,10 @@ public class GFinanceEmailAlertService {
             LOGGER.info(" <-  Started " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
             final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
             stockInfoList.stream().forEach(x -> x.setCountry(country));
-            final List<GFinanceStockInfo> sortedStockInfoList = sortByDailyPCTChange(stockInfoList);
+            final List<GFinanceStockInfo> sortedStockInfoList = ((country.toLowerCase().contains("FTSE") 
+                                                                    || (country.toLowerCase().contains("EURO")))) ? 
+                                                                        sortByDailyPCTChange(stockInfoList) 
+                                                                            : sortByDailyPCTChange(stockInfoList.stream().filter(x -> x.getMktCapRealValue() >= 1000000000d).collect(toList())) ;
 
             generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"), true);
 
@@ -634,7 +638,7 @@ public class GFinanceEmailAlertService {
                 generateDailyPnLEmail(stockInfoList, "*** GF " + emailSubject + " PNL Daily Data *** ");
             }
             LOGGER.info(" <-  Ended " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
-            LOGGER.info(instantBefore.until(now(), MINUTES)+ " <- Total time in mins, \nEnded "+
+            LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
                     getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
         });
         executorService.shutdown();
