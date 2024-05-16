@@ -401,24 +401,32 @@ public class GFinanceEmailAlertService {
     }
 
     public void createTableContents(StringBuilder dataBuffer, GFinanceStockInfo x) {
-        if ((x.get_52WeekLowPriceDiff().doubleValue() <= 1d)
+
+        if ((x.get_52WeekLowPrice().compareTo(x.getDailyLowPrice()) == 0 )){
+            dataBuffer.append("<tr style=\"color:#ff471a;background-color:#e6fff5\">");
+        }
+        else if ((x.get_52WeekLowPriceDiff().doubleValue() <= 1d)
                 || (x.get_52WeekLowPrice().compareTo(x.getCurrentMarketPrice()) >= 0 )){
-            dataBuffer.append("<tr style=\"background-color:#ccffff\">");
+            dataBuffer.append("<tr style=\"background-color:#e6ffff\">");
+        }else if (x.get_52WeekLowPriceDiff().doubleValue() <= 2d &&
+                x.get_52WeekLowPriceDiff().doubleValue() > 1d ){
+            dataBuffer.append("<tr style=\"background-color:#ffe6ff\">");
         }else if ((x.get_52WeekHighPriceDiff().doubleValue() <= 1d)
                 || (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 )){
-            dataBuffer.append("<tr style=\"background-color:#d9efc3\">");
+            dataBuffer.append("<tr style=\"font-size:1.1em;color:#007399;background-color:#ffebcc\">");
         }else {
             dataBuffer.append("<tr>");
         }
+
         dataBuffer.append("<td>" + x.getStockRankIndex() + "</td>");
         dataBuffer.append("<td>" + x.getStockName() +
                 START_BRACKET + x.getMktCapFriendyValue() + END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, HALF_UP) + "</td>");
 
         if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
-            dataBuffer.append("<td style=\"background-color:#d9efc3\">" + x.getDailyPctChange()  + "</td>");
+            dataBuffer.append("<td style=\"background-color:#ffe6e6;color:blue;font-size:1.1em;\">" + x.getDailyPctChange()  + "</td>");
         } else if (compare(x.getDailyPctChange().doubleValue() , -5d) <= 0){
-            dataBuffer.append("<td style=\"background-color:#ffb3b3\">" + x.getDailyPctChange()  + "</td>");
+            dataBuffer.append("<td style=\"background-color:#ffffcc;color:ff1a1a;font-size:1.1em;\">" + x.getDailyPctChange()  + "</td>");
         }else {
             dataBuffer.append("<td>" + x.getDailyPctChange() + "</td>");
         }
