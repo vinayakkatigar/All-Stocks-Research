@@ -617,25 +617,25 @@ public class GFinanceEmailAlertService {
 
             Instant instantBefore = now();
             LOGGER.info(" <-  Started " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
-            final List<GFinanceStockInfo> stockInfoList = gFinanceStockService.getGFStockInfoList(gfUrl);
+            final List<GFinanceStockInfo> stockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(gfUrl));
             stockInfoList.stream().forEach(x -> x.setCountry(country));
             final List<GFinanceStockInfo> sortedStockInfoList = ((country.toLowerCase().contains("FTSE") 
                                                                     || (country.toLowerCase().contains("EURO")))) ? 
                                                                         sortByDailyPCTChange(stockInfoList) 
                                                                             : sortByDailyPCTChange(stockInfoList.stream().filter(x -> x.getMktCapRealValue() >= 1000000000d).collect(toList())) ;
 
-            generateAlertEmails(stockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"), true);
+            generateAlertEmails(sortedStockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"), true);
 
             generateDailyEmail(sortedStockInfoList, new StringBuilder("*** GF "+ emailSubject + " Daily Data *** "), true);
             try {
-                writeGFPayloadToDB(stockInfoList, country);
-                writeToDB(stockInfoList);
-                writeToFile(country, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(stockInfoList));
+                writeGFPayloadToDB(sortedStockInfoList, country);
+                writeToDB(sortedStockInfoList);
+                writeToFile(country, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(sortedStockInfoList));
             } catch (Exception e) {
                 ERROR_LOGGER.error(getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName()+ ", Error -> ",e);
             }
             if (pnlGenerate){
-                generateDailyPnLEmail(stockInfoList, "*** GF " + emailSubject + " PNL Daily Data *** ");
+                generateDailyPnLEmail(sortedStockInfoList, "*** GF " + emailSubject + " PNL Daily Data *** ");
             }
             LOGGER.info(" <-  Ended " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
             LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
