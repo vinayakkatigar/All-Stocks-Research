@@ -147,7 +147,7 @@ public class SensexStockResearchAlertMechanismService {
     public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(7, 20d, "SCREENER_PNL_WEEKLY" , "** Screener Sensex Weekly PNL Data ** ");
+            // runPnlLogicForSpecifiedDays(7, 20d, "SCREENER_PNL_WEEKLY" , "** Screener Sensex Weekly PNL Data ** ");
         });
         executorService.shutdown();
     }
@@ -156,7 +156,7 @@ public class SensexStockResearchAlertMechanismService {
     public void kickOffScreenerBiWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(14, 25, "SCREENER_PNL_BI_WEEKLY" , "** Screener Sensex BI-Weekly PNL Data ** ");
+            // runPnlLogicForSpecifiedDays(14, 25, "SCREENER_PNL_BI_WEEKLY" , "** Screener Sensex BI-Weekly PNL Data ** ");
         });
         executorService.shutdown();
     }
@@ -165,7 +165,7 @@ public class SensexStockResearchAlertMechanismService {
     public void kickOffScreenerMONTHLYWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(31, 35d, "SCREENER_PNL_MONTHLY" , "** Screener Sensex Monthly PNL Data ** ");
+            // runPnlLogicForSpecifiedDays(31, 35d, "SCREENER_PNL_MONTHLY" , "** Screener Sensex Monthly PNL Data ** ");
         });
         executorService.shutdown();
     }

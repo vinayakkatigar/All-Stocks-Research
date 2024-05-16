@@ -284,8 +284,8 @@ public class GFinanceEmailAlertService {
     public void kickOffGFWatchListWeeklyPnLEmailAlerts() {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(7, 20d, GF_WATCHLIST + "_PNL_WEEKLY" ,
-                    "** GF WATCHLIST Weekly PNL Data ** ", GF_WATCHLIST);
+//             runPnlLogicForSpecifiedDays(7, 20d, GF_WATCHLIST + "_PNL_WEEKLY" ,
+//                    "** GF WATCHLIST Weekly PNL Data ** ", GF_WATCHLIST);
         });
         executorService.shutdown();
     }
@@ -294,8 +294,8 @@ public class GFinanceEmailAlertService {
     public void kickOffGFPortfolioWeeklyPnLEmailAlerts() {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(7, 20d, GF_PORTFOLIO + "_PNL_WEEKLY" ,
-                    "** GF PORTFOLIO Weekly PNL Data ** ", GF_PORTFOLIO);
+//             runPnlLogicForSpecifiedDays(7, 20d, GF_PORTFOLIO + "_PNL_WEEKLY" ,
+//                    "** GF PORTFOLIO Weekly PNL Data ** ", GF_PORTFOLIO);
         });
         executorService.shutdown();
     }
@@ -304,7 +304,7 @@ public class GFinanceEmailAlertService {
     public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(7, 20d, "GF-NYSE_PNL_WEEKLY" , "** GF NYSE Weekly PNL Data ** ", GF_NYSE);
+//             runPnlLogicForSpecifiedDays(7, 20d, "GF-NYSE_PNL_WEEKLY" , "** GF NYSE Weekly PNL Data ** ", GF_NYSE);
         });
         executorService.shutdown();
     }
@@ -313,7 +313,7 @@ public class GFinanceEmailAlertService {
     public void kickOffScreenerMonthlyPnLEmailAlerts() {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
-            runPnlLogicForSpecifiedDays(30, 30d, "GF-NYSE_PNL_MONTHLY" , "** GF NYSE Monthly PNL Data ** ", GF_NYSE);
+//             runPnlLogicForSpecifiedDays(30, 30d, "GF-NYSE_PNL_MONTHLY" , "** GF NYSE Monthly PNL Data ** ", GF_NYSE);
         });
         executorService.shutdown();
     }
