@@ -102,23 +102,23 @@ public class StockResearchUtility {
             + "<style>\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
             "table.hover-highlight td:before {\n" +
-            "  background: #fff;\n" +
+            "  background: #ffffff;\n" +
             "}\n" +
             "\n" +
             "/* ODD ZEBRA STRIPE color (needs zebra widget) */\n" +
             ".hover-highlight .odd td:before, .hover-highlight .odd th:before {\n" +
-            "  background: #ebf2fa;\n" +
+            "  background: #ffffff;\n" +
             "}\n" +
             "/* EVEN ZEBRA STRIPE color (needs zebra widget) */\n" +
             ".hover-highlight .even td:before, .hover-highlight .even th:before{\n" +
-            "  background-color: #fff;\n" +
+            "  background-color: #ffffff;\n" +
             "}\n" +
             "\n" +
             "/* HOVER ROW highlight colors */\n" +
             "table.hover-highlight tbody > tr:hover > td, /* override tablesorter theme row hover */\n" +
             "table.hover-highlight tbody > tr.odd:hover > td,\n" +
             "table.hover-highlight tbody > tr.even:hover > td {\n" +
-            "  background-color: #ffa;\n" +
+            "  background-color: #ffffe6;\n" +
             "}\n" +
             "/* HOVER COLUMN highlight colors */\n" +
             ".hover-highlight tbody tr td:hover::after,\n" +
