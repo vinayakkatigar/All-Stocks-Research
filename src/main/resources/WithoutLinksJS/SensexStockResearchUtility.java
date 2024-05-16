@@ -22,7 +22,7 @@ public class SensexStockResearchUtility {
             "<tbody>";
 
     public static final String HTML_PORTFOLIO_START = "<html><head>\n"
-            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"C:\\Code-Base\\All-Stocks-Research\\connection.png\">\n" +
+            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"/connection.png\">\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
             "table.hover-highlight td:before {\n" +
             "  background: #ffffff;\n" +

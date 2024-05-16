@@ -9,7 +9,8 @@ public class GFinanceNyseStockUtility {
     public static final String START_BRACKET = "(";
     public static final String END_BRACKET = ")";
     public static final String HTML_START = "<html><head>\n"
-            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"C:\\Code-Base\\All-Stocks-Research\\connection.png\">\n" +
+            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"connection.png\">\n"
+            +  "<link rel=\"icon\" type=\"image/png\" href=\"/connection.png\">\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
             "table.hover-highlight td:before {\n" +
             "  background: #ffffff;\n" +
