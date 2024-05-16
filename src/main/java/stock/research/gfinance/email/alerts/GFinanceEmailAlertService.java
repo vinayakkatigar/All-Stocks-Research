@@ -418,7 +418,7 @@ public class GFinanceEmailAlertService {
 
         dataBuffer.append("<td>" + x.getStockRankIndex() + "</td>");
         dataBuffer.append("<td>" + x.getStockName() +
-                START_BRACKET + x.getMktCapFriendyValue() + x.getCcy() != null ? HYPHEN + SPACE + x.getCcy() + SPACE : SPACE + END_BRACKET + "</a></td>");
+                START_BRACKET + x.getMktCapFriendyValue() + ((x.getCcy() != null) ? HYPHEN + SPACE + x.getCcy() + SPACE : SPACE) + END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, HALF_UP) + "</td>");
 
         if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
