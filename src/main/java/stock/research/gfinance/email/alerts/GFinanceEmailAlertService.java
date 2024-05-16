@@ -622,7 +622,7 @@ public class GFinanceEmailAlertService {
             final List<GFinanceStockInfo> sortedStockInfoList = ((country.toLowerCase().contains("FTSE") 
                                                                     || (country.toLowerCase().contains("EURO")))) ? 
                                                                         sortByDailyPCTChange(stockInfoList) 
-                                                                            : sortByDailyPCTChange(stockInfoList.stream().filter(x -> x.getMktCapRealValue() >= 1000000000d).collect(toList())) ;
+                                                                            : sortByDailyPCTChange(stockInfoList.stream().filter(x -> x.getMktCapRealValue() >= 900000000d).collect(toList())) ;
 
             generateAlertEmails(sortedStockInfoList, SIDE.BUY, new StringBuilder("*** GF " + emailSubject + SIDE.BUY + " Alerts ***"), true);
 
