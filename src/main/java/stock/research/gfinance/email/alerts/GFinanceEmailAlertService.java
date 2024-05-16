@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,15 +38,13 @@ import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_UP;
 import static java.time.Instant.now;
-import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.stream.Collectors.toList;
-import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_END;
-import static stock.research.gfinance.utility.GFinanceNyseStockUtility.HTML_START;
+import static stock.research.gfinance.utility.GFinanceStockUtility.*;
 import static stock.research.utility.FtseStockResearchUtility.END_BRACKET;
 import static stock.research.utility.FtseStockResearchUtility.START_BRACKET;
 import static stock.research.utility.StockResearchUtility.checkIfWeekend;
@@ -421,7 +418,7 @@ public class GFinanceEmailAlertService {
 
         dataBuffer.append("<td>" + x.getStockRankIndex() + "</td>");
         dataBuffer.append("<td>" + x.getStockName() +
-                START_BRACKET + x.getMktCapFriendyValue() + END_BRACKET + "</a></td>");
+                START_BRACKET + x.getMktCapFriendyValue() + x.getCcy() != null ? HYPHEN + SPACE + x.getCcy() + SPACE : SPACE + END_BRACKET + "</a></td>");
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, HALF_UP) + "</td>");
 
         if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){

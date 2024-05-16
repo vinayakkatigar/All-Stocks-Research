@@ -2,7 +2,8 @@ package stock.research.gfinance.utility;
 
 import java.math.BigDecimal;
 
-public class GFinanceNyseStockUtility {
+public class GFinanceStockUtility {
+    public static final String SPACE = " ";
     public static final String HYPHEN = "-";
     public static final String COMMA = ",";
     public static final Integer LARGE_CAP = 150;
@@ -135,7 +136,7 @@ public class GFinanceNyseStockUtility {
             "</html>";
 
 
-    private GFinanceNyseStockUtility(){
+    private GFinanceStockUtility(){
     }
 
     public static Double getDoubleFromString(String input){

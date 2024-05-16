@@ -36,7 +36,7 @@ import static java.time.Instant.now;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.toList;
-import static stock.research.gfinance.utility.GFinanceNyseStockUtility.getBigDecimalFromString;
+import static stock.research.gfinance.utility.GFinanceStockUtility.getBigDecimalFromString;
 import static stock.research.utility.StockResearchUtility.*;
 import static stock.research.utility.StockUtility.goSleep;
 
