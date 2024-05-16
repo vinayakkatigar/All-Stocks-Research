@@ -411,7 +411,7 @@ public class GFinanceEmailAlertService {
             dataBuffer.append("<tr style=\"background-color:#e6ffff\">");
         }else if (x.get_52WeekLowPriceDiff().doubleValue() <= 2d &&
                 x.get_52WeekLowPriceDiff().doubleValue() > 1d ){
-            dataBuffer.append("<tr style=\"background-color:#ffe6ff\">");
+            dataBuffer.append("<tr style=\"background-color:#fff0ff\">");
         }else if ((x.get_52WeekHighPriceDiff().doubleValue() <= 1d)
                 || (x.getCurrentMarketPrice().compareTo(x.get_52WeekHighPrice()) >= 0 )){
             dataBuffer.append("<tr style=\"font-size:1.1em;color:#007399;background-color:#ffebcc\">");
