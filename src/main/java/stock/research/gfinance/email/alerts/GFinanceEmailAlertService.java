@@ -381,7 +381,7 @@ public class GFinanceEmailAlertService {
 //            helper.setTo(new String[]{"raghu_kat_stocks@outlook.com","raghu.kat@outlook.com"});
                 helper.setText(data, true);
                 helper.setSubject(subjectBuffer.toString());
-                String fileName = subjectBuffer.toString();
+                String fileName = "ALL-STOCKS_" + subjectBuffer.toString();
                 fileName = fileName.replace("*", "");
                 fileName = fileName.replace(" ", "");
                 fileName =  fileName + "-" + LocalDateTime.now()  ;
