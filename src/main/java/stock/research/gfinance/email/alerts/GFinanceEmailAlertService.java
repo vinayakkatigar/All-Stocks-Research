@@ -422,9 +422,9 @@ public class GFinanceEmailAlertService {
         dataBuffer.append("<td>" + (x.get_52WeekLowPriceDiff()).setScale(2, HALF_UP) + "</td>");
 
         if (compare(x.getDailyPctChange().doubleValue() , 5d) >= 0){
-            dataBuffer.append("<td style=\"background-color:#ffe6e6;color:#93c47d;font-size:1.1em;\">" + x.getDailyPctChange()  + "</td>");
+            dataBuffer.append("<td style=\"background-color:#ffe6e6;color:#93c47d;font-size:1.2em;\">" + x.getDailyPctChange()  + "</td>");
         } else if (compare(x.getDailyPctChange().doubleValue() , -5d) <= 0){
-            dataBuffer.append("<td style=\"background-color:#ffffcc;color:ff1a1a;font-size:1.1em;\">" + x.getDailyPctChange()  + "</td>");
+            dataBuffer.append("<td style=\"background-color:#ffffcc;color:ff1a1a;font-size:1.2em;\">" + x.getDailyPctChange()  + "</td>");
         }else {
             dataBuffer.append("<td>" + x.getDailyPctChange() + "</td>");
         }
