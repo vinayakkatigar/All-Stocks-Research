@@ -202,7 +202,7 @@ public class GFinanceEmailAlertService {
         ftseUrl.putAll(euroUrl);
         ftseUrl.putAll(germanUrl);
         ftseUrl.putAll(swissUrl);
-        kickOffGF("GF-FTSE-EURO", "FTSE-EURO ", ftseUrl, true);
+        kickOffGF("GF-FTSE-EURO", "FTSE-EURO ", ftseUrl, false);
     }
 
     @Scheduled(cron = "0 50 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
