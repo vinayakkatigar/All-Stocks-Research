@@ -28,6 +28,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.getBigDecimalFromString;
 import static stock.research.utility.StockResearchUtility.getDoubleFromString;
@@ -195,8 +197,8 @@ public class ScreenerSensexStockResearchService {
                     && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  > 0
                     &&  x.getStockMktCap() > 1999).distinct().collect(toList());
 
-            resultSensexStockInfosList.sort(Comparator.comparing(SensexStockInfo::getStockMktCap,
-                                                                        Comparator.nullsLast(Comparator.naturalOrder())).reversed());
+            resultSensexStockInfosList.sort(comparing(SensexStockInfo::getStockMktCap,
+                                                                        nullsLast(Comparator.naturalOrder())).reversed());
 
             int i =1;
             for (SensexStockInfo x : resultSensexStockInfosList){
