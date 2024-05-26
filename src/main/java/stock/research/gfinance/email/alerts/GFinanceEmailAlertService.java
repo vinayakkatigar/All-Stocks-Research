@@ -123,7 +123,7 @@ public class GFinanceEmailAlertService {
         brazilUrl.put("Vin-Brazil", "1ki_vTyELjBXvtfrJphpdkHmeqx-FCSQKrwYPwDXVvEE");
         canadaUrl.put("Vin-Canada", "1l534qt4O3WPSRWyH0OnNaq9ymMRmL_An2jKQJ5C7geI");
     }
-    @Scheduled(cron = "0 */15 * ? * *", zone = "GMT")
+    @Scheduled(cron = "0 * */2 ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
         LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGFinanceRefresh" );
