@@ -76,7 +76,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd").withZone( ZoneId.systemDefault() );
 
-    @Scheduled(cron = "0 35 9,14,20 ? * *", zone = "IST")
+    @Scheduled(cron = "0 35 9,14,23 ? * *", zone = "IST")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
