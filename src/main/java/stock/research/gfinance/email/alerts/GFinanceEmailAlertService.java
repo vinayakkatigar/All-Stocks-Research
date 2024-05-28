@@ -220,7 +220,7 @@ public class GFinanceEmailAlertService {
     @Scheduled(cron = "0 15 15,19,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNYSEEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
-        kickOffGF(GF_NYSE, "NYSE ", nyseUrlInfo, true);
+        kickOffGF(GF_NYSE, "NYSE ", nyseUrlInfo, false);
     }
 
     @Scheduled(cron = "0 35 15,19,23 ? * MON-SAT", zone = "GMT")
@@ -266,7 +266,7 @@ public class GFinanceEmailAlertService {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
-            exeWinnerAndLosers(true);
+//            exeWinnerAndLosers(true);
         });
         executorService.shutdown();
 
