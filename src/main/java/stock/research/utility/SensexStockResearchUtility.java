@@ -19,8 +19,7 @@ public class SensexStockResearchUtility {
     public static final String START_BRACKET = "(";
     public static final String END_BRACKET = ")";
     public static final String HTML_START = "<html><head>\n"
-            +  "<link rel=\"icon\" type=\"image/png\" href=\"https://freepngimg.com/download/vacation/6-2-vacation-free-download-png.png\">\n"
-            +  "<link rel=\"icon\" type=\"image/png\" href=\"https://freepngimg.com/download/vacation/6-2-vacation-free-download-png.png\">\n"
+            +  "<link rel=\"icon\" type=\"image/png\" href=\"http://localhost:9090/image\">\n"
             + "<style>\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
             "table.hover-highlight td:before {\n" +
@@ -107,7 +106,7 @@ public class SensexStockResearchUtility {
             "<tbody>";
 
     public static final String HTML_PORTFOLIO_START = "<html><head>\n"
-            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"https://freepngimg.com/download/vacation/6-2-vacation-free-download-png.png\">\n" +
+            + "<style>\n" +  "<link rel=\"icon\" type=\"image/png\" href=\"http://localhost:9090/image\">\n" +
             "/* TABLE BACKGROUND color (match the original theme) */\n" +
             "table.hover-highlight td:before {\n" +
             "  background: #ffffff;\n" +
