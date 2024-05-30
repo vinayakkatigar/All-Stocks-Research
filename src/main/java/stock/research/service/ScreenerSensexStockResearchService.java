@@ -2,6 +2,10 @@ package stock.research.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,18 +13,23 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock.research.domain.SensexStockInfo;
 
+import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -47,8 +56,12 @@ public class ScreenerSensexStockResearchService {
 
     private static List<SensexStockInfo> cacheScreenerSensexStockInfosList = new ArrayList<>();
 
-    @Autowired
     RestTemplate restTemplate;
+
+    @PostConstruct
+    public void setUp(){
+        restTemplate = restTemplate();
+    }
 
     public List<SensexStockInfo> populateStocksAttributes() {
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
@@ -305,6 +318,28 @@ public class ScreenerSensexStockResearchService {
         }
 
         return response;
+    }
+
+    public RestTemplate restTemplate() {
+        try {
+            TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+            SSLContext sslContext;
+            sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
+                    .build();
+            SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+            requestFactory.setHttpClient(httpClient);
+            requestFactory.setConnectionRequestTimeout(1000 * 20);
+            requestFactory.setConnectTimeout(1000 * 20);
+            requestFactory.setReadTimeout(1000 * 20);
+            RestTemplate restTemplate = new RestTemplate(requestFactory);
+            return restTemplate;
+
+        } catch(Exception e) {
+            printError(e);
+        }
+        return null;
     }
 
 }
