@@ -2,6 +2,7 @@ package stock.research.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -13,7 +14,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -327,7 +327,12 @@ public class ScreenerSensexStockResearchService {
             sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
                     .build();
             SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf)
+                    .setDefaultRequestConfig(RequestConfig.custom()
+                            .setConnectTimeout(1000 * 20)
+                            .setConnectionRequestTimeout(1000 * 20)
+                            .setSocketTimeout(1000 * 20)
+                            .build()).build();
             HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
             requestFactory.setHttpClient(httpClient);
             requestFactory.setConnectionRequestTimeout(1000 * 20);
