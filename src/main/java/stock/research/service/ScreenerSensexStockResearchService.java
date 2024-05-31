@@ -72,7 +72,7 @@ public class ScreenerSensexStockResearchService {
             List<String> stockUrlsMap = objectMapper.readValue(new ClassPathResource("ScreenerSensexStockURLInfo.json").getInputStream(), new TypeReference<List<String>>(){});
 
             stockUrlsMap.stream().forEach(x -> {
-                goSleep(3);
+                goSleep(1);
                 ResponseEntity<String> response = null;
 
                 LOGGER.info("SensexStockResearchService::StockURL ->  " + x);
@@ -304,7 +304,7 @@ public class ScreenerSensexStockResearchService {
     public ResponseEntity<String> makeRestCall(String url) {
         ResponseEntity<String> response = null;
         try {
-            goSleep(3);
+            goSleep(1);
             response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
             if (response == null || response.getStatusCode() != HttpStatus.OK){
                 return null;
@@ -314,7 +314,7 @@ public class ScreenerSensexStockResearchService {
             goSleep(10);
             return null;
         }finally {
-            goSleep(2);
+            goSleep(1);
         }
 
         return response;
