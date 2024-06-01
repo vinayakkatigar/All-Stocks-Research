@@ -166,7 +166,7 @@ public class GFinanceEmailAlertService {
         kickOffGF(GF_WATCHLIST, "WatchList ", watchListUrl, false);
     }
 
-    @Scheduled(cron = "0 20 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 30 17 ? * MON-SAT", zone = "GMT")
     public void kickOffGFASXEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-AUSTRALIA", "ASX ", asxUrl, false);
@@ -190,13 +190,13 @@ public class GFinanceEmailAlertService {
     }
 */
 
-    @Scheduled(cron = "0 55 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 05 11 ? * MON-SAT", zone = "GMT")
     public void kickOffGFSouthKoreaEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-SKW", "SouthKorea ", skwUrl, false);
     }
 
-    @Scheduled(cron = "0 40 3,9,12,15,21 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 40 3,9,21 ? * MON-SAT", zone = "GMT")
     public void kickOffGFFTSEEUROEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         ftseUrl.putAll(euroUrl);
@@ -205,7 +205,7 @@ public class GFinanceEmailAlertService {
         kickOffGF("GF-FTSE-EURO", "FTSE-EURO ", ftseUrl, false);
     }
 
-    @Scheduled(cron = "0 50 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
+//    @Scheduled(cron = "0 50 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-NSE", "NSE ", nseUrlInfo, false);
@@ -223,13 +223,13 @@ public class GFinanceEmailAlertService {
         kickOffGF(GF_NYSE, "NYSE ", nyseUrlInfo, false);
     }
 
-    @Scheduled(cron = "0 35 15,19,23 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 35 13 ? * MON-SAT", zone = "GMT")
     public void kickOffGFIndonesiaEmailAlerts() {
         currentThread().setPriority(Thread.MIN_PRIORITY);
         kickOffGF("GF-INDONESIA", "Indonesia ", indonesiaUrl, false);
     }
 
-    @Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
+//    @Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEPortfolioEmailAlerts() {
 
         currentThread().setPriority(Thread.MAX_PRIORITY);
