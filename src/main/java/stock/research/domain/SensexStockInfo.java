@@ -3,6 +3,7 @@ package stock.research.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -137,7 +138,7 @@ public class SensexStockInfo {
     }
 
     public String getStockName() {
-        return stockName;
+        return stockName == null ? null : Normalizer.normalize(stockName, Normalizer.Form.NFKD).replaceAll("\\p{M}", "");
     }
 
     public String getStockURL() {
