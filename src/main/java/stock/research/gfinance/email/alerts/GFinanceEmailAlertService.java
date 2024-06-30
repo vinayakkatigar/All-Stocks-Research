@@ -148,13 +148,13 @@ public class GFinanceEmailAlertService {
                 getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
     }
 
-    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
+//    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
     public void kickOffGFCanadaEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-CANADA", "Canada ", canadaUrl, false);
     }
 
-    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
+//    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
     public void kickOffGFBrazilEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-BRAZIL", "Brazil ", brazilUrl, false);
@@ -190,7 +190,7 @@ public class GFinanceEmailAlertService {
     }
 */
 
-    @Scheduled(cron = "0 05 11 ? * MON-SAT", zone = "GMT")
+//    @Scheduled(cron = "0 05 11 ? * MON-SAT", zone = "GMT")
     public void kickOffGFSouthKoreaEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-SKW", "SouthKorea ", skwUrl, false);
@@ -223,7 +223,7 @@ public class GFinanceEmailAlertService {
         kickOffGF(GF_NYSE, "NYSE ", nyseUrlInfo, false);
     }
 
-    @Scheduled(cron = "0 35 13 ? * MON-SAT", zone = "GMT")
+//    @Scheduled(cron = "0 35 13 ? * MON-SAT", zone = "GMT")
     public void kickOffGFIndonesiaEmailAlerts() {
         currentThread().setPriority(Thread.MIN_PRIORITY);
         kickOffGF("GF-INDONESIA", "Indonesia ", indonesiaUrl, false);
