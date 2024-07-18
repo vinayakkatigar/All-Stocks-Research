@@ -157,8 +157,10 @@ public class GFinanceEmailAlertService {
         executorService.submit(() -> {
             currentThread().setPriority(MAX_PRIORITY);
             Instant instantBefore = now();
+
             LOGGER.info(" <-  Started kickOffGFEASTASIAAlerts " + this.getClass().getSimpleName() + "::"
                     + new Object(){}.getClass().getEnclosingMethod().getName());
+
             Map<String, String> eastAsiaUrlInfo = new HashMap<>();
             eastAsiaUrlInfo.put("Vin-TURKEY", "1YmPCf9lhipyT_qlHqlPhLSpCOjb3-N18pu4DQ5sSjbE");
             eastAsiaUrlInfo.put("Vin-TAIWAN", "1OgGsh9AZVdG8_yCPNxj-1KFU4-TOvlRD7clf9wBJgnI");
