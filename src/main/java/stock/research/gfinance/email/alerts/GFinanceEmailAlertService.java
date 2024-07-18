@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 
 import static java.lang.Double.compare;
 import static java.lang.Math.abs;
+import static java.lang.Thread.MAX_PRIORITY;
 import static java.lang.Thread.currentThread;
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
@@ -42,6 +43,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
+import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.stream.Collectors.toList;
 import static stock.research.gfinance.utility.GFinanceStockUtility.*;
@@ -57,6 +59,7 @@ public class GFinanceEmailAlertService {
     public static final String GF_NYSE = "GF-NYSE";
     public static final String GF_WATCHLIST = "GF-WATCHLIST";
     public static final String GF_PORTFOLIO = "GF-PORTFOLIO";
+    public static final String GF_EASTASIA = "GF_EASTASIA";
 
     //    enum StockCategory{LARGE_CAP, MID_CAP, SMALL_CAP};
 
@@ -147,6 +150,36 @@ public class GFinanceEmailAlertService {
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
                 getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
     }
+
+    @Scheduled(cron = "0 30 4,14 ? * MON-SAT", zone = "GMT")
+    public void kickOffGFEASTASIAAlerts() {
+        ExecutorService executorService = newCachedThreadPool();
+        executorService.submit(() -> {
+            currentThread().setPriority(MAX_PRIORITY);
+            Instant instantBefore = now();
+            LOGGER.info(" <-  Started kickOffGFEASTASIAAlerts " + this.getClass().getSimpleName() + "::"
+                    + new Object(){}.getClass().getEnclosingMethod().getName());
+            Map<String, String> eastAsiaUrlInfo = new HashMap<>();
+            eastAsiaUrlInfo.put("Vin-TURKEY", "1YmPCf9lhipyT_qlHqlPhLSpCOjb3-N18pu4DQ5sSjbE");
+            eastAsiaUrlInfo.put("Vin-TAIWAN", "1OgGsh9AZVdG8_yCPNxj-1KFU4-TOvlRD7clf9wBJgnI");
+
+            final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(eastAsiaUrlInfo)
+                    .stream()
+                    .filter(x -> (x.get_52WeekLowPriceDiff().doubleValue() <= 5.5d
+                                    || (abs(x.getDailyPctChange().doubleValue()) >= 5d)))
+                                            .collect(toList())).stream().collect(toList());
+
+            gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_EASTASIA));
+
+            StringBuilder resultBuilder = generateDailyEmail(gFinanceStockInfoList, new StringBuilder("** GF TURKEY,TAIWAN *** "), true);
+
+            LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
+                    this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
+        });
+        executorService.shutdown();
+
+    }
+
 
 //    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
     public void kickOffGFCanadaEmailAlerts() {
@@ -472,10 +505,10 @@ public class GFinanceEmailAlertService {
             int retry = 5;
             while ((generateEmail == true) && (!sendEmail(dataBuffer, subject) && --retry >= 0));
             if (--retry <= 0 && !sendEmail(dataBuffer, subject)){
-                ERROR_LOGGER.error(getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName() + "Failed to send email, GF NYSE Email error -> ");
+                ERROR_LOGGER.error(getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName() + "Failed to send email, GF Email error -> ");
             }
         }catch (Exception e){
-            ERROR_LOGGER.error(getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName() + ", GF NYSE Email error -> ",e);
+            ERROR_LOGGER.error(getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName() + ", GF Email error -> ",e);
         }
         return dataBuffer;
     }
