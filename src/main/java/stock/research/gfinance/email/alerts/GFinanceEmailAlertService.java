@@ -173,6 +173,8 @@ public class GFinanceEmailAlertService {
 
             gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_EASTASIA));
 
+            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF TURKEY,TAIWAN" + SIDE.BUY + " Alerts ***"), true);
+
             StringBuilder resultBuilder = generateDailyEmail(gFinanceStockInfoList, new StringBuilder("** GF TURKEY,TAIWAN *** "), true);
 
             LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
