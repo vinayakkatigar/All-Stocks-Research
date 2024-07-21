@@ -175,7 +175,7 @@ public class GFinanceStockService {
 
     private ValueRange runGFQuery(String v, NetHttpTransport HTTP_TRANSPORT, String range, Credential credential, int retry) throws IOException {
         try{
-            Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setTimeout(credential, (60000 * 5)))
+            Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setTimeout(credential, (60000000 * 5)))
                     .setApplicationName(APPLICATION_NAME)
                     .build();
             ValueRange response = service.spreadsheets().values()
