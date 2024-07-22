@@ -312,7 +312,7 @@ public class GFinanceEmailAlertService {
 
     }
 
-    @Scheduled(cron = "0 11 3,16 ? * MON-SAT", zone = "GMT")
+    @Scheduled(cron = "0 41 3,11 ? * MON-SAT", zone = "GMT")
     public void kickOffGFHongKongEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-HONGKONG", "HongKong ", hongKongUrl, false);
