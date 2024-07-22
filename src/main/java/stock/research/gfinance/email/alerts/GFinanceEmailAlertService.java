@@ -127,6 +127,7 @@ public class GFinanceEmailAlertService {
         brazilUrl.put("Vin-BRAZIL-1", "10iBogki4CClWmeoTKcena1hQ1ogh7n9_MD4rTg1CH9c");
         canadaUrl.put("Vin-Canada", "1l534qt4O3WPSRWyH0OnNaq9ymMRmL_An2jKQJ5C7geI");
     }
+
     @Scheduled(cron = "0 * */2 ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
