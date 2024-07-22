@@ -71,6 +71,9 @@ timeout /t 60 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1OgGsh9AZVdG8_yCPNxj-1KFU4-TOvlRD7clf9wBJgnI/edit?gid=0#gid=0
 timeout /t 60 /nobreak > NUL
 
+start chrome https://docs.google.com/spreadsheets/d/10iBogki4CClWmeoTKcena1hQ1ogh7n9_MD4rTg1CH9c/edit?gid=0#gid=0
+timeout /t 60 /nobreak > NUL
+
 start chrome --new-window http://localhost:9090/gf/nyse/wnl
 timeout /t 180 /nobreak > NUL
 start chrome http://localhost:9090/gf/nyse/daily
