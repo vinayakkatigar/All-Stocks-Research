@@ -168,17 +168,20 @@ public class GFinanceEmailAlertService {
             eastAsiaUrlInfo.put("Vin-TURKEY", "1YmPCf9lhipyT_qlHqlPhLSpCOjb3-N18pu4DQ5sSjbE");
             eastAsiaUrlInfo.put("Vin-TAIWAN", "1OgGsh9AZVdG8_yCPNxj-1KFU4-TOvlRD7clf9wBJgnI");
 
-            final List<GFinanceStockInfo> gFinanceStockInfoList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(eastAsiaUrlInfo)
-                    .stream()
-                    .filter(x -> (x.get_52WeekLowPriceDiff().doubleValue() <= 5.5d
-                                    || (abs(x.getDailyPctChange().doubleValue()) >= 5d)))
-                                            .collect(toList())).stream().collect(toList());
-
+            final List<GFinanceStockInfo> gFinanceStockInfoList =  sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(eastAsiaUrlInfo));
             gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_EASTASIA));
 
-            generateAlertEmails(gFinanceStockInfoList, SIDE.BUY, new StringBuilder("*** GF TURKEY,TAIWAN" + SIDE.BUY + " Alerts ***"), true);
+            final List<GFinanceStockInfo> gFinanceStockInfoFilteredList = gFinanceStockInfoList
+                    .stream()
+                    .filter(x -> ((x.get_52WeekHighLowPriceDiff().doubleValue() >= 39d) &&
+                                    (x.get_52WeekLowPriceDiff().doubleValue() <= 5.5d
+                                    || (abs(x.getDailyPctChange().doubleValue()) >= 5d)
+                                    || (x.get_52WeekLowPrice().compareTo(x.getDailyLowPrice()) == 0))))
+                                            .collect(toList()).stream().collect(toList());
 
-            StringBuilder resultBuilder = generateDailyEmail(gFinanceStockInfoList, new StringBuilder("** GF TURKEY,TAIWAN *** "), true);
+            generateAlertEmails(gFinanceStockInfoFilteredList, SIDE.BUY, new StringBuilder("*** GF TURKEY,TAIWAN" + SIDE.BUY + " Alerts ***"), true);
+
+            StringBuilder resultBuilder = generateDailyEmail(gFinanceStockInfoList, new StringBuilder("** GF TURKEY,TAIWAN Daily *** "), true);
 
             LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
                     this.getClass().getSimpleName() + "::" +   new Object(){}.getClass().getEnclosingMethod().getName());
