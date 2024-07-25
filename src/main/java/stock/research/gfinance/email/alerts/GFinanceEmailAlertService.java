@@ -122,6 +122,7 @@ public class GFinanceEmailAlertService {
         nsePortfolioUrl.put("Vin-NSE-portfolio", "1uZAxfSwuGJONmcB7DsKMJTC5c_MHQDzofKqI4lsYR0w");
         skwUrl.put("Vin-Southkorea", "14uokCiL9lYv4eRYbJbi8QRsgkGi4d2nUwqQP-bTZ3fI");
         indonesiaUrl.put("Vin-Indsia", "1FD1CJ6rJhmTfIgAzK8pE-_JPfdUn9PpI0Y3fIUEDj6c");
+        indonesiaUrl.put("Vin-INDONESIA-1", "1eR2IogunOBZLrbLrKkUsQNcAREMgg1WyJyGPcRgWxNQ");
         spainUrl.put("Vin-Spain", "1n29f0K-GSclaF8asxBLZEdw-3_QwAP6B3l7noi6qAdE");
         italyUrl.put("Vin-Italy", "119vPfJwhY584ooSbf_3viOYYEPaTNLLW0UW60cSog8w");
         brazilUrl.put("Vin-Brazil", "1ki_vTyELjBXvtfrJphpdkHmeqx-FCSQKrwYPwDXVvEE");
