@@ -14,11 +14,9 @@ rmdir /S /Q C:\Code\All-Stocks-Research\logs
 
 mkdir C:\Users\Vin\AppData\Local\Temp\
 
-git reset --hard HEAD
-git pull
-git reset --hard HEAD
-git pull
-git reset --hard HEAD
-git pull
+cd C:\Code\All-Stocks-Research
+c:
+cd C:\Code\All-Stocks-Research
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
 mvn clean spring-boot:run
