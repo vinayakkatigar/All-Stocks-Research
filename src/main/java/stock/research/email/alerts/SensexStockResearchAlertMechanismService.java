@@ -364,10 +364,10 @@ public class SensexStockResearchAlertMechanismService {
                                     ((stockName.split(" ") != null && stockName.split(" ").length >= 0)
                                             && (stockName.split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0].toLowerCase())) ||
                                             (s.toLowerCase().contains(stockName.split(" ")[0].toLowerCase()))) &&
-                                            ((stockName.split(" ") != null && stockName.split(" ").length >= 1) &&
+                                            ((stockName.split(" ") != null && stockName.split(" ").length >= 2) &&
                                                     ((stockName.split(" ")[1].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[1].toLowerCase())) ||
                                                     (s.toLowerCase().contains(stockName.split(" ")[1].toLowerCase())))) &&
-                                            ((stockName.split(" ") != null && stockName.split(" ").length >= 2) &&
+                                            ((stockName.split(" ") != null && stockName.split(" ").length >= 3) &&
                                                     ((stockName.split(" ")[2].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[2].toLowerCase())) ||
                                                     (s.toLowerCase().contains(stockName.split(" ")[2].toLowerCase()))))
                             ));
