@@ -8,4 +8,4 @@ c:
 cd C:\Code-Base\All-Stocks-Research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
-"C:\Program Files\Notepad++\notepad++.exe"
+"C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
