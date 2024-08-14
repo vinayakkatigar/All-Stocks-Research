@@ -68,6 +68,8 @@ start chrome --new-window https://docs.google.com/spreadsheets/d/18-BpblNjElxTNZ
 timeout /t 60 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1Sr8VyB61Lu5GYMOrceNbwM7WTyDuaUPOD3wTCwXBnNk/edit?gid=0#gid=0
 timeout /t 60 /nobreak > NUL
+start chrome https://docs.google.com/spreadsheets/d/1_5CTJjqt6AEbzyE2EjvXNoshnie3dxGtX09Pspxto3A/edit?gid=0#gid=0
+timeout /t 60 /nobreak > NUL
 
 start chrome --new-window http://localhost:9090/gf/nyse/wnl
 timeout /t 30 /nobreak > NUL
