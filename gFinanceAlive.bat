@@ -70,11 +70,11 @@ start chrome https://docs.google.com/spreadsheets/d/1Sr8VyB61Lu5GYMOrceNbwM7WTyD
 timeout /t 60 /nobreak > NUL
 
 start chrome --new-window http://localhost:9090/gf/nyse/wnl
-timeout /t 180 /nobreak > NUL
+timeout /t 30 /nobreak > NUL
 start chrome http://localhost:9090/gf/nyse/daily
-timeout /t 180 /nobreak > NUL
+timeout /t 10 /nobreak > NUL
 start chrome http://localhost:9090/gf/nyse/alerts
-timeout /t 180 /nobreak > NUL
+timeout /t 10 /nobreak > NUL
 
 timeout /t 600 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
