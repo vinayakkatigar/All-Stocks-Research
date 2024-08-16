@@ -15,7 +15,7 @@ timeout /t 600 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1HsF63N9SZd8ByxGOvidy4XCOkRRpmD5QaEs49x0T2Ro/edit?gid=0#gid=0
 timeout /t 600 /nobreak > NUL
 
-timeout /t 86400 /nobreak > NUL
+timeout /t 43200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 
 goto kickForOneDay
