@@ -1,5 +1,7 @@
 :kickForOneDay
 
+timeout /t 28800 /nobreak > NUL
+
 start chrome --new-window https://docs.google.com/spreadsheets/d/18-BpblNjElxTNZm12Q_PEo-Ru-4hYKQgiI1-8Yk4CaU/edit?gid=0#gid=0
 timeout /t 600 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1Sr8VyB61Lu5GYMOrceNbwM7WTyDuaUPOD3wTCwXBnNk/edit?gid=0#gid=0
