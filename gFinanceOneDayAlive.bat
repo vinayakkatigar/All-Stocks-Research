@@ -1,6 +1,9 @@
+echo %date%-%time%
 timeout /t 28800 /nobreak > NUL
 
 :kickForOneDay
+
+echo %date%-%time%
 
 start chrome --new-window https://docs.google.com/spreadsheets/d/18-BpblNjElxTNZm12Q_PEo-Ru-4hYKQgiI1-8Yk4CaU/edit?gid=0#gid=0
 timeout /t 600 /nobreak > NUL
@@ -18,6 +21,8 @@ start chrome https://docs.google.com/spreadsheets/d/1HsF63N9SZd8ByxGOvidy4XCOkRR
 timeout /t 600 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1PhG_yA2Jxs8n5d2e-5DsZuQyNjZEvjhJxztZhDbcO7Q/edit?gid=1551880706#gid=1551880706
 timeout /t 600 /nobreak > NUL
+
+echo %date%-%time%
 
 timeout /t 43200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
