@@ -23,6 +23,8 @@ start chrome https://docs.google.com/spreadsheets/d/1PhG_yA2Jxs8n5d2e-5DsZuQyNjZ
 timeout /t 600 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1Tk-JnVzGTtmP-tn7y0uG64avg6u8-teQVqUu5kvADzs/edit?gid=1551880706#gid=1551880706
 timeout /t 600 /nobreak > NUL
+start chrome https://docs.google.com/spreadsheets/d/1jqnnYdy5VOZEgC4aYPHVYrxZI4Pfo-0yrfHZcPJ-2K0/edit?gid=1551880706#gid=1551880706
+timeout /t 600 /nobreak > NUL
 
 echo %date%-%time%
 
