@@ -359,21 +359,29 @@ public class SensexStockResearchAlertMechanismService {
                 ));
             } else if(stockNameArr != null && stockNameArr.length >= 3) {
                 for (int i = 0; i < 3; i++) {
-                    if (!s.toLowerCase().contains(stockNameArr[i].toLowerCase())){
+                    try {
+                        if (!s.toLowerCase().contains(stockNameArr[i].toLowerCase())){
+                            return false;
+                        }
+                        String[] strings = stockName.split(" ");
+                        return
+                                ((s.contains(stockName))
+                                        || (
+                                        ((strings != null && strings.length >= 0)
+                                                && (strings[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0].toLowerCase())) ||
+                                                (s.toLowerCase().contains(strings[0].toLowerCase()))) &&
+                                                ((strings != null && strings.length >= 2) &&
+                                                        ((strings[1].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[1].toLowerCase())) ||
+                                                                (s.toLowerCase().contains(strings[1].toLowerCase())))) &&
+                                                ((strings != null && strings.length >= 3) &&
+                                                        ((strings[2].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[2].toLowerCase())) ||
+                                                                (s.toLowerCase().contains(strings[2].toLowerCase()))))
+                                ));
+                    }catch (Exception e){
+                        ERROR_LOGGER.error("Exception isStockInPortfolio() ->", e);
                         return false;
                     }
-                    return
-                            (s.contains(stockName) || (
-                                    ((stockName.split(" ") != null && stockName.split(" ").length >= 0)
-                                            && (stockName.split(" ")[0].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[0].toLowerCase())) ||
-                                            (s.toLowerCase().contains(stockName.split(" ")[0].toLowerCase()))) &&
-                                            ((stockName.split(" ") != null && stockName.split(" ").length >= 2) &&
-                                                    ((stockName.split(" ")[1].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[1].toLowerCase())) ||
-                                                    (s.toLowerCase().contains(stockName.split(" ")[1].toLowerCase())))) &&
-                                            ((stockName.split(" ") != null && stockName.split(" ").length >= 3) &&
-                                                    ((stockName.split(" ")[2].toLowerCase().equalsIgnoreCase(s.toLowerCase().split(" ")[2].toLowerCase())) ||
-                                                    (s.toLowerCase().contains(stockName.split(" ")[2].toLowerCase()))))
-                            ));
+
                 }
             }
             return ((stockName.split(" ") != null && stockName.split(" ").length >= 0) &&
