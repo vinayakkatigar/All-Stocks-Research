@@ -48,8 +48,7 @@ import static java.util.stream.Collectors.toList;
 import static stock.research.utility.SensexStockResearchUtility.HTML_PORTFOLIO_END;
 import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
 import static stock.research.utility.StockResearchUtility.*;
-import static stock.research.utility.StockUtility.goSleep;
-import static stock.research.utility.StockUtility.writeToFile;
+import static stock.research.utility.StockUtility.*;
 
 @Service
 public class SensexStockResearchAlertMechanismService {
@@ -96,6 +95,10 @@ public class SensexStockResearchAlertMechanismService {
                 generateAlertEmails(populatedSensexList,x);
             });
             resultSensexList.addAll(populatedSensexList);
+            resultSensexList.sort(comparing(x -> {
+                return abs(x.get_52WeekLowPriceDiff().doubleValue());
+            }, nullsLast(naturalOrder())));
+
         }catch (Exception e){
             LOGGER.error("Error - ",e);
         }
@@ -112,7 +115,7 @@ public class SensexStockResearchAlertMechanismService {
         try {
             writeSensexPayload();
             writeSensexInfoToDB();
-            writeToFile( "SCREENER_SENSEX_DAILY", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexList));
+            writeToFile( "SCREENER_SENSEX_DAILY", stringifyJson(objectMapper, resultSensexList));
         } catch (Exception e) {
             LOGGER.error("Error - ",e);
         }
