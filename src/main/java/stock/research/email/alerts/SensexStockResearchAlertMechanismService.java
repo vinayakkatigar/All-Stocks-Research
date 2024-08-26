@@ -86,7 +86,7 @@ public class SensexStockResearchAlertMechanismService {
     }
 
     private void kickOffScreenerEmailAlerts() {
-        Instant instantBefore = Instant.now();
+        Instant instantBefore = now();
         LOGGER.info( " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts");
         List<SensexStockInfo> resultSensexList = new ArrayList<>();
         try{
@@ -142,7 +142,7 @@ public class SensexStockResearchAlertMechanismService {
             LOGGER.error("Error - ",e);
         }
 
-        LOGGER.info(instantBefore.until(Instant.now(), ChronoUnit.MINUTES)+ " <- Total time in mins , \nEnded ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts" );
+        LOGGER.info(instantBefore.until(now(), ChronoUnit.MINUTES)+ " <- Total time in mins , \nEnded ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts" );
     }
 
 
@@ -224,7 +224,7 @@ public class SensexStockResearchAlertMechanismService {
                 weeklyPnlSensexStockList = weeklyPnlSensexStockList.stream().sorted(comparing(SensexStockInfo::getStockInstant).reversed()).collect(toList());
 
                 final List<SensexStockInfo> pnlForDays = new CopyOnWriteArrayList<>();
-                Instant instant = Instant.now();
+                Instant instant = now();
 
                 Map<String, SensexStockInfo> sensexStockInfoMap = new LinkedHashMap<>();
 
@@ -484,12 +484,12 @@ public class SensexStockResearchAlertMechanismService {
         }
         try {
             screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().stream().forEach(x -> {
-                x.setStockTS(Timestamp.from(Instant.now()));
-                x.setQuoteInstant("" + Instant.now());
+                x.setStockTS(Timestamp.from(now()));
+                x.setQuoteInstant("" + now());
                 x.setId(null);
             });
             SensexStockDetails sensexStockDetails = new SensexStockDetails();
-            sensexStockDetails.setStockTS(Timestamp.from(Instant.now()));
+            sensexStockDetails.setStockTS(Timestamp.from(now()));
             sensexStockDetails.setSensexStocksPayload(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList()));
             sensexStockDetailsRepositary.save(sensexStockDetails);
         }catch (Exception e){
@@ -503,8 +503,8 @@ public class SensexStockResearchAlertMechanismService {
         }
         screenerSensexStockResearchService.getCacheScreenerSensexStockInfosList().forEach( sensexStockInfo -> {
             try {
-                sensexStockInfo.setStockTS(Timestamp.from(Instant.now()));
-                sensexStockInfo.setQuoteInstant("" + (Instant.now()));
+                sensexStockInfo.setStockTS(Timestamp.from(now()));
+                sensexStockInfo.setQuoteInstant("" + (now()));
                 sensexStockInfo.setId(null);
                 sensexStockInfoRepositary.save(sensexStockInfo);
             }catch (Exception e){
