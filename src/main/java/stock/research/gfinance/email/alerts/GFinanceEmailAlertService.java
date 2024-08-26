@@ -177,7 +177,7 @@ public class GFinanceEmailAlertService {
                                     || (x.get_52WeekLowPrice().compareTo(x.getDailyLowPrice()) == 0))))
                                             .collect(toList()).stream().collect(toList());
 
-            StringBuilder resultBuilder = generateDailyEmail(sortByDailyPCTChange(gFinanceStockInfoFilteredList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).collect(toList()))
+            StringBuilder resultBuilder = generateDailyEmail(sortByDailyPCTChange(gFinanceStockInfoFilteredList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d).collect(toList()))
                                                 , new StringBuilder("** GF TURKEY,TAIWAN Daily Alerts *** "), true, gFinanceStockInfoList);
 
             LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
@@ -283,7 +283,7 @@ public class GFinanceEmailAlertService {
             final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nsePortfolioUrl));
             gfPortfolioList.stream().forEach(x -> x.setCountry("GF-NSE-PORTFOLIO"));
 
-            generateDailyEmail(sortByDailyPCTChange(gfPortfolioList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).collect(toList())),
+            generateDailyEmail(sortByDailyPCTChange(gfPortfolioList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d).collect(toList())),
                     new StringBuilder("*** GF NSE Portfolio Daily Data ** "), true, gfPortfolioList);
             try {
                 writeGFPayloadToDB(gfPortfolioList, "GF-NSE-PORTFOLIO");
@@ -384,7 +384,7 @@ public class GFinanceEmailAlertService {
                 .filter(x -> x.getMktCapRealValue() > 9900000000d).collect(toList())).stream().filter(x -> abs(x.getDailyPctChange().doubleValue()) >= 6.5d).collect(toList());
         gFinanceStockInfoList.stream().forEach(x -> x.setCountry(GF_NYSE));
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded GFinanceEmailAlertService::exeWinnerAndLosers"  );
-        return generateDailyEmail(sortByDailyPCTChange(gFinanceStockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).collect(toList())),
+        return generateDailyEmail(sortByDailyPCTChange(gFinanceStockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d).collect(toList())),
                 new StringBuilder("*** GF NYSE PnL Daily *** "), generateEmail, gFinanceStockInfoList);
     }
 
@@ -577,7 +577,7 @@ public class GFinanceEmailAlertService {
         stockInfoList.sort(comparing(GFinanceStockInfo::get_52WeekHighLowPriceDiff,
                 nullsFirst(naturalOrder())));
 
-        StringBuilder result = generateDailyEmail(sortByDailyPCTChange(stockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).collect(toList())),
+        StringBuilder result = generateDailyEmail(sortByDailyPCTChange(stockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d).collect(toList())),
                 new StringBuilder("*** GF NYSE Daily Alerts ***"), false, sortByDailyPCTChange(stockInfoList));
         LOGGER.info(" <-  Ended " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
@@ -603,7 +603,7 @@ public class GFinanceEmailAlertService {
                                                                         sortByDailyPCTChange(stockInfoList) 
                                                                             : sortByDailyPCTChange(stockInfoList.stream().filter(x -> x.getMktCapRealValue() >= 900000000d).collect(toList())) ;
 
-            generateDailyEmail(sortByDailyPCTChange(sortedStockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).collect(toList()))
+            generateDailyEmail(sortByDailyPCTChange(sortedStockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 7.5d).filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d).collect(toList()))
                     , new StringBuilder("*** GF "+ emailSubject + " Daily Alerts *** "), true, stockInfoList);
             try {
                 writeGFPayloadToDB(sortedStockInfoList, country);
