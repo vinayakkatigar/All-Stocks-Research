@@ -14,6 +14,8 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Vin\Code-Base\gf-radar
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
+timeout /t 300 /nobreak > NUL
+
 :again
 
 timeout /t 30 /nobreak > NUL
