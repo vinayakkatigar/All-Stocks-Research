@@ -1,0 +1,69 @@
+24-08-2024 00:00:38.865 [scheduling-1] ERROR ERRORS-FILE.runGFQuery - Error in runGFQuery -> 
+com.google.api.client.googleapis.json.GoogleJsonResponseException: 503 Service Unavailable
+GET https://sheets.googleapis.com/v4/spreadsheets/119vPfJwhY584ooSbf_3viOYYEPaTNLLW0UW60cSog8w/values/Vin-Italy!A2:L
+{
+  "code": 503,
+  "errors": [
+    {
+      "domain": "global",
+      "message": "The service is currently unavailable.",
+      "reason": "backendError"
+    }
+  ],
+  "message": "The service is currently unavailable.",
+  "status": "UNAVAILABLE"
+}
+	at com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:146)
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:118)
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:37)
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest$1.interceptResponse(AbstractGoogleClientRequest.java:439)
+	at com.google.api.client.http.HttpRequest.execute(HttpRequest.java:1111)
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:525)
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:466)
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:576)
+	at stock.research.gfinance.service.GFinanceStockService.runGFQuery(GFinanceStockService.java:183)
+	at stock.research.gfinance.service.GFinanceStockService.lambda$getGFStockInfoList$1(GFinanceStockService.java:86)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at stock.research.gfinance.service.GFinanceStockService.getGFStockInfoList(GFinanceStockService.java:71)
+	at stock.research.gfinance.email.alerts.GFinanceEmailAlertService.kickOffGFinanceRefresh(GFinanceEmailAlertService.java:151)
+	at jdk.internal.reflect.GeneratedMethodAccessor154.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:84)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:93)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+24-08-2024 05:48:51.726 [pool-80-thread-1] ERROR ERRORS-FILE.generateAlertEmails - <- , Error ->
+java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.lambda$isStockInPortfolio$23(SensexStockResearchAlertMechanismService.java:371)
+	at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1602)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:230)
+	at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:196)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.anyMatch(ReferencePipeline.java:632)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.isStockInPortfolio(SensexStockResearchAlertMechanismService.java:341)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.lambda$generateHTMLContent$22(SensexStockResearchAlertMechanismService.java:327)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.generateHTMLContent(SensexStockResearchAlertMechanismService.java:310)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.generateAlertEmails(SensexStockResearchAlertMechanismService.java:296)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.lambda$kickOffScreenerEmailAlerts$1(SensexStockResearchAlertMechanismService.java:96)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.kickOffScreenerEmailAlerts(SensexStockResearchAlertMechanismService.java:95)
+	at stock.research.email.alerts.SensexStockResearchAlertMechanismService.lambda$kickOffEmailAlerts_Cron$0(SensexStockResearchAlertMechanismService.java:84)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
