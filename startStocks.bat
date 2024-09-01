@@ -17,6 +17,7 @@ mkdir C:\Users\Vin\AppData\Local\Temp\
 cd C:\Code\All-Stocks-Research
 c:
 cd C:\Code\All-Stocks-Research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
 mvn clean spring-boot:run
