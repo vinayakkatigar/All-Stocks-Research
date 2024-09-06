@@ -2,6 +2,7 @@ package stock.research.gfinance.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.time.Instant;
@@ -79,13 +80,13 @@ public class GFinanceStockInfo {
     private Timestamp stockTS;
 
     @Column(name = "DAILY_PCT_CHANGE")
-    private BigDecimal dailyPctChange =  BigDecimal.ZERO;
+    private BigDecimal dailyPctChange =  BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
 
     @Column(name = "DAILY_HIGH_PRICE")
-    private BigDecimal dailyHighPrice =  BigDecimal.ZERO;
+    private BigDecimal dailyHighPrice =  BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
 
     @Column(name = "DAILY_LOW_PRICE")
-    private BigDecimal dailyLowPrice =  BigDecimal.ZERO;
+    private BigDecimal dailyLowPrice =  BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
 
     @Column(name = "COUNTRY")
     private String country;
@@ -95,7 +96,7 @@ public class GFinanceStockInfo {
 
 
     @Transient
-    private BigDecimal dailyPctPnLChange =  BigDecimal.ZERO;
+    private BigDecimal dailyPctPnLChange =  BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
 
     public GFinanceStockInfo() {
     }
@@ -133,7 +134,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal getCurrentMarketPrice() {
-        return currentMarketPrice;
+        return currentMarketPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setCurrentMarketPrice(BigDecimal currentMarketPrice) {
@@ -141,7 +142,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal get_52WeekLowPrice() {
-        return _52WeekLowPrice;
+        return _52WeekLowPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void set_52WeekLowPrice(BigDecimal _52WeekLowPrice) {
@@ -149,7 +150,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal get_52WeekHighPrice() {
-        return _52WeekHighPrice;
+        return _52WeekHighPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void set_52WeekHighPrice(BigDecimal _52WeekHighPrice) {
@@ -157,7 +158,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal get_52WeekHighLowPriceDiff() {
-        return _52WeekHighLowPriceDiff;
+        return _52WeekHighLowPriceDiff.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void set_52WeekHighLowPriceDiff(BigDecimal _52WeekHighLowPriceDiff) {
@@ -165,7 +166,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal get_52WeekHighPriceDiff() {
-        return _52WeekHighPriceDiff;
+        return _52WeekHighPriceDiff.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void set_52WeekHighPriceDiff(BigDecimal _52WeekHighPriceDiff) {
@@ -173,7 +174,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal get_52WeekLowPriceDiff() {
-        return _52WeekLowPriceDiff;
+        return _52WeekLowPriceDiff.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void set_52WeekLowPriceDiff(BigDecimal _52WeekLowPriceDiff) {
@@ -261,7 +262,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal getDailyPctChange() {
-        return dailyPctChange;
+        return dailyPctChange.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setDailyPctChange(BigDecimal dailyPctChange) {
@@ -269,7 +270,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal getDailyHighPrice() {
-        return dailyHighPrice;
+        return dailyHighPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setDailyHighPrice(BigDecimal dailyHighPrice) {
@@ -277,7 +278,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal getDailyLowPrice() {
-        return dailyLowPrice;
+        return dailyLowPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setDailyLowPrice(BigDecimal dailyLowPrice) {
@@ -301,7 +302,7 @@ public class GFinanceStockInfo {
     }
 
     public BigDecimal getDailyPctPnLChange() {
-        return dailyPctPnLChange;
+        return dailyPctPnLChange.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setDailyPctPnLChange(BigDecimal dailyPctPnLChange) {
