@@ -203,7 +203,7 @@ public class GFinanceEmailAlertService {
     @Scheduled(cron = "0 10 0,4,9,18,22 ? * MON-SAT", zone = "GMT")
     public void kickOffGFWatchListEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
-        kickOffGF(GF_WATCHLIST, "WatchList ", watchListUrl, false);
+//        kickOffGF(GF_WATCHLIST, "WatchList ", watchListUrl, false);
     }
 
     @Scheduled(cron = "0 30 17 ? * MON-SAT", zone = "GMT")
