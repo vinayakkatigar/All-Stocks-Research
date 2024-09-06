@@ -277,7 +277,6 @@ public class GFinanceEmailAlertService {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
             currentThread().setPriority(Thread.MAX_PRIORITY);
-            currentThread().setPriority(Thread.MAX_PRIORITY);
             Instant instantBefore = now();
             LOGGER.info(" <-  Started kickOffGFPortfolioEmailAlerts::kickOffGFNSEPortfolioEmailAlerts" );
             final List<GFinanceStockInfo> gfPortfolioList = sortByDailyPCTChange(gFinanceStockService.getGFStockInfoList(nsePortfolioUrl));
