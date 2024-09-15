@@ -4,14 +4,14 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Code\All-Stocks-Research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
-cd C:\Vin\Code-Base\yf-stocks-research
+cd C:\Code-Base\yf-stocks-research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
-cd C:\Vin\Code-Base\yf-stocks-research
+cd C:\Code\yf-stocks-research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
-cd C:\Vin\Code-Base\gf-radar
+cd C:\Code-Base\gf-radar
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
-cd C:\Vin\Code-Base\gf-radar
+cd C:\Code\gf-radar
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
 cd C:\Code\All-Stocks-Research
