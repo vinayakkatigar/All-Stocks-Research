@@ -233,12 +233,24 @@ public class ScreenerSensexStockResearchService {
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStock-1000-MktCap-detailedInfo.json"),
                     objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populatedSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(toList())).getBytes());
             cacheScreenerSensexStockInfosList = populatedSensexStockInfosList;
-            return (populatedSensexStockInfosList);
+            return (populatedSensexStockInfosList.stream()
+                    .filter(x -> x.getStockMktCap() != null
+                            && x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO)  > 0
+                            && x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().compareTo(ZERO)  > 0
+                            && x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO)  > 0
+                            && x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO)  > 0
+                    ).distinct().collect(toList()));
         }catch (Exception e) {
             printError(e);
         }
         cacheScreenerSensexStockInfosList = populatedSensexStockInfosList;
-        return (populatedSensexStockInfosList);
+        return (populatedSensexStockInfosList.stream()
+                .filter(x -> x.getStockMktCap() != null
+                        && x.getCurrentMarketPrice() != null && x.getCurrentMarketPrice().compareTo(ZERO)  > 0
+                        && x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().compareTo(ZERO)  > 0
+                        && x.get_52WeekHighPrice() != null && x.get_52WeekHighPrice().compareTo(ZERO)  > 0
+                        && x.get_52WeekLowPrice() != null && x.get_52WeekLowPrice().compareTo(ZERO)  > 0
+                ).distinct().collect(toList()));
     }
 
     private void printError(Exception e, String ... info) {
