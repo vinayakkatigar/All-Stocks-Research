@@ -264,6 +264,7 @@ public class StockResearchUtility {
             input = input.replace("$", "");
             input = input.replace("£","");
             input = input.replace("€","");
+            input = input.replace("₹", "");
             return Double.valueOf(input);
         }catch (Exception e){
             return Double.valueOf(0);
@@ -278,6 +279,7 @@ public class StockResearchUtility {
                input = input.replace("$", "");
                input = input.replace("£","");
                input = input.replace("€","");
+               input = input.replace("₹", "");
            }
            return new BigDecimal(input);
        }catch (Exception e){

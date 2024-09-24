@@ -19,6 +19,12 @@ timeout /t 300 /nobreak > NUL
 :again
 
 timeout /t 30 /nobreak > NUL
+start chrome --new-window http://localhost:9090/sensex/pnl
+timeout /t 20 /nobreak > NUL
+start chrome http://localhost:9090/sensex/daily
+timeout /t 20 /nobreak > NUL
+
+timeout /t 30 /nobreak > NUL
 start chrome --new-window http://localhost:9090/gf/nyse/wnl
 timeout /t 20 /nobreak > NUL
 start chrome http://localhost:9090/gf/nyse/daily

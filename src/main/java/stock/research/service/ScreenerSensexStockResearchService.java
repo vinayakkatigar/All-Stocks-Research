@@ -36,11 +36,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
+import static java.lang.Thread.*;
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.toList;
-import static stock.research.utility.SensexStockResearchUtility.getBigDecimalFromString;
+import static stock.research.utility.StockResearchUtility.getBigDecimalFromString;
 import static stock.research.utility.StockResearchUtility.getDoubleFromString;
 
 @Service
@@ -64,7 +66,8 @@ public class ScreenerSensexStockResearchService {
     }
 
     public List<SensexStockInfo> populateStocksAttributes() {
-        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        Thread.currentThread().setPriority(MIN_PRIORITY);
+        currentThread().setPriority(MIN_PRIORITY);
         List<SensexStockInfo> populatedSensexStockInfosList = new ArrayList<>();
         List<SensexStockInfo> resultSensexStockInfosList = new ArrayList<>();
 
@@ -113,12 +116,7 @@ public class ScreenerSensexStockResearchService {
                             if (divElement != null && divElement.getElementsByClass("data-table") != null
                                     && divElement.getElementsByClass("data-table").size() > 0){
                                 Element tabElement = divElement.getElementsByClass("data-table").get(0);
-                                Element trElement = null;
-                                for (Element ele : tabElement.getElementsByTag("tr")){
-                                    if (ele.text().contains("FIIs")){
-                                        trElement = ele;
-                                    }
-                                }
+                                Element trElement = tabElement.getElementsByTag("tr").get(2);
                                 Elements tdElementList = trElement != null ? trElement.getElementsByTag("td") : null;
                                 if (tdElementList != null && tdElementList.size() > 0){
                                     sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
@@ -141,6 +139,11 @@ public class ScreenerSensexStockResearchService {
                                                 if (spanelements != null && spanelements.size() > 1){
                                                     if (spanelements.get(0).text().contains("Market")){
                                                         sensexStockInfo.setStockMktCap(getDoubleFromString(getKeyValue(spanelements)));
+                                                        if (valueOf(sensexStockInfo.getStockMktCap()).compareTo(ZERO) == 0){
+                                                            if (spanelements != null && spanelements.size() > 2){
+                                                                sensexStockInfo.setStockMktCap(getDoubleFromString(spanelements.get(2).text()));
+                                                            }
+                                                        }
                                                     }
                                                     if (spanelements.get(0).text().contains("Current")){
                                                         sensexStockInfo.setCurrentMarketPrice(getBigDecimalFromString(replaceRupee(getKeyValue(spanelements))));
@@ -149,7 +152,12 @@ public class ScreenerSensexStockResearchService {
                                                         sensexStockInfo.setP2eps(getDoubleFromString(getKeyValue(spanelements)));
                                                     }
                                                     if (spanelements.get(0).text().contains("Book") && spanelements.get(0).text().contains("Value") ){
-                                                        sensexStockInfo.setBv(getDoubleFromString(getKeyValue(spanelements)));
+                                                        String[] bv = getKeyValue(spanelements).split("Cr.");
+                                                        if (bv != null && bv.length > 1){
+                                                            sensexStockInfo.setBv(getDoubleFromString(bv[0]));
+                                                        }else {
+                                                            sensexStockInfo.setBv(getDoubleFromString(getKeyValue(spanelements)));
+                                                        }
                                                     }
                                                     if (spanelements.get(0).text().contains("High") && spanelements.get(0).text().contains("Low")){
                                                         String[] highLow = getKeyValue(spanelements).split("/");
@@ -169,15 +177,15 @@ public class ScreenerSensexStockResearchService {
                             printError(e);
                         }
                         try {
-                            if (sensexStockInfo.getBv()!= null && (sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)) > 0
+                            if (sensexStockInfo.getBv()!= null && (sensexStockInfo.getCurrentMarketPrice().compareTo(ZERO)) > 0
                                     && Double.compare(sensexStockInfo.getBv(), 0.0) > 0){
-                                sensexStockInfo.setP2bv(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
+                                sensexStockInfo.setP2bv(valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getBv())
                                         .setScale(2, RoundingMode.HALF_UP)
                                         .doubleValue());
                             }
-                            if (sensexStockInfo.getP2eps() != null && (sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)) > 0
+                            if (sensexStockInfo.getP2eps() != null && (sensexStockInfo.getCurrentMarketPrice().compareTo(ZERO)) > 0
                                     && Double.compare(sensexStockInfo.getP2eps(), 0.0) > 0){
-                                sensexStockInfo.setEps(BigDecimal.valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getP2eps())
+                                sensexStockInfo.setEps(valueOf(sensexStockInfo.getCurrentMarketPrice().doubleValue()/sensexStockInfo.getP2eps())
                                         .setScale(2, RoundingMode.HALF_UP)
                                         .doubleValue());
                             }
@@ -206,31 +214,31 @@ public class ScreenerSensexStockResearchService {
                     .filter(x -> x.getStockMktCap() != null
                     && x.getCurrentMarketPrice() != null
                     && x.get_52WeekHighLowPriceDiff() != null
-                    && x.get_52WeekHighLowPriceDiff().compareTo(BigDecimal.ZERO)  > 0
-                    && x.getCurrentMarketPrice().compareTo(BigDecimal.ZERO)  > 0
+                    && x.get_52WeekHighLowPriceDiff().compareTo(ZERO)  > 0
+                    && x.getCurrentMarketPrice().compareTo(ZERO)  > 0
                     &&  x.getStockMktCap() > 1999).distinct().collect(toList());
 
-            resultSensexStockInfosList.sort(comparing(SensexStockInfo::getStockMktCap,
+            populatedSensexStockInfosList.sort(comparing(SensexStockInfo::getStockMktCap,
                                                                         nullsLast(Comparator.naturalOrder())).reversed());
 
             int i =1;
-            for (SensexStockInfo x : resultSensexStockInfosList){
+            for (SensexStockInfo x : populatedSensexStockInfosList){
                 x.setStockTS(Timestamp.from(Instant.now()));
                 x.setQuoteInstant("" + Instant.now());
                 x.setStockRankIndex(i++);
             }
 
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStockDetailedInfo.json"),
-                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexStockInfosList).getBytes());
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populatedSensexStockInfosList).getBytes());
             Files.write(Paths.get(System.getProperty("user.dir") + "\\genFiles\\ScreenerSensexStock-1000-MktCap-detailedInfo.json"),
-                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(toList())).getBytes());
-            cacheScreenerSensexStockInfosList = resultSensexStockInfosList;
-            return (resultSensexStockInfosList);
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(populatedSensexStockInfosList.stream().filter(x -> x.getStockMktCap() >= 1000).collect(toList())).getBytes());
+            cacheScreenerSensexStockInfosList = populatedSensexStockInfosList;
+            return (populatedSensexStockInfosList);
         }catch (Exception e) {
             printError(e);
         }
-        cacheScreenerSensexStockInfosList = resultSensexStockInfosList;
-        return (resultSensexStockInfosList);
+        cacheScreenerSensexStockInfosList = populatedSensexStockInfosList;
+        return (populatedSensexStockInfosList);
     }
 
     private void printError(Exception e, String ... info) {
@@ -265,23 +273,23 @@ public class ScreenerSensexStockResearchService {
 
 
     private void set52HighLowPriceDiff(SensexStockInfo sensexStockInfo) {
-        if (sensexStockInfo.get_52WeekLowPrice() != null && sensexStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                sensexStockInfo.get_52WeekHighPrice() != null && sensexStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
+        if (sensexStockInfo.get_52WeekLowPrice() != null && sensexStockInfo.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
+                sensexStockInfo.get_52WeekHighPrice() != null && sensexStockInfo.get_52WeekHighPrice().compareTo(ZERO) > 0 &&
                 sensexStockInfo.get_52WeekHighPrice().compareTo(sensexStockInfo.get_52WeekLowPrice()) > 0){
             sensexStockInfo.set_52WeekHighLowPriceDiff(((sensexStockInfo.get_52WeekHighPrice().subtract(sensexStockInfo.get_52WeekLowPrice()))
                     .divide(sensexStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
         }
 
-        if (sensexStockInfo.get_52WeekHighPrice() != null && sensexStockInfo.get_52WeekHighPrice().compareTo(BigDecimal.ZERO) > 0 &&
-                sensexStockInfo.getCurrentMarketPrice() != null && sensexStockInfo.getCurrentMarketPrice().compareTo(BigDecimal.ZERO) > 0 &&
+        if (sensexStockInfo.get_52WeekHighPrice() != null && sensexStockInfo.get_52WeekHighPrice().compareTo(ZERO) > 0 &&
+                sensexStockInfo.getCurrentMarketPrice() != null && sensexStockInfo.getCurrentMarketPrice().compareTo(ZERO) > 0 &&
                 sensexStockInfo.get_52WeekHighPrice().compareTo(sensexStockInfo.getCurrentMarketPrice()) > 0 &&
-                (sensexStockInfo.get_52WeekHighPrice().subtract(sensexStockInfo.getCurrentMarketPrice())).compareTo(BigDecimal.ZERO) > 0 &&
-                (sensexStockInfo.get_52WeekHighPrice().subtract(sensexStockInfo.getCurrentMarketPrice())).compareTo(BigDecimal.ZERO) > 0){
+                (sensexStockInfo.get_52WeekHighPrice().subtract(sensexStockInfo.getCurrentMarketPrice())).compareTo(ZERO) > 0 &&
+                (sensexStockInfo.get_52WeekHighPrice().subtract(sensexStockInfo.getCurrentMarketPrice())).compareTo(ZERO) > 0){
             sensexStockInfo.set_52WeekHighPriceDiff(((sensexStockInfo.get_52WeekHighPrice().subtract(sensexStockInfo.getCurrentMarketPrice()))
                     .divide(sensexStockInfo.getCurrentMarketPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));
         }
 
-        if (sensexStockInfo.get_52WeekLowPrice() != null && sensexStockInfo.get_52WeekLowPrice().compareTo(BigDecimal.ZERO) > 0 &&
+        if (sensexStockInfo.get_52WeekLowPrice() != null && sensexStockInfo.get_52WeekLowPrice().compareTo(ZERO) > 0 &&
                 sensexStockInfo.getCurrentMarketPrice().compareTo(sensexStockInfo.get_52WeekLowPrice()) > 0){
             sensexStockInfo.set_52WeekLowPriceDiff(((sensexStockInfo.getCurrentMarketPrice().subtract(sensexStockInfo.get_52WeekLowPrice()))
                     .divide(sensexStockInfo.get_52WeekLowPrice(), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal(100)));

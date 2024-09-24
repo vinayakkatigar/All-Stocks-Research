@@ -42,12 +42,13 @@ import java.util.concurrent.Executors;
 import static java.lang.Math.abs;
 import static java.sql.Timestamp.from;
 import static java.time.Instant.now;
+import static java.util.Collections.reverse;
 import static java.util.Comparator.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static stock.research.utility.SensexStockResearchUtility.HTML_PORTFOLIO_END;
-import static stock.research.utility.SensexStockResearchUtility.generateTableContents;
-import static stock.research.utility.StockResearchUtility.*;
+import static stock.research.utility.SensexStockResearchUtility.*;
+import static stock.research.utility.StockResearchUtility.checkIfWeekend;
+import static stock.research.utility.StockResearchUtility.getDoubleFromString;
 import static stock.research.utility.StockUtility.*;
 
 @Service
@@ -75,6 +76,8 @@ public class SensexStockResearchAlertMechanismService {
 
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd").withZone( ZoneId.systemDefault() );
 
+    private List<SensexStockInfo> rawSensexList = new ArrayList<>();
+
     @Scheduled(cron = "0 35 9,14,23 ? * *", zone = "IST")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -85,16 +88,45 @@ public class SensexStockResearchAlertMechanismService {
         executorService.shutdown();
     }
 
-    private void kickOffScreenerEmailAlerts() {
+    public String getSensexPnlData() {
+        String data = "";
+        StringBuilder pnlBuffer = new StringBuilder("");
+        try {
+            rawSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
+                    .forEach(sensexStockInfo ->  generateTableContents(pnlBuffer, sensexStockInfo));
+            data = SensexStockResearchUtility.HTML_START;
+            data += pnlBuffer.toString();
+            data += SensexStockResearchUtility.HTML_END;
+        }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
+        return data;
+    }
+
+    public String getSensexDailyData() {
+        String data = "";
+        StringBuilder dailyBuffer = new StringBuilder("");
+        try {
+            rawSensexList.forEach(sensexStockInfo ->  generateTableContents(dailyBuffer, sensexStockInfo));
+            data = SensexStockResearchUtility.HTML_START;
+            data += dailyBuffer.toString();
+            data += SensexStockResearchUtility.HTML_END;
+        }catch (Exception e){
+            LOGGER.error("Error - ",e);
+        }
+        return data;
+    }
+
+    public void kickOffScreenerEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info( " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts");
         List<SensexStockInfo> resultSensexList = new ArrayList<>();
         try{
-            List<SensexStockInfo> populatedSensexList = screenerSensexStockResearchService.populateStocksAttributes();
+            rawSensexList = screenerSensexStockResearchService.populateStocksAttributes();
             Arrays.stream(SIDE.values()).forEach(x -> {
-                generateAlertEmails(populatedSensexList,x);
+                generateAlertEmails(rawSensexList,x);
             });
-            resultSensexList.addAll(populatedSensexList);
+            resultSensexList.addAll(rawSensexList);
             resultSensexList.sort(comparing(x -> {
                 return abs(x.get_52WeekLowPriceDiff().doubleValue());
             }, nullsLast(naturalOrder())));
@@ -104,10 +136,10 @@ public class SensexStockResearchAlertMechanismService {
         }
 
         try {
-            StringBuilder dataBuffer = new StringBuilder("");
-            resultSensexList.forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+            StringBuilder pnlBuffer = new StringBuilder("");
+            resultSensexList.forEach(sensexStockInfo ->  generateTableContents(pnlBuffer, sensexStockInfo));
             int retry = 3;
-            while (!sendEmail(dataBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
+            while (!sendEmail(pnlBuffer, new StringBuilder("** Screener Sensex Daily Data ** "), false) && --retry >= 0);
         }catch (Exception e){
             LOGGER.error("Error - ",e);
         }
@@ -127,24 +159,21 @@ public class SensexStockResearchAlertMechanismService {
                 return abs(x.getDailyPCTChange().doubleValue());
             }, nullsLast(naturalOrder())));
 
-            Collections.reverse(resultSensexList);
+            reverse(resultSensexList);
 
-            StringBuilder dataBuffer = new StringBuilder("");
+            StringBuilder dailyBuffer = new StringBuilder("");
             resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)
-                    .forEach(sensexStockInfo ->  generateTableContents(dataBuffer, sensexStockInfo));
+                    .forEach(sensexStockInfo ->  generateTableContents(dailyBuffer, sensexStockInfo));
             int retry = 3;
-            while (!sendEmail(dataBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
-            try {
-                writeToFile( "SCREENER_PNL_DAILY", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
-            }catch (Exception e){ }
+            while (!sendEmail(dailyBuffer, new StringBuilder("** Screener Daily PnL Daily Data ** "), false) && --retry >= 0);
+            writeToFile( "SCREENER_PNL_DAILY", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultSensexList.stream().filter(x -> abs(x.getDailyPCTChange().doubleValue()) > 7.5d)));
 
         }catch (Exception e){
             LOGGER.error("Error - ",e);
         }
 
-        LOGGER.info(instantBefore.until(now(), ChronoUnit.MINUTES)+ " <- Total time in mins , \nEnded ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts" );
+        LOGGER.info(instantBefore.until(now(), ChronoUnit.SECONDS)+ " <- Total time in seconds, \nEnded ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts" );
     }
-
 
     @Scheduled(cron = "0 40 9,15 ? * *", zone = "IST")
     public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
@@ -405,7 +434,7 @@ public class SensexStockResearchAlertMechanismService {
 
     public boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer, boolean isPortfolio) {
         try {
-            goSleep(90);
+            goSleep(10);
             LOGGER.info("<- Started SensexStockResearchAlertMechanismService::sendEmail");
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -437,7 +466,7 @@ public class SensexStockResearchAlertMechanismService {
                 Files.write(Paths.get(System.getProperty("user.dir") + "\\genHtml\\" + fileName  + ".html"), data.getBytes());
                 FileSystemResource file = new FileSystemResource(System.getProperty("user.dir")  + "\\genHtml\\" + fileName + ".html");
                 helper.addAttachment(file.getFilename(), file);
-                javaMailSender.send(message);
+//                javaMailSender.send(message);
             }
             LOGGER.info("<- Ended SensexStockResearchAlertMechanismService::sendEmail");
         }catch (Exception e){
@@ -534,5 +563,6 @@ public class SensexStockResearchAlertMechanismService {
             }
         }
     }
+
 
 }
