@@ -18,20 +18,6 @@ timeout /t 300 /nobreak > NUL
 
 :again
 
-timeout /t 30 /nobreak > NUL
-start chrome --new-window http://localhost:9090/sensex/pnl
-timeout /t 20 /nobreak > NUL
-start chrome http://localhost:9090/sensex/daily
-timeout /t 20 /nobreak > NUL
-
-timeout /t 30 /nobreak > NUL
-start chrome --new-window http://localhost:9090/gf/nyse/wnl
-timeout /t 20 /nobreak > NUL
-start chrome http://localhost:9090/gf/nyse/daily
-timeout /t 20 /nobreak > NUL
-start chrome http://localhost:9090/gf/nyse/alerts
-timeout /t 10 /nobreak > NUL
-
 start chrome --new-window  https://docs.google.com/spreadsheets/d/1r0ZqMeOPIfkoakhcW3dGHE2YsKgJJO4M7InwgcP2-Ao/edit#gid=0
 timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1DdkJYnXIR0UCLeB7cjB8G4LGzZMXHKQ_dGpXGO8CU8I/edit#gid=0
@@ -93,7 +79,24 @@ start chrome https://docs.google.com/spreadsheets/d/1tvpQUskzu9YHAANu8v9D_RyGqts
 timeout /t 10 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1YmPCf9lhipyT_qlHqlPhLSpCOjb3-N18pu4DQ5sSjbE/edit?gid=0#gid=0 && start chrome https://docs.google.com/spreadsheets/d/1YmPCf9lhipyT_qlHqlPhLSpCOjb3-N18pu4DQ5sSjbE/edit?gid=0#gid=0 && start chrome https://docs.google.com/spreadsheets/d/1OgGsh9AZVdG8_yCPNxj-1KFU4-TOvlRD7clf9wBJgnI/edit?gid=0#gid=0 && start chrome https://docs.google.com/spreadsheets/d/10iBogki4CClWmeoTKcena1hQ1ogh7n9_MD4rTg1CH9c/edit?gid=0#gid=0 && start chrome https://www.google.com/finance/ && start chrome https://www.londonstockexchange.com/ && start chrome https://bom1plzcpnl494588.prod.bom1.secureserver.net:2096/
 
-timeout /t 300 /nobreak > NUL
+timeout /t 120 /nobreak > NUL
+TASKKILL /IM chrome.exe /F
+
+timeout /t 30 /nobreak > NUL
+start chrome --new-window http://localhost:9090/sensex/pnl
+timeout /t 20 /nobreak > NUL
+start chrome http://localhost:9090/sensex/daily
+timeout /t 20 /nobreak > NUL
+
+timeout /t 30 /nobreak > NUL
+start chrome --new-window http://localhost:9090/gf/nyse/wnl
+timeout /t 20 /nobreak > NUL
+start chrome http://localhost:9090/gf/nyse/daily
+timeout /t 20 /nobreak > NUL
+start chrome http://localhost:9090/gf/nyse/alerts
+timeout /t 10 /nobreak > NUL
+
+timeout /t 30 /nobreak > NUL
 
 start chrome --new-window http://localhost:9090/gf/nyse/wnl
 timeout /t 30 /nobreak > NUL
