@@ -21,13 +21,13 @@ public class SensexController {
     private SensexStockResearchAlertMechanismService stockResearchAlertMechanismService;
 
     @CrossOrigin
-    @GetMapping("/sensex/pnl")
+    @GetMapping("/screener/sensex/alerts")
     public String sensexPnL(){
-        return stockResearchAlertMechanismService.getSensexPnlData();
+        return stockResearchAlertMechanismService.getSensexAlertsData();
     }
 
     @CrossOrigin
-    @GetMapping("/sensex/daily")
+    @GetMapping("/screener/sensex/daily")
     public String sensexDaily(){
         return stockResearchAlertMechanismService.getSensexDailyData();
     }
