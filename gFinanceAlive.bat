@@ -97,7 +97,7 @@ timeout /t 10 /nobreak > NUL
 
 timeout /t 30 /nobreak > NUL
 
-timeout /t 600 /nobreak > NUL
+timeout /t 1200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 
 goto again
