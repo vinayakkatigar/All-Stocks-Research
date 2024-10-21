@@ -86,8 +86,6 @@ timeout /t 10 /nobreak > NUL
 start chrome http://localhost:9090/screener/sensex/daily
 timeout /t 2 /nobreak > NUL
 
-start chrome http://localhost:9090/gf/nyse/wnl
-timeout /t 2 /nobreak > NUL
 start chrome http://localhost:9090/gf/nyse/daily
 timeout /t 2 /nobreak > NUL
 start chrome http://localhost:9090/gf/nyse/alerts

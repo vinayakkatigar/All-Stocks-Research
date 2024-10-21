@@ -576,7 +576,9 @@ public class GFinanceEmailAlertService {
         stockInfoList.sort(comparing(GFinanceStockInfo::get_52WeekHighLowPriceDiff,
                 nullsFirst(naturalOrder())));
 
-        StringBuilder result = generateDailyEmail(sortByDailyPCTChange(stockInfoList.stream().distinct().filter(x -> x.get_52WeekLowPriceDiff() != null && x.get_52WeekLowPriceDiff().doubleValue() <= 5.5d).filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d).collect(toList())),
+        StringBuilder result = generateDailyEmail(sortByDailyPCTChange(stockInfoList.stream().distinct()
+                        .filter(x -> x.get_52WeekHighLowPriceDiff() != null && x.get_52WeekHighLowPriceDiff().doubleValue() > 39d)
+                        .collect(toList())),
                 new StringBuilder("*** GF NYSE Daily Alerts ***"), false, sortByDailyPCTChange(stockInfoList));
         LOGGER.info(" <-  Ended " + getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
         LOGGER.info(instantBefore.until(now(), SECONDS)+ " <- Total time in seconds, \nEnded "+
