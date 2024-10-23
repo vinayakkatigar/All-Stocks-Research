@@ -72,7 +72,7 @@ public class SensexStockResearchAlertMechanismService {
 
     private List<SensexStockInfo> rawSensexList = new ArrayList<>();
 
-//    @Scheduled(cron = "0 35 9,14,17 ? * *", zone = "IST")
+    @Scheduled(cron = "0 35 9,12,14,17 ? * *", zone = "IST")
     public void kickOffEmailAlerts_Cron() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
