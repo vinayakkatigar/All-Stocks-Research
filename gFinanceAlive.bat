@@ -14,6 +14,11 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Vin\Code-Base\gf-radar
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
+xcopy C:\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
+xcopy C:\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
+xcopy C:\Vin\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
+xcopy C:\Vin\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
+
 timeout /t 300 /nobreak > NUL
 
 :again
