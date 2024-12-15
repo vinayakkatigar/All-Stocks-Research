@@ -12,11 +12,6 @@ import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
 @RestController
 public class SensexController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SensexController.class);
-    private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Autowired
     private SensexStockResearchAlertMechanismService stockResearchAlertMechanismService;
 
