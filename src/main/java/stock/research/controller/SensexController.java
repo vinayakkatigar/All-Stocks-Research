@@ -32,4 +32,10 @@ public class SensexController {
         return stockResearchAlertMechanismService.getSensexDailyData();
     }
 
+    @CrossOrigin
+    @GetMapping("/screener/sensex/yearlow")
+    public String sensexYearLow(){
+        return stockResearchAlertMechanismService.getYearLow();
+    }
+
 }

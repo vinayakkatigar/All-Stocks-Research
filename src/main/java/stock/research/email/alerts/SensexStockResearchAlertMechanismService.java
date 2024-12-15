@@ -121,6 +121,26 @@ public class SensexStockResearchAlertMechanismService {
         return data;
     }
 
+
+    public String getYearLow() {
+        String data = "";
+        StringBuilder yearLowBuffer = new StringBuilder("");
+        try {
+            rawSensexList.stream()
+                    .filter(x -> x.get_52WeekLowPrice() != null
+                                && x.getCurrentMarketPrice() != null
+                                    && x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice()) <= 0)
+                    .distinct()
+                    .forEach(sensexStockInfo ->  generateTableContents(yearLowBuffer, sensexStockInfo));
+            data = HTML_START;
+            data += yearLowBuffer.toString();
+            data += HTML_END;
+        }catch (Exception e){
+            LOGGER.error("getYearLow::Error - ",e);
+        }
+        return data;
+    }
+
     public void kickOffScreenerEmailAlerts() {
         Instant instantBefore = now();
         LOGGER.info( " <- Started ScreenerSensexStockResearchAlertMechanismService::kickOffScreenerEmailAlerts");

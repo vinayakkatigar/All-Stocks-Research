@@ -89,14 +89,9 @@ timeout /t 3 /nobreak > NUL
 start chrome --new-window http://localhost:9090/screener/sensex/alerts
 timeout /t 10 /nobreak > NUL
 start chrome http://localhost:9090/screener/sensex/daily
-timeout /t 2 /nobreak > NUL
-
-start chrome http://localhost:9090/gf/nyse/daily
-timeout /t 2 /nobreak > NUL
-start chrome http://localhost:9090/gf/nyse/alerts
-timeout /t 1 /nobreak > NUL
-
-timeout /t 30 /nobreak > NUL
+timeout /t 5 /nobreak > NUL
+start chrome http://localhost:9090/screener/sensex/yearlow
+timeout /t 5 /nobreak > NUL
 
 timeout /t 1200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
