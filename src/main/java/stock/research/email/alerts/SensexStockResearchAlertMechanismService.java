@@ -121,7 +121,6 @@ public class SensexStockResearchAlertMechanismService {
         return data;
     }
 
-
     public String getYearLow() {
         String yearLowData = "";
         StringBuilder yearLowBuffer = new StringBuilder("");
