@@ -123,7 +123,7 @@ public class SensexStockResearchAlertMechanismService {
 
 
     public String getYearLow() {
-        String data = "";
+        String yearLowData = "";
         StringBuilder yearLowBuffer = new StringBuilder("");
         try {
             rawSensexList.stream()
@@ -132,13 +132,13 @@ public class SensexStockResearchAlertMechanismService {
                                     && x.getCurrentMarketPrice().compareTo(x.get_52WeekLowPrice()) <= 0)
                     .distinct()
                     .forEach(sensexStockInfo ->  generateTableContents(yearLowBuffer, sensexStockInfo));
-            data = HTML_START;
-            data += yearLowBuffer.toString();
-            data += HTML_END;
+            yearLowData = HTML_START;
+            yearLowData += yearLowBuffer.toString();
+            yearLowData += HTML_END;
         }catch (Exception e){
             LOGGER.error("getYearLow::Error - ",e);
         }
-        return data;
+        return yearLowData;
     }
 
     public void kickOffScreenerEmailAlerts() {
