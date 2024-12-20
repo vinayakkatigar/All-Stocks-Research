@@ -12,7 +12,7 @@ import stock.research.email.alerts.NyseEmailAlertMechanismService;
 import stock.research.service.NYSEStockResearchService;
 import stock.research.service.NyseTop1000StockResearchService;
 
-@Order(2)
+@Order(7)
 @SpringBootApplication
 public class NyseStocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");

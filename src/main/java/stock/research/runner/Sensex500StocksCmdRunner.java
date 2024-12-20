@@ -17,7 +17,7 @@ import stock.research.service.ScreenerSensexStockResearchService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Order(6)
+@Order(1)
 @SpringBootApplication
 public class Sensex500StocksCmdRunner implements CommandLineRunner {
     private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("ERRORS-FILE");
