@@ -117,10 +117,14 @@ public class ScreenerSensexStockResearchService {
                                     && divElement.getElementsByClass("data-table").size() > 0){
                                 Element tabElement = divElement.getElementsByClass("data-table").get(0);
                                 Element trElement = tabElement.getElementsByTag("tr").get(2);
+                                if (trElement != null && !(trElement.text().contains("FII"))){
+                                    trElement = tabElement.getElementsByTag("tr").get(1);
+                                }
                                 Elements tdElementList = trElement != null ? trElement.getElementsByTag("td") : null;
                                 if (tdElementList != null && tdElementList.size() > 0){
                                     sensexStockInfo.setFiiPct(getDoubleFromString(tdElementList.get(tdElementList.size() - 1).text()));
                                 }
+
                             }
                         }catch (Exception e){
                             printError(e);
