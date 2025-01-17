@@ -25,10 +25,10 @@ timeout /t 300 /nobreak > NUL
 
 :enterKey
 
-powershell.exe enterKeyPress.ps1
+powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 10 /nobreak > NUL
 
-powershell.exe enterKeyPress.ps1
+powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 600 /nobreak > NUL
 
 goto enterKey

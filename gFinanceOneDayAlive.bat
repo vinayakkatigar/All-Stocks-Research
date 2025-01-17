@@ -32,7 +32,7 @@ TASKKILL /IM chrome.exe /F
 echo %date% - %time%
 
 timeout /t 10 /nobreak > NUL
-powershell.exe enterKeyPress.ps1
+powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 10 /nobreak > NUL
 
 timeout /t 43200 /nobreak > NUL
