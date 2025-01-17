@@ -6,7 +6,7 @@ timeout /t 28800 /nobreak > NUL
 echo %date% - %time%
 
 start chrome --new-window https://docs.google.com/spreadsheets/d/18-BpblNjElxTNZm12Q_PEo-Ru-4hYKQgiI1-8Yk4CaU/edit?gid=0#gid=0
-timeout /t 30 /nobreak > NUL
+timeout /t 180 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1Sr8VyB61Lu5GYMOrceNbwM7WTyDuaUPOD3wTCwXBnNk/edit?gid=0#gid=0
 timeout /t 30 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/1_5CTJjqt6AEbzyE2EjvXNoshnie3dxGtX09Pspxto3A/edit?gid=0#gid=0
@@ -29,7 +29,11 @@ timeout /t 30 /nobreak > NUL
 timeout /t 120 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 
-echo %date% -%time%
+echo %date% - %time%
+
+timeout /t 10 /nobreak > NUL
+powershell.exe enterKeyPress.ps1
+timeout /t 10 /nobreak > NUL
 
 timeout /t 43200 /nobreak > NUL
 
