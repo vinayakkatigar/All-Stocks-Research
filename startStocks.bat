@@ -20,9 +20,4 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Code\All-Stocks-Research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
-xcopy C:\Code\All-Stocks-Research\tokens C:\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
-xcopy C:\Code\All-Stocks-Research\tokens C:\Code\gf-radar\tokens /s /e /h  /F /R /Y /I
-xcopy C:\Code-Base\All-Stocks-Research\tokens C:\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
-xcopy C:\Code-Base\All-Stocks-Research\tokens C:\Code\gf-radar\tokens /s /e /h  /F /R /Y /I
-
 mvn clean spring-boot:run
