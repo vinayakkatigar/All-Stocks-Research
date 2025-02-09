@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,6 @@ import stock.research.service.StartUpNYSEStockResearchService;
 import stock.research.utility.StockResearchUtility;
 
 import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -195,7 +194,7 @@ public class NyseEmailAlertMechanismService {
                 .anyMatch(y -> ((y.getMarketValue() != null && getDoubleFromString(y.getMarketValue().replace("£", "").replace(",", "")) > 500.0)));
     }
 
-    private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) throws MessagingException, IOException {
+    private boolean sendEmail(StringBuilder dataBuffer, StringBuilder subjectBuffer) throws Exception, IOException {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);

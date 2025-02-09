@@ -2,6 +2,7 @@ package stock.research.gfinance.email.alerts;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import stock.research.gfinance.repo.GoogleFinanceStockDetailsRepositary;
 import stock.research.gfinance.service.GFinanceStockService;
 
 import javax.annotation.PostConstruct;
-import javax.mail.internet.MimeMessage;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -128,7 +128,7 @@ public class GFinanceEmailAlertService {
         canadaUrl.put("Vin-Canada", "1l534qt4O3WPSRWyH0OnNaq9ymMRmL_An2jKQJ5C7geI");
     }
 
-    @Scheduled(cron = "0 * */2 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 * */2 ? * *", zone = "GMT")
     public void kickOffGFinanceRefresh() {
         Instant instantBefore = now();
         LOGGER.info(" <-  Started kickOffGoogleFinanceNYSEEmailAlerts::kickOffGFinanceRefresh" );
@@ -153,7 +153,7 @@ public class GFinanceEmailAlertService {
                 getClassName() + "::" + new Object() {}.getClass().getEnclosingMethod().getName());
     }
 
-    @Scheduled(cron = "0 30 4,14 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 30 4,14 ? * MON-SAT", zone = "GMT")
     public void kickOffGFEASTASIAAlerts() {
         ExecutorService executorService = newCachedThreadPool();
         executorService.submit(() -> {
@@ -188,55 +188,55 @@ public class GFinanceEmailAlertService {
     }
 
 
-//    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
+//    //@Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "IET")
     public void kickOffGFCanadaEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-CANADA", "Canada ", canadaUrl, false);
     }
 
-//    @Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
+//    //@Scheduled(cron = "0 50 9,14,22 ? * MON-SAT", zone = "BET")
     public void kickOffGFBrazilEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-BRAZIL", "Brazil ", brazilUrl, false);
     }
 
-    @Scheduled(cron = "0 10 0,4,9,18,22 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 10 0,4,9,18,22 ? * MON-SAT", zone = "GMT")
     public void kickOffGFWatchListEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
 //        kickOffGF(GF_WATCHLIST, "WatchList ", watchListUrl, false);
     }
 
-    @Scheduled(cron = "0 30 17 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 30 17 ? * MON-SAT", zone = "GMT")
     public void kickOffGFASXEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-AUSTRALIA", "ASX ", asxUrl, false);
     }
 
 /*
-    @Scheduled(cron = "0 35 0,4,9,18 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 35 0,4,9,18 ? * MON-SAT", zone = "GMT")
     public void kickOffGFGermanyEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-GERMANY", "Germany ", germanUrl, false);
     }
-    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
     public void kickOffGFEUROEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-EURO", "EURO ", euroUrl, false);
     }
-    @Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 31 10,16 ? * MON-SAT", zone = "GMT")
     public void kickOffGFSwitzerlandEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-SWITZERLAND", "Switzerland ", swissUrl, false);
     }
 */
 
-//    @Scheduled(cron = "0 05 11 ? * MON-SAT", zone = "GMT")
+//    //@Scheduled(cron = "0 05 11 ? * MON-SAT", zone = "GMT")
     public void kickOffGFSouthKoreaEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-SKW", "SouthKorea ", skwUrl, false);
     }
 
-    @Scheduled(cron = "0 40 3,9,21 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 40 3,9,21 ? * MON-SAT", zone = "GMT")
     public void kickOffGFFTSEEUROEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         ftseUrl.putAll(euroUrl);
@@ -245,31 +245,31 @@ public class GFinanceEmailAlertService {
         kickOffGF("GF-FTSE-EURO", "FTSE-EURO ", ftseUrl, false);
     }
 
-//    @Scheduled(cron = "0 50 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
+//    //@Scheduled(cron = "0 50 4,10,16,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-NSE", "NSE ", nseUrlInfo, false);
     }
 
-    @Scheduled(cron = "0 5 5,11,17,22,23 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 5 5,11,17,22,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFPortfolioEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF(GF_PORTFOLIO, "Portfolio ", portfolioUrl, false);
     }
 
-    @Scheduled(cron = "0 15 15,19,23 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 15 15,19,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNYSEEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF(GF_NYSE, "NYSE ", nyseUrlInfo, false);
     }
 
-//    @Scheduled(cron = "0 35 13 ? * MON-SAT", zone = "GMT")
+//    //@Scheduled(cron = "0 35 13 ? * MON-SAT", zone = "GMT")
     public void kickOffGFIndonesiaEmailAlerts() {
         currentThread().setPriority(Thread.MIN_PRIORITY);
         kickOffGF("GF-INDONESIA", "Indonesia ", indonesiaUrl, false);
     }
 
-//    @Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
+//    //@Scheduled(cron = "0 15 6,12,18,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNSEPortfolioEmailAlerts() {
 
         currentThread().setPriority(Thread.MAX_PRIORITY);
@@ -298,7 +298,7 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 25 7,17,21,23 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 25 7,17,21,23 ? * MON-SAT", zone = "GMT")
     public void kickOffGFNYSEDailyPnLEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         ExecutorService executorService = newSingleThreadExecutor();
@@ -309,13 +309,13 @@ public class GFinanceEmailAlertService {
 
     }
 
-    @Scheduled(cron = "0 41 3,11 ? * MON-SAT", zone = "GMT")
+    //@Scheduled(cron = "0 41 3,11 ? * MON-SAT", zone = "GMT")
     public void kickOffGFHongKongEmailAlerts() {
         currentThread().setPriority(Thread.MAX_PRIORITY);
         kickOffGF("GF-HONGKONG", "HongKong ", hongKongUrl, false);
     }
 
-    @Scheduled(cron = "0 07 0,21 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 07 0,21 ? * *", zone = "GMT")
     public void kickOffGFWatchListWeeklyPnLEmailAlerts() {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -325,7 +325,7 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 47 2,22 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 47 2,22 ? * *", zone = "GMT")
     public void kickOffGFPortfolioWeeklyPnLEmailAlerts() {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -335,7 +335,7 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 17 1,20 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 17 1,20 ? * *", zone = "GMT")
     public void kickOffScreenerWeeklyPnLEmailAlerts() throws JsonProcessingException {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -344,7 +344,7 @@ public class GFinanceEmailAlertService {
         executorService.shutdown();
     }
 
-    @Scheduled(cron = "0 47 2,20 ? * *", zone = "GMT")
+    //@Scheduled(cron = "0 47 2,20 ? * *", zone = "GMT")
     public void kickOffScreenerMonthlyPnLEmailAlerts() {
         ExecutorService executorService = newSingleThreadExecutor();
         executorService.submit(() -> {

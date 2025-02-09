@@ -1,9 +1,9 @@
 package stock.research.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -30,13 +30,13 @@ public class AppConfig {
                         sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
                                 .build();
                         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-                        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
-                        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-                        requestFactory.setHttpClient(httpClient);
-                        requestFactory.setConnectionRequestTimeout(1000 * 20);
-                        requestFactory.setConnectTimeout(1000 * 20);
-                        requestFactory.setReadTimeout(1000 * 20);
-                        RestTemplate restTemplate = new RestTemplate(requestFactory);
+                        HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+//                        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+//                        requestFactory.setHttpClient(httpClient);
+//                        requestFactory.setConnectionRequestTimeout(1000 * 20);
+//                        requestFactory.setConnectTimeout(1000 * 20);
+//                        requestFactory.setReadTimeout(1000 * 20);
+                        RestTemplate restTemplate = new RestTemplate();
                         return restTemplate;
 
                 } catch(Exception e) {

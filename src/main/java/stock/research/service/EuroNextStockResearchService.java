@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -170,7 +171,7 @@ public class EuroNextStockResearchService {
 
     private boolean launchAndExtract(EuroNextStockInfo euroNextStockInfo) {
         try{
-            WebDriverWait wait = new WebDriverWait(webDriver, (10));
+            WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
 
             if (webDriver == null) launchBrowser();
 //            webDriver.get("https://live.euronext.com/en/product/equities/FR0011053636-ALXP/the-blockchain-gp/altbg/quotes");

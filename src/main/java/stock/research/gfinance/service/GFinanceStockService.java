@@ -52,13 +52,15 @@ public class GFinanceStockService {
     private final Map<String, BigDecimal> ccyValues = new HashMap<>();
 
     @PostConstruct
-    public void setUpCurrency(){
-        Map<String, String> ccyInfo = new HashMap<>();
-        ccyInfo.put("Vin-Currency", "1tvpQUskzu9YHAANu8v9D_RyGqtsok7SZ3XVZ3GM_vj8");
-        List<GFinanceStockInfo>  gFinanceStockInfos = getGFStockInfoList(ccyInfo);
-        gFinanceStockInfos.forEach(x -> ccyValues.put(x.getStockName(), x.getCurrentMarketPrice()));
-        LOGGER.info("ccyValues -> " + ccyValues);
-        System.out.println(ccyValues);
+    public void setUpCurrency() {
+        /*{
+            Map<String, String> ccyInfo = new HashMap<>();
+            ccyInfo.put("Vin-Currency", "1tvpQUskzu9YHAANu8v9D_RyGqtsok7SZ3XVZ3GM_vj8");
+            List<GFinanceStockInfo> gFinanceStockInfos = getGFStockInfoList(ccyInfo);
+            gFinanceStockInfos.forEach(x -> ccyValues.put(x.getStockName(), x.getCurrentMarketPrice()));
+            LOGGER.info("ccyValues -> " + ccyValues);
+            System.out.println(ccyValues);
+        }*/
     }
     public List<GFinanceStockInfo> getGFStockInfoList(Map<String, String> urlInfo) {
         final List<GFinanceStockInfo> gfStockInfoList = new ArrayList<>();

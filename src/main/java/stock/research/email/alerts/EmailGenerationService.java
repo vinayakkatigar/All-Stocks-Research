@@ -1,6 +1,7 @@
 package stock.research.email.alerts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import stock.research.utility.PortfolioResearchUtility;
 
-import javax.mail.internet.MimeMessage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;

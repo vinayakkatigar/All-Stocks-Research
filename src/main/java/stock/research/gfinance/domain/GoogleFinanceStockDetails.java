@@ -1,6 +1,7 @@
 package stock.research.gfinance.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 
 @Entity

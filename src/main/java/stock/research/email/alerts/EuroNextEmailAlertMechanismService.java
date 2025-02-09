@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import stock.research.service.EuroNextStockResearchService;
 import stock.research.utility.EuroNextStockResearchUtility;
 
 import javax.annotation.PostConstruct;
-import javax.mail.internet.MimeMessage;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;

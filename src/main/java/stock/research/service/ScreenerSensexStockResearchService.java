@@ -2,11 +2,19 @@ package stock.research.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,6 +26,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,6 +38,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -357,12 +369,14 @@ public class ScreenerSensexStockResearchService {
                             .setConnectionRequestTimeout(1000 * 20)
                             .setSocketTimeout(1000 * 20)
                             .build()).build();
-            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-            requestFactory.setHttpClient(httpClient);
-            requestFactory.setConnectionRequestTimeout(1000 * 20);
-            requestFactory.setConnectTimeout(1000 * 20);
-            requestFactory.setReadTimeout(1000 * 20);
-            RestTemplate restTemplate = new RestTemplate(requestFactory);
+//            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+//            requestFactory.setHttpClient(httpClient);
+//            ClientHttpRequestFactory requestFactory = disableSSlHttpClient5();
+//            restTemplate.setRequestFactory(requestFactory);
+//            requestFactory.setConnectionRequestTimeout(1000 * 20);
+//            requestFactory.setConnectTimeout(1000 * 20);
+//            requestFactory.setReadTimeout(1000 * 20);
+            RestTemplate restTemplate = new RestTemplate();
             return restTemplate;
 
         } catch(Exception e) {
