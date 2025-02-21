@@ -22,5 +22,8 @@ wt -w 0 nt  C:\Code\yf-radar\yfRadarStartStocks.bat
 timeout /t 20 /nobreak > NUL
 wt -w 0 nt  C:\Code\yf-radar\yfRadarAlive.bat
 
+timeout /t 20 /nobreak > NUL
+wt -w 0 nt C:\Code\gf-radar\yfYearLowAlive.bat
+
 timeout /t 5 /nobreak > NUL
 wt -w 0 nt  C:\Code\All-Stocks-Research\enterKeyPresses.bat
