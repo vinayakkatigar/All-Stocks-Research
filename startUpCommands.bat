@@ -1,3 +1,10 @@
+cd C:\Vin\Code-Base\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Vin\Code\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code\All-Stocks-Research
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+
 timeout /t 2 /nobreak > NUL
 wt -w 0 nt  C:\Code\All-Stocks-Research\startNotePad.bat
 
