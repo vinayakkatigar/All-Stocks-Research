@@ -17,7 +17,7 @@ timeout /t 2 /nobreak > NUL
 wt -w 0 nt  C:\Code\All-Stocks-Research\gFinanceOneDayAlive.bat
 
 timeout /t 10 /nobreak > NUL
-wt -w 0 nt  C:\Code\yf-radar\yfRadarStartStocks.bat
+wt -w 0 nt C:\Code\yf-radar-apac\yfRadarAPACStartStocks.bat
 
 timeout /t 20 /nobreak > NUL
 wt -w 0 nt  C:\Code\yf-radar\yfRadarAlive.bat
