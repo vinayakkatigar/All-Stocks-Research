@@ -16,15 +16,24 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Vin\Code-Base\gf-radar
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
+cd C:\Vin\Code-Base\yf-radar
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Vin\Code\yf-radar
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+
+cd C:\Vin\Code-Base\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Vin\Code\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
 timeout /t 300 /nobreak > NUL
 
-:enterKey
+REM :enterKey
 
-powershell.exe  C:\Code-Base\enterKeyPress.ps1
-timeout /t 10 /nobreak > NUL
+REM powershell.exe  C:\Code-Base\enterKeyPress.ps1
+REM timeout /t 10 /nobreak > NUL
 
-powershell.exe  C:\Code-Base\enterKeyPress.ps1
-timeout /t 600 /nobreak > NUL
+REM powershell.exe  C:\Code-Base\enterKeyPress.ps1
+REM timeout /t 600 /nobreak > NUL
 
-goto enterKey
+REM goto enterKey
