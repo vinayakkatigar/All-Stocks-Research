@@ -32,5 +32,5 @@ wt -w 0 nt C:\Code\yf-radar-apac\yfAPACAlive.bat
 timeout /t 20 /nobreak > NUL
 wt -w 0 nt C:\Code\gf-radar\yfYearLowAlive.bat
 
-timeout /t 5 /nobreak > NUL
-wt -w 0 nt  C:\Code\All-Stocks-Research\enterKeyPresses.bat
+REM timeout /t 5 /nobreak > NUL
+REM wt -w 0 nt  C:\Code\All-Stocks-Research\enterKeyPresses.bat
