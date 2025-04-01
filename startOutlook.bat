@@ -14,6 +14,16 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Code\gf-radar
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
+cd C:\Code-Base\yf-radar
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code\yf-radar
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+
+cd C:\Code-Base\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+
 cd C:\Code\All-Stocks-Research
 c:
 cd C:\Code\All-Stocks-Research
