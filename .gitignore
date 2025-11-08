@@ -5,7 +5,3 @@ target/*
 *.iml
 logs/*
 logs/
-genFiles/*
-genFiles/
-genHtml/*
-genHtml/
