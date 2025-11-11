@@ -16,8 +16,7 @@ git add . ; git commit -am "09022025 Fix";git push;
 
 git reset --hard HEAD~1
 
- Set-ExecutionPolicy RemoteSigned
-
+Set-ExecutionPolicy RemoteSigned
 
 https://www.value.today/stocks/sp-europe-350
 
