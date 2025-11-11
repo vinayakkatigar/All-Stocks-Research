@@ -20,4 +20,4 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Code\All-Stocks-Research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
-mvn clean spring-boot:run
+mvn clean spring-boot:run -D"spring-boot.run.profiles"=h2db
