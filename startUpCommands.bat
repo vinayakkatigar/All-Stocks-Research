@@ -9,7 +9,20 @@ git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git re
 cd C:\Code-Base\All-Stocks-Research
 git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
 
-timeout /t 2 /nobreak > NUL
+timeout /t 20 /nobreak > NUL
+
+cd C:\Code\yf-radar
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code-Base\yf-radar
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code-Base\yf-radar-apac
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+cd C:\Code-Base\All-Stocks-Research
+git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+
+timeout /t 20 /nobreak > NUL
 wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startNotePad.bat
 
 timeout /t 5 /nobreak > NUL
