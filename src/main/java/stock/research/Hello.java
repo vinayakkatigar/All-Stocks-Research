@@ -1,3 +1,5 @@
+package stock.research;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.time.Instant;
