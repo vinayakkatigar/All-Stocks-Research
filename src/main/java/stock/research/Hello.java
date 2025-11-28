@@ -9,7 +9,8 @@ public class Hello {
 
           Robot robot = new Robot();
           while (true){
-System.out.println(Instant.now());
+
+              System.out.println(Instant.now());
               robot.keyPress(KeyEvent.VK_WINDOWS);
               Thread.sleep(100);
               robot.keyRelease(KeyEvent.VK_WINDOWS);
