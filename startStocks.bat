@@ -16,8 +16,8 @@ mkdir C:\Users\Vin\AppData\Local\Temp\
 cd C:\Code\All-Stocks-Research
 c:
 cd C:\Code\All-Stocks-Research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 cd C:\Code\All-Stocks-Research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
 mvn clean spring-boot:run -D"spring-boot.run.profiles"=h2db

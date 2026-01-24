@@ -1,33 +1,34 @@
 c:
 cd C:\Code-Base\All-Stocks-Research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 cd C:\Code\All-Stocks-Research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
 cd C:\Vin\Code-Base\yf-stocks-research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 cd C:\Vin\Code-Base\yf-stocks-research
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
 cd C:\Vin\Code-Base\gf-radar
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 cd C:\Vin\Code-Base\gf-radar
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
-
-cd C:\Vin\Code-Base\yf-radar
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
-cd C:\Vin\Code\yf-radar
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
 cd C:\Vin\Code-Base\yf-radar-apac
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
+cd C:\Vin\Code\yf-radar
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
+
+cd C:\Vin\Code-Base\yf-radar-apac-apac
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 cd C:\Vin\Code\yf-radar-apac
-git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull && git reset --hard HEAD && git pull
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
 xcopy C:\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Vin\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Vin\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
+xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*-yf-daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
 
 timeout /t 300 /nobreak > NUL
 
@@ -68,6 +69,7 @@ timeout /t 15 /nobreak > NUL
 timeout /t 1200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 TASKKILL /IM chrome.exe /F
+xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*-yf-daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
 
 REM powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 10 /nobreak > NUL
