@@ -54,8 +54,10 @@ public class SensexController {
                 sum = sum + Integer.parseInt(input.charAt(i) + "");
             }
         }
-        return (sum * (now().getMonthValue() +
-                now().getDayOfMonth())) + "--" + input;
+        ZonedDateTime dateTime = now();
+        sum = sum + (dateTime.getYear() + dateTime.getMonthValue() + dateTime.getDayOfMonth());
+        return (sum * (dateTime.getMonthValue() +
+                dateTime.getDayOfMonth())) + "--" + input;
     }
 
     public static void writeHTMLFile(String fileName, String fileContent, String... subDir){
