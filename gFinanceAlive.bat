@@ -74,4 +74,16 @@ xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-re
 REM powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 10 /nobreak > NUL
 
+cd C:\Code\All-Stocks-Research
+c:
+cd C:\Code\All-Stocks-Research
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
+cd C:\Code\All-Stocks-Research
+git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
+timeout /t 10 /nobreak > NUL
+
+xcopy C:\Code-Base\All-Stocks-Research\genHtml\  C:\Code-Base\yf-daily-repo\ctry\india /s /e /y  && cd C:\Code-Base\yf-daily-repo  && git add .  &&  git commit -am "16012026 Fix" && git push -f  &&  git commit -am "16012026 Fix" && git push -f
+timeout /t 10 /nobreak > NUL
+xcopy C:\Code-Base\All-Stocks-Research\genHtml\  C:\Code-Base\yf-daily-repo\ctry\india /s /e /y  && cd C:\Code-Base\yf-daily-repo  && git add .  &&  git commit -am "16012026 Fix" && git push -f  &&  git commit -am "16012026 Fix" && git push -f
+
 goto again
