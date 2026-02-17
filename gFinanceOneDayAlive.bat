@@ -34,7 +34,7 @@ timeout /t 60 /nobreak > NUL
 start chrome https://docs.google.com/spreadsheets/d/14__AeJGTlgtBDbVOwWVFg8sz7OrCZI-iLbVm0Fv553E/edit?gid=0#gid=0
 timeout /t 60 /nobreak > NUL
 
-timeout /t 300 /nobreak > NUL
+timeout /t 1200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 
 echo %date% - %time%
