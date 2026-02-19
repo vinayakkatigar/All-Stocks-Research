@@ -18,7 +18,7 @@ import static java.time.ZonedDateTime.now;
 
 @RestController
 public class SensexController {
-    public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Autowired
     private SensexStockResearchAlertMechanismService stockResearchAlertMechanismService;
