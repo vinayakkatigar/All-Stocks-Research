@@ -27,7 +27,7 @@ public class SensexController {
     @GetMapping("/screener/sensex/alerts")
     public String sensexPnL(){
         String data = stockResearchAlertMechanismService.getSensexAlertsData();
-        writeHTMLFile(getDateFileFormat(now().format(formatter))  + "SCREENER-SENSEX-ALERTS.html", data);
+        writeHTMLFile(getDateFileFormat(now().format(formatter))  + "-SCREENER-SENSEX-ALERTS.html", data);
         return data;
     }
 
@@ -35,7 +35,7 @@ public class SensexController {
     @GetMapping("/screener/sensex/daily")
     public String sensexDaily(){
         String data = stockResearchAlertMechanismService.getSensexDailyData();
-        writeHTMLFile(getDateFileFormat(now().format(formatter))  + "SCREENER-SENSEX-DAILY.html", data);
+        writeHTMLFile(getDateFileFormat(now().format(formatter))  + "-SCREENER-SENSEX-DAILY.html", data);
         return data;
     }
 
@@ -43,7 +43,7 @@ public class SensexController {
     @GetMapping("/screener/sensex/yearlow")
     public String sensexYearLow(){
         String data = stockResearchAlertMechanismService.getYearLow();
-        writeHTMLFile(getDateFileFormat(now().format(formatter))  + "SCREENER-SENSEX-YEAR-LOW.html", data);
+        writeHTMLFile(getDateFileFormat(now().format(formatter))  + "-SCREENER-SENSEX-YEAR-LOW.html", data);
         return data;
     }
 
