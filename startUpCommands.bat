@@ -28,6 +28,9 @@ wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startNotePad.bat
 timeout /t 5 /nobreak > NUL
 wt -w 0 nt  C:\Code-Base\All-Stocks-Research\gFinanceAlive.bat
 
+timeout /t 5 /nobreak > NUL
+wt -w 0 nt  C:\Code-Base\yf-radar-apac\yfSyncLatestCode.bat
+
 timeout /t 10 /nobreak > NUL
 wt -w 0 nt C:\Vin\KeepAlive.bat
 
