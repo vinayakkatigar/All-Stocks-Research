@@ -28,7 +28,7 @@ xcopy C:\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /
 xcopy C:\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Vin\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Vin\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
-xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*-yf-daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
+xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*yf*daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
 
 timeout /t 300 /nobreak > NUL
 
@@ -71,11 +71,19 @@ start chrome http://localhost:9090/screener/sensex/daily
 timeout /t 10 /nobreak > NUL
 start chrome http://localhost:9090/screener/sensex/yearlow
 timeout /t 15 /nobreak > NUL
+start chrome http://localhost:8095/yf-radar/yf/daily/pnl/apac && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/seasia
+timeout /t 30 /nobreak > NUL
+start chrome http://localhost:8095/yf-radar/yf/daily/alerts/apac && start chrome http://localhost:8095/yf-radar/yf/daily/alerts/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/alerts/seasia && start chrome http://localhost:8095/yf-radar/yf/daily/alerts/all
+timeout /t 30 /nobreak > NUL
+start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/apac && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/seasia
+timeout /t 30 /nobreak > NUL
+
+timeout /t 15 /nobreak > NUL
 
 timeout /t 1200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 TASKKILL /IM chrome.exe /F
-xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*-yf-daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
+xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*yf*daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
 
 REM powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 10 /nobreak > NUL
