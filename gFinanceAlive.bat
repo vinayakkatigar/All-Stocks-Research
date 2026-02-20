@@ -71,11 +71,11 @@ start chrome http://localhost:9090/screener/sensex/daily
 timeout /t 10 /nobreak > NUL
 start chrome http://localhost:9090/screener/sensex/yearlow
 timeout /t 15 /nobreak > NUL
-start chrome http://localhost:8095/yf-radar/yf/daily/pnl/apac && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/seasia
+start chrome http://localhost:8095/yf-radar/yf/daily/pnl/apac && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/seasia && start chrome http://localhost:8095/yf-radar/yf/daily/pnl/all
 timeout /t 30 /nobreak > NUL
 start chrome http://localhost:8095/yf-radar/yf/daily/alerts/apac && start chrome http://localhost:8095/yf-radar/yf/daily/alerts/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/alerts/seasia && start chrome http://localhost:8095/yf-radar/yf/daily/alerts/all
 timeout /t 30 /nobreak > NUL
-start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/apac && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/seasia
+start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/apac && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/gmt && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/seasia && start chrome http://localhost:8095/yf-radar/yf/daily/yearlow/all
 timeout /t 30 /nobreak > NUL
 
 timeout /t 15 /nobreak > NUL
