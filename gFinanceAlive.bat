@@ -29,6 +29,10 @@ xcopy C:\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e 
 xcopy C:\Vin\Code-Base\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Vin\Code\All-Stocks-Research\tokens C:\Vin\Code-Base\gf-radar\tokens /s /e /h  /F /R /Y /I
 xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*yf*daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
+cd C:\Code-Base\yf-daily-repo
+git add .
+git commit -am "10032026 Fix"
+git push -f
 
 timeout /t 300 /nobreak > NUL
 
@@ -84,6 +88,10 @@ timeout /t 1200 /nobreak > NUL
 TASKKILL /IM chrome.exe /F
 TASKKILL /IM chrome.exe /F
 xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERTS* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*PNL* C:\Code-Base\yf-daily-repo\apac /s /e /y && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY-ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y  && xcopy C:\Code-Base\yf-radar-apac\genHtml\gmt C:\Code-Base\yf-daily-repo\ctry\gmt /s /e /y    && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*YEAR*LOW* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*yf*daily* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*RADAR*DAILY*BUY*ALERT* C:\Code-Base\yf-daily-repo\apac /s /e /y   && xcopy C:\Code-Base\yf-radar-apac\genHtml\*DAILY*ALL* C:\Code-Base\yf-daily-repo\apac /s /e /y
+cd C:\Code-Base\yf-daily-repo
+git add .
+git commit -am "10032026 Fix"
+git push -f
 
 REM powershell.exe  C:\Code-Base\enterKeyPress.ps1
 timeout /t 10 /nobreak > NUL
@@ -99,5 +107,9 @@ timeout /t 10 /nobreak > NUL
 xcopy C:\Code-Base\All-Stocks-Research\genHtml\  C:\Code-Base\yf-daily-repo\ctry\india /s /e /y  && cd C:\Code-Base\yf-daily-repo  && git add .  &&  git commit -am "16012026 Fix" && git push -f  &&  git commit -am "16012026 Fix" && git push -f
 timeout /t 10 /nobreak > NUL
 xcopy C:\Code-Base\All-Stocks-Research\genHtml\  C:\Code-Base\yf-daily-repo\ctry\india /s /e /y  && cd C:\Code-Base\yf-daily-repo  && git add .  &&  git commit -am "16012026 Fix" && git push -f  &&  git commit -am "16012026 Fix" && git push -f
+cd C:\Code-Base\yf-daily-repo
+git add .
+git commit -am "10032026 Fix"
+git push -f
 
 goto again
