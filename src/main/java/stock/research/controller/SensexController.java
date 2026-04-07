@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import stock.research.email.alerts.SensexStockResearchAlertMechanismService;
+import stock.research.utility.SensexStockResearchUtility;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -49,15 +50,9 @@ public class SensexController {
 
     public String getDateFileFormat(String input){
         int sum = 0;
-        for(int i = 0; i < input.length(); i++) {
-            if(Character.isDigit(input.charAt(i))) {
-                sum = sum + Integer.parseInt(input.charAt(i) + "");
-            }
-        }
         ZonedDateTime dateTime = now();
-        sum = sum + (dateTime.getYear() + dateTime.getMonthValue() + dateTime.getDayOfMonth());
-        return (sum * (dateTime.getMonthValue() +
-                dateTime.getDayOfMonth())) + "--" + input;
+        sum =  (100 * dateTime.getMonthValue()) + dateTime.getDayOfMonth();
+        return (sum * (dateTime.getMonthValue())) + "--" + input + SensexStockResearchUtility.HYPHEN;
     }
 
     public static void writeHTMLFile(String fileName, String fileContent, String... subDir){
