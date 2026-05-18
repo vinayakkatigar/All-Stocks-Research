@@ -34,5 +34,7 @@ c:
 cd C:\Code-Base\All-Stocks-Research
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
+C:\software\IBKR\ntws\ntws.exe
+
 
 "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
