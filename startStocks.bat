@@ -1,3 +1,4 @@
+title screenerStartStocks
 
 del /S /F /Q C:\Code\All-Stocks-Research\genHtml\*
 del /S /F /Q C:\Code\All-Stocks-Research\genHtml\*
