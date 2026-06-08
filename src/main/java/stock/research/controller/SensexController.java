@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static java.time.ZonedDateTime.now;
+import static stock.research.utility.SensexStockResearchUtility.HYPHEN;
 
 @RestController
 public class SensexController {
@@ -50,9 +51,16 @@ public class SensexController {
 
     public String getDateFileFormat(String input){
         int sum = 0;
+/*
+        for(int i = 0; i < input.length(); i++) {
+            if(Character.isDigit(input.charAt(i))) {
+                sum = sum + Integer.parseInt(input.charAt(i) + "");
+            }
+        }
+*/
         ZonedDateTime dateTime = now();
         sum =  (100 * dateTime.getMonthValue()) + dateTime.getDayOfMonth();
-        return (sum * (dateTime.getMonthValue())) + "--" + input + SensexStockResearchUtility.HYPHEN;
+        return (sum * (dateTime.getMonthValue())) + "--" + input + HYPHEN;
     }
 
     public static void writeHTMLFile(String fileName, String fileContent, String... subDir){
