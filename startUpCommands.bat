@@ -1,3 +1,5 @@
+title mainStartUpCmd
+
 c:
 cd C:\Code-Base\All-Stocks-Research
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
@@ -9,10 +11,31 @@ git reset --hard HEAD &&   git config --global branch.autosetuprebase always && 
 cd C:\Code\yf-radar-apac
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
 
-cd C:\Code-Base\gf-radar
+cd C:\Code-Base\yf-daily-repo\
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
-cd C:\Code\gf-radar
+cd C:\Code-Base\yf-daily-repo\
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
+
+xcopy C:\Code-Base\yf-radar-apac\*html C:\Delete\Stocks-Html-Repo\Apac\  /s /e /y
+xcopy C:\Code-Base\yf-radar-apac\genHtml\*html C:\Delete\Stocks-Html-Repo\Apac\  /s /e /y
+xcopy C:\Code-Base\yf-radar-apac\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\Apac\  /s /e /y
+
+move /y C:\Code-Base\yf-radar-apac\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\yf-radar-apac\genHtml\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\yf-radar-apac\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\Apac\
+
+cd C:\Delete\Stocks-Html-Repo
+mkdir India
+cd C:\Delete\Stocks-Html-Repo
+mkdir India
+
+xcopy C:\Code-Base\All-Stocks-Research\*html C:\Delete\Stocks-Html-Repo\India\  /s /e /y
+xcopy C:\Code-Base\All-Stocks-Research\genHtml\*html C:\Delete\Stocks-Html-Repo\India\  /s /e /y
+xcopy C:\Code-Base\All-Stocks-Research\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\India\  /s /e /y
+
+move /y C:\Code-Base\All-Stocks-Research\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\All-Stocks-Research\genHtml\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\All-Stocks-Research\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\Apac\
 
 cd C:\Code-Base\yf-radar
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
@@ -23,20 +46,9 @@ cd C:\Code\All-Stocks-Research
 c:
 cd C:\Code\All-Stocks-Research
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
-
 cd C:\Code-Base\All-Stocks-Research
 c:
 cd C:\Code-Base\All-Stocks-Research
-git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
-cd C:\Code-Base\yf-radar-apac
-git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
-cd C:\Code\yf-radar-apac
-git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
-
-
-cd C:\Code-Base\yf-radar-apac
-git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
-cd C:\Code\yf-radar-apac
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
 
 cd C:\Code\yf-radar
@@ -64,7 +76,7 @@ cd C:\Code-Base\All-Stocks-Research
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
 
 timeout /t 20 /nobreak > NUL
-wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startNotePad.bat
+REM wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startNotePad.bat
 
 timeout /t 10 /nobreak > NUL
 wt -w 0 nt  C:\Code-Base\All-Stocks-Research\gFinanceAlive.bat
