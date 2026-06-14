@@ -16,6 +16,27 @@ git reset --hard HEAD &&   git config --global branch.autosetuprebase always && 
 cd C:\Code-Base\yf-daily-repo\
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
 
+xcopy C:\Code-Base\yf-radar-apac\*html C:\Delete\Stocks-Html-Repo\Apac\  /s /e /y
+xcopy C:\Code-Base\yf-radar-apac\genHtml\*html C:\Delete\Stocks-Html-Repo\Apac\  /s /e /y
+xcopy C:\Code-Base\yf-radar-apac\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\Apac\  /s /e /y
+
+move /y C:\Code-Base\yf-radar-apac\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\yf-radar-apac\genHtml\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\yf-radar-apac\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\Apac\
+
+cd C:\Delete\Stocks-Html-Repo
+mkdir India
+cd C:\Delete\Stocks-Html-Repo
+mkdir India
+
+xcopy C:\Code-Base\All-Stocks-Research\*html C:\Delete\Stocks-Html-Repo\India\  /s /e /y
+xcopy C:\Code-Base\All-Stocks-Research\genHtml\*html C:\Delete\Stocks-Html-Repo\India\  /s /e /y
+xcopy C:\Code-Base\All-Stocks-Research\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\India\  /s /e /y
+
+move /y C:\Code-Base\All-Stocks-Research\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\All-Stocks-Research\genHtml\*html C:\Delete\Stocks-Html-Repo\Apac\
+move /y C:\Code-Base\All-Stocks-Research\genHtml\apac\*html C:\Delete\Stocks-Html-Repo\Apac\
+
 cd C:\Code-Base\yf-radar
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit
 cd C:\Code\yf-radar
