@@ -20,7 +20,7 @@ import static stock.research.utility.SensexStockResearchUtility.HYPHEN;
 
 @RestController
 public class SensexController {
-    public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 
     @Autowired
     private SensexStockResearchAlertMechanismService stockResearchAlertMechanismService;
