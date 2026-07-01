@@ -1,3 +1,4 @@
+title gfFinanceAlive
 c:
 cd C:\Code-Base\All-Stocks-Research
 git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit  && git reset --hard HEAD &&   git config --global branch.autosetuprebase always && git pull origin main --no-edit 
@@ -115,5 +116,5 @@ cd C:\Code-Base\yf-daily-repo
 REM git add .
 REM git commit -am "10032026 Fix"
 REM git push -f
-
+title gfFinanceAlive
 goto again
