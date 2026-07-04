@@ -1,33 +1,29 @@
 title mainStartUpCmd
 
-mkdir C:\Code-Base\yf-daily-repo\gmt\archived\June\
-cd C:\Code-Base\yf-daily-repo\gmt\archived\June\
-echo Hello World > delete.txt
-
 mkdir  C:\Code-Base\yf-daily-repo\apac\archived\June\
-cd C:\Code-Base\yf-daily-repo\apac\archived\June\
-echo Hello World > delete.txt
+REM cd C:\Code-Base\yf-daily-repo\apac\archived\June\
+REM echo Hello World > delete.txt
 
 mkdir C:\Code-Base\yf-daily-repo\gf\Archived\
-cd C:\Code-Base\yf-daily-repo\gf\Archived\
-echo Hello World > delete.txt
+REM cd C:\Code-Base\yf-daily-repo\gf\Archived\
+REM echo Hello World > delete.txt
 
 mkdir C:\Code-Base\yf-daily-repo\ctry\india\archived\
-cd C:\Code-Base\yf-daily-repo\ctry\india\archived\
-echo Hello World > delete.txt
+REM cd C:\Code-Base\yf-daily-repo\ctry\india\archived\
+REM echo Hello World > delete.txt
 
 mkdir C:\Code-Base\yf-daily-repo\ctry\india\archived\
 cd  C:\Code-Base\yf-daily-repo\ctry\india\archived\
-echo Hello World > delete.txt
+REM echo Hello World > delete.txt
 
 move /y C:\Code-Base\yf-daily-repo\gmt\*Jun*2026* C:\Code-Base\yf-daily-repo\gmt\archived\June\
 move /y C:\Code-Base\yf-daily-repo\apac\*Jun*2026*  C:\Code-Base\yf-daily-repo\apac\archived\June
 move /y C:\Code-Base\yf-daily-repo\gf\*Jun*2026*  C:\Code-Base\yf-daily-repo\gf\Archived
 move /y C:\Code-Base\yf-daily-repo\ctry\india\*06*2026* C:\Code-Base\yf-daily-repo\ctry\india\archived
 move /y C:\Code-Base\yf-daily-repo\ctry\india\*Jun*2026* C:\Code-Base\yf-daily-repo\ctry\india\archived
-git add .
-git commit --amend --no-edit -m "Fix"
-git push -f origin HEAD:main
+REM git add .
+REM git commit --amend --no-edit -m "Fix"
+REM git push -f origin HEAD:main
 
 c:
 cd C:\Code-Base\All-Stocks-Research
