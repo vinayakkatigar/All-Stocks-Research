@@ -1,4 +1,6 @@
 title screenerStartStocks
+mkdir C:\Delete\Stocks-Html-Repo\India\
+move /y C:\Code\All-Stocks-Research\genHtml\* C:\Delete\Stocks-Html-Repo\India\
 
 del /S /F /Q C:\Code\All-Stocks-Research\genHtml\*
 del /S /F /Q C:\Code\All-Stocks-Research\genHtml\*
