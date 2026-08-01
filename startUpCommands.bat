@@ -16,11 +16,12 @@ mkdir C:\Code-Base\yf-daily-repo\ctry\india\archived\
 cd  C:\Code-Base\yf-daily-repo\ctry\india\archived\
 REM echo Hello World > delete.txt
 
-move /y C:\Code-Base\yf-daily-repo\gmt\*Jun*2026* C:\Code-Base\yf-daily-repo\gmt\archived\June\
-move /y C:\Code-Base\yf-daily-repo\apac\*Jun*2026*  C:\Code-Base\yf-daily-repo\apac\archived\June
-move /y C:\Code-Base\yf-daily-repo\gf\*Jun*2026*  C:\Code-Base\yf-daily-repo\gf\Archived
-move /y C:\Code-Base\yf-daily-repo\ctry\india\*06*2026* C:\Code-Base\yf-daily-repo\ctry\india\archived
-move /y C:\Code-Base\yf-daily-repo\ctry\india\*Jun*2026* C:\Code-Base\yf-daily-repo\ctry\india\archived
+move /y C:\Code-Base\yf-daily-repo\gmt\*Jul*2026* C:\Code-Base\yf-daily-repo\gmt\archived\July\
+move /y C:\Code-Base\yf-daily-repo\apac\*Jul*2026*  C:\Code-Base\yf-daily-repo\apac\archived\July
+move /y C:\Code-Base\yf-daily-repo\gf\*Jul*2026*  C:\Code-Base\yf-daily-repo\gf\Archived\July\
+move /y C:\Code-Base\yf-daily-repo\ctry\india\*07*2026* C:\Code-Base\yf-daily-repo\ctry\india\archived\July\
+move /y C:\Code-Base\yf-daily-repo\ctry\india\*Jul*2026* C:\Code-Base\yf-daily-repo\ctry\india\archived\July\
+
 REM git add .
 REM git commit --amend --no-edit -m "Fix"
 REM git push -f origin HEAD:main
