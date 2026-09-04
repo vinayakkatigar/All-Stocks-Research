@@ -116,9 +116,6 @@ REM wt -w 0 nt C:\Vin\KeepAlive.bat
 timeout /t 10 /nobreak > NUL
 wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startStocks.bat
 
-timeout /t 2 /nobreak > NUL
-REM wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startOutlook.bat
-
 timeout /t 20 /nobreak > NUL
 REM wt -w 0 nt  C:\Code-Base\All-Stocks-Research\gFinanceOneDayAlive.bat
 
@@ -133,3 +130,7 @@ REM wt -w 0 nt C:\Code-Base\gf-radar\yfYearLowAlive.bat
 
 REM timeout /t 5 /nobreak > NUL
 REM wt -w 0 nt  C:\Code-Base\All-Stocks-Research\enterKeyPresses.bat
+
+timeout /t 2 /nobreak > NUL
+wt -w 0 nt  C:\Code-Base\All-Stocks-Research\startOutlook.bat
+
